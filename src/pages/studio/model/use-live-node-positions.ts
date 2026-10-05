@@ -6,11 +6,9 @@ type Position = Idea['position']
 
 // Preview positions never enter the saved document or local undo history.
 // Feeding interpolated positions to React Flow keeps edges and the minimap aligned.
-export function useLiveNodePositions(
-  nodes: Idea[],
-  peers: Presence[],
-  localDragging: Set<string>,
-) {
+export function useLiveNodePositions<
+  T extends { id: string; position: Position },
+>(nodes: T[], peers: Presence[], localDragging: Set<string>) {
   const [positions, setPositions] = useState<Record<string, Position>>({})
   const displayed = useRef<Record<string, Position>>({})
   useEffect(() => {
@@ -24,11 +22,16 @@ export function useLiveNodePositions(
     let frame: number
     let previous = performance.now()
     const step = (time: number) => {
-      const factor = motion.matches ? 1 : 1 - Math.exp(-Math.min(time - previous, 64) / 32)
+      const factor = motion.matches
+        ? 1
+        : 1 - Math.exp(-Math.min(time - previous, 64) / 32)
       previous = time
       const next: Record<string, Position> = {}
       let moving = false
-      for (const id of new Set([...targets.keys(), ...Object.keys(displayed.current)])) {
+      for (const id of new Set([
+        ...targets.keys(),
+        ...Object.keys(displayed.current),
+      ])) {
         const node = currentNodes.get(id)
         if (!node || localDragging.has(id)) continue
         const target = targets.get(id) || node.position

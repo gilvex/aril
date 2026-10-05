@@ -88,3 +88,12 @@ This update supersedes the deployment blockers recorded above.
 - Ran `scripts/smoke-cloud.ts` against the production URL: account transfer/replay rejection, workspace creation, non-member denial, invitation/replay rejection, two live event streams, cursor broadcast, durable edits and reconnect passed. Removed all generated test profiles and the temporary workspace; existing user workspaces were not edited.
 - `pnpm lint`, `pnpm test` (7 passed, separate Postgres test skipped without its explicit environment setting), and `pnpm build` passed. The production backend is bundled separately to avoid Vercel TypeScript module-resolution failures.
 - Screenshot: `artifacts/hosted-studio.png` shows the hosted saved canvas and profile with Google linking available. Production load testing and an actual Google authentication round trip are not covered by these checks.
+
+## Per-board wireframes (2026-10-05)
+
+- Added backward-compatible wireframe graphs, normalized per-block collaboration operations, screen parent validation, and private wireframe cameras. Tests cover concurrent first edits, independent resize/text edits, conflicting text edits, deletion with attached flows, inverse undo, import round trips, and invalid parents/edges/sizes.
+- Extended real HTTP/SSE verification to save wireframes, observe them from another session, receive wireframe selections/drag previews and retain interaction labels after reopening SQLite. Nine default tests pass; the Postgres test remains explicitly opt-in.
+- In an isolated browser-test database, created two screens and a button-to-screen interaction. Preview followed “Create server” to “Configure server.” Reload retained the wireframes while Blueprint kept its original graph. Numeric resizing and corner resizing both worked.
+- Two independent browser origins showed the same resized block and both selection badges. Ctrl-click selected a card and button; dragging moved both by the same offset in both sessions. Undo restored the group. Fullscreen entered and exited successfully.
+- Verified the toolbar, palette and inspector in a 390 × 844 iframe viewport, with no document-level horizontal overflow. Newly added screens were centered automatically; the temporary addition was undone. This checks responsive layout, not a real-device touch matrix.
+- The deployment smoke script additionally exercises wireframe saves, shared wireframe presence and reconnects against a supplied hosted origin, using generated fixtures only.

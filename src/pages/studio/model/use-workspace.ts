@@ -25,6 +25,8 @@ function keepViews(next: Workspace, local: Workspace): Workspace {
     boards: next.boards.map((board) => ({
       ...board,
       viewport: local.boards.find((b) => b.id === board.id)?.viewport,
+      wireframeViewport: local.boards.find((b) => b.id === board.id)
+        ?.wireframeViewport,
     })),
   }
 }
@@ -34,14 +36,19 @@ function loadViews(workspace: Workspace, viewsKey: string): Workspace {
     return {
       ...workspace,
       boards: workspace.boards.map((board) => {
-        const view = views[board.id]
-        return view &&
+        const valid = (view: Workspace['boards'][number]['viewport']) =>
+          view &&
           Number.isFinite(view.x) &&
           Number.isFinite(view.y) &&
           view.zoom >= 0.1 &&
           view.zoom <= 3
-          ? { ...board, viewport: view }
-          : board
+        return {
+          ...board,
+          ...(valid(views[board.id]) ? { viewport: views[board.id] } : {}),
+          ...(valid(views[board.id + ':wireframes'])
+            ? { wireframeViewport: views[board.id + ':wireframes'] }
+            : {}),
+        }
       }),
     }
   } catch {
@@ -182,7 +189,12 @@ export function useWorkspace(
         sessionStorage.setItem(
           cameraKey,
           JSON.stringify(
-            Object.fromEntries(next.boards.map((b) => [b.id, b.viewport])),
+            Object.fromEntries(
+              next.boards.flatMap((b) => [
+                [b.id, b.viewport],
+                [b.id + ':wireframes', b.wireframeViewport],
+              ]),
+            ),
           ),
         )
       } catch {

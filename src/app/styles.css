@@ -12,6 +12,81 @@
   --sidebar: #302b3b;
   --heading: 'Manrope Variable', sans-serif;
 }
+
+/* Board wireframes share the studio palette; the drawn interface stays quiet. */
+.board-sections { display: flex; align-items: center; gap: 4px; padding: 9px 28px; border-bottom: 1px solid var(--line); background: #fff; }
+.board-sections > button { display: flex; align-items: center; gap: 7px; border: 0; border-radius: 6px; background: transparent; padding: 8px 12px; color: #746c7e; font-size: 12px; }
+.board-sections > button[aria-pressed="true"] { background: var(--accent-light); color: #963e5c; font-weight: 700; }
+.board-sections > span { margin-left: auto; font-size: 11px; color: var(--muted); }
+.wireframe-page .board-heading h1 { flex-wrap: wrap; }
+.wire-heading-label { font-family: 'DM Sans Variable', sans-serif; font-size: 11px; font-weight: 500; color: #84788e; border-left: 1px solid var(--line); padding-left: 10px; }
+.wireframe-page .react-flow__node-wireframe { border: none; border-radius: 6px; background: transparent; padding: 0; }
+.wire-block { width: 100%; height: 100%; border: 1px solid #bdb5c4; border-radius: 5px; background: #fff; color: #423a4c; display: flex; flex-direction: column; justify-content: center; padding: 14px 18px; position: relative; }
+.wire-block strong { font-size: 16px; font-weight: 650; line-height: 1.35; white-space: pre-wrap; overflow-wrap: anywhere; }
+.wire-block p { font-size: 13px; line-height: 1.6; margin-top: 9px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.wire-block > strong, .wire-block > p { overflow: hidden; }
+.wire-block.wire-screen { padding: 0; justify-content: flex-start; border-color: #c1b8c9; box-shadow: 0 6px 24px #302b3b0a; }
+.wire-screen-title { height: 36px; min-height: 36px; border-bottom: 1px solid #e8e5ee; display: flex; align-items: center; gap: 12px; padding: 0 13px; color: #756b80; font-size: 11px; cursor: grab; background: #faf9fb; border-radius: 5px 5px 0 0; }
+.wire-screen-title > span:nth-child(2) { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wire-window-dots { display: flex; gap: 4px; }
+.wire-window-dots i { width: 5px; height: 5px; border-radius: 50%; background: #d9d1df; }
+.wire-block.wire-text { border-color: transparent; padding: 4px; justify-content: flex-start; background: transparent; }
+.wire-text strong { font-family: var(--heading); font-size: 22px; }
+.wire-block.wire-button { align-items: center; text-align: center; padding: 8px 12px; }
+.wire-button strong { font-size: 13px; }
+.wire-block.wire-tone-soft { background: #f2eef5; }
+.wire-block.wire-tone-accent { background: #a34d6c; border-color: #a34d6c; color: white; }
+.wire-block.wire-input { border: none; background: transparent; padding: 0; gap: 7px; }
+.wire-input-label { font-size: 11px; font-weight: 600; color: #62566b; }
+.wire-input-placeholder { border: 1px solid #bdb5c4; background: white; color: #a097a8; border-radius: 4px; flex: 1; min-height: 25px; padding: 8px 11px; font-size: 12px; overflow: hidden; }
+.wire-block.wire-image { background: #f2eff5; color: #9c90a7; align-items: center; gap: 12px; font-size: 12px; border-style: dashed; }
+.wire-block.wire-navigation { flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px; padding: 8px 16px; }
+.wire-navigation strong { font-size: 13px; }
+.wire-navigation > span:not(.wire-avatar-dot) { font-size: 10px; white-space: pre-wrap; margin-left: auto; overflow: hidden; }
+.wire-avatar-dot { width: 21px; height: 21px; flex-shrink: 0; border-radius: 50%; background: #d8cbdc; }
+.wire-skeleton { display: grid; gap: 9px; margin-top: 14px; }
+.wire-skeleton i { width: 90%; height: 5px; background: #e8e2ed; border-radius: 2px; }
+.wire-skeleton i:last-child { width: 60%; }
+.wireframe-page .react-flow__handle { width: 10px; height: 10px; background: #fff; border: 2px solid #a34d6c; z-index: 4; }
+.wireframe-page .react-flow__resize-control.handle { width: 8px; height: 8px; border-radius: 2px; z-index: 5; }
+.wire-palette > p { padding: 8px 10px; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.wire-kit { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.wire-kit > button { display: flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: #fff; padding: 11px 8px; border-radius: 6px; font-size: 10px; }
+.wire-kit > button:hover { background: #f8edf1; border-color: #d0a5b6; }
+.wire-kit > button:first-child { grid-column: 1 / -1; }
+.wire-kit > button > svg:last-child { margin-left: auto; }
+.wire-interaction { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.wire-interaction h3 { font-size: 12px; display: flex; align-items: center; gap: 7px; }
+.wire-existing-flow, .wire-screen-list > button { display: flex; gap: 7px; align-items: center; border: 0; background: #f7f3f8; border-radius: 5px; padding: 9px; font-size: 11px; text-align: left; overflow-wrap: anywhere; }
+.wire-screen-list { display: grid; gap: 7px; }
+.wire-screen-list > button > svg:last-child { margin-left: auto; flex-shrink: 0; }
+.wire-screen-presets { display: flex; gap: 8px; }
+.wire-inspector .field-row input { width: 100%; min-width: 0; }
+.wire-empty-art { color: #a58bae; position: relative; }
+.wire-empty-art > svg:last-child { position: absolute; right: -5px; bottom: -2px; color: #a34d6c; fill: #f6f5f9; }
+.wire-empty { gap: 14px; }
+.wire-empty .button + .button { margin-top: 8px; background: transparent; border-color: transparent; }
+.wire-hotspot { position: absolute; inset: 0; width: 100%; height: 100%; border: none; background: transparent; border-radius: inherit; }
+.wire-hotspot:hover { outline: 2px dashed #b34568; outline-offset: 3px; }
+.wire-flow-link { white-space: normal; text-align: left; overflow-wrap: anywhere; }
+.wire-preview .canvas-tip { display: flex; white-space: normal; max-width: 75%; text-align: center; color: #75495f; }
+@media (max-width: 1100px) {
+  .board-sections > span { display: none; }
+  .wire-heading-label { display: none; }
+  .wireframe-page .board-heading { flex-wrap: wrap; gap: 10px; }
+  .wireframe-page .board-heading h1 { font-size: 18px; }
+}
+@media (max-width: 760px) {
+  .board-sections { padding: 7px 12px; }
+  .wireframe-page .board-heading { padding: 13px 16px; }
+  .wireframe-page .board-heading p { max-width: none; }
+  .wireframe-page .canvas-heading-actions { width: 100%; }
+  .wireframe-page .add-node-wrap { margin-left: auto; }
+  .wireframe-page .canvas-layout .wire-inspector { width: min(265px, 82vw); }
+  .wireframe-page .empty-canvas { width: 90%; }
+  .wireframe-page .empty-canvas h2 { font-size: 20px; }
+  .wireframe-page .canvas-caption { top: 9px; }
+}
 * {
   box-sizing: border-box;
 }

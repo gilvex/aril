@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { openPostgres } from '../server/postgres.ts'
 import { diffWorkspace } from '../domain/collaboration.ts'
+import { makeWireNode } from '../domain/wireframe.ts'
 import type { Envelope } from '../domain/workspace.ts'
 
 const origin = process.env.SMOKE_ORIGIN
@@ -160,11 +161,71 @@ try {
     (await store.read(workspaceId)).workspace.notes,
     'Verified through the deployed API',
   )
+  const latest = await store.read(workspaceId)
+  const withWireframe = structuredClone(latest.workspace)
+  const screen = makeWireNode('screen', randomUUID(), { x: 0, y: 0 })
+  const button = makeWireNode(
+    'button',
+    randomUUID(),
+    { x: 30, y: 80 },
+    screen.id,
+  )
+  withWireframe.boards[0].wireframe = {
+    nodes: [screen, button],
+    edges: [
+      {
+        id: randomUUID(),
+        source: button.id,
+        target: screen.id,
+        label: 'On click',
+        type: 'smoothstep',
+      },
+    ],
+  }
+  assert.equal(
+    (
+      await call('/api/workspace', peer.token, 'PATCH', {
+        requestId: randomUUID(),
+        operations: diffWorkspace(latest.workspace, withWireframe),
+      })
+    ).status,
+    200,
+  )
+  await a.next(
+    'workspace',
+    (value) =>
+      (value as Envelope).workspace.boards[0].wireframe?.nodes.length === 2,
+  )
+  assert.equal(
+    (await store.read(workspaceId)).workspace.boards[0].wireframe!.edges[0]
+      .label,
+    'On click',
+  )
+  assert.equal(
+    (
+      await call('/api/presence', peer.token, 'POST', {
+        clientId: peerClient,
+        boardId: latest.workspace.boards[0].id,
+        view: 'wireframes',
+        cursor: { x: 100, y: 100 },
+        selected: [button.id],
+        selectedEdges: [],
+        sequence: 2,
+        dragging: [{ id: button.id, position: { x: 50, y: 90 } }],
+      })
+    ).status,
+    204,
+  )
+  await a.next('presence', (value) =>
+    (value as { view: string; selected: string[] }[]).some(
+      (p) => p.view === 'wireframes' && p.selected.includes(button.id),
+    ),
+  )
   a.close()
   const reconnect = await stream(owner.token, randomUUID())
   await reconnect.next(
     'workspace',
-    (value) => (value as Envelope).revision === 2,
+    (value) => (value as Envelope).revision === 3,
   )
   console.log(
     JSON.stringify({
@@ -176,6 +237,7 @@ try {
       presence: true,
       savedEdit: true,
       reconnect: true,
+      wireframes: true,
     }),
   )
 } finally {

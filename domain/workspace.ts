@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { wireframeSchema } from './wireframe.ts'
 
 export const nodeKinds = [
   'layer',
@@ -51,6 +52,14 @@ export const workspaceSchema = z
             description: z.string().max(1000),
             nodes: z.array(node).max(500),
             edges: z.array(edge).max(1500),
+            wireframe: wireframeSchema.optional(),
+            wireframeViewport: z
+              .object({
+                x: z.number().finite(),
+                y: z.number().finite(),
+                zoom: z.number().min(0.1).max(3),
+              })
+              .optional(),
             viewport: z
               .object({
                 x: z.number().finite(),

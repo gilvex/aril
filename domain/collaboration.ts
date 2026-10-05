@@ -43,9 +43,20 @@ export type Presence = {
   dragging?: DragPosition[]
   requirement?: RequirementPresence | null
 }
-export const requirementFieldSchema = z.enum(['title', 'description', 'acceptance', 'priority', 'status', 'category'])
+export const requirementFieldSchema = z.enum([
+  'title',
+  'description',
+  'acceptance',
+  'priority',
+  'status',
+  'category',
+])
 export type RequirementField = z.infer<typeof requirementFieldSchema>
-export type RequirementPresence = { id: string; field: RequirementField | null; typing: boolean }
+export type RequirementPresence = {
+  id: string
+  field: RequirementField | null
+  typing: boolean
+}
 export type DragPosition = { id: string; position: { x: number; y: number } }
 export type Activity = {
   id: number
@@ -57,7 +68,7 @@ export type Activity = {
 export const presenceSchema = z.object({
   clientId: z.string().uuid(),
   boardId: z.string().max(100).nullable(),
-  view: z.enum(['canvas', 'requirements', 'design', 'notes']),
+  view: z.enum(['canvas', 'wireframes', 'requirements', 'design', 'notes']),
   cursor: z
     .object({
       x: z.number().finite().min(-1e7).max(1e7),
@@ -66,19 +77,27 @@ export const presenceSchema = z.object({
     .nullable(),
   selected: z.array(z.string().max(100)).max(500),
   selectedEdges: z.array(z.string().min(1).max(100)).max(1500).default([]),
-  requirement: z.object({
-    id: z.string().min(1).max(100),
-    field: requirementFieldSchema.nullable(),
-    typing: z.boolean(),
-  }).nullable().default(null),
+  requirement: z
+    .object({
+      id: z.string().min(1).max(100),
+      field: requirementFieldSchema.nullable(),
+      typing: z.boolean(),
+    })
+    .nullable()
+    .default(null),
   sequence: z.number().int().nonnegative().safe().optional(),
-  dragging: z.array(z.object({
-    id: z.string().min(1).max(100),
-    position: z.object({
-      x: z.number().finite().min(-1e7).max(1e7),
-      y: z.number().finite().min(-1e7).max(1e7),
-    }),
-  })).max(500).default([]),
+  dragging: z
+    .array(
+      z.object({
+        id: z.string().min(1).max(100),
+        position: z.object({
+          x: z.number().finite().min(-1e7).max(1e7),
+          y: z.number().finite().min(-1e7).max(1e7),
+        }),
+      }),
+    )
+    .max(500)
+    .default([]),
 })
 
 function indexed(items: { id: string }[]) {
@@ -89,14 +108,24 @@ function documentOf(workspace: Workspace): Json {
     JSON.stringify({
       schemaVersion: 1,
       boards: Object.fromEntries(
-        workspace.boards.map(({ viewport: _viewport, ...board }) => [
-          board.id,
-          {
-            ...board,
-            nodes: indexed(board.nodes),
-            edges: indexed(board.edges),
-          },
-        ]),
+        workspace.boards.map(
+          ({
+            viewport: _viewport,
+            wireframeViewport: _wireframeViewport,
+            ...board
+          }) => [
+            board.id,
+            {
+              ...board,
+              nodes: indexed(board.nodes),
+              edges: indexed(board.edges),
+              wireframe: {
+                nodes: indexed(board.wireframe?.nodes || []),
+                edges: indexed(board.wireframe?.edges || []),
+              },
+            },
+          ],
+        ),
       ),
       requirements: indexed(workspace.requirements),
       notes: workspace.notes,
@@ -113,6 +142,14 @@ function workspaceOf(document: Json): Workspace {
         ...board,
         nodes: Object.values(board.nodes as object),
         edges: Object.values(board.edges as object),
+        wireframe: {
+          nodes: Object.values(
+            (board.wireframe as Record<string, Json> | undefined)?.nodes || {},
+          ),
+          edges: Object.values(
+            (board.wireframe as Record<string, Json> | undefined)?.edges || {},
+          ),
+        },
       }
     },
   )
@@ -183,6 +220,13 @@ export function applyOperations(
   return workspaceOf(doc)
 }
 export function describeOperations(operations: Operation[]): string {
+  if (operations.some((o) => o.path[2] === 'wireframe')) {
+    if (operations.every((o) => o.path.at(-1) === 'position'))
+      return 'Moved wireframe blocks'
+    return operations.some((o) => o.path[3] === 'edges')
+      ? 'Updated wireframe flows'
+      : 'Edited wireframe blocks'
+  }
   const nodes = new Set(
     operations
       .filter((o) => o.path[2] === 'nodes')

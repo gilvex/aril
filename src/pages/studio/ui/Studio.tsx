@@ -22,6 +22,7 @@ import {
   Sprout,
   FileJson,
   RotateCcw,
+  PanelsTopLeft,
 } from 'lucide-react'
 import {
   downloadJson,
@@ -38,6 +39,11 @@ import type { Profile } from '../../../../domain/collaboration'
 import type { StudioSummary } from '../../../../domain/studios'
 const CanvasBoard = lazy(() =>
   import('./CanvasBoard').then((module) => ({ default: module.CanvasBoard })),
+)
+const WireframeBoard = lazy(() =>
+  import('./WireframeBoard').then((module) => ({
+    default: module.WireframeBoard,
+  })),
 )
 import { Requirements } from './Requirements'
 import { DesignBoard } from './DesignBoard'
@@ -66,6 +72,10 @@ export function Studio({
   const multiplayer = useMultiplayer(initialProfile, state.receive, studio.id)
   const { workspace, change } = state
   const [view, setView] = useState<View>('canvas')
+  const [canvasMode, setCanvasMode] = useState<'canvas' | 'wireframes'>(
+    'canvas',
+  )
+  const BoardCanvas = canvasMode === 'wireframes' ? WireframeBoard : CanvasBoard
   const [boardId, setBoardId] = useState(workspace.boards[0].id)
   const [requirementId, setRequirementId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -119,7 +129,7 @@ export function Studio({
       ? [
           {
             profile: multiplayer.profile,
-            view,
+            view: view === 'canvas' ? canvasMode : view,
             boardId: view === 'canvas' ? board.id : null,
           },
         ]
@@ -129,7 +139,7 @@ export function Studio({
   useEffect(() => {
     sendPresence(
       {
-        view,
+        view: view === 'canvas' ? canvasMode : view,
         boardId: view === 'canvas' ? board.id : null,
         cursor: null,
         selected: [],
@@ -139,7 +149,7 @@ export function Studio({
       },
       true,
     )
-  }, [view, board.id, sendPresence])
+  }, [view, canvasMode, board.id, sendPresence])
   const navigateBoard = (id: string) => {
     setBoardId(id)
     setView('canvas')
@@ -250,7 +260,11 @@ export function Studio({
               )}
               <PresenceAvatars
                 profiles={present
-                  .filter((person) => person.view === item.id)
+                  .filter(
+                    (person) =>
+                      person.view === item.id ||
+                      (item.id === 'canvas' && person.view === 'wireframes'),
+                  )
                   .map((person) => person.profile)}
               />
             </button>
@@ -283,7 +297,9 @@ export function Studio({
                 profiles={present
                   .filter(
                     (person) =>
-                      person.view === 'canvas' && person.boardId === b.id,
+                      (person.view === 'canvas' ||
+                        person.view === 'wireframes') &&
+                      person.boardId === b.id,
                   )
                   .map((person) => person.profile)}
               />
@@ -461,7 +477,9 @@ export function Studio({
                       profiles={present
                         .filter(
                           (person) =>
-                            person.view === 'canvas' && person.boardId === b.id,
+                            (person.view === 'canvas' ||
+                              person.view === 'wireframes') &&
+                            person.boardId === b.id,
                         )
                         .map((person) => person.profile)}
                     />
@@ -487,17 +505,53 @@ export function Studio({
                 <Trash2 size={15} />
               </button>
             </div>
+            <div
+              className="board-sections"
+              role="group"
+              aria-label="Board section"
+            >
+              <button
+                aria-pressed={canvasMode === 'canvas'}
+                onClick={() => setCanvasMode('canvas')}
+              >
+                <Workflow size={15} />
+                Blueprint
+                <PresenceAvatars
+                  profiles={present
+                    .filter(
+                      (p) => p.view === 'canvas' && p.boardId === board.id,
+                    )
+                    .map((p) => p.profile)}
+                />
+              </button>
+              <button
+                aria-pressed={canvasMode === 'wireframes'}
+                onClick={() => setCanvasMode('wireframes')}
+              >
+                <PanelsTopLeft size={15} />
+                Wireframes
+                <PresenceAvatars
+                  profiles={present
+                    .filter(
+                      (p) => p.view === 'wireframes' && p.boardId === board.id,
+                    )
+                    .map((p) => p.profile)}
+                />
+              </button>
+              <span>Two ways to explore the same idea</span>
+            </div>
             <Suspense
               fallback={
                 <div className="empty-message">Opening your canvas…</div>
               }
             >
-              <CanvasBoard
-                key={board.id}
+              <BoardCanvas
+                key={board.id + ':' + canvasMode}
                 board={board}
                 requirements={workspace.requirements}
                 peers={multiplayer.peers.filter(
-                  (peer) => peer.view === 'canvas' && peer.boardId === board.id,
+                  (peer) =>
+                    peer.view === canvasMode && peer.boardId === board.id,
                 )}
                 sendPresence={sendPresence}
                 saveState={state.saveState}

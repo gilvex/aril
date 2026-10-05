@@ -13,8 +13,14 @@ import {
 } from '../domain/collaboration.ts'
 import type { Envelope } from '../domain/workspace.ts'
 import { createSeed } from '../domain/seed.ts'
+import { makeWireNode } from '../domain/wireframe.ts'
 
-async function events(url: string, cookie: string, clientId: string, token?: string) {
+async function events(
+  url: string,
+  cookie: string,
+  clientId: string,
+  token?: string,
+) {
   const controller = new AbortController()
   const response = await fetch(`${url}/api/events?clientId=${clientId}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : { Cookie: cookie },
@@ -93,7 +99,10 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     })
     assert.equal(joinResponse.status, 200)
     const cookieB = joinResponse.headers.get('set-cookie')!.split(';')[0]
-    const joined = (await joinResponse.json()) as { profile: { id: string }; token: string }
+    const joined = (await joinResponse.json()) as {
+      profile: { id: string }
+      token: string
+    }
     const peerProfile = joined.profile
     const bearerSession = await fetch(`${url}/api/session`, {
       headers: { Authorization: `Bearer ${joined.token}` },
@@ -254,69 +263,147 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     // Drag frames are ephemeral, include whole selections, and reject late packets.
     const revisionBeforeDrag = store.read().revision
     const dragFrame = {
-      clientId: clientB, boardId: 'layers', view: 'canvas',
-      cursor: { x: 150, y: 270 }, selected: ['base', 'game'], sequence: 100,
+      clientId: clientB,
+      boardId: 'layers',
+      view: 'canvas',
+      cursor: { x: 150, y: 270 },
+      selected: ['base', 'game'],
+      sequence: 100,
       selectedEdges: [initial.workspace.boards[0].edges[0].id],
       dragging: [
         { id: 'base', position: { x: 150, y: 270 } },
         { id: 'game', position: { x: 450, y: 270 } },
       ],
     }
-    assert.equal((await call('/api/presence', cookieB, 'POST', dragFrame)).status, 204)
-    const dragPeople = await streamA.next('presence', (value) =>
+    assert.equal(
+      (await call('/api/presence', cookieB, 'POST', dragFrame)).status,
+      204,
+    )
+    const dragPeople = (await streamA.next('presence', (value) =>
       (value as { sequence?: number }[]).some((p) => p.sequence === 100),
-    ) as { sequence?: number; dragging: unknown[]; selectedEdges: string[] }[]
-    assert.deepEqual(dragPeople.find((p) => p.sequence === 100)!.dragging, dragFrame.dragging)
-    assert.deepEqual(dragPeople.find((p) => p.sequence === 100)!.selectedEdges, dragFrame.selectedEdges)
+    )) as { sequence?: number; dragging: unknown[]; selectedEdges: string[] }[]
+    assert.deepEqual(
+      dragPeople.find((p) => p.sequence === 100)!.dragging,
+      dragFrame.dragging,
+    )
+    assert.deepEqual(
+      dragPeople.find((p) => p.sequence === 100)!.selectedEdges,
+      dragFrame.selectedEdges,
+    )
     assert.equal(store.read().revision, revisionBeforeDrag)
-    await call('/api/presence', cookieB, 'POST', { ...dragFrame, sequence: 99, dragging: [] })
-    await call('/api/presence', cookieA, 'POST', {
-      clientId: clientA, boardId: 'layers', view: 'canvas',
-      cursor: null, selected: [], sequence: 200,
-    })
-    const orderedPeople = await streamA.next('presence', (value) =>
-      (value as { sequence?: number }[]).some((p) => p.sequence === 200),
-    ) as { sequence?: number; dragging: unknown[] }[]
-    assert.deepEqual(orderedPeople.find((p) => p.sequence === 100)!.dragging, dragFrame.dragging)
-    assert.equal((await call('/api/presence', cookieB, 'POST', {
-      ...dragFrame, dragging: [{ id: 'base', position: { x: 1e20, y: 0 } }],
-    })).status, 400)
     await call('/api/presence', cookieB, 'POST', {
-      ...dragFrame, sequence: 101, dragging: [], selectedEdges: [],
-      boardId: null, view: 'notes',
+      ...dragFrame,
+      sequence: 99,
+      dragging: [],
     })
-    const endedPeople = await streamA.next('presence', (value) =>
+    await call('/api/presence', cookieA, 'POST', {
+      clientId: clientA,
+      boardId: 'layers',
+      view: 'canvas',
+      cursor: null,
+      selected: [],
+      sequence: 200,
+    })
+    const orderedPeople = (await streamA.next('presence', (value) =>
+      (value as { sequence?: number }[]).some((p) => p.sequence === 200),
+    )) as { sequence?: number; dragging: unknown[] }[]
+    assert.deepEqual(
+      orderedPeople.find((p) => p.sequence === 100)!.dragging,
+      dragFrame.dragging,
+    )
+    assert.equal(
+      (
+        await call('/api/presence', cookieB, 'POST', {
+          ...dragFrame,
+          dragging: [{ id: 'base', position: { x: 1e20, y: 0 } }],
+        })
+      ).status,
+      400,
+    )
+    await call('/api/presence', cookieB, 'POST', {
+      ...dragFrame,
+      sequence: 101,
+      dragging: [],
+      selectedEdges: [],
+      boardId: null,
+      view: 'notes',
+    })
+    const endedPeople = (await streamA.next('presence', (value) =>
       (value as { sequence?: number }[]).some((p) => p.sequence === 101),
-    ) as { sequence?: number; dragging: unknown[]; selectedEdges: string[]; boardId: string | null; view: string }[]
+    )) as {
+      sequence?: number
+      dragging: unknown[]
+      selectedEdges: string[]
+      boardId: string | null
+      view: string
+    }[]
     assert.deepEqual(endedPeople.find((p) => p.sequence === 101)!.dragging, [])
-    assert.deepEqual(endedPeople.find((p) => p.sequence === 101)!.selectedEdges, [])
+    assert.deepEqual(
+      endedPeople.find((p) => p.sequence === 101)!.selectedEdges,
+      [],
+    )
     assert.equal(endedPeople.find((p) => p.sequence === 101)!.view, 'notes')
     assert.equal(endedPeople.find((p) => p.sequence === 101)!.boardId, null)
     assert.equal(store.read().revision, revisionBeforeDrag)
     const requirementId = initial.workspace.requirements[0].id
     await call('/api/presence', cookieB, 'POST', {
-      ...dragFrame, sequence: 102, boardId: null, view: 'requirements', dragging: [], selectedEdges: [],
+      ...dragFrame,
+      sequence: 102,
+      boardId: null,
+      view: 'requirements',
+      dragging: [],
+      selectedEdges: [],
       requirement: { id: requirementId, field: 'acceptance', typing: true },
     })
     await call('/api/presence', cookieA, 'POST', {
-      clientId: clientA, boardId: null, view: 'requirements', cursor: null, selected: [], sequence: 201,
+      clientId: clientA,
+      boardId: null,
+      view: 'requirements',
+      cursor: null,
+      selected: [],
+      sequence: 201,
       requirement: { id: requirementId, field: null, typing: false },
     })
-    const requirementPeople = await streamA.next('presence', (value) =>
+    const requirementPeople = (await streamA.next('presence', (value) =>
       (value as { sequence?: number }[]).some((p) => p.sequence === 201),
-    ) as { requirement: { id: string; field: string | null; typing: boolean } }[]
-    assert.equal(requirementPeople.filter((p) => p.requirement?.id === requirementId).length, 2)
-    assert.equal(requirementPeople.find((p) => p.requirement?.field === 'acceptance')!.requirement.typing, true)
-    assert.equal((await call('/api/presence', cookieB, 'POST', {
-      ...dragFrame, sequence: 103, requirement: { id: requirementId, field: 'password', typing: true },
-    })).status, 400)
+    )) as {
+      requirement: { id: string; field: string | null; typing: boolean }
+    }[]
+    assert.equal(
+      requirementPeople.filter((p) => p.requirement?.id === requirementId)
+        .length,
+      2,
+    )
+    assert.equal(
+      requirementPeople.find((p) => p.requirement?.field === 'acceptance')!
+        .requirement.typing,
+      true,
+    )
+    assert.equal(
+      (
+        await call('/api/presence', cookieB, 'POST', {
+          ...dragFrame,
+          sequence: 103,
+          requirement: { id: requirementId, field: 'password', typing: true },
+        })
+      ).status,
+      400,
+    )
     await call('/api/presence', cookieB, 'POST', {
-      ...dragFrame, sequence: 103, boardId: null, view: 'notes', dragging: [], requirement: null,
+      ...dragFrame,
+      sequence: 103,
+      boardId: null,
+      view: 'notes',
+      dragging: [],
+      requirement: null,
     })
-    const clearedPeople = await streamA.next('presence', (value) =>
+    const clearedPeople = (await streamA.next('presence', (value) =>
       (value as { sequence?: number }[]).some((p) => p.sequence === 103),
-    ) as { requirement: { id: string } | null }[]
-    assert.equal(clearedPeople.filter((p) => p.requirement?.id === requirementId).length, 1)
+    )) as { requirement: { id: string } | null }[]
+    assert.equal(
+      clearedPeople.filter((p) => p.requirement?.id === requirementId).length,
+      1,
+    )
     assert.equal(store.read().revision, revisionBeforeDrag)
     streamB.close()
     streamB = undefined
@@ -330,6 +417,62 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     assert.equal(
       shared.workspace.boards[0].nodes[0].data.title,
       'Runtime edited by owner',
+    )
+    const withWireframe = structuredClone(shared.workspace)
+    const screen = makeWireNode('screen', 'wire-screen', { x: 20, y: 30 })
+    const button = makeWireNode(
+      'button',
+      'wire-button',
+      { x: 40, y: 80 },
+      screen.id,
+    )
+    withWireframe.boards[0].wireframe = {
+      nodes: [screen, button],
+      edges: [
+        {
+          id: 'wire-flow',
+          source: button.id,
+          target: screen.id,
+          label: 'On click',
+          type: 'smoothstep',
+        },
+      ],
+    }
+    assert.equal(
+      (
+        await call('/api/workspace', cookieA, 'PATCH', {
+          requestId: randomUUID(),
+          operations: diffWorkspace(shared.workspace, withWireframe),
+        })
+      ).status,
+      200,
+    )
+    await streamB.next(
+      'workspace',
+      (value) =>
+        (value as Envelope).workspace.boards[0].wireframe?.edges[0]?.id ===
+        'wire-flow',
+    )
+    await call('/api/presence', cookieA, 'POST', {
+      clientId: clientA,
+      boardId: 'layers',
+      view: 'wireframes',
+      cursor: { x: 40, y: 80 },
+      selected: [button.id],
+      selectedEdges: ['wire-flow'],
+      sequence: 300,
+      dragging: [{ id: button.id, position: { x: 60, y: 80 } }],
+    })
+    const wirePeople = (await streamB.next('presence', (value) =>
+      (value as { view: string }[]).some((p) => p.view === 'wireframes'),
+    )) as { view: string; selected: string[]; dragging: { id: string }[] }[]
+    assert.deepEqual(
+      wirePeople.find((p) => p.view === 'wireframes')!.selected,
+      [button.id],
+    )
+    assert.equal(
+      wirePeople.find((p) => p.view === 'wireframes')!.dragging[0].id,
+      button.id,
     )
   } finally {
     streamA?.close()
@@ -348,7 +491,11 @@ test('invited users share edits, profiles, cursors and activity without stale ov
       reopened.read().workspace.boards[0].nodes[0].data.title,
       'Runtime edited by owner',
     )
-    assert.equal(reopened.activity().length, 2)
+    assert.equal(reopened.activity().length, 3)
+    assert.equal(
+      reopened.read().workspace.boards[0].wireframe!.edges[0].label,
+      'On click',
+    )
     reopened.close()
   } finally {
     rmSync(directory, { recursive: true, force: true })

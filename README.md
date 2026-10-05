@@ -23,6 +23,7 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 ## What works
 
 - Four editable starter diagrams: deployment blueprint, platform architecture, first deployment, and product structure.
+- Every board has a separate Wireframes section: resizable screen frames, text, buttons, inputs, cards, images and navigation blocks, labeled interaction arrows, and a click-through flow preview.
 - Drag nodes, connect handles, label connections, create boards, duplicate/delete nodes, and attach requirements.
 - Fifteen requirements derived from the product brief, with priorities, status, acceptance criteria, filtering, and links back to boards.
 - A design board with saved accent, density, and direction controls, plus an interactive sample interface.
@@ -37,6 +38,8 @@ Select a node to edit it. Drag from its right handle to another node's left hand
 Hold **Ctrl** (or **Cmd** on macOS) and click nodes to add/remove them from the selection. Drag any selected node to move the whole group. **Shift + drag** selects an area. The group inspector can change the selected nodes' type or decision together, or delete them and their attached connections. Each group operation can be undone.
 
 Use **Fullscreen** beside Add node to expand the canvas. **Exit fullscreen** or **Esc** returns to the workspace. The editor keeps the same graph, selection, and zoom while switching; browsers that disallow native fullscreen use an expanded viewport instead.
+
+Choose **Wireframes** below the board tabs to sketch its interface. Start with a screen or add individual blocks. Selecting a screen before adding a block places it inside that screen; **On screen** can change its parent later. Move frames using their title bars, resize selected blocks from their corners or numeric dimensions, and Ctrl/Cmd-click to move or style several together. Connect right-to-left handles or choose a destination under **What happens next?**. Select an arrow to change its label or destination. **Preview flow** lets you click a connected block and follow its destination. **Edit** or Escape returns to editing. Wireframes share autosave, history, undo, import/export, cursors, selections and live drag previews with the rest of the studio.
 
 ## Storage and recovery
 
