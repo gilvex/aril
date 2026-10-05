@@ -20,7 +20,6 @@ import {
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
-  Sprout,
   FileJson,
   RotateCcw,
   PanelsTopLeft,
@@ -80,7 +79,25 @@ export function Studio({
   const [boardId, setBoardId] = useState(workspace.boards[0].id)
   const [requirementId, setRequirementId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('pomegranate-sidebar-collapsed') === 'true'
+    } catch {
+      return false
+    }
+  })
+  const sidebarToggle = useRef<HTMLButtonElement>(null)
+  const mobileMenuToggle = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        'pomegranate-sidebar-collapsed',
+        String(sidebarCollapsed),
+      )
+    } catch {
+      // Collapsing still works when browser storage is unavailable.
+    }
+  }, [sidebarCollapsed])
   const [notice, setNotice] = useState(
     recovery ? 'Recovered unsaved edits from this tab.' : '',
   )
@@ -213,17 +230,6 @@ export function Studio({
         id="studio-navigation"
         className={`sidebar ${sidebarOpen ? 'open' : ''}`}
       >
-        <button
-          className="icon-button sidebar-close"
-          aria-label="Close sidebar"
-          title="Close sidebar"
-          onClick={() => {
-            setSidebarCollapsed(true)
-            setSidebarOpen(false)
-          }}
-        >
-          <PanelLeftClose size={17} />
-        </button>
         <a
           className="brand"
           href="#"
@@ -324,28 +330,29 @@ export function Studio({
             </button>
           ))}
         </div>
-        <div className="sidebar-bottom">
-          <div className="project-note">
-            <Sprout size={22} />
-            <strong>Good things start small.</strong>
-            <p>
-              A few ideas today.
-              <br />A better platform tomorrow.
-            </p>
-          </div>
-          <div className="sidebar-footer">
-            <span className="avatar">P</span>
-            <span>
-              Shared workspace<small>Good ideas, together</small>
-            </span>
-          </div>
-        </div>
+        <button
+          className="sidebar-close"
+          aria-controls="studio-navigation"
+          aria-expanded={true}
+          onClick={() => {
+            setSidebarCollapsed(true)
+            setSidebarOpen(false)
+            const toggle = window.matchMedia('(max-width: 760px)').matches
+              ? mobileMenuToggle.current
+              : sidebarToggle.current
+            toggle?.focus()
+          }}
+        >
+          <PanelLeftClose size={17} />
+          Collapse sidebar
+        </button>
       </aside>
       <main className="main-area">
         <header className="topbar">
           <div className="breadcrumb">
             <button
               className="icon-button desktop-sidebar-toggle"
+              ref={sidebarToggle}
               aria-label={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
               title={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
               aria-expanded={!sidebarCollapsed}
@@ -360,6 +367,7 @@ export function Studio({
             </button>
             <button
               className="icon-button mobile-menu"
+              ref={mobileMenuToggle}
               aria-label="Open navigation"
               aria-expanded={sidebarOpen}
               aria-controls="studio-navigation"
