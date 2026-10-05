@@ -5,7 +5,6 @@ import {
   ListChecks,
   Palette,
   NotebookPen,
-  Plus,
   ChevronDown,
   ArrowUpRight,
   Undo2,
@@ -17,10 +16,8 @@ import {
   LoaderCircle,
   AlertCircle,
   X,
-  Trash2,
   Menu,
-  PanelLeftClose,
-  PanelLeftOpen,
+  Activity as ActivityIcon,
   FileJson,
   RotateCcw,
   MoreHorizontal,
@@ -95,6 +92,9 @@ export function Studio({
   )
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const compact = useCompactLayout()
+  const [collaborationPanel, setCollaborationPanel] = useState<
+    'profile' | 'people' | 'activity' | null
+  >(null)
   const sidebarRef = useRef<HTMLElement>(null)
   const actionsMenu = useRef<HTMLDetailsElement>(null)
   useEffect(() => {
@@ -115,14 +115,6 @@ export function Studio({
       document.removeEventListener('keydown', escape)
     }
   }, [])
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    try {
-      return localStorage.getItem('pomegranate-sidebar-collapsed') !== 'false'
-    } catch {
-      return false
-    }
-  })
-  const sidebarToggle = useRef<HTMLButtonElement>(null)
   const mobileMenuToggle = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (!compact || !sidebarOpen) return
@@ -150,16 +142,6 @@ export function Studio({
       mobileMenuToggle.current?.focus()
     }
   }, [compact, sidebarOpen])
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        'pomegranate-sidebar-collapsed',
-        String(sidebarCollapsed),
-      )
-    } catch {
-      // Collapsing still works when browser storage is unavailable.
-    }
-  }, [sidebarCollapsed])
   const [notice, setNotice] = useState(
     recovery ? 'Recovered unsaved edits from this tab.' : '',
   )
@@ -342,7 +324,7 @@ export function Studio({
   }
   return (
     <div
-      className={`studio-shell canvas-first${sidebarCollapsed ? ' sidebar-collapsed' : ''}${followed ? ' is-following' : ''}`}
+      className={`studio-shell canvas-first top-navigation${followed ? ' is-following' : ''}`}
       onPointerDownCapture={(event) => {
         if (
           followId &&
@@ -361,207 +343,104 @@ export function Studio({
         if (followId) setFollowId(null)
       }}
     >
-      {sidebarOpen && (
+      {compact && sidebarOpen && (
         <button
           className="sidebar-backdrop"
           aria-label="Close navigation"
           onClick={() => setSidebarOpen(false)}
         />
       )}
-      <aside
-        ref={sidebarRef}
-        role={compact && sidebarOpen ? 'dialog' : undefined}
-        aria-modal={compact && sidebarOpen ? true : undefined}
-        aria-label={compact ? 'Workspace menu' : undefined}
-        id="studio-navigation"
-        className={`sidebar ${sidebarOpen ? 'open' : ''}`}
-      >
-        <div className="mobile-sheet-heading">
-          <strong>Workspace</strong>
-          <button
-            className="icon-button"
-            aria-label="Close workspace menu"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <X size={20} />
-          </button>
-        </div>
-        <a
-          className="brand"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault()
-            setView('canvas')
-          }}
+      {compact && (
+        <aside
+          ref={sidebarRef}
+          role={sidebarOpen ? 'dialog' : undefined}
+          aria-modal={sidebarOpen ? true : undefined}
+          aria-label="Workspace menu"
+          id="studio-navigation"
+          className={`sidebar workspace-more-sheet ${sidebarOpen ? 'open' : ''}`}
         >
-          <img src="/mark.svg" alt="" />
-          <span>
-            pomegranate<small>Planning studio</small>
-          </span>
-        </a>
-        <button
-          className="workspace-switch"
-          aria-label="Switch workspace"
-          onClick={async () => {
-            if (await state.flush()) onWorkspaces(multiplayer.profile)
-            else
-              setNotice(
-                'Finish saving or resolve your unsaved edits before switching workspaces.',
-              )
-          }}
-        >
-          <span className="workspace-letter">
-            {studio.name.slice(0, 1).toUpperCase()}
-          </span>
-          <span>
-            {studio.name}
-            <small>Switch workspace</small>
-          </span>
-          <ChevronDown size={14} />
-        </button>
-        <nav aria-label="Workspace navigation">
-          {navigation.map((item) => (
+          <div className="mobile-sheet-heading">
+            <strong>Workspace</strong>
             <button
-              key={item.id}
-              className={`nav-item ${view === item.id ? 'active' : ''}`}
-              aria-label={item.name}
+              className="icon-button"
+              aria-label="Close workspace menu"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X size={20} />
+            </button>
+          </div>
+          <button
+            className="workspace-switch"
+            aria-label="Switch workspace"
+            onClick={async () => {
+              if (await state.flush()) onWorkspaces(multiplayer.profile)
+              else
+                setNotice(
+                  'Finish saving or resolve your unsaved edits before switching workspaces.',
+                )
+            }}
+          >
+            <span className="workspace-letter">
+              {studio.name.slice(0, 1).toUpperCase()}
+            </span>
+            <span>
+              {studio.name}
+              <small>Switch workspace</small>
+            </span>
+            <ChevronDown size={14} />
+          </button>
+          <div className="mobile-workspace-tools">
+            <button
               onClick={() => {
-                setView(item.id)
                 setSidebarOpen(false)
-                if (item.id === 'requirements') setRequirementId(null)
+                setCollaborationPanel('activity')
               }}
             >
-              <item.icon size={18} />
-              <span>{item.name}</span>
-              {item.id === 'requirements' && (
-                <span className="nav-count">
-                  {workspace.requirements.length}
-                </span>
-              )}
-              <PresenceAvatars
-                profiles={present
-                  .filter(
-                    (person) =>
-                      person.view === item.id ||
-                      (item.id === 'canvas' && person.view === 'wireframes'),
-                  )
-                  .map((person) => person.profile)}
-              />
+              <ActivityIcon size={18} />
+              Team activity
             </button>
-          ))}
-        </nav>
-        <div className="sidebar-section-heading">
-          <span>Your boards</span>
-          <button
-            className="icon-button"
-            aria-label="New board"
-            onClick={() => {
-              setSidebarOpen(false)
-              setBoardName('')
-              setModal('new')
-            }}
-          >
-            <Plus size={15} />
-          </button>
-        </div>
-        <div className="board-list">
-          {workspace.boards.map((b, i) => (
+            <span>Tools</span>
+            <button disabled={!state.canUndo} onClick={state.undo}>
+              <Undo2 size={18} />
+              Undo
+            </button>
+            <button disabled={!state.canRedo} onClick={state.redo}>
+              <Redo2 size={18} />
+              Redo
+            </button>
             <button
-              className={`board-item ${view === 'canvas' && board.id === b.id ? 'active' : ''}`}
-              key={b.id}
-              aria-label={b.name}
-              onClick={() => navigateBoard(b.id)}
+              onClick={() => {
+                setSidebarOpen(false)
+                void loadHistory()
+              }}
             >
-              <span className={`board-dot dot-${i % 4}`} />
-              <span>{b.name}</span>
-              <PresenceAvatars
-                profiles={present
-                  .filter(
-                    (person) =>
-                      (person.view === 'canvas' ||
-                        person.view === 'wireframes') &&
-                      person.boardId === b.id,
-                  )
-                  .map((person) => person.profile)}
-              />
+              <History size={18} />
+              Revision history
             </button>
-          ))}
-        </div>
-        <div className="mobile-workspace-tools">
-          <span>Workspace tools</span>
-          <button
-            onClick={() => {
-              setSidebarOpen(false)
-              void loadHistory()
-            }}
-          >
-            <History size={18} />
-            Revision history
-          </button>
-          <button
-            onClick={() => {
-              setSidebarOpen(false)
-              importRef.current?.click()
-            }}
-          >
-            <Upload size={18} />
-            Import workspace
-          </button>
-          <button
-            onClick={() => {
-              setSidebarOpen(false)
-              exportWorkspace()
-            }}
-          >
-            <Download size={18} />
-            Export workspace
-          </button>
-          <button
-            disabled={workspace.boards.length <= 1}
-            onClick={() => {
-              setSidebarOpen(false)
-              setModal('delete')
-            }}
-          >
-            <Trash2 size={18} />
-            Delete current board
-          </button>
-        </div>
-        <button
-          className="sidebar-close"
-          aria-controls="studio-navigation"
-          aria-expanded={true}
-          onClick={() => {
-            setSidebarCollapsed(true)
-            setSidebarOpen(false)
-            const toggle = compact
-              ? mobileMenuToggle.current
-              : sidebarToggle.current
-            toggle?.focus()
-          }}
-        >
-          <PanelLeftClose size={17} />
-          Collapse sidebar
-        </button>
-      </aside>
+            <button
+              onClick={() => {
+                setSidebarOpen(false)
+                importRef.current?.click()
+              }}
+            >
+              <Upload size={18} />
+              Import workspace
+            </button>
+            <button
+              onClick={() => {
+                setSidebarOpen(false)
+                exportWorkspace()
+              }}
+            >
+              <Download size={18} />
+              Export workspace
+            </button>
+          </div>
+        </aside>
+      )}
       <main className="main-area" inert={compact && sidebarOpen}>
         <header className="topbar">
           <div className="breadcrumb">
-            <button
-              className="icon-button desktop-sidebar-toggle"
-              ref={sidebarToggle}
-              aria-label={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
-              title={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
-              aria-expanded={!sidebarCollapsed}
-              aria-controls="studio-navigation"
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            >
-              {sidebarCollapsed ? (
-                <PanelLeftOpen size={18} />
-              ) : (
-                <PanelLeftClose size={18} />
-              )}
-            </button>
             <button
               className="app-workspace-picker"
               title="Switch workspace"
@@ -578,6 +457,82 @@ export function Studio({
               <ChevronDown size={14} />
             </button>
           </div>
+          {!compact && (
+            <div className="header-navigation">
+              <nav className="desktop-page-nav" aria-label="Main navigation">
+                {navigation.map((item) => (
+                  <button
+                    key={item.id}
+                    aria-label={item.name}
+                    aria-current={view === item.id ? 'page' : undefined}
+                    onClick={() => {
+                      setView(item.id)
+                      if (item.id === 'requirements') setRequirementId(null)
+                    }}
+                  >
+                    <span>
+                      {item.id === 'design'
+                        ? 'Design'
+                        : item.id === 'notes'
+                          ? 'Notes'
+                          : item.name}
+                    </span>
+                    <PresenceAvatars
+                      limit={1}
+                      profiles={present
+                        .filter(
+                          (person) =>
+                            person.view === item.id ||
+                            (item.id === 'canvas' &&
+                              person.view === 'wireframes'),
+                        )
+                        .map((person) => person.profile)}
+                    />
+                  </button>
+                ))}
+              </nav>
+              <details ref={actionsMenu} className="workspace-actions-menu">
+                <summary
+                  aria-label="Workspace actions"
+                  title="Workspace actions"
+                >
+                  <MoreHorizontal size={19} />
+                </summary>
+                <div
+                  className="workspace-actions-popover"
+                  onClick={(e) => {
+                    const menu = e.currentTarget.closest('details')
+                    menu?.removeAttribute('open')
+                    menu?.querySelector('summary')?.focus()
+                  }}
+                >
+                  <span className="overflow-group-label">Workspace</span>
+                  <button
+                    onClick={() => {
+                      actionsMenu.current?.querySelector('summary')?.focus()
+                      setCollaborationPanel('activity')
+                    }}
+                  >
+                    <ActivityIcon size={16} />
+                    Team activity
+                  </button>
+                  <span className="overflow-group-label">Tools</span>
+                  <button onClick={() => void loadHistory()}>
+                    <History size={16} />
+                    Revision history
+                  </button>
+                  <button onClick={() => importRef.current?.click()}>
+                    <Upload size={16} />
+                    Import workspace
+                  </button>
+                  <button onClick={exportWorkspace}>
+                    <Download size={16} />
+                    Export workspace
+                  </button>
+                </div>
+              </details>
+            </div>
+          )}
           <div className="topbar-actions">
             <button
               className={`save-indicator ${state.saveState}`}
@@ -618,43 +573,9 @@ export function Studio({
             >
               <Redo2 size={17} />
             </button>
-            <details ref={actionsMenu} className="workspace-actions-menu">
-              <summary aria-label="Workspace actions" title="Workspace actions">
-                <MoreHorizontal size={19} />
-              </summary>
-              <div
-                className="workspace-actions-popover"
-                onClick={(e) => {
-                  e.currentTarget.closest('details')?.removeAttribute('open')
-                }}
-              >
-                {compact && (
-                  <>
-                    <button disabled={!state.canUndo} onClick={state.undo}>
-                      <Undo2 size={16} />
-                      Undo
-                    </button>
-                    <button disabled={!state.canRedo} onClick={state.redo}>
-                      <Redo2 size={16} />
-                      Redo
-                    </button>
-                  </>
-                )}
-                <button onClick={() => void loadHistory()}>
-                  <History size={16} />
-                  Revision history
-                </button>
-                <button onClick={() => importRef.current?.click()}>
-                  <Upload size={16} />
-                  Import workspace
-                </button>
-                <button onClick={exportWorkspace}>
-                  <Download size={16} />
-                  Export workspace
-                </button>
-              </div>
-            </details>
             <CollaborationBar
+              panel={collaborationPanel}
+              setPanel={setCollaborationPanel}
               workspaceId={studio.id}
               profile={multiplayer.profile}
               peers={multiplayer.peers}

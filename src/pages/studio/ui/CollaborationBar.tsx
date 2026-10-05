@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Activity as ActivityIcon, Check, Link, Users, X } from 'lucide-react'
+import { Check, Link, Users, X } from 'lucide-react'
 import { request, workspaceHeaders } from '../../../shared/api/workspace'
 import { GoogleSignIn } from '../../../shared/ui/GoogleSignIn'
 import type {
@@ -79,7 +79,10 @@ async function avatarFrom(file: File): Promise<string> {
     URL.revokeObjectURL(url)
   }
 }
+type Panel = 'profile' | 'people' | 'activity' | null
 type Props = {
+  panel: Panel
+  setPanel: (panel: Panel) => void
   followId: string | null
   onFollow: (id: string | null) => void
   workspaceId: string
@@ -90,6 +93,8 @@ type Props = {
   onProfile: (profile: Profile) => void
 }
 export function CollaborationBar({
+  panel,
+  setPanel,
   workspaceId,
   followId,
   onFollow,
@@ -99,9 +104,6 @@ export function CollaborationBar({
   connected,
   onProfile,
 }: Props) {
-  const [panel, setPanel] = useState<'profile' | 'people' | 'activity' | null>(
-    null,
-  )
   const [name, setName] = useState(profile.name)
   const [avatar, setAvatar] = useState(profile.avatar)
   const [busy, setBusy] = useState(false)
@@ -120,6 +122,7 @@ export function CollaborationBar({
   ]
   useEffect(() => {
     if (!panel) return
+    opener.current = document.activeElement as HTMLElement
     const dialog = root.current?.querySelector<HTMLElement>('[role="dialog"]')
     dialog?.querySelector<HTMLElement>('input,button')?.focus()
     const close = (event: KeyboardEvent) => {
@@ -154,7 +157,7 @@ export function CollaborationBar({
       document.removeEventListener('keydown', close)
       document.removeEventListener('pointerdown', outside)
     }
-  }, [panel])
+  }, [panel, setPanel])
   const open = (next: typeof panel) => {
     opener.current = document.activeElement as HTMLElement
     setError('')
@@ -187,14 +190,6 @@ export function CollaborationBar({
       >
         <Users size={16} />
         <span>{people.length}</span>
-      </button>
-      <button
-        className="icon-button"
-        aria-label="Team activity"
-        title="Team activity"
-        onClick={() => open('activity')}
-      >
-        <ActivityIcon size={17} />
       </button>
       <button
         className="profile-button"
