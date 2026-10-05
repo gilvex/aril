@@ -8,7 +8,7 @@ import {
 } from '../domain/workspace.ts'
 import { createSeed } from '../domain/seed.ts'
 import { blankStudio, type StudioSummary } from '../domain/studios.ts'
-import type { Profile, Activity, Presence } from '../domain/collaboration.ts'
+import type { Profile, Activity } from '../domain/collaboration.ts'
 import type { Store } from './store-contract.ts'
 
 const hash = (value: string) => createHash('sha256').update(value).digest('hex')
@@ -100,10 +100,8 @@ export async function openPostgres(
         CREATE TABLE IF NOT EXISTS studio.invites (token_hash TEXT PRIMARY KEY,created_by TEXT NOT NULL,expires_at BIGINT NOT NULL,used INTEGER NOT NULL DEFAULT 0,workspace_id TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS studio.accounts (subject TEXT PRIMARY KEY,user_id TEXT NOT NULL UNIQUE REFERENCES studio.profiles(id),email TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS studio.auth_challenges (token_hash TEXT PRIMARY KEY,nonce TEXT NOT NULL,user_id TEXT,expires_at BIGINT NOT NULL);
-        CREATE TABLE IF NOT EXISTS studio.live_presence (workspace_id TEXT NOT NULL,user_id TEXT NOT NULL,client_id TEXT NOT NULL,lease TEXT NOT NULL,sequence BIGINT NOT NULL,body JSONB NOT NULL,touched_at BIGINT NOT NULL,PRIMARY KEY(workspace_id,user_id,client_id));
         CREATE TABLE IF NOT EXISTS studio.transfers (token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES studio.profiles(id),expires_at BIGINT NOT NULL);
         CREATE TABLE IF NOT EXISTS studio.migrations (id TEXT PRIMARY KEY);
-        CREATE INDEX IF NOT EXISTS presence_workspace ON studio.live_presence(workspace_id,touched_at);
         CREATE INDEX IF NOT EXISTS activity_workspace ON studio.studio_activity(workspace_id,id);`,
         [],
         client,
@@ -454,73 +452,6 @@ export async function openPostgres(
             )
           ).rows[0]?.revision,
         ),
-      presence: async (workspaceId: string) =>
-        (
-          await query(
-            'SELECT l.body,p.id,p.name,p.avatar,p.color FROM studio.live_presence l JOIN studio.profiles p ON p.id=l.user_id WHERE l.workspace_id=$1 AND l.touched_at>$2',
-            [workspaceId, Date.now() - 30000],
-          )
-        ).rows.map((r) => ({
-          ...r.body,
-          profile: { id: r.id, name: r.name, avatar: r.avatar, color: r.color },
-          cursor: Date.now() - r.body.seenAt > 15000 ? null : r.body.cursor,
-        })) as Presence[],
-      register: async (
-        workspaceId: string,
-        presence: Presence,
-        lease: string,
-      ) => {
-        await query('DELETE FROM studio.live_presence WHERE touched_at<$1', [
-          Date.now() - 60000,
-        ])
-        await query(
-          'INSERT INTO studio.live_presence VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT(workspace_id,user_id,client_id) DO UPDATE SET lease=excluded.lease,touched_at=excluded.touched_at',
-          [
-            workspaceId,
-            presence.profile.id,
-            presence.clientId,
-            lease,
-            presence.sequence || 0,
-            JSON.stringify(presence),
-            Date.now(),
-          ],
-        )
-      },
-      put: async (workspaceId: string, presence: Presence) => {
-        await query(
-          'UPDATE studio.live_presence SET sequence=$4,body=$5,touched_at=$6 WHERE workspace_id=$1 AND user_id=$2 AND client_id=$3 AND sequence<$4',
-          [
-            workspaceId,
-            presence.profile.id,
-            presence.clientId,
-            presence.sequence || 0,
-            JSON.stringify(presence),
-            Date.now(),
-          ],
-        )
-      },
-      remove: async (
-        workspaceId: string,
-        userId: string,
-        clientId: string,
-        lease: string,
-      ) => {
-        await query(
-          'DELETE FROM studio.live_presence WHERE workspace_id=$1 AND user_id=$2 AND client_id=$3 AND lease=$4',
-          [workspaceId, userId, clientId, lease],
-        )
-      },
-      heartbeat: async (
-        workspaceId: string,
-        userId: string,
-        clientId: string,
-        lease: string,
-      ) => {
-        await query(
-          'UPDATE studio.live_presence SET touched_at=$5 WHERE workspace_id=$1 AND user_id=$2 AND client_id=$3 AND lease=$4',
-          [workspaceId, userId, clientId, lease, Date.now()],
-        )
-      },
     },
     close: () => pool.end(),
   } satisfies Store

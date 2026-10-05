@@ -13,6 +13,8 @@ import type { Store } from './store-contract.ts'
 import { cloudEvents } from './cloud-events.ts'
 import { verifyGoogle } from './google.ts'
 import { openPostgres } from './postgres.ts'
+import { createLiveSession } from './live-session.ts'
+import { liveJoinSchema } from '../domain/live-session.ts'
 
 export function installCollaboration(
   app: Express,
@@ -316,7 +318,9 @@ export function installCollaboration(
   })
   app.use('/api', async (req, res, next) => {
     if (
-      !/^\/(workspace|history|events|presence|invites)(\/|$)/.test(req.path)
+      !/^\/(workspace|history|events|presence|invites|realtime)(\/|$)/.test(
+        req.path,
+      )
     ) {
       next()
       return
@@ -396,6 +400,32 @@ export function installCollaboration(
       presenceChanged(workspaceId)
     res.json({ profile })
   })
+  app.post('/api/realtime', (req, res) => {
+    const input = liveJoinSchema.safeParse(req.body)
+    if (!input.success) {
+      res.status(400).json({ error: 'Invalid live session.' })
+      return
+    }
+    res.setHeader('Cache-Control', 'no-store')
+    if (!store.cloud) {
+      res.json({ transport: 'local' })
+      return
+    }
+    try {
+      res.json(
+        createLiveSession(
+          res.locals.workspaceId,
+          res.locals.profile,
+          input.data.clientId,
+          input.data.publicKey,
+        ),
+      )
+    } catch {
+      res
+        .status(503)
+        .json({ error: 'Live sessions are not configured on this host.' })
+    }
+  })
   app.get('/api/events', async (req, res) => {
     const clientId = z.string().uuid().safeParse(req.query.clientId)
     if (!clientId.success) {
@@ -405,14 +435,8 @@ export function installCollaboration(
     const profile = res.locals.profile as Profile
     const workspaceId = res.locals.workspaceId as string
     if (store.cloud) {
-      await cloudEvents(
-        req,
-        res,
-        store,
-        workspaceId,
-        profile,
-        clientId.data,
-        () => cookieProfile(req),
+      await cloudEvents(req, res, store, workspaceId, profile, () =>
+        cookieProfile(req),
       )
       return
     }
@@ -469,12 +493,12 @@ export function installCollaboration(
     }
     const workspaceId = res.locals.workspaceId as string
     if (store.cloud) {
-      await store.cloud.put(workspaceId, {
-        ...input.data,
-        profile: res.locals.profile as Profile,
-        seenAt: Date.now(),
-      })
-      res.status(204).end()
+      res
+        .status(428)
+        .json({
+          error: 'Reload to use WebSocket live sessions.',
+          code: 'CLIENT_UPDATE_REQUIRED',
+        })
       return
     }
     const key = `${workspaceId}:${(res.locals.profile as Profile).id}:${input.data.clientId}`
@@ -520,14 +544,12 @@ export function installCollaboration(
         }
         const current = await store.read(workspaceId)
         if (input.data.baseRevision !== current.revision) {
-          res
-            .status(409)
-            .json({
-              code: 'STALE_REVISION',
-              revision: current.revision,
-              error:
-                'A newer workspace is already saved. Your older changes were not applied. Export your edits or load the latest saved version.',
-            })
+          res.status(409).json({
+            code: 'STALE_REVISION',
+            revision: current.revision,
+            error:
+              'A newer workspace is already saved. Your older changes were not applied. Export your edits or load the latest saved version.',
+          })
           return
         }
         const next = applyOperations(current.workspace, input.data.operations)

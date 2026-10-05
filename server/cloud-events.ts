@@ -1,31 +1,17 @@
 import type { Request, Response } from 'express'
 import type { Store } from './store-contract.ts'
-import type { Profile, Presence } from '../domain/collaboration.ts'
-import { randomUUID } from 'node:crypto'
+import type { Profile } from '../domain/collaboration.ts'
 
-// Each stream has a bounded lifetime; the client reconnects for a new lease.
-// Postgres is authoritative, so presence and edits survive switching instances.
+// Saved documents only. Live presence uses an independent WebSocket session.
 export async function cloudEvents(
   req: Request,
   res: Response,
   store: Store,
   workspaceId: string,
   profile: Profile,
-  clientId: string,
   authenticate: () => Promise<Profile | undefined>,
 ) {
   const cloud = store.cloud!
-  const lease = randomUUID()
-  const initial: Presence = {
-    clientId,
-    profile,
-    boardId: null,
-    view: 'canvas',
-    cursor: null,
-    selected: [],
-    seenAt: Date.now(),
-  }
-  await cloud.register(workspaceId, initial, lease)
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-store, no-transform')
   res.setHeader('X-Accel-Buffering', 'no')
@@ -33,7 +19,6 @@ export async function cloudEvents(
   let closed = false,
     timer: ReturnType<typeof setTimeout> | undefined
   let revision = -1,
-    lastPresence = '',
     lastAuth = 0
   const write = (event: string, value: unknown) => {
     if (res.writableLength > 2 * 1024 * 1024) {
@@ -48,7 +33,6 @@ export async function cloudEvents(
     closed = true
     clearTimeout(timer)
     clearTimeout(lifetime)
-    void cloud.remove(workspaceId, profile.id, clientId, lease).catch(() => {})
     res.end()
   }
   const lifetime = setTimeout(close, 55000)
@@ -65,14 +49,10 @@ export async function cloudEvents(
           close()
           return
         }
-        await cloud.heartbeat(workspaceId, profile.id, clientId, lease)
         lastAuth = Date.now()
         res.write(': heartbeat\n\n')
       }
-      const [nextRevision, people] = await Promise.all([
-        cloud.revision(workspaceId),
-        cloud.presence(workspaceId),
-      ])
+      const nextRevision = await cloud.revision(workspaceId)
       if (closed) return
       if (nextRevision !== revision) {
         const document = await store.read(workspaceId)
@@ -80,16 +60,11 @@ export async function cloudEvents(
         write('workspace', document)
         write('activity', await store.activity(workspaceId))
       }
-      const serialized = JSON.stringify(people)
-      if (serialized !== lastPresence) {
-        lastPresence = serialized
-        write('presence', people)
-      }
     } catch {
       close()
       return
     }
-    if (!closed) timer = setTimeout(() => void tick(), 250)
+    if (!closed) timer = setTimeout(() => void tick(), 1000)
   }
   await tick()
   // Keep the Vercel invocation alive for the entire stream.

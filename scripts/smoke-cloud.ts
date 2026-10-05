@@ -5,6 +5,13 @@ import { openPostgres } from '../server/postgres.ts'
 import { diffWorkspace } from '../domain/collaboration.ts'
 import { makeWireNode } from '../domain/wireframe.ts'
 import type { Envelope } from '../domain/workspace.ts'
+import { RealtimeClient } from '@supabase/realtime-js'
+import {
+  encode64,
+  publicKey,
+  verifyCertificate,
+  type LiveConfig,
+} from '../domain/live-session.ts'
 
 const origin = process.env.SMOKE_ORIGIN
 if (!origin) throw new Error('Set SMOKE_ORIGIN to the deployment being tested.')
@@ -13,6 +20,7 @@ const ownerId = randomUUID(),
   userIds = [ownerId]
 let workspaceId = ''
 const controllers: AbortController[] = []
+let realtime: RealtimeClient | undefined
 async function call(
   path: string,
   token = '',
@@ -138,12 +146,48 @@ try {
     selected: [],
     sequence: 1,
   })
-  assert.equal(presence.status, 204)
-  await a.next('presence', (value) =>
-    (value as { profile: { id: string }; cursor?: { x: number } }[]).some(
-      (p) => p.profile.id === peer.profile.id && p.cursor?.x === 120,
-    ),
+  assert.equal(presence.status, 428)
+  const keys = await crypto.subtle.generateKey('Ed25519', true, [
+    'sign',
+    'verify',
+  ])
+  const liveResponse = await call('/api/realtime', peer.token, 'POST', {
+    clientId: peerClient,
+    publicKey: encode64(await crypto.subtle.exportKey('raw', keys.publicKey)),
+  })
+  assert.equal(liveResponse.status, 200)
+  const live = (await liveResponse.json()) as LiveConfig
+  assert.equal(
+    (
+      await verifyCertificate(
+        live.certificate,
+        await publicKey(live.verificationKey),
+        workspaceId,
+      )
+    )?.profile.id,
+    peer.profile.id,
   )
+  realtime = new RealtimeClient(`${live.url}/realtime/v1`, {
+    params: { apikey: live.apiKey },
+  })
+  await realtime.setAuth(live.token)
+  const channel = realtime.channel(live.topic, { config: { private: true } })
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(
+      () => reject(new Error('Deployed realtime authorization timed out')),
+      15000,
+    )
+    channel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        clearTimeout(timeout)
+        resolve()
+      }
+      if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        clearTimeout(timeout)
+        reject(new Error('Deployed realtime authorization failed'))
+      }
+    })
+  })
   const patch = await call('/api/workspace', peer.token, 'PATCH', {
     requestId: randomUUID(),
     baseRevision: initial.revision,
@@ -204,26 +248,6 @@ try {
       .label,
     'On click',
   )
-  assert.equal(
-    (
-      await call('/api/presence', peer.token, 'POST', {
-        clientId: peerClient,
-        boardId: latest.workspace.boards[0].id,
-        view: 'wireframes',
-        cursor: { x: 100, y: 100 },
-        selected: [button.id],
-        selectedEdges: [],
-        sequence: 2,
-        dragging: [{ id: button.id, position: { x: 50, y: 90 } }],
-      })
-    ).status,
-    204,
-  )
-  await a.next('presence', (value) =>
-    (value as { view: string; selected: string[] }[]).some(
-      (p) => p.view === 'wireframes' && p.selected.includes(button.id),
-    ),
-  )
   a.close()
   const protectedState = await store.read(workspaceId)
   const staleRemoval = {
@@ -261,7 +285,8 @@ try {
       workspaces: true,
       isolation: true,
       invite: true,
-      presence: true,
+      legacyPresenceWritesBlocked: true,
+      privateWebSocketAuthorized: true,
       savedEdit: true,
       reconnect: true,
       wireframes: true,
@@ -269,10 +294,11 @@ try {
     }),
   )
 } finally {
+  await realtime?.removeAllChannels()
+  realtime?.disconnect()
   controllers.forEach((c) => c.abort())
   await store.transaction(async (client) => {
     for (const table of [
-      'live_presence',
       'studio_receipts',
       'studio_activity',
       'studio_snapshots',

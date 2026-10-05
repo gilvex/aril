@@ -1,5 +1,5 @@
 import type { openStore } from './store.ts'
-import type { Presence, Profile } from '../domain/collaboration.ts'
+import type { Profile } from '../domain/collaboration.ts'
 type MaybeAsync<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
     ? (...args: A) => R | Promise<R>
@@ -14,24 +14,5 @@ export type Store = MaybeAsync<Omit<LocalStore, 'identity'>> & {
   identity: MaybeAsync<LocalStore['identity']>
   cloud?: {
     revision: (workspaceId: string) => Promise<number>
-    presence: (workspaceId: string) => Promise<Presence[]>
-    put: (workspaceId: string, presence: Presence) => Promise<void>
-    remove: (
-      workspaceId: string,
-      userId: string,
-      clientId: string,
-      lease: string,
-    ) => Promise<void>
-    register: (
-      workspaceId: string,
-      presence: Presence,
-      lease: string,
-    ) => Promise<void>
-    heartbeat: (
-      workspaceId: string,
-      userId: string,
-      clientId: string,
-      lease: string,
-    ) => Promise<void>
   }
 }

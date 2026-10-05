@@ -1,3 +1,5 @@
+import { openLiveChannel } from './live-channel'
+import type { LiveState } from '../../../../domain/live-session'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   request,
@@ -23,10 +25,10 @@ export function useMultiplayer(
   const [activity, setActivity] = useState<Activity[]>([])
   const [connected, setConnected] = useState(false)
   const [clientId] = useState(() => crypto.randomUUID())
-  const latest = useRef({
+  const latest = useRef<LiveState>({
     clientId,
     boardId: null as string | null,
-    view: 'canvas',
+    view: 'canvas' as const,
     cursor: null as { x: number; y: number } | null,
     selected: [] as string[],
     selectedEdges: [] as string[],
@@ -34,6 +36,9 @@ export function useMultiplayer(
     sequence: 0,
     requirement: null as RequirementPresence | null,
   })
+  const transport = useRef<'pending' | 'local' | 'websocket'>('pending')
+  const streamConnected = useRef(false)
+  const live = useRef<Awaited<ReturnType<typeof openLiveChannel>>>(null)
   const lastSent = useRef(0)
   const pendingPresence = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -42,44 +47,77 @@ export function useMultiplayer(
     (changes: Partial<typeof latest.current>, force = false) => {
       latest.current = { ...latest.current, ...changes }
       clearTimeout(pendingPresence.current)
-      if (!force && Date.now() - lastSent.current < 90) {
-        pendingPresence.current = setTimeout(
-          () => {
-            lastSent.current = Date.now()
-            latest.current.sequence++
-            void request('/api/presence', {
-              method: 'POST',
-              headers: {
-                ...workspaceHeaders(workspaceId),
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(latest.current),
-            }).catch(() => {})
-          },
-          90 - (Date.now() - lastSent.current),
-        )
-        return
+      const send = () => {
+        lastSent.current = Date.now()
+        latest.current.sequence = (latest.current.sequence || 0) + 1
+        if (transport.current === 'websocket') {
+          void live.current?.send(latest.current).catch(() => {})
+        } else if (transport.current === 'local') {
+          void request('/api/presence', {
+            method: 'POST',
+            headers: {
+              ...workspaceHeaders(workspaceId),
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(latest.current),
+          }).catch(() => {})
+        }
       }
-      lastSent.current = Date.now()
-      latest.current.sequence++
-      void request('/api/presence', {
-        method: 'POST',
-        headers: {
-          ...workspaceHeaders(workspaceId),
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(latest.current),
-      }).catch(() => {})
+      const delay =
+        (transport.current === 'websocket' ? 50 : 90) -
+        (Date.now() - lastSent.current)
+      if (!force && delay > 0) pendingPresence.current = setTimeout(send, delay)
+      else send()
     },
     [workspaceId],
   )
+  useEffect(() => {
+    const controller = new AbortController()
+    let retry: ReturnType<typeof setTimeout>
+    const start = async () => {
+      try {
+        const session = await openLiveChannel(
+          workspaceId,
+          clientId,
+          () => latest.current,
+          setPeers,
+          setConnected,
+          controller.signal,
+        )
+        if (controller.signal.aborted) {
+          session?.close()
+          return
+        }
+        live.current = session
+        transport.current = session ? 'websocket' : 'local'
+        if (!session) setConnected(streamConnected.current)
+        sendPresence({}, true)
+      } catch {
+        if (!controller.signal.aborted)
+          retry = setTimeout(() => void start(), 5000)
+      }
+    }
+    void start()
+    return () => {
+      controller.abort()
+      clearTimeout(retry)
+      live.current?.close()
+      live.current = null
+      transport.current = 'pending'
+    }
+  }, [workspaceId, clientId, sendPresence])
+  useEffect(() => {
+    // Profile edits receive a fresh server-attested identity, never a claimed
+    // name/avatar supplied in an ordinary cursor packet.
+    if (profile !== initialProfile) void live.current?.refresh()
+  }, [profile, initialProfile])
   useEffect(() => {
     const controller = new AbortController()
     let retryTimer: ReturnType<typeof setTimeout> | undefined
     const handle = (event: string, raw: string) => {
       if (event === 'workspace') receive(JSON.parse(raw))
       if (event === 'activity') setActivity(JSON.parse(raw))
-      if (event === 'presence') {
+      if (event === 'presence' && transport.current === 'local') {
         const present = JSON.parse(raw) as Presence[]
         setPeers(present.filter((p) => p.clientId !== clientId))
         const me = present.find((p) => p.profile.id === initialProfile.id)
@@ -94,7 +132,8 @@ export function useMultiplayer(
         })
         if (!response.ok || !response.body)
           throw new Error('Live connection unavailable')
-        setConnected(true)
+        streamConnected.current = true
+        if (transport.current === 'local') setConnected(true)
         sendPresence({}, true)
         const reader = response.body.getReader()
         const decoder = new TextDecoder()
@@ -123,9 +162,12 @@ export function useMultiplayer(
         /* Reconnect and receive a fresh authoritative snapshot. */
       }
       if (!controller.signal.aborted) {
-        setConnected(false)
-        setPeers([])
-        retryTimer = setTimeout(() => void connect(), 2000)
+        streamConnected.current = false
+        if (transport.current === 'local') {
+          setConnected(false)
+          setPeers([])
+        }
+        retryTimer = setTimeout(() => void connect(), 500)
       }
     }
     void connect()

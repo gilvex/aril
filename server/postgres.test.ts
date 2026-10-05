@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto'
 import type { Envelope } from '../domain/workspace.ts'
 
 test(
-  'Postgres: concurrent instances share isolated edits, presence, invites and one-use account transfers',
+  'Postgres: concurrent instances share isolated edits, invites and transfers without cursor rows',
   { skip: !process.env.POSTGRES_TEST_URL },
   async () => {
     const schema = 'pomegranate_test_' + Date.now()
@@ -210,21 +210,19 @@ test(
         selected: [],
         sequence: 2,
       }
+      // Legacy cursor POSTs must never turn back into database writes.
       assert.equal(
         (await call(1, '/api/presence', owner.token, 'POST', presence)).status,
-        204,
+        428,
       )
-      await call(1, '/api/presence', owner.token, 'POST', {
-        ...presence,
-        sequence: 1,
-        cursor: { x: 9, y: 9 },
-      })
-      await next('presence', (value) =>
-        (value as { cursor?: { x: number } }[]).some(
-          (p) => p.cursor?.x === 120,
-        ),
+      assert.equal(
+        (
+          await a.query('SELECT to_regclass($1) name', [
+            schema + '.live_presence',
+          ])
+        ).rows[0].name,
+        null,
       )
-      assert.equal((await b.cloud.presence('default'))[0].cursor?.x, 120)
       const latest = await b.read()
       await call(1, '/api/workspace', peer.token, 'PATCH', {
         requestId: randomUUID(),
