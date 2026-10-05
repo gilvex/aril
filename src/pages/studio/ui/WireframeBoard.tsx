@@ -52,6 +52,7 @@ import { routeWireframes, wireConnectionSides } from '../model/wire-routing'
 import { LiveCursors } from './LiveCursors'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
+import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 
 const nodeTypes = { wireframe: WireframeBlock },
   edgeTypes = { smoothstep: WireframeEdge }
@@ -99,6 +100,7 @@ export function WireframeBoard({
   const [selection, setSelection] = useState(new Set<string>())
   const [edgeId, setEdgeId] = useState<string | null>(null)
   const [palette, setPalette] = useState(false)
+  const [insertPoint, setInsertPoint] = useState<CanvasInsertPoint | null>(null)
   const [preview, setPreview] = useState(false)
   const [previewMessage, setPreviewMessage] = useState(
     'Click a connected block to follow its flow.',
@@ -200,13 +202,33 @@ export function WireframeBoard({
       )
     }
   }
-  function add(kind: WireKind) {
+  function openInsertMenu(
+    event: React.MouseEvent | MouseEvent,
+    target?: Pick<WireNode, 'id' | 'data' | 'parentId'>,
+  ) {
+    if (preview || !flow || !surface.current) return
+    event.preventDefault()
+    const bounds = surface.current.getBoundingClientRect()
+    setPalette(false)
+    setInsertPoint({
+      x: event.clientX - bounds.left,
+      y: event.clientY - bounds.top,
+      position: flow.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      }),
+      parentId: target?.data.kind === 'screen' ? target.id : target?.parentId,
+    })
+  }
+  function add(kind: WireKind, at?: CanvasInsertPoint) {
     if (graph.nodes.length >= 500) return
     const parentId =
       kind !== 'screen'
-        ? node?.data.kind === 'screen'
-          ? node.id
-          : node?.parentId
+        ? at
+          ? at.parentId
+          : node?.data.kind === 'screen'
+            ? node.id
+            : node?.parentId
         : undefined
     const bounds = surface.current?.getBoundingClientRect()
     const center =
@@ -226,7 +248,28 @@ export function WireframeBoard({
         : { x: center.x - 140 + offset, y: center.y - 80 + offset },
       parentId,
     )
-    if (kind === 'screen' && screens.length)
+    if (at) {
+      const parent = liveNodes.find((n) => n.id === parentId)
+      added.position = parent
+        ? {
+            x: Math.max(
+              0,
+              Math.min(
+                at.position.x - parent.position.x,
+                parent.width - added.width,
+              ),
+            ),
+            y: Math.max(
+              0,
+              Math.min(
+                at.position.y - parent.position.y,
+                parent.height - added.height,
+              ),
+            ),
+          }
+        : at.position
+    }
+    if (!at && kind === 'screen' && screens.length)
       added.position = {
         x:
           Math.max(
@@ -234,7 +277,7 @@ export function WireframeBoard({
           ) + 120,
         y: screens[0].position.y,
       }
-    pendingFocus.current = parentId || added.id
+    if (!at) pendingFocus.current = parentId || added.id
     save({ ...graph, nodes: [...graph.nodes, added] })
     select(added.id)
     setPalette(false)
@@ -579,6 +622,9 @@ export function WireframeBoard({
             edgeTypes={edgeTypes}
             connectionMode={ConnectionMode.Loose}
             onInit={setFlow}
+            onPaneContextMenu={(event) => openInsertMenu(event)}
+            onNodeContextMenu={(event, target) => openInsertMenu(event, target)}
+            onMoveStart={() => setInsertPoint(null)}
             onNodesChange={onNodesChange}
             nodesDraggable={!preview}
             nodesConnectable={!preview}
@@ -658,6 +704,25 @@ export function WireframeBoard({
               maskColor="rgba(246,245,249,.65)"
             />
           </ReactFlow>
+          {insertPoint && !preview && (
+            <CanvasInsertMenu
+              point={insertPoint}
+              title={
+                insertPoint.parentId ? 'Add to screen' : 'Add to wireframes'
+              }
+              disabled={graph.nodes.length >= 500}
+              onClose={() => setInsertPoint(null)}
+              items={wireKinds.map((kind) => {
+                const Icon = icons[kind]
+                return {
+                  id: kind,
+                  label: wireLabels[kind],
+                  icon: <Icon size={16} />,
+                  onSelect: () => add(kind, insertPoint),
+                }
+              })}
+            />
+          )}
           {!graph.nodes.length && (
             <div className="empty-canvas wire-empty">
               <div className="wire-empty-art">

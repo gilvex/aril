@@ -49,6 +49,7 @@ import type {
 } from '../../../../domain/collaboration'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { SelectionEdge } from './SelectionPresence'
+import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 
 const nodeTypes = { idea: IdeaNode }
 const edgeTypes = { smoothstep: SelectionEdge }
@@ -157,6 +158,7 @@ export function CanvasBoard({
     Record<string, { width: number; height: number }>
   >({})
   const [palette, setPalette] = useState(false)
+  const [insertPoint, setInsertPoint] = useState<CanvasInsertPoint | null>(null)
   const [editingName, setEditingName] = useState(false)
   const [flow, setFlow] = useState<ReactFlowInstance<
     Node<Idea['data']>
@@ -290,7 +292,11 @@ export function CanvasBoard({
     setSelected(null)
     setSelectedEdge(null)
   }
-  const addNode = (kind: Idea['data']['kind']) => {
+  const addNode = (
+    kind: Idea['data']['kind'],
+    at?: { x: number; y: number },
+  ) => {
+    if (board.nodes.length >= 500) return
     const surface = document
       .querySelector('.canvas-surface')
       ?.getBoundingClientRect()
@@ -309,7 +315,7 @@ export function CanvasBoard({
         {
           id,
           type: 'idea',
-          position,
+          position: at || position,
           data: {
             title: `New ${kindLabels[kind].toLowerCase()}`,
             kind,
@@ -508,6 +514,24 @@ export function CanvasBoard({
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             onInit={setFlow}
+            onPaneContextMenu={(event) => {
+              event.preventDefault()
+              if (!flow) return
+              const bounds = canvasRef.current
+                ?.querySelector('.canvas-surface')
+                ?.getBoundingClientRect()
+              if (!bounds) return
+              setPalette(false)
+              setInsertPoint({
+                x: event.clientX - bounds.left,
+                y: event.clientY - bounds.top,
+                position: flow.screenToFlowPosition({
+                  x: event.clientX,
+                  y: event.clientY,
+                }),
+              })
+            }}
+            onMoveStart={() => setInsertPoint(null)}
             onNodesChange={onNodesChange}
             onDelete={onDelete}
             onConnect={onConnect}
@@ -570,6 +594,23 @@ export function CanvasBoard({
               maskColor="rgba(246,245,249,.65)"
             />
           </ReactFlow>
+          {insertPoint && (
+            <CanvasInsertMenu
+              point={insertPoint}
+              title="Add to canvas"
+              disabled={board.nodes.length >= 500}
+              onClose={() => setInsertPoint(null)}
+              items={nodeKinds.map((kind) => {
+                const Icon = kindIcons[kind]
+                return {
+                  id: kind,
+                  label: kindLabels[kind],
+                  icon: <Icon size={16} />,
+                  onSelect: () => addNode(kind, insertPoint.position),
+                }
+              })}
+            />
+          )}
           {!board.nodes.length && (
             <div className="empty-canvas">
               <div className="empty-symbol">
