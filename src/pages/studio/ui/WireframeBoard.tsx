@@ -1,3 +1,5 @@
+import { useFollowViewport } from '../model/use-follow-viewport'
+import type { CameraPresence } from '../../../../domain/collaboration'
 import { CanvasChrome, type CanvasTool } from './CanvasChrome'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
@@ -72,6 +74,7 @@ const icons = {
 }
 const empty: Wireframe = { nodes: [], edges: [] }
 type Props = {
+  following: Presence | null
   navigation: ReactNode
   board: Board
   update: (board: Board, record?: boolean) => void
@@ -81,6 +84,7 @@ type Props = {
   saveState: 'saved' | 'pending' | 'saving' | 'error'
   sendPresence: (
     changes: {
+      camera?: CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]
@@ -92,6 +96,7 @@ type Props = {
 
 export function WireframeBoard({
   navigation,
+  following,
   board,
   update,
   checkpoint,
@@ -111,6 +116,12 @@ export function WireframeBoard({
   const [flow, setFlow] = useState<ReactFlowInstance<WireFlowNode> | null>(null)
   const [selection, setSelection] = useState(new Set<string>())
   const [edgeId, setEdgeId] = useState<string | null>(null)
+  useEffect(() => {
+    if (following) {
+      setSelection(new Set())
+      setEdgeId(null)
+    }
+  }, [following?.clientId])
   const [palette, setPalette] = useState(false)
   const [insertPoint, setInsertPoint] = useState<CanvasInsertPoint | null>(null)
   const [preview, setPreview] = useState(false)
@@ -123,6 +134,12 @@ export function WireframeBoard({
   const dragPositions = useRef(new Map<string, DragPosition>())
   const selectionBefore = useRef(selection)
   const surface = useRef<HTMLDivElement>(null)
+  const publishCamera = useFollowViewport(
+    flow,
+    surface,
+    following,
+    sendPresence,
+  )
   const pendingFocus = useRef<string | null>(null)
   const full = useCanvasFullscreen()
   const liveNodes = useLiveNodePositions(graph.nodes, peers, moving)
@@ -468,6 +485,7 @@ export function WireframeBoard({
           ref={surface}
           className="canvas-surface wire-surface"
           onPointerMove={(event) => {
+            if (following) return
             if (flow)
               sendPresence({
                 cursor: flow.screenToFlowPosition({
@@ -659,6 +677,7 @@ export function WireframeBoard({
             edgeTypes={edgeTypes}
             connectionMode={ConnectionMode.Loose}
             onInit={setFlow}
+            onMove={(_, viewport) => publishCamera(viewport)}
             onPaneContextMenu={(event) => openInsertMenu(event)}
             onNodeContextMenu={(event, target) => openInsertMenu(event, target)}
             onMoveStart={() => setInsertPoint(null)}
@@ -731,9 +750,10 @@ export function WireframeBoard({
             fitViewOptions={{ padding: 0.2, maxZoom: 1 }}
             minZoom={0.1}
             maxZoom={2}
-            onMoveEnd={(_, viewport) =>
-              update({ ...board, wireframeViewport: viewport }, false)
-            }
+            onMoveEnd={(_, viewport) => {
+              if (!following)
+                update({ ...board, wireframeViewport: viewport }, false)
+            }}
             connectionRadius={30}
             snapToGrid
             snapGrid={[8, 8]}

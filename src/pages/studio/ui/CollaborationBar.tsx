@@ -80,6 +80,8 @@ async function avatarFrom(file: File): Promise<string> {
   }
 }
 type Props = {
+  followId: string | null
+  onFollow: (id: string | null) => void
   workspaceId: string
   profile: Profile
   peers: Presence[]
@@ -89,6 +91,8 @@ type Props = {
 }
 export function CollaborationBar({
   workspaceId,
+  followId,
+  onFollow,
   profile,
   peers,
   activity,
@@ -319,24 +323,63 @@ export function CollaborationBar({
             </>
           ) : panel === 'people' ? (
             <>
-              <div className="people-list">
-                {people.map((person) => (
-                  <div key={person.profile.id}>
+              <div className="people-list" data-follow-controls>
+                {[
+                  {
+                    profile,
+                    clientId: 'self',
+                    view: 'canvas',
+                    following: null,
+                  },
+                  ...peers,
+                ].map((person) => (
+                  <button
+                    className="follow-person"
+                    key={person.clientId}
+                    disabled={
+                      person.clientId === 'self' ||
+                      !!person.following ||
+                      !connected
+                    }
+                    aria-label={
+                      person.clientId === 'self'
+                        ? `${person.profile.name} (you)`
+                        : `Follow ${person.profile.name}`
+                    }
+                    aria-pressed={followId === person.clientId}
+                    onClick={() => {
+                      onFollow(
+                        followId === person.clientId ? null : person.clientId,
+                      )
+                      setPanel(null)
+                    }}
+                  >
                     <Avatar profile={person.profile} />
                     <span>
                       <strong>
                         {person.profile.name}
-                        {person.profile.id === profile.id ? ' (you)' : ''}
+                        {person.clientId === 'self'
+                          ? ' (you)'
+                          : person.profile.id === profile.id
+                            ? ' (another tab)'
+                            : ''}
                       </strong>
                       <small>
-                        {person.profile.id === profile.id
+                        {person.clientId === 'self'
                           ? 'This browser'
-                          : person.view === 'canvas'
-                            ? 'On the canvas'
-                            : `Viewing ${person.view}`}
+                          : person.following
+                            ? 'Following another person'
+                            : person.view === 'canvas'
+                              ? 'On the canvas'
+                              : `Viewing ${person.view}`}
                       </small>
                     </span>
-                  </div>
+                    {person.clientId !== 'self' && !person.following && (
+                      <small>
+                        {followId === person.clientId ? 'Following' : 'Follow'}
+                      </small>
+                    )}
+                  </button>
                 ))}
               </div>
               <button

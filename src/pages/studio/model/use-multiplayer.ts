@@ -27,6 +27,8 @@ export function useMultiplayer(
   const [clientId] = useState(() => crypto.randomUUID())
   const latest = useRef<LiveState>({
     clientId,
+    camera: null,
+    following: null,
     boardId: null as string | null,
     view: 'canvas' as const,
     cursor: null as { x: number; y: number } | null,

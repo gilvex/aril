@@ -3070,3 +3070,21 @@ code {
   .canvas-tool-dock > .button > span { display: block; }
   .canvas-first .react-flow__controls-button { width: 40px; height: 40px; }
 }
+
+/* Following mirrors transient presence; it never changes shared board data. */
+.people-list > .follow-person { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px; margin: 3px 0; border: 1px solid transparent; border-radius: 9px; background: transparent; text-align: left; color: var(--text); }
+.follow-person > span:nth-child(2) { flex: 1; min-width: 0; }
+.follow-person strong { overflow-wrap: anywhere; }
+.follow-person:not(:disabled):hover, .follow-person[aria-pressed="true"] { border-color: #e9d6df; background: var(--accent-light); }
+.follow-person:disabled { cursor: default; }
+.follow-person > small { color: var(--accent); }
+.follow-status { position: absolute; bottom: 86px; left: 50%; transform: translateX(-50%); z-index: 18; display: flex; align-items: center; gap: 9px; max-width: calc(100% - 24px); width: max-content; padding: 7px 9px; border: 2px solid; border-radius: 10px; background: white; box-shadow: 0 4px 18px #30223d18; font-size: 12px; }
+.follow-status > span:not(.person-avatar) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.follow-status .person-avatar { width: 26px; height: 26px; flex-shrink: 0; font-size: 10px; }
+.follow-status button { flex-shrink: 0; border: 0; border-radius: 6px; padding: 8px; background: var(--accent-light); color: var(--accent); font-size: 11px; }
+.is-following .canvas-surface { box-shadow: inset 0 0 0 2px #c49bb5; }
+@media (max-width: 1024px), (pointer: coarse) and (max-width: 1366px) {
+  .follow-status { bottom: 82px; gap: 6px; font-size: 11px; }
+  .follow-status button { min-height: 40px; }
+  .main-area > .follow-status { bottom: calc(var(--bottom-nav-height) + 12px); }
+}

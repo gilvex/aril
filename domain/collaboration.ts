@@ -41,6 +41,8 @@ export type Presence = {
   seenAt: number
   sequence?: number
   dragging?: DragPosition[]
+  camera?: CameraPresence | null
+  following?: string | null
   requirement?: RequirementPresence | null
 }
 export const requirementFieldSchema = z.enum([
@@ -65,7 +67,15 @@ export type Activity = {
   message: string
   createdAt: string
 }
+export const cameraSchema = z.object({
+  x: z.number().finite().min(-1e7).max(1e7),
+  y: z.number().finite().min(-1e7).max(1e7),
+  zoom: z.number().finite().min(0.1).max(2),
+})
+export type CameraPresence = z.infer<typeof cameraSchema>
 export const presenceSchema = z.object({
+  camera: cameraSchema.nullable().default(null),
+  following: z.string().uuid().nullable().default(null),
   clientId: z.string().uuid(),
   boardId: z.string().max(100).nullable(),
   view: z.enum(['canvas', 'wireframes', 'requirements', 'design', 'notes']),

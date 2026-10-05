@@ -1,3 +1,5 @@
+import { useFollowViewport } from '../model/use-follow-viewport'
+import type { CameraPresence } from '../../../../domain/collaboration'
 import { CanvasChrome, type CanvasTool } from './CanvasChrome'
 import type { ReactNode } from 'react'
 import { LiveCursors } from './LiveCursors'
@@ -57,6 +59,7 @@ import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 const nodeTypes = { idea: IdeaNode }
 const edgeTypes = { smoothstep: SelectionEdge }
 type Props = {
+  following: Presence | null
   navigation: ReactNode
   board: Board
   requirements: Requirement[]
@@ -68,6 +71,7 @@ type Props = {
   saveState: 'saved' | 'pending' | 'saving' | 'error'
   sendPresence: (
     changes: {
+      camera?: CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]
@@ -78,6 +82,7 @@ type Props = {
 }
 export function CanvasBoard({
   navigation,
+  following,
   board,
   requirements,
   update,
@@ -153,6 +158,12 @@ export function CanvasBoard({
     }
   }
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
+  useEffect(() => {
+    if (following) {
+      setSelectedIds(new Set())
+      setSelectedEdge(null)
+    }
+  }, [following?.clientId])
   const visibleSelectedEdge = board.edges.some(
     (edge) => edge.id === selectedEdge,
   )
@@ -172,6 +183,13 @@ export function CanvasBoard({
   const [flow, setFlow] = useState<ReactFlowInstance<
     Node<Idea['data']>
   > | null>(null)
+  const surface = useRef<HTMLDivElement>(null)
+  const publishCamera = useFollowViewport(
+    flow,
+    surface,
+    following,
+    sendPresence,
+  )
   const node = board.nodes.find((n) => n.id === selected)
   const edge = board.edges.find((e) => e.id === selectedEdge)
   const editItem = (id: string, connection = false) => {
@@ -375,7 +393,9 @@ export function CanvasBoard({
       <div className="canvas-layout">
         <div
           className="canvas-surface"
+          ref={surface}
           onPointerMove={(event) => {
+            if (following) return
             if (flow)
               sendPresence({
                 cursor: flow.screenToFlowPosition({
@@ -523,6 +543,7 @@ export function CanvasBoard({
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             onInit={setFlow}
+            onMove={(_, viewport) => publishCamera(viewport)}
             onPaneContextMenu={(event) => {
               event.preventDefault()
               if (!flow) return
@@ -588,7 +609,10 @@ export function CanvasBoard({
               return true
             }}
             onMoveEnd={(_, viewport) => {
-              if (JSON.stringify(viewport) !== JSON.stringify(board.viewport))
+              if (
+                !following &&
+                JSON.stringify(viewport) !== JSON.stringify(board.viewport)
+              )
                 update({ ...board, viewport }, false)
             }}
             defaultViewport={board.viewport}

@@ -35,7 +35,7 @@ import {
 } from '../../../shared/api/workspace'
 import { useWorkspace, type Recovery } from '../model/use-workspace'
 import { useMultiplayer } from '../model/use-multiplayer'
-import { CollaborationBar, PresenceAvatars } from './CollaborationBar'
+import { Avatar, CollaborationBar, PresenceAvatars } from './CollaborationBar'
 import type { Profile } from '../../../../domain/collaboration'
 import type { StudioSummary } from '../../../../domain/studios'
 import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
@@ -217,6 +217,56 @@ export function Studio({
     })
   }, [studio.id, board.id, view, canvasMode, routedRequirementId])
   const { sendPresence } = multiplayer
+  const [followId, setFollowId] = useState<string | null>(null)
+  const followedPeer = multiplayer.connected
+    ? multiplayer.peers.find((p) => p.clientId === followId)
+    : undefined
+  const followed = followedPeer && !followedPeer.following ? followedPeer : null
+  useEffect(() => {
+    sendPresence({ following: followed?.clientId || null, cursor: null }, true)
+  }, [followed?.clientId, sendPresence])
+  useEffect(() => {
+    if (!followId) return
+    if (!followed) {
+      setFollowId(null)
+      setNotice(
+        'Follow ended: that session disconnected or started following someone else.',
+      )
+      return
+    }
+    if (followed.view === 'canvas' || followed.view === 'wireframes') {
+      if (!workspace.boards.some((b) => b.id === followed.boardId)) return
+      setView('canvas')
+      setCanvasMode(followed.view)
+      setBoardId(followed.boardId!)
+    } else if (['requirements', 'design', 'notes'].includes(followed.view)) {
+      setView(followed.view as View)
+      if (followed.view === 'requirements')
+        setRequirementId(followed.requirement?.id || null)
+    }
+  }, [followId, followed, workspace.boards])
+  useEffect(() => {
+    if (!followId) return
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setFollowId(null)
+    }
+    document.addEventListener('keydown', escape)
+    return () => document.removeEventListener('keydown', escape)
+  }, [followId])
+  const followStatus = followed && (
+    <div
+      className="follow-status"
+      data-follow-controls
+      role="status"
+      style={{ borderColor: followed.profile.color }}
+    >
+      <Avatar profile={followed.profile} />
+      <span>
+        Following <strong>{followed.profile.name}</strong>
+      </span>
+      <button onClick={() => setFollowId(null)}>Stop following</button>
+    </div>
+  )
   const present = [
     ...(multiplayer.connected
       ? [
@@ -237,6 +287,7 @@ export function Studio({
         cursor: null,
         selected: [],
         selectedEdges: [],
+        camera: null,
         dragging: [],
         ...(view !== 'requirements' ? { requirement: null } : {}),
       },
@@ -291,7 +342,24 @@ export function Studio({
   }
   return (
     <div
-      className={`studio-shell canvas-first${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
+      className={`studio-shell canvas-first${sidebarCollapsed ? ' sidebar-collapsed' : ''}${followed ? ' is-following' : ''}`}
+      onPointerDownCapture={(event) => {
+        if (
+          followId &&
+          !(event.target as Element).closest('[data-follow-controls]')
+        )
+          setFollowId(null)
+      }}
+      onKeyDownCapture={(event) => {
+        if (
+          followId &&
+          !['Tab', 'Shift', 'Control', 'Meta', 'Alt'].includes(event.key)
+        )
+          setFollowId(null)
+      }}
+      onWheelCapture={() => {
+        if (followId) setFollowId(null)
+      }}
     >
       {sidebarOpen && (
         <button
@@ -593,9 +661,12 @@ export function Studio({
               activity={multiplayer.activity}
               connected={multiplayer.connected}
               onProfile={multiplayer.setProfile}
+              followId={followId}
+              onFollow={setFollowId}
             />
           </div>
         </header>
+        {view !== 'canvas' && followStatus}
         <input
           className="visually-hidden"
           ref={importRef}
@@ -654,28 +725,37 @@ export function Studio({
             >
               <BoardCanvas
                 key={board.id + ':' + canvasMode}
+                following={
+                  followed?.boardId === board.id &&
+                  followed?.view === canvasMode
+                    ? followed
+                    : null
+                }
                 navigation={
-                  <CanvasNavigation
-                    board={board}
-                    boards={workspace.boards}
-                    mode={canvasMode}
-                    onBoard={setBoardId}
-                    onMode={setCanvasMode}
-                    present={present}
-                    onNew={() => {
-                      setBoardName('')
-                      setModal('new')
-                    }}
-                    onDelete={() => setModal('delete')}
-                    onRename={(name) =>
-                      change((w) => ({
-                        ...w,
-                        boards: w.boards.map((b) =>
-                          b.id === board.id ? { ...b, name } : b,
-                        ),
-                      }))
-                    }
-                  />
+                  <>
+                    {followStatus}
+                    <CanvasNavigation
+                      board={board}
+                      boards={workspace.boards}
+                      mode={canvasMode}
+                      onBoard={setBoardId}
+                      onMode={setCanvasMode}
+                      present={present}
+                      onNew={() => {
+                        setBoardName('')
+                        setModal('new')
+                      }}
+                      onDelete={() => setModal('delete')}
+                      onRename={(name) =>
+                        change((w) => ({
+                          ...w,
+                          boards: w.boards.map((b) =>
+                            b.id === board.id ? { ...b, name } : b,
+                          ),
+                        }))
+                      }
+                    />
+                  </>
                 }
                 board={board}
                 requirements={workspace.requirements}
