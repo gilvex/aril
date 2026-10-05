@@ -37,6 +37,7 @@ import { useMultiplayer } from '../model/use-multiplayer'
 import { CollaborationBar, PresenceAvatars } from './CollaborationBar'
 import type { Profile } from '../../../../domain/collaboration'
 import type { StudioSummary } from '../../../../domain/studios'
+import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
 import {
   readStudioRoute,
   saveStudioRoute,
@@ -92,6 +93,8 @@ export function Studio({
       : null,
   )
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const compact = useCompactLayout()
+  const sidebarRef = useRef<HTMLElement>(null)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     try {
       return localStorage.getItem('pomegranate-sidebar-collapsed') === 'true'
@@ -101,6 +104,32 @@ export function Studio({
   })
   const sidebarToggle = useRef<HTMLButtonElement>(null)
   const mobileMenuToggle = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (!compact || !sidebarOpen) return
+    const panel = sidebarRef.current
+    const fields = () =>
+      Array.from(
+        panel?.querySelectorAll<HTMLElement>('button:not(:disabled),a[href]') ||
+          [],
+      ).filter((element) => element.getClientRects().length)
+    fields()[0]?.focus()
+    const trap = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return
+      const items = fields()
+      if (event.shiftKey && document.activeElement === items[0]) {
+        event.preventDefault()
+        items.at(-1)?.focus()
+      } else if (!event.shiftKey && document.activeElement === items.at(-1)) {
+        event.preventDefault()
+        items[0]?.focus()
+      }
+    }
+    document.addEventListener('keydown', trap)
+    return () => {
+      document.removeEventListener('keydown', trap)
+      mobileMenuToggle.current?.focus()
+    }
+  }, [compact, sidebarOpen])
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -252,9 +281,23 @@ export function Studio({
         />
       )}
       <aside
+        ref={sidebarRef}
+        role={compact && sidebarOpen ? 'dialog' : undefined}
+        aria-modal={compact && sidebarOpen ? true : undefined}
+        aria-label={compact ? 'Workspace menu' : undefined}
         id="studio-navigation"
         className={`sidebar ${sidebarOpen ? 'open' : ''}`}
       >
+        <div className="mobile-sheet-heading">
+          <strong>Workspace</strong>
+          <button
+            className="icon-button"
+            aria-label="Close workspace menu"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={20} />
+          </button>
+        </div>
         <a
           className="brand"
           href="#"
@@ -325,6 +368,7 @@ export function Studio({
             className="icon-button"
             aria-label="New board"
             onClick={() => {
+              setSidebarOpen(false)
               setBoardName('')
               setModal('new')
             }}
@@ -355,6 +399,46 @@ export function Studio({
             </button>
           ))}
         </div>
+        <div className="mobile-workspace-tools">
+          <span>Workspace tools</span>
+          <button
+            onClick={() => {
+              setSidebarOpen(false)
+              void loadHistory()
+            }}
+          >
+            <History size={18} />
+            Revision history
+          </button>
+          <button
+            onClick={() => {
+              setSidebarOpen(false)
+              importRef.current?.click()
+            }}
+          >
+            <Upload size={18} />
+            Import workspace
+          </button>
+          <button
+            onClick={() => {
+              setSidebarOpen(false)
+              exportWorkspace()
+            }}
+          >
+            <Download size={18} />
+            Export workspace
+          </button>
+          <button
+            disabled={workspace.boards.length <= 1}
+            onClick={() => {
+              setSidebarOpen(false)
+              setModal('delete')
+            }}
+          >
+            <Trash2 size={18} />
+            Delete current board
+          </button>
+        </div>
         <button
           className="sidebar-close"
           aria-controls="studio-navigation"
@@ -362,7 +446,7 @@ export function Studio({
           onClick={() => {
             setSidebarCollapsed(true)
             setSidebarOpen(false)
-            const toggle = window.matchMedia('(max-width: 760px)').matches
+            const toggle = compact
               ? mobileMenuToggle.current
               : sidebarToggle.current
             toggle?.focus()
@@ -372,7 +456,7 @@ export function Studio({
           Collapse sidebar
         </button>
       </aside>
-      <main className="main-area">
+      <main className="main-area" inert={compact && sidebarOpen}>
         <header className="topbar">
           <div className="breadcrumb">
             <button
@@ -390,19 +474,18 @@ export function Studio({
                 <PanelLeftClose size={18} />
               )}
             </button>
-            <button
-              className="icon-button mobile-menu"
-              ref={mobileMenuToggle}
-              aria-label="Open navigation"
-              aria-expanded={sidebarOpen}
-              aria-controls="studio-navigation"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu size={20} />
-            </button>
             <span>Workspace</span>
             <span>/</span>
-            <strong>{navigation.find((n) => n.id === view)?.name}</strong>
+            <strong>
+              {compact
+                ? {
+                    canvas: 'Canvas',
+                    requirements: 'Brief',
+                    design: 'Design',
+                    notes: 'Notes',
+                  }[view]
+                : navigation.find((n) => n.id === view)?.name}
+            </strong>
           </div>
           <div className="topbar-actions">
             <button
@@ -733,6 +816,49 @@ export function Studio({
             <span className="status-separator">·</span>Revision {state.revision}
           </span>
         </footer>
+        <nav className="mobile-bottom-nav" aria-label="Main navigation">
+          {navigation.map((item) => (
+            <button
+              key={item.id}
+              aria-label={item.name}
+              aria-current={view === item.id ? 'page' : undefined}
+              onClick={() => {
+                setView(item.id)
+                setSidebarOpen(false)
+              }}
+            >
+              <item.icon size={21} />
+              <span>
+                {item.id === 'requirements'
+                  ? 'Brief'
+                  : item.id === 'design'
+                    ? 'Design'
+                    : item.id === 'notes'
+                      ? 'Notes'
+                      : 'Canvas'}
+              </span>
+              <PresenceAvatars
+                profiles={present
+                  .filter(
+                    (person) =>
+                      person.view === item.id ||
+                      (item.id === 'canvas' && person.view === 'wireframes'),
+                  )
+                  .map((person) => person.profile)}
+              />
+            </button>
+          ))}
+          <button
+            ref={mobileMenuToggle}
+            aria-label="Open workspace menu"
+            aria-expanded={sidebarOpen}
+            aria-controls="studio-navigation"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu size={21} />
+            <span>More</span>
+          </button>
+        </nav>
       </main>
       {modal && (
         <div

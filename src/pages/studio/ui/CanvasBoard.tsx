@@ -49,6 +49,7 @@ import type {
 } from '../../../../domain/collaboration'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { SelectionEdge } from './SelectionPresence'
+import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
 import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 
 const nodeTypes = { idea: IdeaNode }
@@ -84,7 +85,10 @@ export function CanvasBoard({
   profile,
 }: Props) {
   const [localDragging, setLocalDragging] = useState<Set<string>>(new Set())
-  const [inspectorOpen, setInspectorOpen] = useState(true)
+  const compact = useCompactLayout()
+  const [inspectorPreference, setInspectorOpen] = useState<boolean | null>(null)
+  const inspectorOpen = inspectorPreference ?? !compact
+  const [touchSelection, setTouchSelection] = useState(false)
   const inspectorToggle = useRef<HTMLButtonElement>(null)
   const dragPositions = useRef(new Map<string, DragPosition>())
   const liveNodes = useLiveNodePositions(board.nodes, peers, localDragging)
@@ -403,6 +407,16 @@ export function CanvasBoard({
             ) : (
               <PanelRightOpen size={16} />
             )}
+            <span className="touch-tool-label">Details</span>
+          </button>
+          <button
+            className="button touch-select"
+            aria-label="Select multiple nodes"
+            aria-pressed={touchSelection}
+            onClick={() => setTouchSelection(!touchSelection)}
+          >
+            <MousePointer2 size={16} />
+            <span>{touchSelection ? 'Done' : 'Select'}</span>
           </button>
           <button
             ref={fullscreenButtonRef}
@@ -476,6 +490,11 @@ export function CanvasBoard({
             <span className="caption-separator" />
             {board.edges.length} connections
           </div>
+          {compact && touchSelection && (
+            <div className="touch-selection-hint">
+              Tap nodes to select. Tap Done to move them together.
+            </div>
+          )}
           <ReactFlow
             key={board.id}
             nodes={liveNodes.map((n) => ({
@@ -533,10 +552,15 @@ export function CanvasBoard({
             }}
             onMoveStart={() => setInsertPoint(null)}
             onNodesChange={onNodesChange}
+            nodesDraggable={!compact || !touchSelection}
             onDelete={onDelete}
             onConnect={onConnect}
             onNodeClick={(event, clickedNode) => {
-              if (event.ctrlKey || event.metaKey) {
+              if (
+                event.ctrlKey ||
+                event.metaKey ||
+                (compact && touchSelection)
+              ) {
                 const next = new Set(selectionBeforePointerDown.current)
                 if (next.has(clickedNode.id)) next.delete(clickedNode.id)
                 else next.add(clickedNode.id)
@@ -566,7 +590,7 @@ export function CanvasBoard({
                 update({ ...board, viewport }, false)
             }}
             defaultViewport={board.viewport}
-            fitView={!board.viewport}
+            fitView={compact || !board.viewport}
             fitViewOptions={{ padding: 0.16, maxZoom: 1 }}
             minZoom={0.2}
             maxZoom={2}

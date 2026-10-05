@@ -52,6 +52,7 @@ import { routeWireframes, wireConnectionSides } from '../model/wire-routing'
 import { LiveCursors } from './LiveCursors'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
+import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
 import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 
 const nodeTypes = { wireframe: WireframeBlock },
@@ -94,7 +95,10 @@ export function WireframeBoard({
   sendPresence,
 }: Props) {
   const graph = board.wireframe || empty
-  const [inspectorOpen, setInspectorOpen] = useState(true)
+  const compact = useCompactLayout()
+  const [inspectorPreference, setInspectorOpen] = useState<boolean | null>(null)
+  const inspectorOpen = inspectorPreference ?? !compact
+  const [touchSelection, setTouchSelection] = useState(false)
   const inspectorToggle = useRef<HTMLButtonElement>(null)
   const [flow, setFlow] = useState<ReactFlowInstance<WireFlowNode> | null>(null)
   const [selection, setSelection] = useState(new Set<string>())
@@ -466,7 +470,19 @@ export function WireframeBoard({
             ) : (
               <PanelRightOpen size={16} />
             )}
+            <span className="touch-tool-label">Details</span>
           </button>
+          {!preview && (
+            <button
+              className="button touch-select"
+              aria-label="Select multiple blocks"
+              aria-pressed={touchSelection}
+              onClick={() => setTouchSelection(!touchSelection)}
+            >
+              <MousePointer2 size={16} />
+              <span>{touchSelection ? 'Done' : 'Select'}</span>
+            </button>
+          )}
           <button
             ref={full.button}
             className="button fullscreen-toggle"
@@ -483,9 +499,10 @@ export function WireframeBoard({
             ) : (
               <Maximize2 size={16} />
             )}
+            <span className="touch-tool-label">Expand</span>
           </button>
           <button
-            className={`button ${preview ? 'primary' : ''}`}
+            className={`button preview-toggle ${preview ? 'primary' : ''}`}
             aria-pressed={preview}
             onClick={() => {
               setPreview(!preview)
@@ -493,7 +510,7 @@ export function WireframeBoard({
             }}
           >
             {preview ? <Pencil size={15} /> : <Play size={15} />}
-            {preview ? 'Edit' : 'Preview flow'}
+            <span>{preview ? 'Edit' : 'Preview flow'}</span>
           </button>
           {!preview && (
             <div className="add-node-wrap">
@@ -557,6 +574,11 @@ export function WireframeBoard({
             <span className="caption-separator" />
             {graph.edges.length} flows
           </div>
+          {compact && touchSelection && !preview && (
+            <div className="touch-selection-hint">
+              Tap blocks to select. Tap Done to move them together.
+            </div>
+          )}
           <ReactFlow<WireFlowNode>
             nodes={[...liveNodes]
               .sort((a, b) => Number(!!a.parentId) - Number(!!b.parentId))
@@ -626,7 +648,7 @@ export function WireframeBoard({
             onNodeContextMenu={(event, target) => openInsertMenu(event, target)}
             onMoveStart={() => setInsertPoint(null)}
             onNodesChange={onNodesChange}
-            nodesDraggable={!preview}
+            nodesDraggable={!preview && (!compact || !touchSelection)}
             nodesConnectable={!preview}
             deleteKeyCode={preview ? null : ['Backspace', 'Delete']}
             onNodeClick={(event, clicked) => {
@@ -634,7 +656,11 @@ export function WireframeBoard({
                 follow(clicked.id)
                 return
               }
-              if (event.ctrlKey || event.metaKey) {
+              if (
+                event.ctrlKey ||
+                event.metaKey ||
+                (compact && touchSelection)
+              ) {
                 const next = new Set(selectionBefore.current)
                 if (next.has(clicked.id)) next.delete(clicked.id)
                 else next.add(clicked.id)
@@ -673,7 +699,7 @@ export function WireframeBoard({
             multiSelectionKeyCode={['Control', 'Meta']}
             selectionKeyCode="Shift"
             defaultViewport={board.wireframeViewport}
-            fitView={!board.wireframeViewport}
+            fitView={compact || !board.wireframeViewport}
             fitViewOptions={{ padding: 0.2, maxZoom: 1 }}
             minZoom={0.1}
             maxZoom={2}
