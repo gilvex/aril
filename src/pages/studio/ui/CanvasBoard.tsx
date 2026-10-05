@@ -1,4 +1,5 @@
 import { LiveCursors } from './LiveCursors'
+import { flushSync } from 'react-dom'
 import {
   useCallback,
   useEffect,
@@ -90,6 +91,7 @@ export function CanvasBoard({
   const inspectorOpen = inspectorPreference ?? !compact
   const [touchSelection, setTouchSelection] = useState(false)
   const inspectorToggle = useRef<HTMLButtonElement>(null)
+  const editField = useRef<HTMLInputElement>(null)
   const dragPositions = useRef(new Map<string, DragPosition>())
   const liveNodes = useLiveNodePositions(board.nodes, peers, localDragging)
   useEffect(() => {
@@ -169,6 +171,18 @@ export function CanvasBoard({
   > | null>(null)
   const node = board.nodes.find((n) => n.id === selected)
   const edge = board.edges.find((e) => e.id === selectedEdge)
+  const editItem = (id: string, connection = false) => {
+    flushSync(() => {
+      setSelected(connection ? null : id)
+      setSelectedEdge(connection ? id : null)
+      setInspectorOpen(true)
+      setTouchSelection(false)
+      setPalette(false)
+      setInsertPoint(null)
+    })
+    editField.current?.focus()
+    editField.current?.select()
+  }
   const updateNode = (data: Partial<Idea['data']>) =>
     update({
       ...board,
@@ -568,6 +582,14 @@ export function CanvasBoard({
               }
               setSelectedEdge(null)
             }}
+            onNodeDoubleClick={(event, clickedNode) => {
+              event.stopPropagation()
+              editItem(clickedNode.id)
+            }}
+            onEdgeDoubleClick={(event, clickedEdge) => {
+              event.stopPropagation()
+              editItem(clickedEdge.id, true)
+            }}
             onEdgeClick={(_, e) => {
               setSelectedEdge(e.id)
               setSelected(null)
@@ -799,6 +821,7 @@ export function CanvasBoard({
                   Title
                   <input
                     aria-label="Node title"
+                    ref={editField}
                     value={node.data.title}
                     maxLength={120}
                     onChange={(e) =>
@@ -967,6 +990,7 @@ export function CanvasBoard({
                   Connection label
                   <input
                     aria-label="Connection label"
+                    ref={editField}
                     value={edge.label || ''}
                     maxLength={120}
                     onChange={(e) =>

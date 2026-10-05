@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { flushSync } from 'react-dom'
 import {
   ReactFlow,
   Background,
@@ -100,6 +101,7 @@ export function WireframeBoard({
   const inspectorOpen = inspectorPreference ?? !compact
   const [touchSelection, setTouchSelection] = useState(false)
   const inspectorToggle = useRef<HTMLButtonElement>(null)
+  const editField = useRef<HTMLInputElement>(null)
   const [flow, setFlow] = useState<ReactFlowInstance<WireFlowNode> | null>(null)
   const [selection, setSelection] = useState(new Set<string>())
   const [edgeId, setEdgeId] = useState<string | null>(null)
@@ -125,6 +127,19 @@ export function WireframeBoard({
   const selected = graph.nodes.filter((n) => selection.has(n.id))
   const node = selected.length === 1 ? selected[0] : undefined
   const edge = graph.edges.find((e) => e.id === edgeId)
+  const editItem = (id: string, connection = false) => {
+    if (preview) return
+    flushSync(() => {
+      setSelection(new Set(connection ? [] : [id]))
+      setEdgeId(connection ? id : null)
+      setInspectorOpen(true)
+      setTouchSelection(false)
+      setPalette(false)
+      setInsertPoint(null)
+    })
+    editField.current?.focus()
+    editField.current?.select()
+  }
   const screens = graph.nodes.filter((n) => n.data.kind === 'screen')
   const save = (next: Wireframe, record = true) =>
     update({ ...board, wireframe: next }, record)
@@ -668,6 +683,14 @@ export function WireframeBoard({
               }
               setEdgeId(null)
             }}
+            onNodeDoubleClick={(event, clicked) => {
+              event.stopPropagation()
+              editItem(clicked.id)
+            }}
+            onEdgeDoubleClick={(event, clicked) => {
+              event.stopPropagation()
+              editItem(clicked.id, true)
+            }}
             onEdgeClick={(_, clicked) => {
               setEdgeId(clicked.id)
               setSelection(new Set())
@@ -893,6 +916,7 @@ export function WireframeBoard({
                   Label
                   <input
                     aria-label="Block label"
+                    ref={editField}
                     value={node.data.title}
                     maxLength={120}
                     onChange={(e) =>
@@ -1099,6 +1123,7 @@ export function WireframeBoard({
                   Interaction label
                   <input
                     aria-label="Interaction label"
+                    ref={editField}
                     value={edge.label}
                     maxLength={120}
                     onChange={(e) =>
