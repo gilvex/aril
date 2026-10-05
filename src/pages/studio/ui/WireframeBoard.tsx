@@ -51,6 +51,7 @@ import { WireframeBlock, type WireFlowNode } from './WireframeBlock'
 import { WireframeEdge } from './WireframeEdge'
 import { routeWireframes, wireConnectionSides } from '../model/wire-routing'
 import { LiveCursors } from './LiveCursors'
+import { ResizableInspector } from './ResizableInspector'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
 import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
@@ -798,7 +799,10 @@ export function WireframeBoard({
           </div>
         </div>
         {inspectorOpen && (
-          <aside id="wireframe-inspector" className="inspector wire-inspector">
+          <ResizableInspector
+            id="wireframe-inspector"
+            className="wire-inspector"
+          >
             <div className="inspector-heading">
               <span>
                 {preview
@@ -1251,7 +1255,7 @@ export function WireframeBoard({
                 </p>
               </div>
             )}
-          </aside>
+          </ResizableInspector>
         )}
       </div>
     </div>

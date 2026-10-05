@@ -784,6 +784,49 @@ code {
   font-size: 10px;
   color: #8e8497;
 }
+.inspector.resizable-inspector {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.inspector-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.inspector-resize-handle {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8px;
+  z-index: 5;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+}
+.inspector-resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 120ms;
+}
+.inspector-resize-handle:hover::after,
+.inspector-resize-handle:focus-visible::after,
+.is-resizing > .inspector-resize-handle::after {
+  background: var(--accent);
+}
+.inspector-resize-handle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.inspector.is-resizing {
+  user-select: none;
+}
 .inspector-body {
   padding: 20px 18px;
   display: flex;

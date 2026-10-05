@@ -688,7 +688,6 @@ export function Studio({
                     .map((p) => p.profile)}
                 />
               </button>
-              <span>Two ways to explore the same idea</span>
             </div>
             <Suspense
               fallback={

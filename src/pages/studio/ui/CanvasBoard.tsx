@@ -1,4 +1,5 @@
 import { LiveCursors } from './LiveCursors'
+import { ResizableInspector } from './ResizableInspector'
 import { flushSync } from 'react-dom'
 import {
   useCallback,
@@ -683,7 +684,7 @@ export function CanvasBoard({
           </div>
         </div>
         {inspectorOpen && (
-          <aside id="board-inspector" className="inspector">
+          <ResizableInspector id="board-inspector">
             <div className="inspector-heading">
               <span>
                 {selectedNodes.length > 1
@@ -1076,7 +1077,7 @@ export function CanvasBoard({
                 </div>
               </div>
             )}
-          </aside>
+          </ResizableInspector>
         )}
       </div>
     </div>
