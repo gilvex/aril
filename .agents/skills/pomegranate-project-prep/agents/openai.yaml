@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pomegranate Project Prep"
+  short_description: "Plan the React stack, architecture, and setup"
+  default_prompt: "Use $pomegranate-project-prep to plan Pomegranate's stack, architecture, and first implementation milestone."

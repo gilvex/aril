@@ -1,0 +1,139 @@
+import express from 'express'
+import { z } from 'zod'
+import { resolve } from 'node:path'
+import { existsSync } from 'node:fs'
+import { openStore } from './store.ts'
+import { workspaceSchema } from '../domain/workspace.ts'
+import { installCollaboration } from './collaboration.ts'
+
+export function createApp(database: string, publicOrigin?: string) {
+  if (publicOrigin) {
+    const url = new URL(publicOrigin)
+    if (
+      !['https:', 'http:'].includes(url.protocol) ||
+      url.username ||
+      url.password
+    )
+      throw new Error('POMEGRANATE_ORIGIN must be an HTTP or HTTPS origin.')
+    publicOrigin = url.origin
+  }
+  const store = openStore(database)
+  const app = express()
+  app.disable('x-powered-by')
+  app.use('/api', (req, res, next) => {
+    if (
+      ![
+        'localhost',
+        '127.0.0.1',
+        '[::1]',
+        ...(publicOrigin ? [new URL(publicOrigin).hostname] : []),
+      ].includes(req.hostname)
+    ) {
+      res.status(403).json({ error: 'This studio host is not allowed.' })
+      return
+    }
+    res.setHeader('Cache-Control', 'no-store')
+    res.setHeader('X-Content-Type-Options', 'nosniff')
+    const origin = req.get('origin')
+    if (
+      origin &&
+      ![
+        'http://127.0.0.1:5173',
+        'http://localhost:5173',
+        `http://${req.get('host')}`,
+        ...(publicOrigin ? [publicOrigin] : []),
+      ].includes(origin)
+    ) {
+      res.status(403).json({ error: 'This origin is not allowed.' })
+      return
+    }
+    next()
+  })
+  app.use(express.json({ limit: '5mb' }))
+  app.get('/api/health', (_req, res) => {
+    res.json({ ok: true })
+  })
+  const collaboration = installCollaboration(app, store, publicOrigin)
+  app.get('/api/workspace', (_req, res) => {
+    res.json(store.read(res.locals.workspaceId))
+  })
+  app.put('/api/workspace', (req, res) => {
+    const result = z
+      .object({
+        revision: z.number().int().positive(),
+        workspace: workspaceSchema,
+      })
+      .safeParse(req.body)
+    if (!result.success) {
+      res.status(400).json({
+        error: 'Invalid workspace. Check node connections and required fields.',
+        details: result.error.issues.slice(0, 5),
+      })
+      return
+    }
+    const updated = store.save(
+      result.data.workspace,
+      result.data.revision,
+      undefined,
+      res.locals.workspaceId,
+    )
+    if (!updated) {
+      res.status(409).json({
+        error:
+          'This workspace changed in another tab. Export your edits before reloading.',
+      })
+      return
+    }
+    res.json(updated)
+    collaboration.broadcast('workspace', updated, res.locals.workspaceId)
+  })
+  app.get('/api/history', (_req, res) => {
+    res.json(store.history(res.locals.workspaceId))
+  })
+  app.get('/api/history/:revision', (req, res) => {
+    const revision = Number(req.params.revision)
+    if (!Number.isSafeInteger(revision) || revision < 1) {
+      res.status(400).json({ error: 'Invalid revision.' })
+      return
+    }
+    const workspace = store.snapshot(revision, res.locals.workspaceId)
+    if (!workspace) {
+      res.status(404).json({ error: 'Snapshot not found.' })
+      return
+    }
+    res.json(workspace)
+  })
+  if (existsSync(resolve('dist/index.html'))) {
+    app.use(express.static(resolve('dist')))
+    app.get('/{*path}', (req, res) => {
+      if (req.path.startsWith('/api/'))
+        res.status(404).json({ error: 'Endpoint not found.' })
+      else res.sendFile(resolve('dist/index.html'))
+    })
+  }
+  app.use(
+    (
+      error: unknown,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction,
+    ) => {
+      console.error(error)
+      const status =
+        error instanceof SyntaxError
+          ? 400
+          : (error as { status?: number }).status === 413
+            ? 413
+            : 500
+      res.status(status).json({
+        error:
+          status === 413
+            ? 'Workspace exceeds 5 MB.'
+            : status === 400
+              ? 'Invalid JSON.'
+              : 'Could not save the workspace. Your edits remain in this browser.',
+      })
+    },
+  )
+  return { app, store, collaboration }
+}

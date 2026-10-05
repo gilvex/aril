@@ -1,0 +1,1007 @@
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  Controls,
+  MiniMap,
+  ViewportPortal,
+  useViewport,
+  addEdge,
+  type Connection,
+  type NodeChange,
+  type ReactFlowInstance,
+  type Node,
+} from '@xyflow/react'
+import {
+  Plus,
+  X,
+  Copy,
+  Trash2,
+  ArrowUpRight,
+  MousePointer2,
+  Link2,
+  PencilLine,
+  Check,
+  Unplug,
+  Maximize2,
+  Minimize2,
+} from 'lucide-react'
+import {
+  nodeKinds,
+  statuses,
+  type Board,
+  type Idea,
+  type Requirement,
+} from '../../../shared/api/workspace'
+import { IdeaNode, kindIcons, kindLabels } from './IdeaNode'
+import type { DragPosition, Presence, Profile } from '../../../../domain/collaboration'
+import { useLiveNodePositions } from '../model/use-live-node-positions'
+import { SelectionBadges, SelectionEdge } from './SelectionPresence'
+
+const nodeTypes = { idea: IdeaNode }
+const edgeTypes = { smoothstep: SelectionEdge }
+type Props = {
+  board: Board
+  requirements: Requirement[]
+  update: (board: Board, record?: boolean) => void
+  checkpoint: () => void
+  openRequirement: (id: string) => void
+  peers: Presence[]
+  profile: Profile
+  saveState: 'saved' | 'pending' | 'saving' | 'error'
+  sendPresence: (
+    changes: { cursor?: { x: number; y: number } | null; selected?: string[]; selectedEdges?: string[]; dragging?: DragPosition[] },
+    force?: boolean,
+  ) => void
+}
+export function CanvasBoard({
+  board,
+  requirements,
+  update,
+  checkpoint,
+  openRequirement,
+  peers,
+  sendPresence,
+  saveState,
+  profile,
+}: Props) {
+  const [localDragging, setLocalDragging] = useState<Set<string>>(new Set())
+  const dragPositions = useRef(new Map<string, DragPosition>())
+  const liveNodes = useLiveNodePositions(board.nodes, peers, localDragging)
+  useEffect(() => {
+    if (!localDragging.size && (saveState === 'saved' || saveState === 'error')) {
+      dragPositions.current.clear()
+      sendPresence({ dragging: [] }, true)
+    }
+  }, [localDragging, saveState, sendPresence])
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    sendPresence({ selected: [...selectedIds] }, true)
+  }, [selectedIds, sendPresence])
+  const selectionBeforePointerDown = useRef(selectedIds)
+  const selectedNodes = board.nodes.filter((n) => selectedIds.has(n.id))
+  const selected = selectedNodes.length === 1 ? selectedNodes[0].id : null
+  const setSelected = (id: string | null) =>
+    setSelectedIds(new Set(id ? [id] : []))
+  const [fullscreen, setFullscreen] = useState(false)
+  const canvasRef = useRef<HTMLDivElement>(null)
+  const fullscreenButtonRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    const syncFullscreen = () => {
+      setFullscreen(document.fullscreenElement === canvasRef.current)
+      if (!document.fullscreenElement) fullscreenButtonRef.current?.focus()
+    }
+    const escapeFullscreen = (event: KeyboardEvent) => {
+      if (fullscreen && event.key === 'Escape' && !document.fullscreenElement) {
+        setFullscreen(false)
+        fullscreenButtonRef.current?.focus()
+      }
+    }
+    document.addEventListener('fullscreenchange', syncFullscreen)
+    document.addEventListener('keydown', escapeFullscreen)
+    return () => {
+      document.removeEventListener('fullscreenchange', syncFullscreen)
+      document.removeEventListener('keydown', escapeFullscreen)
+    }
+  }, [fullscreen])
+  const toggleFullscreen = async () => {
+    if (fullscreen) {
+      if (document.fullscreenElement === canvasRef.current)
+        await document.exitFullscreen()
+      setFullscreen(false)
+      fullscreenButtonRef.current?.focus()
+    } else {
+      setFullscreen(true)
+      try {
+        await canvasRef.current?.requestFullscreen?.()
+      } catch {
+        /* Expanded viewport is the fallback for embedded browsers. */
+      }
+    }
+  }
+  const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
+  const visibleSelectedEdge = board.edges.some((edge) => edge.id === selectedEdge) ? selectedEdge : null
+  useEffect(() => {
+    sendPresence({ selectedEdges: visibleSelectedEdge ? [visibleSelectedEdge] : [] }, true)
+  }, [visibleSelectedEdge, sendPresence])
+  const [dimensions, setDimensions] = useState<
+    Record<string, { width: number; height: number }>
+  >({})
+  const [palette, setPalette] = useState(false)
+  const [editingName, setEditingName] = useState(false)
+  const [flow, setFlow] = useState<ReactFlowInstance<
+    Node<Idea['data']>
+  > | null>(null)
+  const node = board.nodes.find((n) => n.id === selected)
+  const edge = board.edges.find((e) => e.id === selectedEdge)
+  const updateNode = (data: Partial<Idea['data']>) =>
+    update({
+      ...board,
+      nodes: board.nodes.map((n) =>
+        n.id === selected ? { ...n, data: { ...n.data, ...data } } : n,
+      ),
+    })
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      if (connection.source === connection.target) return
+      if (
+        board.edges.some(
+          (e) =>
+            e.source === connection.source && e.target === connection.target,
+        )
+      )
+        return
+      update({
+        ...board,
+        edges: addEdge(
+          {
+            ...connection,
+            id: crypto.randomUUID(),
+            type: 'smoothstep',
+            label: 'connects to',
+          },
+          board.edges,
+        ),
+      })
+    },
+    [board, update],
+  )
+  const onNodesChange = (changes: NodeChange<Node<Idea['data']>>[]) => {
+    const selectionChanges = changes.filter((c) => c.type === 'select')
+    if (selectionChanges.length)
+      setSelectedIds((previous) => {
+        const next = new Set(previous)
+        for (const change of selectionChanges) {
+          if (change.selected) next.add(change.id)
+          else next.delete(change.id)
+        }
+        return next
+      })
+    const measurements = changes.filter((c) => c.type === 'dimensions')
+    if (measurements.length)
+      setDimensions((previous) => {
+        const next = { ...previous }
+        let changed = false
+        for (const measurement of measurements) {
+          if (
+            measurement.dimensions &&
+            (next[measurement.id]?.width !== measurement.dimensions.width ||
+              next[measurement.id]?.height !== measurement.dimensions.height)
+          ) {
+            next[measurement.id] = measurement.dimensions
+            changed = true
+          }
+        }
+        return changed ? next : previous
+      })
+    const persisted = changes.filter((c) => c.type === 'position')
+    if (!persisted.length) return
+    // React Flow's `dragging` flag is transient UI state, not an undoable field.
+    const positions = new Map(persisted.map((change) => [change.id, change.position]))
+    const nodes = board.nodes.map((node) => {
+      const position = positions.get(node.id)
+      return position ? { ...node, position } : node
+    })
+    const moving = new Set(localDragging)
+    for (const change of persisted) {
+      if (change.dragging === true) moving.add(change.id)
+      if (change.dragging === false) moving.delete(change.id)
+      if (change.position && (change.dragging || dragPositions.current.has(change.id)))
+        dragPositions.current.set(change.id, { id: change.id, position: change.position })
+    }
+    setLocalDragging(moving)
+    if (dragPositions.current.size)
+      sendPresence({ dragging: [...dragPositions.current.values()] }, !moving.size)
+    update(
+      {
+        ...board,
+        nodes,
+        edges: board.edges.filter(
+          (e) =>
+            nodes.some((n) => n.id === e.source) &&
+            nodes.some((n) => n.id === e.target),
+        ),
+      },
+      false,
+    )
+  }
+  const onDelete = ({
+    nodes,
+    edges,
+  }: {
+    nodes: Node[]
+    edges: { id: string }[]
+  }) => {
+    const nodeIds = new Set(nodes.map((n) => n.id))
+    const edgeIds = new Set(edges.map((e) => e.id))
+    update(
+      {
+        ...board,
+        nodes: board.nodes.filter((n) => !nodeIds.has(n.id)),
+        edges: board.edges.filter(
+          (e) =>
+            !edgeIds.has(e.id) &&
+            !nodeIds.has(e.source) &&
+            !nodeIds.has(e.target),
+        ),
+      },
+      false,
+    )
+    setSelected(null)
+    setSelectedEdge(null)
+  }
+  const addNode = (kind: Idea['data']['kind']) => {
+    const surface = document
+      .querySelector('.canvas-surface')
+      ?.getBoundingClientRect()
+    const position =
+      flow && surface
+        ? flow.screenToFlowPosition({
+            x: surface.x + surface.width / 2 - 100,
+            y: surface.y + surface.height / 2 - 60,
+          })
+        : { x: 100, y: 100 }
+    const id = crypto.randomUUID()
+    update({
+      ...board,
+      nodes: [
+        ...board.nodes,
+        {
+          id,
+          type: 'idea',
+          position,
+          data: {
+            title: `New ${kindLabels[kind].toLowerCase()}`,
+            kind,
+            description: 'What role does this play?',
+            notes: '',
+            status: 'Exploring',
+            requirements: [],
+          },
+        },
+      ],
+    })
+    setSelected(id)
+    setSelectedEdge(null)
+    setPalette(false)
+  }
+  const removeNode = () => {
+    if (!node) return
+    update({
+      ...board,
+      nodes: board.nodes.filter((n) => n.id !== node.id),
+      edges: board.edges.filter(
+        (e) => e.source !== node.id && e.target !== node.id,
+      ),
+    })
+    setSelected(null)
+  }
+  return (
+    <div
+      ref={canvasRef}
+      onPointerDownCapture={() => {
+        selectionBeforePointerDown.current = selectedIds
+      }}
+      className={`canvas-page${fullscreen ? ' canvas-fullscreen' : ''}`}
+    >
+      <div className="board-heading">
+        <div>
+          {editingName ? (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                setEditingName(false)
+              }}
+              className="inline-name"
+            >
+              <input
+                autoFocus
+                aria-label="Board name"
+                value={board.name}
+                maxLength={100}
+                onChange={(e) =>
+                  update({ ...board, name: e.target.value || 'Untitled board' })
+                }
+              />
+              <button className="icon-button" aria-label="Finish renaming">
+                <Check size={17} />
+              </button>
+            </form>
+          ) : (
+            <h1>
+              {board.name}
+              <button
+                className="icon-button quiet"
+                onClick={() => setEditingName(true)}
+                aria-label="Rename board"
+              >
+                <PencilLine size={15} />
+              </button>
+            </h1>
+          )}
+          <p>{board.description}</p>
+        </div>
+        <div className="canvas-heading-actions">
+          <button
+            ref={fullscreenButtonRef}
+            className="button fullscreen-toggle"
+            aria-label={
+              fullscreen ? 'Exit fullscreen' : 'Expand canvas to fullscreen'
+            }
+            aria-pressed={fullscreen}
+            title={
+              fullscreen
+                ? 'Exit fullscreen (Esc)'
+                : 'Expand canvas to fullscreen'
+            }
+            onClick={() => void toggleFullscreen()}
+          >
+            {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+            <span>{fullscreen ? 'Exit fullscreen' : 'Fullscreen'}</span>
+          </button>
+          <div className="add-node-wrap">
+            <button
+              className="button primary"
+              onClick={() => setPalette(!palette)}
+            >
+              <Plus size={16} />
+              Add node
+            </button>
+            {palette && (
+              <div className="node-palette">
+                <div className="popover-heading">
+                  Add to your canvas
+                  <button
+                    className="icon-button"
+                    onClick={() => setPalette(false)}
+                    aria-label="Close node menu"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+                {nodeKinds.map((kind) => {
+                  const Icon = kindIcons[kind]
+                  return (
+                    <button key={kind} onClick={() => addNode(kind)}>
+                      <Icon size={17} />
+                      {kindLabels[kind]}
+                      <Plus size={14} />
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="canvas-layout">
+        <div
+          className="canvas-surface"
+          onPointerMove={(event) => {
+            if (flow)
+              sendPresence({
+                cursor: flow.screenToFlowPosition({
+                  x: event.clientX,
+                  y: event.clientY,
+                }),
+              })
+          }}
+          onPointerLeave={() => sendPresence({ cursor: null }, true)}
+        >
+          <div className="canvas-caption">
+            <span className="small-dot" />
+            {board.nodes.length} ideas
+            <span className="caption-separator" />
+            {board.edges.length} connections
+          </div>
+          <ReactFlow
+            key={board.id}
+            nodes={liveNodes.map((n) => ({
+              ...n,
+              measured: dimensions[n.id],
+              selected: selectedIds.has(n.id),
+            }))}
+            edges={board.edges.map((e) => {
+              const selectors = [
+                ...(e.id === selectedEdge ? [profile] : []),
+                ...peers.filter((peer) => peer.selectedEdges?.includes(e.id)).map((peer) => peer.profile),
+              ]
+              const color = selectors[0]?.color
+              const names = [...new Set(selectors.map((person) => person.name))].join(', ')
+              return {
+                ...e,
+                selected: e.id === selectedEdge,
+                data: { selectors, currentUserId: profile.id },
+                ariaLabel: `${e.label || 'Connection'}${names ? ` — selected by ${names}` : ''}`,
+                style: color ? {
+                  '--edge-selection-color': color,
+                  '--edge-selection-width': 3,
+                  filter: `drop-shadow(0 0 3px ${color}66)`,
+                } as CSSProperties : undefined,
+                labelStyle: color ? { fill: color, fontWeight: 700 } : undefined,
+              }
+            })}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            onInit={setFlow}
+            onNodesChange={onNodesChange}
+            onDelete={onDelete}
+            onConnect={onConnect}
+            onNodeClick={(event, clickedNode) => {
+              if (event.ctrlKey || event.metaKey) {
+                const next = new Set(selectionBeforePointerDown.current)
+                if (next.has(clickedNode.id)) next.delete(clickedNode.id)
+                else next.add(clickedNode.id)
+                setSelectedIds(next)
+              }
+              setSelectedEdge(null)
+            }}
+            onEdgeClick={(_, e) => {
+              setSelectedEdge(e.id)
+              setSelected(null)
+            }}
+            onPaneClick={() => {
+              setSelected(null)
+              setSelectedEdge(null)
+              setPalette(false)
+            }}
+            onNodeDragStart={checkpoint}
+            onSelectionDragStart={checkpoint}
+            multiSelectionKeyCode={['Control', 'Meta']}
+            selectionKeyCode="Shift"
+            onBeforeDelete={async () => {
+              checkpoint()
+              return true
+            }}
+            onMoveEnd={(_, viewport) => {
+              if (JSON.stringify(viewport) !== JSON.stringify(board.viewport))
+                update({ ...board, viewport }, false)
+            }}
+            defaultViewport={board.viewport}
+            fitView={!board.viewport}
+            fitViewOptions={{ padding: 0.16, maxZoom: 1 }}
+            minZoom={0.2}
+            maxZoom={2}
+            deleteKeyCode={['Backspace', 'Delete']}
+            defaultEdgeOptions={{ type: 'smoothstep' }}
+            connectionRadius={28}
+          >
+            <Background
+              color="#d9d6e2"
+              gap={22}
+              size={1.2}
+              variant={BackgroundVariant.Dots}
+            />
+            <LiveCursors peers={peers} board={{ ...board, nodes: liveNodes }} profile={profile} selectedIds={selectedIds} />
+            <Controls showInteractive={false} />
+            <MiniMap
+              pannable
+              zoomable
+              nodeColor="#c5bbd5"
+              maskColor="rgba(246,245,249,.65)"
+            />
+          </ReactFlow>
+          {!board.nodes.length && (
+            <div className="empty-canvas">
+              <div className="empty-symbol">
+                <Plus size={28} />
+              </div>
+              <h2>Every system starts with an idea.</h2>
+              <p>Add your first node, then connect the pieces.</p>
+              <button
+                className="button primary"
+                onClick={() => setPalette(true)}
+              >
+                Add your first node
+              </button>
+            </div>
+          )}
+          <div className="canvas-tip">
+            <MousePointer2 size={13} />
+            <span>Drag to move</span>
+            <span>·</span>
+            <span>Ctrl / ⌘ + click to select more</span>
+            <span>·</span>
+            <Link2 size={13} />
+            <span>Connect the handles</span>
+          </div>
+        </div>
+        <aside className="inspector">
+          <div className="inspector-heading">
+            <span>
+              {selectedNodes.length > 1
+                ? `${selectedNodes.length} nodes selected`
+                : node
+                  ? 'Node details'
+                  : edge
+                    ? 'Connection'
+                    : 'Board overview'}
+            </span>
+            {(selectedNodes.length > 0 || edge) && (
+              <button
+                className="icon-button"
+                aria-label="Close details"
+                onClick={() => {
+                  setSelected(null)
+                  setSelectedEdge(null)
+                }}
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+          {selectedNodes.length > 1 ? (
+            <div className="inspector-body multi-selection-body">
+              <h2>Edit together.</h2>
+              <p>
+                Drag any selected node to move the group. Ctrl / ⌘ + click
+                toggles a node; Shift + drag selects an area.
+              </p>
+              <label>
+                Type
+                <select
+                  aria-label="Selected nodes type"
+                  value={
+                    selectedNodes.every(
+                      (n) => n.data.kind === selectedNodes[0].data.kind,
+                    )
+                      ? selectedNodes[0].data.kind
+                      : ''
+                  }
+                  onChange={(e) => {
+                    checkpoint()
+                    update(
+                      {
+                        ...board,
+                        nodes: board.nodes.map((n) =>
+                          selectedIds.has(n.id)
+                            ? {
+                                ...n,
+                                data: {
+                                  ...n.data,
+                                  kind: e.target.value as Idea['data']['kind'],
+                                },
+                              }
+                            : n,
+                        ),
+                      },
+                      false,
+                    )
+                  }}
+                >
+                  <option value="" disabled>
+                    Mixed types
+                  </option>
+                  {nodeKinds.map((k) => (
+                    <option key={k} value={k}>
+                      {kindLabels[k]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Decision
+                <select
+                  aria-label="Selected nodes decision"
+                  value={
+                    selectedNodes.every(
+                      (n) => n.data.status === selectedNodes[0].data.status,
+                    )
+                      ? selectedNodes[0].data.status
+                      : ''
+                  }
+                  onChange={(e) => {
+                    checkpoint()
+                    update(
+                      {
+                        ...board,
+                        nodes: board.nodes.map((n) =>
+                          selectedIds.has(n.id)
+                            ? {
+                                ...n,
+                                data: {
+                                  ...n.data,
+                                  status: e.target
+                                    .value as Idea['data']['status'],
+                                },
+                              }
+                            : n,
+                        ),
+                      },
+                      false,
+                    )
+                  }}
+                >
+                  <option value="" disabled>
+                    Mixed decisions
+                  </option>
+                  {statuses.map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+                </select>
+              </label>
+              <ul className="selected-node-list">
+                {selectedNodes.map((n) => (
+                  <li key={n.id}>{n.data.title}</li>
+                ))}
+              </ul>
+              <button
+                className="button danger"
+                onClick={() => {
+                  checkpoint()
+                  onDelete({ nodes: selectedNodes, edges: [] })
+                }}
+              >
+                <Trash2 size={15} />
+                Delete selected nodes
+              </button>
+            </div>
+          ) : node ? (
+            <div className="inspector-body" key={node.id}>
+              <span className={`detail-kind kind-${node.data.kind}`}>
+                {kindLabels[node.data.kind]}
+              </span>
+              <label>
+                Title
+                <input
+                  aria-label="Node title"
+                  value={node.data.title}
+                  maxLength={120}
+                  onChange={(e) =>
+                    updateNode({ title: e.target.value || 'Untitled' })
+                  }
+                />
+              </label>
+              <label>
+                Description
+                <textarea
+                  aria-label="Node description"
+                  value={node.data.description}
+                  maxLength={2000}
+                  rows={3}
+                  onChange={(e) => updateNode({ description: e.target.value })}
+                />
+              </label>
+              <div className="field-row">
+                <label>
+                  Type
+                  <select
+                    value={node.data.kind}
+                    onChange={(e) =>
+                      updateNode({
+                        kind: e.target.value as Idea['data']['kind'],
+                      })
+                    }
+                  >
+                    {nodeKinds.map((k) => (
+                      <option key={k} value={k}>
+                        {kindLabels[k]}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Decision
+                  <select
+                    value={node.data.status}
+                    onChange={(e) =>
+                      updateNode({
+                        status: e.target.value as Idea['data']['status'],
+                      })
+                    }
+                  >
+                    {statuses.map((s) => (
+                      <option key={s}>{s}</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <label>
+                Notes
+                <textarea
+                  aria-label="Node notes"
+                  placeholder="Constraints, decisions, open questions…"
+                  rows={5}
+                  value={node.data.notes}
+                  maxLength={12000}
+                  onChange={(e) => updateNode({ notes: e.target.value })}
+                />
+              </label>
+              <div className="field-label">
+                Linked requirements <span>{node.data.requirements.length}</span>
+              </div>
+              <div className="linked-list">
+                {node.data.requirements.map((id) => (
+                  <div className="linked-requirement" key={id}>
+                    <button onClick={() => openRequirement(id)}>
+                      <span>{id}</span>
+                      {requirements.find((r) => r.id === id)?.title}
+                      <ArrowUpRight size={14} />
+                    </button>
+                    <button
+                      className="icon-button"
+                      aria-label={`Unlink ${id}`}
+                      onClick={() =>
+                        updateNode({
+                          requirements: node.data.requirements.filter(
+                            (r) => r !== id,
+                          ),
+                        })
+                      }
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <select
+                aria-label="Link a requirement"
+                value=""
+                onChange={(e) => {
+                  if (e.target.value)
+                    updateNode({
+                      requirements: [...node.data.requirements, e.target.value],
+                    })
+                }}
+              >
+                <option value="">+ Link a requirement</option>
+                {requirements
+                  .filter((r) => !node.data.requirements.includes(r.id))
+                  .map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.id} · {r.title}
+                    </option>
+                  ))}
+              </select>
+              <div className="inspector-actions">
+                <button
+                  className="button"
+                  onClick={() => {
+                    const id = crypto.randomUUID()
+                    update({
+                      ...board,
+                      nodes: [
+                        ...board.nodes,
+                        {
+                          ...structuredClone(node),
+                          id,
+                          position: {
+                            x: node.position.x + 40,
+                            y: node.position.y + 190,
+                          },
+                          data: {
+                            ...node.data,
+                            title: `${node.data.title.slice(0, 110)} copy`,
+                          },
+                        },
+                      ],
+                    })
+                    setSelected(id)
+                  }}
+                >
+                  <Copy size={14} />
+                  Duplicate
+                </button>
+                <button
+                  className="icon-button danger"
+                  aria-label="Delete node"
+                  onClick={removeNode}
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ) : edge ? (
+            <div className="inspector-body">
+              <div className="detail-kind">
+                <Link2 size={16} /> Relationship
+              </div>
+              <h2>
+                {board.nodes.find((n) => n.id === edge.source)?.data.title}
+              </h2>
+              <p className="muted">
+                connects to{' '}
+                {board.nodes.find((n) => n.id === edge.target)?.data.title}
+              </p>
+              <label>
+                Connection label
+                <input
+                  aria-label="Connection label"
+                  value={edge.label || ''}
+                  maxLength={120}
+                  onChange={(e) =>
+                    update({
+                      ...board,
+                      edges: board.edges.map((x) =>
+                        x.id === edge.id ? { ...x, label: e.target.value } : x,
+                      ),
+                    })
+                  }
+                />
+              </label>
+              <button
+                className="button danger"
+                onClick={() => {
+                  update({
+                    ...board,
+                    edges: board.edges.filter((e) => e.id !== edge.id),
+                  })
+                  setSelectedEdge(null)
+                }}
+              >
+                <Unplug size={15} />
+                Remove connection
+              </button>
+            </div>
+          ) : (
+            <div className="inspector-body overview-body">
+              <div className="overview-art">
+                <LayersIllustration />
+              </div>
+              <h2>
+                Give your ideas
+                <br />a place to connect.
+              </h2>
+              <p>
+                Map the system, explore a flow, or leave a question for later.
+                This is your space to figure things out.
+              </p>
+              <label>
+                About this board
+                <textarea
+                  value={board.description}
+                  maxLength={1000}
+                  onChange={(e) =>
+                    update({ ...board, description: e.target.value })
+                  }
+                  rows={3}
+                />
+              </label>
+              <div className="board-facts">
+                <div>
+                  <span>Ideas mapped</span>
+                  <strong>{board.nodes.length}</strong>
+                </div>
+                <div>
+                  <span>Decisions made</span>
+                  <strong>
+                    {
+                      board.nodes.filter((n) => n.data.status === 'Decided')
+                        .length
+                    }
+                  </strong>
+                </div>
+                <div>
+                  <span>Open questions</span>
+                  <strong>
+                    {
+                      board.nodes.filter((n) => n.data.status === 'Question')
+                        .length
+                    }
+                  </strong>
+                </div>
+              </div>
+              <div className="inspector-hint">
+                <MousePointer2 size={16} />
+                <p>
+                  Select a node to edit its details and link it to your
+                  requirements.
+                </p>
+              </div>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  )
+}
+function LiveCursors({ peers, board, profile, selectedIds }: { peers: Presence[]; board: Board; profile: Profile; selectedIds: Set<string> }) {
+  const { zoom } = useViewport()
+  return (
+    <ViewportPortal>
+      {board.nodes.map((node) => {
+        const selectors = [
+          ...(selectedIds.has(node.id) ? [profile] : []),
+          ...peers.filter((peer) => peer.selected.includes(node.id)).map((peer) => peer.profile),
+        ]
+        return selectors.length ? (
+          <div className="node-selection-presence" key={node.id} style={{
+            left: node.position.x,
+            top: node.position.y - 8 / zoom,
+            transform: `scale(${1 / zoom}) translateY(-100%)`,
+          }}>
+            <SelectionBadges profiles={selectors} currentUserId={profile.id} />
+          </div>
+        ) : null
+      })}
+      {peers.map((peer) => (
+        <div key={peer.clientId}>
+          {peer.cursor && (
+            <div
+              className="peer-cursor"
+              aria-label={`${peer.profile.name} cursor`}
+              style={{
+                translate: `${peer.cursor.x}px ${peer.cursor.y}px`,
+                transform: `scale(${1 / zoom})`,
+                color: peer.profile.color,
+              }}
+            >
+              <svg
+                width="19"
+                height="23"
+                viewBox="0 0 19 23"
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 1L17 12L9 13L6 21Z"
+                  fill="currentColor"
+                  stroke="white"
+                  strokeWidth="1.5"
+                />
+              </svg>
+              <span style={{ background: peer.profile.color }}>
+                {peer.profile.avatar && (
+                  <img src={peer.profile.avatar} alt="" />
+                )}
+                {peer.profile.name}
+              </span>
+            </div>
+          )}
+        </div>
+      ))}
+    </ViewportPortal>
+  )
+}
+function LayersIllustration() {
+  return (
+    <svg
+      width="160"
+      height="100"
+      viewBox="0 0 160 100"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M27 49L77 75L132 45M27 64L77 90L132 60"
+        stroke="#c8b6d0"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M27 32L78 7L132 32L78 59L27 32Z"
+        fill="#f0e6ee"
+        stroke="#b78ca5"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M53 32L78 20L104 32L78 45L53 32Z"
+        fill="#b34568"
+        fillOpacity=".15"
+      />
+      <circle cx="78" cy="32" r="5" fill="#b34568" />
+      <circle cx="27" cy="64" r="3" fill="#b78ca5" />
+      <circle cx="132" cy="60" r="3" fill="#b78ca5" />
+    </svg>
+  )
+}

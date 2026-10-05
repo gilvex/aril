@@ -1,0 +1,4 @@
+interface:
+  display_name: "Juxtopposed-inspired Design (Unofficial)"
+  short_description: "Apply Pomegranate's Juxtopposed design preference"
+  default_prompt: "Use $juxtopposed-inspired-design to develop an original visual direction for Pomegranate."
