@@ -17,6 +17,21 @@ import { WorkspaceHome } from './WorkspaceHome'
 import type { StudioSummary } from '../../domain/studios'
 import { GoogleSignIn } from '../shared/ui/GoogleSignIn'
 let sessionRequest: Promise<{ profile: Profile; token?: string }> | undefined
+function startSession() {
+  const token = new URLSearchParams(location.hash.slice(1)).get('transfer')
+  if (token) {
+    history.replaceState(null, '', location.pathname + location.search)
+    return request<{ profile: Profile; token?: string }>('/api/auth/transfer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-pomegranate-auth': '1',
+      },
+      body: JSON.stringify({ token }),
+    })
+  }
+  return request<{ profile: Profile; token?: string }>('/api/session')
+}
 
 export function App() {
   const [profile, setProfile] = useState<Profile | null>(null)
@@ -33,9 +48,7 @@ export function App() {
   const [error, setError] = useState('')
   useEffect(() => {
     let cancelled = false
-    ;(sessionRequest ??= request<{ profile: Profile; token?: string }>(
-      '/api/session',
-    ))
+    ;(sessionRequest ??= startSession())
       .then((result) => {
         if (result.token) localStorage.setItem(sessionTokenKey, result.token)
         if (!cancelled) setProfile(result.profile)

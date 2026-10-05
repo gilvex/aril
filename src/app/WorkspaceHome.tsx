@@ -16,8 +16,14 @@ export function WorkspaceHome({
   const [creating, setCreating] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [hostedOrigin, setHostedOrigin] = useState<string | null>(null)
   useEffect(() => {
     let active = true
+    request<{ hostedOrigin?: string }>('/api/auth/config')
+      .then((value) => {
+        if (active) setHostedOrigin(value.hostedOrigin || null)
+      })
+      .catch(() => {})
     request<StudioSummary[]>('/api/studios')
       .then((value) => {
         if (active) setStudios(value)
@@ -40,6 +46,35 @@ export function WorkspaceHome({
         </a>
         <span className="muted">{profile.name}</span>
       </header>
+      {hostedOrigin && (
+        <div className="workspace-hosted">
+          <span>Your shared studio is ready online.</span>
+          <button
+            className="button"
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true)
+              setError('')
+              try {
+                const result = await request<{ url: string }>(
+                  '/api/hosted-access',
+                  { method: 'POST' },
+                )
+                location.assign(result.url)
+              } catch (err) {
+                setError(
+                  err instanceof Error
+                    ? err.message
+                    : 'Could not open hosted studio.',
+                )
+                setBusy(false)
+              }
+            }}
+          >
+            Open hosted studio <ArrowUpRight size={15} />
+          </button>
+        </div>
+      )}
       <div className="workspace-home-title">
         <div>
           <span className="eyebrow">ROOM TO GROW</span>

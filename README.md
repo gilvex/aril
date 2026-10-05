@@ -50,7 +50,7 @@ For a complete database backup, stop the server before copying the `data` direct
 
 This is the first planning deliverable, with separate workspaces for invited collaborators. It does not execute deployments or manage actual containers. Design-board service states are labeled sample data. All members can edit and invite others within their workspaces; there are no granular roles, account passwords, or member-revocation controls yet.
 
-See [workspaces, Google accounts and deployment requirements](docs/accounts-and-deployment.md). Google requires host configuration. The current persistent SQLite and SSE backend cannot be deployed unchanged to Vercel Functions.
+See [workspaces, Google accounts and hosting](docs/accounts-and-deployment.md). Google requires host configuration. Vercel uses the Postgres backend and shared presence; self-hosted installations can continue using SQLite. Set `POMEGRANATE_STORAGE=postgres` locally to share the cloud database.
 
 Click your profile at the top right to change your name or picture. Open **People → Create invite link** to invite someone; each link works once and expires after 24 hours. Profiles persist in this browser for 30 days. Both servers bind to loopback by default, so another device needs a hosted studio address. See [collaboration and hosting](docs/collaboration.md) for setup and recovery.
 

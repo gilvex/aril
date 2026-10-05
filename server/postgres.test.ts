@@ -1,0 +1,250 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { openPostgres } from './postgres.ts'
+import { createApplication } from './app.ts'
+import { diffWorkspace } from '../domain/collaboration.ts'
+import { randomUUID } from 'node:crypto'
+import type { Envelope } from '../domain/workspace.ts'
+
+test(
+  'Postgres: concurrent instances share isolated edits, presence, invites and one-use account transfers',
+  { skip: !process.env.POSTGRES_TEST_URL },
+  async () => {
+    const schema = 'pomegranate_test_' + Date.now()
+    const a = await openPostgres(process.env.POSTGRES_TEST_URL!, schema)
+    const b = await openPostgres(process.env.POSTGRES_TEST_URL!, schema)
+    const first = createApplication(a),
+      second = createApplication(b)
+    const servers = [
+      first.app.listen(0, '127.0.0.1'),
+      second.app.listen(0, '127.0.0.1'),
+    ]
+    await Promise.all(
+      servers.map(
+        (server) =>
+          new Promise<void>((resolve) => server.once('listening', resolve)),
+      ),
+    )
+    const urls = servers.map(
+      (server) =>
+        `http://127.0.0.1:${(server.address() as { port: number }).port}`,
+    )
+    const controllers: AbortController[] = []
+    const call = (
+      instance: number,
+      path: string,
+      token: string,
+      method = 'GET',
+      body?: unknown,
+      workspaceId = 'default',
+    ) =>
+      fetch(urls[instance] + path, {
+        method,
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          'x-workspace-id': workspaceId,
+          'x-pomegranate-auth': '1',
+        },
+        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+      })
+    try {
+      const owner = (await a.identity.bootstrap())!
+      const invitation = await a.identity.invite(owner.profile.id)
+      const races = await Promise.all([
+        a.identity.join(invitation.token, 'Sam'),
+        b.identity.join(invitation.token, 'Mira'),
+      ])
+      assert.equal(races.filter(Boolean).length, 1)
+      const peer = races.find(Boolean)!
+      assert.equal(
+        (await b.identity.authenticate(owner.token))?.id,
+        owner.profile.id,
+      )
+      const privateStudio = await a.createStudio(
+        owner.profile.id,
+        'Private workspace',
+      )
+      assert.equal(
+        (
+          await call(
+            1,
+            '/api/workspace',
+            peer.token,
+            'GET',
+            undefined,
+            privateStudio.id,
+          )
+        ).status,
+        403,
+      )
+      assert.equal(
+        (
+          await call(
+            1,
+            '/api/events?clientId=' + randomUUID(),
+            peer.token,
+            'GET',
+            undefined,
+            privateStudio.id,
+          )
+        ).status,
+        403,
+      )
+      const original = await a.read()
+      const edits = [
+        { ...original.workspace, notes: 'A’s notes' },
+        {
+          ...original.workspace,
+          design: { ...original.workspace.design, direction: 'B’s design' },
+        },
+      ]
+      const responses = await Promise.all(
+        edits.map((workspace, i) =>
+          call(i, '/api/workspace', i ? peer.token : owner.token, 'PATCH', {
+            requestId: randomUUID(),
+            operations: diffWorkspace(original.workspace, workspace),
+          }),
+        ),
+      )
+      assert.deepEqual(
+        responses.map((r) => r.status),
+        [200, 200],
+      )
+      const current = await b.read()
+      assert.equal(current.workspace.notes, 'A’s notes')
+      assert.equal(current.workspace.design.direction, 'B’s design')
+      assert.equal(current.revision, 3)
+      assert.equal((await b.history()).length, 2)
+      const reqId = randomUUID(),
+        operations = diffWorkspace(current.workspace, {
+          ...current.workspace,
+          notes: 'Exactly once',
+        })
+      await Promise.all([
+        call(0, '/api/workspace', owner.token, 'PATCH', {
+          requestId: reqId,
+          operations,
+        }),
+        call(1, '/api/workspace', owner.token, 'PATCH', {
+          requestId: reqId,
+          operations,
+        }),
+      ])
+      assert.equal((await a.read()).revision, 4)
+      const transfer = await a.createTransfer(peer.profile.id)
+      const redeemed = await call(1, '/api/auth/transfer', '', 'POST', {
+        token: transfer,
+      })
+      assert.equal(redeemed.status, 200)
+      assert.equal(
+        ((await redeemed.json()) as { profile: { id: string } }).profile.id,
+        peer.profile.id,
+      )
+      assert.equal(
+        (await call(0, '/api/auth/transfer', '', 'POST', { token: transfer }))
+          .status,
+        401,
+      )
+      const clientId = randomUUID(),
+        controller = new AbortController()
+      controllers.push(controller)
+      const stream = await fetch(urls[0] + '/api/events?clientId=' + clientId, {
+        headers: { Authorization: 'Bearer ' + owner.token },
+        signal: controller.signal,
+      })
+      assert.equal(stream.status, 200)
+      const reader = stream.body!.getReader(),
+        decoder = new TextDecoder()
+      let buffer = ''
+      const next = async (
+        event: string,
+        accept: (value: unknown) => boolean,
+      ) => {
+        const timeout = setTimeout(() => controller.abort(), 10000)
+        try {
+          for (;;) {
+            const boundary = buffer.indexOf('\n\n')
+            if (boundary >= 0) {
+              const block = buffer.slice(0, boundary)
+              buffer = buffer.slice(boundary + 2)
+              if (block.startsWith(`event: ${event}\n`)) {
+                const value = JSON.parse(block.split('\ndata: ')[1])
+                if (accept(value)) return value
+              }
+            } else {
+              const part = await reader.read()
+              if (part.done) throw new Error('Stream ended')
+              buffer += decoder.decode(part.value, { stream: true })
+            }
+          }
+        } finally {
+          clearTimeout(timeout)
+        }
+      }
+      await next('workspace', (value) => (value as Envelope).revision === 4)
+      const presence = {
+        clientId,
+        boardId: current.workspace.boards[0].id,
+        view: 'canvas',
+        cursor: { x: 120, y: 130 },
+        selected: [],
+        sequence: 2,
+      }
+      assert.equal(
+        (await call(1, '/api/presence', owner.token, 'POST', presence)).status,
+        204,
+      )
+      await call(1, '/api/presence', owner.token, 'POST', {
+        ...presence,
+        sequence: 1,
+        cursor: { x: 9, y: 9 },
+      })
+      await next('presence', (value) =>
+        (value as { cursor?: { x: number } }[]).some(
+          (p) => p.cursor?.x === 120,
+        ),
+      )
+      assert.equal((await b.cloud.presence('default'))[0].cursor?.x, 120)
+      const latest = await b.read()
+      await call(1, '/api/workspace', peer.token, 'PATCH', {
+        requestId: randomUUID(),
+        operations: diffWorkspace(latest.workspace, {
+          ...latest.workspace,
+          notes: 'From a separate instance',
+        }),
+      })
+      await next(
+        'workspace',
+        (value) =>
+          (value as Envelope).workspace.notes === 'From a separate instance',
+      )
+      controller.abort()
+      await reader.cancel().catch(() => {})
+      assert.equal(
+        (
+          await a.query('SELECT has_schema_privilege($1,$2,$3) allowed', [
+            'anon',
+            schema,
+            'USAGE',
+          ])
+        ).rows[0].allowed,
+        false,
+      )
+    } finally {
+      controllers.forEach((c) => c.abort())
+      first.collaboration.close()
+      second.collaboration.close()
+      await Promise.all(
+        servers.map(
+          (server) =>
+            new Promise<void>((resolve) => server.close(() => resolve())),
+        ),
+      )
+      await b.close()
+      // This schema is generated by this test and cannot reference application data.
+      await a.query(`DROP SCHEMA ${schema} CASCADE`)
+      await a.close()
+    }
+  },
+)

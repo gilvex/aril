@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "functions": {
+    "api/index.ts": { "maxDuration": 60, "includeFiles": "server/certs/**" }
+  },
+  "rewrites": [{ "source": "/api/:path*", "destination": "/api" }]
+}

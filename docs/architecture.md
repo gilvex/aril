@@ -2,7 +2,7 @@
 
 ## Stack and boundaries
 
-The studio is an interactive React application built with Vite and TypeScript. React Flow supplies graph interaction; an Express server persists validated workspaces in SQLite. No hosted vendor service is required at runtime. Fonts are bundled locally.
+The studio is an interactive React application built with Vite and TypeScript. React Flow supplies graph interaction; Express persists validated workspaces in SQLite or Postgres. SQLite self-hosting requires no hosted database. Vercel uses Supabase Postgres through a server-side pooled connection; fonts are bundled locally.
 
 For this editor, SSR and content-oriented rendering are not current requirements. Vite keeps the development and self-hosted runtime small. Next.js and Astro remain possible choices for later product surfaces; choosing Vite for the studio does not settle the final platform's framework.
 
@@ -18,7 +18,7 @@ Avoid empty architectural layers. Extract reusable entities/features/widgets onl
 
 ## Persistence
 
-SQLite holds one current workspace and up to 30 prior revisions, plus profiles, hashed sessions/invites, change receipts, and the last 200 activity entries. The UI sends field-level operations against a normalized document indexed by entity IDs. The server checks each operation's prior value, validates the resulting graph, and commits a snapshot, receipt, and activity atomically. Independent edits merge; a competing field edit receives HTTP 409. The browser rebases pending edits onto incoming snapshots and preserves conflicting drafts for export. Legacy full-workspace PUT retains revision comparison.
+Both stores hold isolated workspaces and up to 30 prior revisions each, plus profiles, hashed sessions/invites, change receipts, and the last 200 activity entries per workspace. The UI sends field-level operations against a normalized document indexed by entity IDs. The server checks each operation's prior value, validates the resulting graph, and commits a snapshot, receipt, and activity atomically. Independent edits merge; a competing field edit receives HTTP 409. Postgres adds row locks and bounded compare-and-swap retries across function instances. The browser rebases pending edits onto incoming snapshots and preserves conflicting drafts for export. Legacy full-workspace PUT retains revision comparison.
 
 The current schema includes boards, node positions and metadata, edges, canvas viewports, requirements, notes, and design preferences. Links must reference existing nodes/requirements; identifiers are unique within their relevant scope. Imports use the same schema. The format carries `schemaVersion: 1`; future format changes need explicit migration.
 

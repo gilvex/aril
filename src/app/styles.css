@@ -2701,3 +2701,4 @@ code {
 .google-signin { margin-top: 16px; max-width: 360px; }
 .workspace-home-header .brand { color: #34313d; }
 .workspace-home-header .brand small { color: #77717f; }
+.workspace-hosted { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding: 18px 22px; margin: -36px 0 36px; border: 1px solid #dfccd3; background: var(--accent-light); border-radius: 14px; font-size: 14px; }

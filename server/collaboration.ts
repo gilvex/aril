@@ -9,15 +9,17 @@ import {
   type Presence,
   type Profile,
 } from '../domain/collaboration.ts'
-import type { openStore } from './store.ts'
+import type { Store } from './store-contract.ts'
+import { cloudEvents } from './cloud-events.ts'
 import { verifyGoogle } from './google.ts'
+import { openPostgres } from './postgres.ts'
 
-type Store = ReturnType<typeof openStore>
 export function installCollaboration(
   app: Express,
   store: Store,
   publicOrigin?: string,
 ) {
+  let hosted: ReturnType<typeof openPostgres> | undefined
   const clients = new Map<
     string,
     { res: Response; userId: string; workspaceId: string; presence: Presence }
@@ -47,15 +49,15 @@ export function installCollaboration(
       }))
   const presenceChanged = (workspaceId: string) =>
     broadcast('presence', people(workspaceId), workspaceId)
-  const cookieProfile = (req: Request) => {
+  const cookieProfile = async (req: Request) => {
     const bearer = req.get('authorization')?.match(/^Bearer ([\w-]{43})$/)?.[1]
-    if (bearer) return store.identity.authenticate(bearer)
+    if (bearer) return await store.identity.authenticate(bearer)
     const token = req.headers.cookie
       ?.split(';')
       .map((s) => s.trim())
       .find((s) => s.startsWith('pomegranate_session='))
       ?.slice('pomegranate_session='.length)
-    return token ? store.identity.authenticate(token) : undefined
+    return token ? await store.identity.authenticate(token) : undefined
   }
   const setSession = (res: Response, token: string) =>
     res.cookie('pomegranate_session', token, {
@@ -65,32 +67,56 @@ export function installCollaboration(
       maxAge: 30 * 86400000,
       path: '/',
     })
-  app.get('/api/auth/config', (_req, res) =>
-    res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID || null }),
+  app.get('/api/auth/config', async (_req, res) =>
+    res.json({
+      googleClientId: process.env.GOOGLE_CLIENT_ID || null,
+      hostedOrigin: process.env.POMEGRANATE_CLOUD_ORIGIN || null,
+    }),
   )
-  app.post('/api/auth/google/challenge', (req, res) => {
-    if (!process.env.GOOGLE_CLIENT_ID) {
+  app.post('/api/auth/transfer', async (req, res) => {
+    const input = z
+      .object({ token: z.string().regex(/^[\w-]{43}$/) })
+      .safeParse(req.body)
+    if (
+      !input.success ||
+      !store.redeemTransfer ||
+      req.get('x-pomegranate-auth') !== '1'
+    ) {
+      res.status(400).json({ error: 'Invalid studio access link.' })
+      return
+    }
+    const user = await store.redeemTransfer(input.data.token)
+    if (!user) {
       res
-        .status(503)
+        .status(401)
         .json({
-          error: 'Google sign-in has not been configured by the studio host.',
+          error:
+            'This access link expired or was already used. Open a fresh link from your local studio.',
         })
+      return
+    }
+    setSession(res, user.token)
+    res.json(user)
+  })
+  app.post('/api/auth/google/challenge', async (req, res) => {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      res.status(503).json({
+        error: 'Google sign-in has not been configured by the studio host.',
+      })
       return
     }
     if (req.get('x-pomegranate-auth') !== '1') {
       res.status(400).json({ error: 'Invalid authentication request.' })
       return
     }
-    res.json(store.identity.challenge(cookieProfile(req)?.id))
+    res.json(await store.identity.challenge((await cookieProfile(req))?.id))
   })
   app.post('/api/auth/google', async (req, res) => {
     const clientId = process.env.GOOGLE_CLIENT_ID
     if (!clientId) {
-      res
-        .status(503)
-        .json({
-          error: 'Google sign-in has not been configured by the studio host.',
-        })
+      res.status(503).json({
+        error: 'Google sign-in has not been configured by the studio host.',
+      })
       return
     }
     const input = z
@@ -104,8 +130,8 @@ export function installCollaboration(
       res.status(400).json({ error: 'Invalid authentication request.' })
       return
     }
-    const current = cookieProfile(req)
-    const nonce = store.identity.consumeChallenge(
+    const current = await cookieProfile(req)
+    const nonce = await store.identity.consumeChallenge(
       input.data.challenge,
       current?.id,
     )
@@ -117,44 +143,39 @@ export function installCollaboration(
       const google = await verifyGoogle(input.data.credential, clientId, nonce)
       if (input.data.link) {
         if (!current) {
-          res
-            .status(401)
-            .json({
-              error: 'Join with your invitation before connecting Google.',
-            })
+          res.status(401).json({
+            error: 'Join with your invitation before connecting Google.',
+          })
           return
         }
         if (
-          !store.identity.linkGoogle(current.id, google.subject, google.email)
+          !(await store.identity.linkGoogle(
+            current.id,
+            google.subject,
+            google.email,
+          ))
         ) {
-          res
-            .status(409)
-            .json({
-              error:
-                'This Google account or profile is already connected to a different identity.',
-            })
+          res.status(409).json({
+            error:
+              'This Google account or profile is already connected to a different identity.',
+          })
           return
         }
         res.json({ profile: current, email: google.email })
         return
       }
       if (current) {
-        res
-          .status(409)
-          .json({
-            error:
-              'You are already signed in. Connect Google from your profile.',
-          })
+        res.status(409).json({
+          error: 'You are already signed in. Connect Google from your profile.',
+        })
         return
       }
-      const signedIn = store.identity.signInGoogle(google.subject)
+      const signedIn = await store.identity.signInGoogle(google.subject)
       if (!signedIn) {
-        res
-          .status(403)
-          .json({
-            error:
-              'Join with an invitation first, then connect Google from your profile. If you joined before, connect it in that original browser.',
-          })
+        res.status(403).json({
+          error:
+            'Join with an invitation first, then connect Google from your profile. If you joined before, connect it in that original browser.',
+        })
         return
       }
       setSession(res, signedIn.token)
@@ -165,8 +186,8 @@ export function installCollaboration(
         .json({ error: 'Could not verify Google sign-in. Please try again.' })
     }
   })
-  app.get('/api/session', (req, res) => {
-    const profile = cookieProfile(req)
+  app.get('/api/session', async (req, res) => {
+    const profile = await cookieProfile(req)
     if (profile) {
       res.json({ profile })
       return
@@ -175,7 +196,7 @@ export function installCollaboration(
       ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(
         req.socket.remoteAddress || '',
       ) && ['127.0.0.1', 'localhost', '[::1]'].includes(req.hostname)
-    const first = loopback ? store.identity.bootstrap() : null
+    const first = loopback ? await store.identity.bootstrap() : null
     if (first) {
       setSession(res, first.token)
       res.json({ profile: first.profile, token: first.token })
@@ -187,7 +208,7 @@ export function installCollaboration(
     })
   })
   const joinAttempts = new Map<string, { count: number; until: number }>()
-  app.post('/api/join', (req, res) => {
+  app.post('/api/join', async (req, res) => {
     const key = req.socket.remoteAddress || 'unknown'
     const attempt = joinAttempts.get(key)
     if (attempt && attempt.until > Date.now() && attempt.count >= 20) {
@@ -216,10 +237,10 @@ export function installCollaboration(
         .json({ error: 'Enter your name and a valid invite code.' })
       return
     }
-    const joined = store.identity.join(
+    const joined = await store.identity.join(
       input.data.token,
       input.data.name,
-      cookieProfile(req)?.id,
+      (await cookieProfile(req))?.id,
     )
     if (!joined) {
       res
@@ -230,8 +251,8 @@ export function installCollaboration(
     if (joined.token) setSession(res, joined.token)
     res.json(joined)
   })
-  app.use('/api', (req, res, next) => {
-    const profile = cookieProfile(req)
+  app.use('/api', async (req, res, next) => {
+    const profile = await cookieProfile(req)
     if (!profile) {
       res.status(401).json({
         error: 'Your session expired. Reload and join with a new invitation.',
@@ -241,16 +262,44 @@ export function installCollaboration(
     res.locals.profile = profile
     next()
   })
-  app.get('/api/studios', (_req, res) =>
-    res.json(store.studios((res.locals.profile as Profile).id)),
+  app.get('/api/studios', async (_req, res) =>
+    res.json(await store.studios((res.locals.profile as Profile).id)),
   )
-  app.get('/api/account', (_req, res) =>
+  app.post('/api/hosted-access', async (req, res) => {
+    const origin = process.env.POMEGRANATE_CLOUD_ORIGIN
+    if (
+      !origin ||
+      !['localhost', '127.0.0.1', '[::1]'].includes(req.hostname)
+    ) {
+      res.status(404).json({ error: 'Hosted access is not configured here.' })
+      return
+    }
+    const cloud = store.createTransfer
+      ? store
+      : await (hosted ??= openPostgres().catch((error) => {
+          hosted = undefined
+          throw error
+        }))
+    const id = (res.locals.profile as Profile).id
+    if (!(await cloud.identity.profile(id))) {
+      res
+        .status(409)
+        .json({
+          error: 'This profile has not been migrated to the hosted studio.',
+        })
+      return
+    }
+    const token = await cloud.createTransfer!(id)
+    res.json({ url: new URL('/#transfer=' + token, origin).href })
+  })
+  app.get('/api/account', async (_req, res) =>
     res.json({
       google:
-        store.identity.account((res.locals.profile as Profile).id) || null,
+        (await store.identity.account((res.locals.profile as Profile).id)) ||
+        null,
     }),
   )
-  app.post('/api/studios', (req, res) => {
+  app.post('/api/studios', async (req, res) => {
     const input = z
       .object({ name: z.string().trim().min(1).max(100) })
       .safeParse(req.body)
@@ -263,10 +312,13 @@ export function installCollaboration(
     res
       .status(201)
       .json(
-        store.createStudio((res.locals.profile as Profile).id, input.data.name),
+        await store.createStudio(
+          (res.locals.profile as Profile).id,
+          input.data.name,
+        ),
       )
   })
-  app.use('/api', (req, res, next) => {
+  app.use('/api', async (req, res, next) => {
     if (
       !/^\/(workspace|history|events|presence|invites)(\/|$)/.test(req.path)
     ) {
@@ -274,7 +326,9 @@ export function installCollaboration(
       return
     }
     const workspaceId = req.get('x-workspace-id') || 'default'
-    if (!store.member((res.locals.profile as Profile).id, workspaceId)) {
+    if (
+      !(await store.member((res.locals.profile as Profile).id, workspaceId))
+    ) {
       res
         .status(403)
         .json({ error: 'You do not have access to this workspace.' })
@@ -283,15 +337,15 @@ export function installCollaboration(
     res.locals.workspaceId = workspaceId
     next()
   })
-  app.post('/api/invites', (_req, res) =>
+  app.post('/api/invites', async (_req, res) =>
     res.json(
-      store.identity.invite(
+      await store.identity.invite(
         (res.locals.profile as Profile).id,
         res.locals.workspaceId,
       ),
     ),
   )
-  app.put('/api/profile', (req, res) => {
+  app.put('/api/profile', async (req, res) => {
     const input = z
       .object({
         name: z.string().trim().min(1).max(60),
@@ -331,7 +385,7 @@ export function installCollaboration(
         return
       }
     }
-    const profile = store.identity.update(
+    const profile = await store.identity.update(
       (res.locals.profile as Profile).id,
       name,
       avatar,
@@ -346,7 +400,7 @@ export function installCollaboration(
       presenceChanged(workspaceId)
     res.json({ profile })
   })
-  app.get('/api/events', (req, res) => {
+  app.get('/api/events', async (req, res) => {
     const clientId = z.string().uuid().safeParse(req.query.clientId)
     if (!clientId.success) {
       res.status(400).json({ error: 'Invalid client.' })
@@ -354,6 +408,18 @@ export function installCollaboration(
     }
     const profile = res.locals.profile as Profile
     const workspaceId = res.locals.workspaceId as string
+    if (store.cloud) {
+      await cloudEvents(
+        req,
+        res,
+        store,
+        workspaceId,
+        profile,
+        clientId.data,
+        () => cookieProfile(req),
+      )
+      return
+    }
     const key = `${workspaceId}:${profile.id}:${clientId.data}`
     clients.get(key)?.res.end()
     clients.delete(key)
@@ -381,11 +447,11 @@ export function installCollaboration(
         seenAt: Date.now(),
       },
     })
-    write(res, 'workspace', store.read(workspaceId))
-    write(res, 'activity', store.activity(workspaceId))
+    write(res, 'workspace', await store.read(workspaceId))
+    write(res, 'activity', await store.activity(workspaceId))
     presenceChanged(workspaceId)
-    const heartbeat = setInterval(() => {
-      if (!cookieProfile(req)) {
+    const heartbeat = setInterval(async () => {
+      if (!(await cookieProfile(req))) {
         res.end()
         return
       }
@@ -399,13 +465,22 @@ export function installCollaboration(
       }
     })
   })
-  app.post('/api/presence', (req, res) => {
+  app.post('/api/presence', async (req, res) => {
     const input = presenceSchema.safeParse(req.body)
     if (!input.success) {
       res.status(400).json({ error: 'Invalid presence.' })
       return
     }
     const workspaceId = res.locals.workspaceId as string
+    if (store.cloud) {
+      await store.cloud.put(workspaceId, {
+        ...input.data,
+        profile: res.locals.profile as Profile,
+        seenAt: Date.now(),
+      })
+      res.status(204).end()
+      return
+    }
     const key = `${workspaceId}:${(res.locals.profile as Profile).id}:${input.data.clientId}`
     const client = clients.get(key)
     if (
@@ -423,7 +498,7 @@ export function installCollaboration(
     }
     res.status(204).end()
   })
-  app.patch('/api/workspace', (req, res) => {
+  app.patch('/api/workspace', async (req, res) => {
     const input = z
       .object({ requestId: z.string().uuid(), operations: operationsSchema })
       .safeParse(req.body)
@@ -433,31 +508,45 @@ export function installCollaboration(
     }
     const actor = res.locals.profile as Profile
     const workspaceId = res.locals.workspaceId as string
-    if (store.receipt(actor.id, input.data.requestId, workspaceId)) {
-      res.json(store.read(workspaceId))
+    if (await store.receipt(actor.id, input.data.requestId, workspaceId)) {
+      res.json(await store.read(workspaceId))
       return
     }
     try {
-      const current = store.read(workspaceId)
-      const next = applyOperations(current.workspace, input.data.operations)
-      if (!input.data.operations.length) {
-        res.json(current)
+      for (let attempt = 0; attempt < 4; attempt++) {
+        if (await store.receipt(actor.id, input.data.requestId, workspaceId)) {
+          res.json(await store.read(workspaceId))
+          return
+        }
+        const current = await store.read(workspaceId)
+        const next = applyOperations(current.workspace, input.data.operations)
+        if (!input.data.operations.length) {
+          res.json(current)
+          return
+        }
+        const saved = await store.save(
+          next,
+          current.revision,
+          {
+            id: actor.id,
+            name: actor.name,
+            message: describeOperations(input.data.operations),
+            requestId: input.data.requestId,
+          },
+          workspaceId,
+        )
+        if (!saved) continue
+        broadcast('workspace', saved, workspaceId)
+        broadcast('activity', await store.activity(workspaceId), workspaceId)
+        res.json(saved)
         return
       }
-      const saved = store.save(
-        next,
-        current.revision,
-        {
-          id: actor.id,
-          name: actor.name,
-          message: describeOperations(input.data.operations),
-          requestId: input.data.requestId,
-        },
-        workspaceId,
-      )!
-      broadcast('workspace', saved, workspaceId)
-      broadcast('activity', store.activity(workspaceId), workspaceId)
-      res.json(saved)
+      res
+        .status(409)
+        .json({
+          error:
+            'This workspace is receiving simultaneous changes. Reload the shared version before retrying.',
+        })
     } catch (err) {
       if (err instanceof MergeConflict || err instanceof z.ZodError) {
         res.status(409).json({
@@ -465,7 +554,7 @@ export function installCollaboration(
             err instanceof MergeConflict
               ? err.message
               : 'A related item changed. Reload the shared version before retrying.',
-          latest: store.read(workspaceId),
+          latest: await store.read(workspaceId),
         })
         return
       }
@@ -477,6 +566,7 @@ export function installCollaboration(
     close: () => {
       for (const client of clients.values()) client.res.end()
       clients.clear()
+      void hosted?.then((store) => store.close()).catch(() => {})
     },
   }
 }

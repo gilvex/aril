@@ -3,10 +3,17 @@ import { z } from 'zod'
 import { resolve } from 'node:path'
 import { existsSync } from 'node:fs'
 import { openStore } from './store.ts'
+import type { Store } from './store-contract.ts'
 import { workspaceSchema } from '../domain/workspace.ts'
 import { installCollaboration } from './collaboration.ts'
 
 export function createApp(database: string, publicOrigin?: string) {
+  return createApplication(openStore(database), publicOrigin)
+}
+export function createApplication<T extends Store>(
+  store: T,
+  publicOrigin?: string,
+) {
   if (publicOrigin) {
     const url = new URL(publicOrigin)
     if (
@@ -17,7 +24,6 @@ export function createApp(database: string, publicOrigin?: string) {
       throw new Error('POMEGRANATE_ORIGIN must be an HTTP or HTTPS origin.')
     publicOrigin = url.origin
   }
-  const store = openStore(database)
   const app = express()
   app.disable('x-powered-by')
   app.use('/api', (req, res, next) => {
@@ -50,14 +56,14 @@ export function createApp(database: string, publicOrigin?: string) {
     next()
   })
   app.use(express.json({ limit: '5mb' }))
-  app.get('/api/health', (_req, res) => {
+  app.get('/api/health', async (_req, res) => {
     res.json({ ok: true })
   })
   const collaboration = installCollaboration(app, store, publicOrigin)
-  app.get('/api/workspace', (_req, res) => {
-    res.json(store.read(res.locals.workspaceId))
+  app.get('/api/workspace', async (_req, res) => {
+    res.json(await store.read(res.locals.workspaceId))
   })
-  app.put('/api/workspace', (req, res) => {
+  app.put('/api/workspace', async (req, res) => {
     const result = z
       .object({
         revision: z.number().int().positive(),
@@ -71,7 +77,7 @@ export function createApp(database: string, publicOrigin?: string) {
       })
       return
     }
-    const updated = store.save(
+    const updated = await store.save(
       result.data.workspace,
       result.data.revision,
       undefined,
@@ -87,16 +93,16 @@ export function createApp(database: string, publicOrigin?: string) {
     res.json(updated)
     collaboration.broadcast('workspace', updated, res.locals.workspaceId)
   })
-  app.get('/api/history', (_req, res) => {
-    res.json(store.history(res.locals.workspaceId))
+  app.get('/api/history', async (_req, res) => {
+    res.json(await store.history(res.locals.workspaceId))
   })
-  app.get('/api/history/:revision', (req, res) => {
+  app.get('/api/history/:revision', async (req, res) => {
     const revision = Number(req.params.revision)
     if (!Number.isSafeInteger(revision) || revision < 1) {
       res.status(400).json({ error: 'Invalid revision.' })
       return
     }
-    const workspace = store.snapshot(revision, res.locals.workspaceId)
+    const workspace = await store.snapshot(revision, res.locals.workspaceId)
     if (!workspace) {
       res.status(404).json({ error: 'Snapshot not found.' })
       return
@@ -105,7 +111,7 @@ export function createApp(database: string, publicOrigin?: string) {
   })
   if (existsSync(resolve('dist/index.html'))) {
     app.use(express.static(resolve('dist')))
-    app.get('/{*path}', (req, res) => {
+    app.get('/{*path}', async (req, res) => {
       if (req.path.startsWith('/api/'))
         res.status(404).json({ error: 'Endpoint not found.' })
       else res.sendFile(resolve('dist/index.html'))
@@ -118,7 +124,10 @@ export function createApp(database: string, publicOrigin?: string) {
       res: express.Response,
       _next: express.NextFunction,
     ) => {
-      console.error(error)
+      console.error('Studio request failed', {
+        name: error instanceof Error ? error.name : 'Error',
+        code: (error as { code?: string }).code,
+      })
       const status =
         error instanceof SyntaxError
           ? 400

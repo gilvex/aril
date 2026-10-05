@@ -1,9 +1,13 @@
 import { resolve } from 'node:path'
-import { createApp } from './app.ts'
-const { app, store, collaboration } = createApp(
-  resolve(process.env.POMEGRANATE_DATA_DIR || 'data', 'studio.sqlite'),
-  process.env.POMEGRANATE_ORIGIN,
-)
+import { createApp, createApplication } from './app.ts'
+import { openPostgres } from './postgres.ts'
+const { app, store, collaboration } =
+  process.env.POMEGRANATE_STORAGE === 'postgres'
+    ? createApplication(await openPostgres(), process.env.POMEGRANATE_ORIGIN)
+    : createApp(
+        resolve(process.env.POMEGRANATE_DATA_DIR || 'data', 'studio.sqlite'),
+        process.env.POMEGRANATE_ORIGIN,
+      )
 const port = Number(process.env.PORT || 4317)
 const host = process.env.HOST || '127.0.0.1'
 if (
@@ -18,8 +22,8 @@ const server = app.listen(port, host, () =>
 )
 const stop = () => {
   collaboration.close()
-  server.close(() => {
-    store.close()
+  server.close(async () => {
+    await store.close()
     process.exit(0)
   })
 }
