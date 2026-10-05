@@ -9,7 +9,7 @@
   "packageManager": "pnpm@11.19.0",
   "scripts": {
     "dev": "node --env-file-if-exists=.env scripts/dev.mjs",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/build-server.mjs",
     "lint": "eslint .",
     "test": "node --test server/*.test.ts",
     "start": "node --env-file-if-exists=.env server/index.ts",
@@ -35,6 +35,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
+    "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
     "globals": "^17.13.0",
     "prettier": "^3.9.9",

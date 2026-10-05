@@ -5,6 +5,7 @@ export default tseslint.config(
   {
     ignores: [
       'dist',
+      '.server',
       'node_modules',
       '.pnpm-store',
       '.agents',

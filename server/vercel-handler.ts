@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
-import { openPostgres } from '../server/postgres.ts'
-import { createApplication } from '../server/app.ts'
+import { openPostgres } from './postgres.ts'
+import { createApplication } from './app.ts'
 let application: ReturnType<typeof initialize> | undefined
 async function initialize() {
   const store = await openPostgres()
