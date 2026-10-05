@@ -37,6 +37,10 @@ import { useMultiplayer } from '../model/use-multiplayer'
 import { CollaborationBar, PresenceAvatars } from './CollaborationBar'
 import type { Profile } from '../../../../domain/collaboration'
 import type { StudioSummary } from '../../../../domain/studios'
+import {
+  readStudioRoute,
+  saveStudioRoute,
+} from '../../../shared/lib/browser-route'
 const CanvasBoard = lazy(() =>
   import('./CanvasBoard').then((module) => ({ default: module.CanvasBoard })),
 )
@@ -71,13 +75,22 @@ export function Studio({
   const state = useWorkspace(initial, studio.id, initialProfile.id, recovery)
   const multiplayer = useMultiplayer(initialProfile, state.receive, studio.id)
   const { workspace, change } = state
-  const [view, setView] = useState<View>('canvas')
+  const [initialRoute] = useState(() => readStudioRoute(location.search))
+  const [view, setView] = useState<View>(initialRoute.view)
   const [canvasMode, setCanvasMode] = useState<'canvas' | 'wireframes'>(
-    'canvas',
+    initialRoute.canvasMode,
   )
   const BoardCanvas = canvasMode === 'wireframes' ? WireframeBoard : CanvasBoard
-  const [boardId, setBoardId] = useState(workspace.boards[0].id)
-  const [requirementId, setRequirementId] = useState<string | null>(null)
+  const [boardId, setBoardId] = useState(
+    initialRoute.boardId || workspace.boards[0].id,
+  )
+  const [requirementId, setRequirementId] = useState<string | null>(() =>
+    workspace.requirements.some(
+      (item) => item.id === initialRoute.requirementId,
+    )
+      ? initialRoute.requirementId!
+      : null,
+  )
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     try {
@@ -142,6 +155,18 @@ export function Studio({
   const importRef = useRef<HTMLInputElement>(null)
   const board =
     workspace.boards.find((b) => b.id === boardId) || workspace.boards[0]
+  const routedRequirementId = workspace.requirements.find(
+    (item) => item.id === requirementId,
+  )?.id
+  useEffect(() => {
+    saveStudioRoute({
+      workspaceId: studio.id,
+      boardId: board.id,
+      view,
+      canvasMode,
+      requirementId: routedRequirementId,
+    })
+  }, [studio.id, board.id, view, canvasMode, routedRequirementId])
   const { sendPresence } = multiplayer
   const present = [
     ...(multiplayer.connected
@@ -620,10 +645,10 @@ export function Studio({
         )}
         {view === 'requirements' && (
           <Requirements
-            key={requirementId || 'all'}
             workspace={workspace}
             change={change}
-            initialId={requirementId}
+            selected={requirementId}
+            onSelect={setRequirementId}
             openBoard={navigateBoard}
             profile={multiplayer.profile}
             peers={multiplayer.peers}

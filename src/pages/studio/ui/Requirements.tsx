@@ -14,7 +14,8 @@ import { RequirementPeople, requirementFieldLabels, type RequirementViewer } fro
 export function Requirements({
   workspace,
   change,
-  initialId,
+  selected,
+  onSelect,
   openBoard,
   profile,
   peers,
@@ -22,7 +23,8 @@ export function Requirements({
 }: {
   workspace: Workspace
   change: (fn: (w: Workspace) => Workspace) => void
-  initialId: string | null
+  selected: string | null
+  onSelect: (id: string | null) => void
   openBoard: (id: string) => void
   profile: Profile
   peers: Presence[]
@@ -30,14 +32,13 @@ export function Requirements({
 }) {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('All areas')
-  const [selected, setSelected] = useState(initialId)
   const current = workspace.requirements.find((r) => r.id === selected)
   const [activity, setActivity] = useState<RequirementPresence | null>(null)
   const typingTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const selectRequirement = (id: string | null) => {
     clearTimeout(typingTimer.current)
     setActivity(null)
-    setSelected(id)
+    onSelect(id)
   }
   const currentId = current?.id || null
   const field = activity?.id === currentId ? activity.field : null

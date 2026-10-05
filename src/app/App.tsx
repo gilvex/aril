@@ -17,6 +17,7 @@ import { WorkspaceHome } from './WorkspaceHome'
 import type { StudioSummary } from '../../domain/studios'
 import { GoogleSignIn } from '../shared/ui/GoogleSignIn'
 import { isFreshDraft } from '../../domain/freshness'
+import { readStudioRoute, saveStudioRoute } from '../shared/lib/browser-route'
 let sessionRequest: Promise<{ profile: Profile; token?: string }> | undefined
 function startSession() {
   const token = new URLSearchParams(location.hash.slice(1)).get('transfer')
@@ -35,6 +36,11 @@ function startSession() {
 }
 
 export function App() {
+  const [startupRoute] = useState(() => readStudioRoute(location.search))
+  const [restoringRoute, setRestoringRoute] = useState(
+    !!startupRoute.workspaceId,
+  )
+  const [routeNotice, setRouteNotice] = useState('')
   const [profile, setProfile] = useState<Profile | null>(null)
   const [studio, setStudio] = useState<StudioSummary | null>(null)
   const [initial, setInitial] = useState<Envelope | null>(null)
@@ -65,6 +71,31 @@ export function App() {
       cancelled = true
     }
   }, [])
+  useEffect(() => {
+    if (!profile || token || !startupRoute.workspaceId) return
+    let cancelled = false
+    request<StudioSummary[]>('/api/studios')
+      .then((studios) => {
+        if (cancelled) return
+        const saved = studios.find(
+          (item) => item.id === startupRoute.workspaceId,
+        )
+        if (saved) setStudio(saved)
+        else {
+          saveStudioRoute(null)
+          setRouteNotice(
+            'That workspace is unavailable. Choose a workspace below.',
+          )
+        }
+        setRestoringRoute(false)
+      })
+      .catch((err) => {
+        if (!cancelled) setError(String(err))
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [profile?.id, token, startupRoute.workspaceId])
   useEffect(() => {
     if (!profile || !studio) return
     let cancelled = false
@@ -111,7 +142,18 @@ export function App() {
         setInitial(result)
       })
       .catch((err) => {
-        if (!cancelled) setError(String(err))
+        if (cancelled) return
+        if (
+          err instanceof ApiError &&
+          (err.status === 403 || err.status === 404)
+        ) {
+          saveStudioRoute(null)
+          setStudio(null)
+          setInitial(null)
+          setRouteNotice(
+            'That workspace is unavailable. Choose a workspace below.',
+          )
+        } else setError(String(err))
       })
     return () => {
       cancelled = true
@@ -164,7 +206,7 @@ export function App() {
         </div>
       </div>
     )
-  if (!profile || token || (studio && !initial))
+  if (!profile || token || restoringRoute || (studio && !initial))
     return (
       <div className="boot-screen">
         <img src="/mark.svg" alt="" />
@@ -272,10 +314,17 @@ export function App() {
     return (
       <WorkspaceHome
         profile={profile}
+        notice={routeNotice}
         onOpen={(value) => {
           setInitial(null)
           setRecovery(undefined)
           setError('')
+          setRouteNotice('')
+          saveStudioRoute({
+            workspaceId: value.id,
+            view: 'canvas',
+            canvasMode: 'canvas',
+          })
           setStudio(value)
         }}
       />
@@ -288,6 +337,7 @@ export function App() {
       recovery={recovery}
       initialProfile={profile}
       onWorkspaces={(value) => {
+        saveStudioRoute(null)
         setProfile(value)
         setInitial(null)
         setRecovery(undefined)

@@ -7,9 +7,11 @@ import type { Profile } from '../../domain/collaboration'
 export function WorkspaceHome({
   profile,
   onOpen,
+  notice,
 }: {
   profile: Profile
   onOpen: (studio: StudioSummary) => void
+  notice?: string
 }) {
   const [studios, setStudios] = useState<StudioSummary[] | null>(null)
   const [name, setName] = useState('')
@@ -89,6 +91,7 @@ export function WorkspaceHome({
           New workspace
         </button>
       </div>
+      {notice && <p role="status">{notice}</p>}
       {creating && (
         <form
           className="workspace-create"
