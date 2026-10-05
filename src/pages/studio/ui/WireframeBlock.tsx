@@ -2,9 +2,11 @@ import {
   Handle,
   NodeResizer,
   Position,
+  useUpdateNodeInternals,
   type Node,
   type NodeProps,
 } from '@xyflow/react'
+import { useEffect } from 'react'
 import { Image, Menu, MoreHorizontal } from 'lucide-react'
 import type { WireNode } from '../../../../domain/wireframe'
 
@@ -18,7 +20,15 @@ export type WireFlowNode = Node<
   'wireframe'
 >
 
-export function WireframeBlock({ data, selected }: NodeProps<WireFlowNode>) {
+export function WireframeBlock({
+  id,
+  data,
+  selected,
+}: NodeProps<WireFlowNode>) {
+  const updateNodeInternals = useUpdateNodeInternals()
+  useEffect(() => {
+    updateNodeInternals(id)
+  }, [id, data.preview, updateNodeInternals])
   return (
     <>
       <NodeResizer
@@ -32,9 +42,10 @@ export function WireframeBlock({ data, selected }: NodeProps<WireFlowNode>) {
       />
       {!data.preview && (
         <Handle
-          type="target"
+          id="left"
+          type="source"
           position={Position.Left}
-          aria-label={`Connect to ${data.title}`}
+          aria-label={`Connect on left of ${data.title}`}
         />
       )}
       <div
@@ -100,9 +111,10 @@ export function WireframeBlock({ data, selected }: NodeProps<WireFlowNode>) {
       </div>
       {!data.preview && (
         <Handle
+          id="right"
           type="source"
           position={Position.Right}
-          aria-label={`Connect from ${data.title}`}
+          aria-label={`Connect on right of ${data.title}`}
         />
       )}
     </>

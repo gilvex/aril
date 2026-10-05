@@ -5,7 +5,10 @@ import {
   type Wireframe,
   type WireNode,
 } from '../domain/wireframe.ts'
-import { routeWireframes } from '../src/pages/studio/model/wire-routing.ts'
+import {
+  routeWireframes,
+  wireConnectionSides,
+} from '../src/pages/studio/model/wire-routing.ts'
 
 const link = (
   id: string,
@@ -70,6 +73,38 @@ test('wireframe forward and return paths go around intervening screens', () => {
     JSON.stringify(nodes),
     before,
     'Routing must not modify saved layout',
+  )
+  const backward = routes.get('back')!
+  assert.equal(
+    backward.points[0].x,
+    screens[2].position.x + returnAction.position.x,
+  )
+  assert.ok(
+    backward.points[1].x < backward.points[0].x,
+    'Return flow leaves to the left',
+  )
+  assert.equal(
+    backward.points.at(-1)!.x,
+    screens[0].position.x + screens[0].width,
+  )
+  assert.ok(
+    backward.points.at(-2)!.x > backward.points.at(-1)!.x,
+    'Return flow enters from the right',
+  )
+})
+
+test('wireframe connection sides follow absolute positions and reverse after moving a screen', () => {
+  const screen = makeWireNode('screen', 'screen', { x: 1000, y: 0 })
+  const button = makeWireNode('button', 'back', { x: 24, y: 300 }, screen.id)
+  const target = makeWireNode('screen', 'target', { x: 0, y: -700 })
+  assert.deepEqual(
+    wireConnectionSides(button, target, [screen, button, target]),
+    { sourceSide: 'left', targetSide: 'right' },
+  )
+  const moved = { ...target, position: { x: 2200, y: -700 } }
+  assert.deepEqual(
+    wireConnectionSides(button, moved, [screen, button, moved]),
+    { sourceSide: 'right', targetSide: 'left' },
   )
 })
 

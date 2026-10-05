@@ -5,6 +5,7 @@ import {
   Controls,
   MiniMap,
   MarkerType,
+  ConnectionMode,
   type NodeChange,
   type ReactFlowInstance,
 } from '@xyflow/react'
@@ -45,7 +46,7 @@ import {
 } from '../../../../domain/wireframe'
 import { WireframeBlock, type WireFlowNode } from './WireframeBlock'
 import { WireframeEdge } from './WireframeEdge'
-import { routeWireframes } from '../model/wire-routing'
+import { routeWireframes, wireConnectionSides } from '../model/wire-routing'
 import { LiveCursors } from './LiveCursors'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
@@ -516,6 +517,9 @@ export function WireframeBoard({
                 },
               }))}
             edges={graph.edges.map((e, index) => {
+              const source = liveNodes.find((n) => n.id === e.source)!
+              const target = liveNodes.find((n) => n.id === e.target)!
+              const sides = wireConnectionSides(source, target, liveNodes)
               const selectors = [
                 ...(edgeId === e.id ? [profile] : []),
                 ...peers
@@ -525,6 +529,8 @@ export function WireframeBoard({
               const color = selectors[0]?.color || '#a34d6c'
               return {
                 ...e,
+                sourceHandle: sides.sourceSide,
+                targetHandle: sides.targetSide,
                 hidden: preview,
                 selected: edgeId === e.id,
                 zIndex: 2,
@@ -549,6 +555,7 @@ export function WireframeBoard({
             })}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
+            connectionMode={ConnectionMode.Loose}
             onInit={setFlow}
             onNodesChange={onNodesChange}
             nodesDraggable={!preview}
@@ -651,7 +658,7 @@ export function WireframeBoard({
           <div className="canvas-tip" role="status">
             {preview
               ? previewMessage
-              : 'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect right to left'}
+              : 'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side'}
           </div>
         </div>
         <aside className="inspector wire-inspector">
@@ -1098,8 +1105,9 @@ export function WireframeBoard({
                 ))}
               </div>
               <p>
-                Connect the right handle of a block to the left handle of its
-                destination, or use “What happens next?” in its details.
+                Connect either side of a block to its destination, or use “What
+                happens next?” in its details. Arrows choose the side facing
+                their destination.
               </p>
             </div>
           )}

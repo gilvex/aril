@@ -1,4 +1,21 @@
-import type { Wireframe, WireNode } from '../../../../domain/wireframe.ts'
+import {
+  wirePosition,
+  type Wireframe,
+  type WireNode,
+} from '../../../../domain/wireframe.ts'
+
+export function wireConnectionSides(
+  source: WireNode,
+  target: WireNode,
+  nodes: WireNode[],
+) {
+  const from = wirePosition(source, nodes),
+    to = wirePosition(target, nodes)
+  const backwards = to.x + target.width / 2 < from.x + source.width / 2
+  return backwards
+    ? { sourceSide: 'left' as const, targetSide: 'right' as const }
+    : { sourceSide: 'right' as const, targetSide: 'left' as const }
+}
 
 type Point = { x: number; y: number }
 type Rect = { left: number; right: number; top: number; bottom: number }
@@ -157,10 +174,23 @@ export function routeWireframes(nodes: WireNode[], edges: Wireframe['edges']) {
     if (!source || !target) return
     const from = rects.get(source.id)!,
       to = rects.get(target.id)!
-    const start = { x: from.right, y: (from.top + from.bottom) / 2 }
-    const end = { x: to.left, y: (to.top + to.bottom) / 2 }
+    const { sourceSide, targetSide } = wireConnectionSides(
+      source,
+      target,
+      nodes,
+    )
+    const sourceDirection = sourceSide === 'right' ? 1 : -1
+    const targetDirection = targetSide === 'right' ? 1 : -1
+    const start = { x: from[sourceSide], y: (from.top + from.bottom) / 2 }
+    const end = { x: to[targetSide], y: (to.top + to.bottom) / 2 }
     if (target.data.kind === 'screen') {
-      const incoming = edges.filter((e) => e.target === target.id)
+      const incoming = edges.filter(
+        (e) =>
+          e.target === target.id &&
+          byId.has(e.source) &&
+          wireConnectionSides(byId.get(e.source)!, target, nodes).targetSide ===
+            targetSide,
+      )
       const slot = incoming.findIndex((e) => e.id === edge.id)
       end.y +=
         (slot - (incoming.length - 1) / 2) *
@@ -188,8 +218,8 @@ export function routeWireframes(nodes: WireNode[], edges: Wireframe['edges']) {
           bottom: r.bottom + gap,
         }
       })
-    const exit = { x: start.x + 16, y: start.y },
-      entry = { x: end.x - targetGap - 8, y: end.y }
+    const exit = { x: start.x + sourceDirection * 16, y: start.y },
+      entry = { x: end.x + targetDirection * (targetGap + 8), y: end.y }
     const terminalObstacle = (rect: Rect, gap: number) => ({
       left: rect.left - gap,
       right: rect.right + gap,
