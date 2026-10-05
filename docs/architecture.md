@@ -22,7 +22,7 @@ Both stores hold isolated workspaces and up to 30 prior revisions each, plus pro
 
 The current schema includes boards, node positions and metadata, edges, canvas viewports, requirements, notes, and design preferences. Links must reference existing nodes/requirements; identifiers are unique within their relevant scope. Imports use the same schema. The format carries `schemaVersion: 1`; future format changes need explicit migration.
 
-Server-sent events carry authoritative snapshots, transient presence, and the latest 50 activity entries. Authenticated fetch streaming supports a session header as well as cookies. Reconnects receive a fresh snapshot. Presence is held in memory and disappears on disconnect. Canvas coordinates are world coordinates; cameras remain local. Undo applies inverse local operations with preconditions, preserving unrelated collaborator edits. Text is merged per field, not per character; this is not a collaborative rich-text editor. Large documents and production deployment state need further architecture work.
+Server-sent events carry authoritative snapshots, transient presence, and the latest 50 activity entries. Authenticated fetch streaming supports a session header as well as cookies. Reconnects receive a fresh snapshot. SQLite presence is held in memory. Postgres presence uses shared rows with stream leases and expiry, allowing separate Vercel instances to broadcast updates. Presence disappears on disconnect or expiry. Canvas coordinates are world coordinates; cameras remain local. Undo applies inverse local operations with preconditions, preserving unrelated collaborator edits. Text is merged per field, not per character; this is not a collaborative rich-text editor. Large documents and production deployment state need further architecture work.
 
 ## Local API
 
@@ -45,6 +45,6 @@ The server restricts API hostnames and browser origins to loopback plus an expli
 
 ## Operational behavior
 
-`pnpm dev` starts both processes and shuts down the sibling if one exits. Vite proxies `/api` to port 4317. `pnpm build` emits a static frontend; `pnpm start` serves it and the API together. SQLite data is outside the generated frontend bundle and ignored by Git.
+`pnpm dev` starts both processes and shuts down the sibling if one exits. Vite proxies `/api` to port 4317. `pnpm build` emits a static frontend and a bundled Node API for Vercel; `pnpm start` serves it and the API together. SQLite data is outside the generated frontend bundle and ignored by Git.
 
 Recovery drafts and cameras use per-tab sessionStorage; the opaque session fallback uses localStorage. Existing single-user drafts are offered for export before opening the shared document, never automatically pushed over newer saved work. Export before resolving a conflict if both versions matter. Saved revision history is bounded, not a substitute for independent backups. See collaboration.md for access and hosting details.

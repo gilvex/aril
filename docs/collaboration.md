@@ -1,6 +1,6 @@
 # Shared planning studio
 
-The first visitor on loopback receives an initial profile. Change its name and picture from the top-right profile button. Pictures are cropped to a 192-pixel square locally; accepted uploads are PNG, JPEG, or WebP up to 5 MB. The server stores the resized image in SQLite.
+The first visitor on loopback receives an initial profile only when the database has no profiles. Change its name and picture from the top-right profile button. Pictures are cropped to a 192-pixel square locally; accepted uploads are PNG, JPEG, or WebP up to 5 MB. The server stores the resized image in the configured database.
 
 Open People and choose Create invite link. Each link grants edit-and-invite access to the current workspace, works once, and expires after 24 hours. A new recipient enters a display name; a signed-in recipient keeps their profile and gains membership. No email is sent. Every member has edit/invite permissions within that workspace; member removal and session management are not implemented. The home screen lists accessible workspaces and lets members create new ones. See [Google account linking and deployment](accounts-and-deployment.md).
 
@@ -31,7 +31,7 @@ For the first remote invitation, or if browser data was cleared/session expired,
 pnpm invite
 ```
 
-This uses POMEGRANATE_ORIGIN when set, otherwise the local development URL. For a local production server, set PORT=4317 before generating the link. Use the same POMEGRANATE_DATA_DIR as the running server. The command prints a one-time invitation; share it only with the intended collaborator. It does not expose the service to the network.
+This loads `.env` and uses the configured storage backend. It uses POMEGRANATE_ORIGIN, then POMEGRANATE_CLOUD_ORIGIN, then the local development URL. Set POMEGRANATE_WORKSPACE_ID to target a workspace other than `default`. For a local production server, set PORT=4317 before generating the link. SQLite must use the same POMEGRANATE_DATA_DIR as the running server. The command prints a one-time invitation; share it only with the intended collaborator. It does not expose the service to the network.
 
 ## Session and storage behavior
 
@@ -39,4 +39,4 @@ Sessions last 30 days. The server stores hashed opaque tokens, with an HttpOnly 
 
 SQLite additions preserve existing workspace data. Back up the complete data directory while the server is stopped. Live presence is transient; saved documents, profiles, and activity survive restart. Pending edits use per-tab sessionStorage and survive reload, but not closing that tab. Export a pending or conflicting draft before closing it. Existing older drafts are explicitly offered for download before continuing with the saved workspace.
 
-The server supports one process and up to 64 live connections. This is a trusted-team planning studio; deployment permissions, tenants, SSO, revocation, and horizontally distributed collaboration remain separate work.
+SQLite supports one process and up to 64 live connections. Vercel uses shared Postgres storage and presence, so collaborators can connect to different function instances. See accounts-and-deployment.md for stream lifetimes and polling limits. This is a trusted-team planning studio; deployment permissions, enterprise tenants, SSO and revocation remain separate work.

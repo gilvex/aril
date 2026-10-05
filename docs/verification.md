@@ -76,3 +76,15 @@ These checks do not constitute a complete accessibility audit, cross-browser/loa
 - Live local migration: backed up the database under data/backups before restarting; original and migrated document bodies matched exactly at revision 106, with all 3 existing profiles enrolled in Pomegranate. Existing 4 boards and 15 requirements opened correctly. No test workspace was added to the user's live data.
 - Screenshot: artifacts/workspaces-live.png. The workspace picker remains open at http://127.0.0.1:5173/.
 - Google end-to-end authentication is not verified: no Google OAuth client is configured. GitHub repository creation is blocked by missing CLI/browser authentication. No Vercel deployment was created; persistent cloud storage and distributed realtime are not yet provisioned/implemented.
+
+## Supabase migration and Vercel deployment (2026-10-05)
+
+This update supersedes the deployment blockers recorded above.
+
+- Created the private `gilvex/pomegranate` repository and deployed the studio to `https://pomegrenate.vercel.app`. Production health responds 200; unauthenticated session lookup responds 401. The Google client ID is configured and the Google button renders in the hosted profile panel. Real-user Google linking/sign-in remains an interactive check.
+- With explicit user approval, backed up and transactionally migrated both workspaces, all three profiles, documents, history, memberships, Google bindings, invitations and hashed sessions. Verified document bodies/revisions and profile counts. Local development now uses the same Postgres store.
+- Opened the existing local profile using the one-use hosted access flow. The hosted UI retained the profile and its workspace membership, and opened the original four boards and fifteen requirements at revision 106.
+- Ran the real Supabase two-instance integration test in its own temporary schema: concurrent merges, deduplication, invitation races, isolated access, shared presence, one-use transfers and anonymous schema exclusion passed.
+- Ran `scripts/smoke-cloud.ts` against the production URL: account transfer/replay rejection, workspace creation, non-member denial, invitation/replay rejection, two live event streams, cursor broadcast, durable edits and reconnect passed. Removed all generated test profiles and the temporary workspace; existing user workspaces were not edited.
+- `pnpm lint`, `pnpm test` (7 passed, separate Postgres test skipped without its explicit environment setting), and `pnpm build` passed. The production backend is bundled separately to avoid Vercel TypeScript module-resolution failures.
+- Screenshot: `artifacts/hosted-studio.png` shows the hosted saved canvas and profile with Google linking available. Production load testing and an actual Google authentication round trip are not covered by these checks.

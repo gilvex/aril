@@ -19,7 +19,7 @@ If an old guest session has expired before Google was connected, a new invitatio
 
 ## Hosting and moving existing users online
 
-The studio supports native SQLite for a single self-hosted process and Postgres for shared/cloud deployments. Set `POMEGRANATE_STORAGE=postgres` and `POSTGRES_URL` to use Postgres locally. Vercel's `api/index.ts` always uses Postgres. The production origin is `https://pomegrenate.vercel.app`; the GitHub repository is private at `gilvex/pomegranate`.
+The studio supports native SQLite for a single self-hosted process and Postgres for shared/cloud deployments. Set `POMEGRANATE_STORAGE=postgres` and `POSTGRES_URL` to use Postgres locally. Vercel's `api/index.js` loads the server bundle generated in `.server/` by `pnpm build` and always uses Postgres. The production origin is `https://pomegrenate.vercel.app`; the GitHub repository is private at `gilvex/pomegranate`.
 
 Supabase credentials remain server-side. The app does not use browser Supabase keys or Supabase Auth; it retains the invited-profile and Google identity model. Tables live in a private `pomegranate` schema, without anonymous schema access. Supabase TLS connections verify certificates against the bundled public Supabase CA, downloaded from `https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt` (SHA256 `807025AD50D4ED219D2C9C7D299C004F824EB00CF7F65AFEF607D07B72E6CAFA`).
 
@@ -31,4 +31,4 @@ Set `POMEGRANATE_CLOUD_ORIGIN=https://pomegrenate.vercel.app` on the local serve
 
 The repository remains **private**. `.gitignore` excludes databases and backups, artifacts, environment values, pnpm cache, dependencies and Vercel local metadata. Never commit local sessions, account bindings or live planning data. `GOOGLE_CLIENT_SECRET`, database passwords and service-role keys must not be placed in frontend environment variables.
 
-After services are configured, validate invitations, Google linking and subsequent sign-in, workspace isolation, autosave, simultaneous collaboration and reconnects on the actual deployed URL before treating the deployment as complete.
+For an explicit deployment smoke test, set `SMOKE_ORIGIN` to the deployed origin and run `node --env-file=.env scripts/smoke-cloud.ts` with its database credentials. This creates isolated temporary profiles and a workspace, verifies transfer, invitations, membership isolation, live presence, persisted edits and reconnects, and removes only the generated fixtures. Google linking and subsequent Google sign-in require a real user's interactive check.

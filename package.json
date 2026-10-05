@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "test": "node --test server/*.test.ts",
     "start": "node --env-file-if-exists=.env server/index.ts",
-    "invite": "node scripts/invite.ts"
+    "invite": "node --env-file-if-exists=.env scripts/invite.ts"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",
