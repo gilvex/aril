@@ -31,6 +31,8 @@ import {
   Unplug,
   Maximize2,
   Minimize2,
+  PanelRightOpen,
+  PanelRightClose,
 } from 'lucide-react'
 import {
   nodeKinds,
@@ -81,6 +83,8 @@ export function CanvasBoard({
   profile,
 }: Props) {
   const [localDragging, setLocalDragging] = useState<Set<string>>(new Set())
+  const [inspectorOpen, setInspectorOpen] = useState(true)
+  const inspectorToggle = useRef<HTMLButtonElement>(null)
   const dragPositions = useRef(new Map<string, DragPosition>())
   const liveNodes = useLiveNodePositions(board.nodes, peers, localDragging)
   useEffect(() => {
@@ -375,9 +379,25 @@ export function CanvasBoard({
               </button>
             </h1>
           )}
-          <p>{board.description}</p>
         </div>
         <div className="canvas-heading-actions">
+          <button
+            ref={inspectorToggle}
+            className="button"
+            aria-label={
+              inspectorOpen ? 'Hide board details' : 'Show board details'
+            }
+            title={inspectorOpen ? 'Hide board details' : 'Show board details'}
+            aria-expanded={inspectorOpen}
+            aria-controls="board-inspector"
+            onClick={() => setInspectorOpen(!inspectorOpen)}
+          >
+            {inspectorOpen ? (
+              <PanelRightClose size={16} />
+            ) : (
+              <PanelRightOpen size={16} />
+            )}
+          </button>
           <button
             ref={fullscreenButtonRef}
             className="button fullscreen-toggle"
@@ -575,173 +595,72 @@ export function CanvasBoard({
             <span>Connect the handles</span>
           </div>
         </div>
-        <aside className="inspector">
-          <div className="inspector-heading">
-            <span>
-              {selectedNodes.length > 1
-                ? `${selectedNodes.length} nodes selected`
-                : node
-                  ? 'Node details'
-                  : edge
-                    ? 'Connection'
-                    : 'Board overview'}
-            </span>
-            {(selectedNodes.length > 0 || edge) && (
+        {inspectorOpen && (
+          <aside id="board-inspector" className="inspector">
+            <div className="inspector-heading">
+              <span>
+                {selectedNodes.length > 1
+                  ? `${selectedNodes.length} nodes selected`
+                  : node
+                    ? 'Node details'
+                    : edge
+                      ? 'Connection'
+                      : 'Board overview'}
+              </span>
               <button
                 className="icon-button"
-                aria-label="Close details"
+                aria-label="Close board details"
                 onClick={() => {
-                  setSelected(null)
-                  setSelectedEdge(null)
+                  setInspectorOpen(false)
+                  inspectorToggle.current?.focus()
                 }}
               >
                 <X size={16} />
               </button>
-            )}
-          </div>
-          {selectedNodes.length > 1 ? (
-            <div className="inspector-body multi-selection-body">
-              <h2>Edit together.</h2>
-              <p>
-                Drag any selected node to move the group. Ctrl / ⌘ + click
-                toggles a node; Shift + drag selects an area.
-              </p>
-              <label>
-                Type
-                <select
-                  aria-label="Selected nodes type"
-                  value={
-                    selectedNodes.every(
-                      (n) => n.data.kind === selectedNodes[0].data.kind,
-                    )
-                      ? selectedNodes[0].data.kind
-                      : ''
-                  }
-                  onChange={(e) => {
-                    checkpoint()
-                    update(
-                      {
-                        ...board,
-                        nodes: board.nodes.map((n) =>
-                          selectedIds.has(n.id)
-                            ? {
-                                ...n,
-                                data: {
-                                  ...n.data,
-                                  kind: e.target.value as Idea['data']['kind'],
-                                },
-                              }
-                            : n,
-                        ),
-                      },
-                      false,
-                    )
-                  }}
-                >
-                  <option value="" disabled>
-                    Mixed types
-                  </option>
-                  {nodeKinds.map((k) => (
-                    <option key={k} value={k}>
-                      {kindLabels[k]}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Decision
-                <select
-                  aria-label="Selected nodes decision"
-                  value={
-                    selectedNodes.every(
-                      (n) => n.data.status === selectedNodes[0].data.status,
-                    )
-                      ? selectedNodes[0].data.status
-                      : ''
-                  }
-                  onChange={(e) => {
-                    checkpoint()
-                    update(
-                      {
-                        ...board,
-                        nodes: board.nodes.map((n) =>
-                          selectedIds.has(n.id)
-                            ? {
-                                ...n,
-                                data: {
-                                  ...n.data,
-                                  status: e.target
-                                    .value as Idea['data']['status'],
-                                },
-                              }
-                            : n,
-                        ),
-                      },
-                      false,
-                    )
-                  }}
-                >
-                  <option value="" disabled>
-                    Mixed decisions
-                  </option>
-                  {statuses.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
-              </label>
-              <ul className="selected-node-list">
-                {selectedNodes.map((n) => (
-                  <li key={n.id}>{n.data.title}</li>
-                ))}
-              </ul>
-              <button
-                className="button danger"
-                onClick={() => {
-                  checkpoint()
-                  onDelete({ nodes: selectedNodes, edges: [] })
-                }}
-              >
-                <Trash2 size={15} />
-                Delete selected nodes
-              </button>
             </div>
-          ) : node ? (
-            <div className="inspector-body" key={node.id}>
-              <span className={`detail-kind kind-${node.data.kind}`}>
-                {kindLabels[node.data.kind]}
-              </span>
-              <label>
-                Title
-                <input
-                  aria-label="Node title"
-                  value={node.data.title}
-                  maxLength={120}
-                  onChange={(e) =>
-                    updateNode({ title: e.target.value || 'Untitled' })
-                  }
-                />
-              </label>
-              <label>
-                Description
-                <textarea
-                  aria-label="Node description"
-                  value={node.data.description}
-                  maxLength={2000}
-                  rows={3}
-                  onChange={(e) => updateNode({ description: e.target.value })}
-                />
-              </label>
-              <div className="field-row">
+            {selectedNodes.length > 1 ? (
+              <div className="inspector-body multi-selection-body">
+                <h2>Edit together.</h2>
+                <p>
+                  Drag any selected node to move the group. Ctrl / ⌘ + click
+                  toggles a node; Shift + drag selects an area.
+                </p>
                 <label>
                   Type
                   <select
-                    value={node.data.kind}
-                    onChange={(e) =>
-                      updateNode({
-                        kind: e.target.value as Idea['data']['kind'],
-                      })
+                    aria-label="Selected nodes type"
+                    value={
+                      selectedNodes.every(
+                        (n) => n.data.kind === selectedNodes[0].data.kind,
+                      )
+                        ? selectedNodes[0].data.kind
+                        : ''
                     }
+                    onChange={(e) => {
+                      checkpoint()
+                      update(
+                        {
+                          ...board,
+                          nodes: board.nodes.map((n) =>
+                            selectedIds.has(n.id)
+                              ? {
+                                  ...n,
+                                  data: {
+                                    ...n.data,
+                                    kind: e.target
+                                      .value as Idea['data']['kind'],
+                                  },
+                                }
+                              : n,
+                          ),
+                        },
+                        false,
+                      )
+                    }}
                   >
+                    <option value="" disabled>
+                      Mixed types
+                    </option>
                     {nodeKinds.map((k) => (
                       <option key={k} value={k}>
                         {kindLabels[k]}
@@ -752,214 +671,324 @@ export function CanvasBoard({
                 <label>
                   Decision
                   <select
-                    value={node.data.status}
-                    onChange={(e) =>
-                      updateNode({
-                        status: e.target.value as Idea['data']['status'],
-                      })
+                    aria-label="Selected nodes decision"
+                    value={
+                      selectedNodes.every(
+                        (n) => n.data.status === selectedNodes[0].data.status,
+                      )
+                        ? selectedNodes[0].data.status
+                        : ''
                     }
+                    onChange={(e) => {
+                      checkpoint()
+                      update(
+                        {
+                          ...board,
+                          nodes: board.nodes.map((n) =>
+                            selectedIds.has(n.id)
+                              ? {
+                                  ...n,
+                                  data: {
+                                    ...n.data,
+                                    status: e.target
+                                      .value as Idea['data']['status'],
+                                  },
+                                }
+                              : n,
+                          ),
+                        },
+                        false,
+                      )
+                    }}
                   >
+                    <option value="" disabled>
+                      Mixed decisions
+                    </option>
                     {statuses.map((s) => (
                       <option key={s}>{s}</option>
                     ))}
                   </select>
                 </label>
+                <ul className="selected-node-list">
+                  {selectedNodes.map((n) => (
+                    <li key={n.id}>{n.data.title}</li>
+                  ))}
+                </ul>
+                <button
+                  className="button danger"
+                  onClick={() => {
+                    checkpoint()
+                    onDelete({ nodes: selectedNodes, edges: [] })
+                  }}
+                >
+                  <Trash2 size={15} />
+                  Delete selected nodes
+                </button>
               </div>
-              <label>
-                Notes
-                <textarea
-                  aria-label="Node notes"
-                  placeholder="Constraints, decisions, open questions…"
-                  rows={5}
-                  value={node.data.notes}
-                  maxLength={12000}
-                  onChange={(e) => updateNode({ notes: e.target.value })}
-                />
-              </label>
-              <div className="field-label">
-                Linked requirements <span>{node.data.requirements.length}</span>
-              </div>
-              <div className="linked-list">
-                {node.data.requirements.map((id) => (
-                  <div className="linked-requirement" key={id}>
-                    <button onClick={() => openRequirement(id)}>
-                      <span>{id}</span>
-                      {requirements.find((r) => r.id === id)?.title}
-                      <ArrowUpRight size={14} />
-                    </button>
-                    <button
-                      className="icon-button"
-                      aria-label={`Unlink ${id}`}
-                      onClick={() =>
+            ) : node ? (
+              <div className="inspector-body" key={node.id}>
+                <span className={`detail-kind kind-${node.data.kind}`}>
+                  {kindLabels[node.data.kind]}
+                </span>
+                <label>
+                  Title
+                  <input
+                    aria-label="Node title"
+                    value={node.data.title}
+                    maxLength={120}
+                    onChange={(e) =>
+                      updateNode({ title: e.target.value || 'Untitled' })
+                    }
+                  />
+                </label>
+                <label>
+                  Description
+                  <textarea
+                    aria-label="Node description"
+                    value={node.data.description}
+                    maxLength={2000}
+                    rows={3}
+                    onChange={(e) =>
+                      updateNode({ description: e.target.value })
+                    }
+                  />
+                </label>
+                <div className="field-row">
+                  <label>
+                    Type
+                    <select
+                      value={node.data.kind}
+                      onChange={(e) =>
                         updateNode({
-                          requirements: node.data.requirements.filter(
-                            (r) => r !== id,
-                          ),
+                          kind: e.target.value as Idea['data']['kind'],
                         })
                       }
                     >
-                      <X size={12} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <select
-                aria-label="Link a requirement"
-                value=""
-                onChange={(e) => {
-                  if (e.target.value)
-                    updateNode({
-                      requirements: [...node.data.requirements, e.target.value],
-                    })
-                }}
-              >
-                <option value="">+ Link a requirement</option>
-                {requirements
-                  .filter((r) => !node.data.requirements.includes(r.id))
-                  .map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.id} · {r.title}
-                    </option>
+                      {nodeKinds.map((k) => (
+                        <option key={k} value={k}>
+                          {kindLabels[k]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Decision
+                    <select
+                      value={node.data.status}
+                      onChange={(e) =>
+                        updateNode({
+                          status: e.target.value as Idea['data']['status'],
+                        })
+                      }
+                    >
+                      {statuses.map((s) => (
+                        <option key={s}>{s}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+                <label>
+                  Notes
+                  <textarea
+                    aria-label="Node notes"
+                    placeholder="Constraints, decisions, open questions…"
+                    rows={5}
+                    value={node.data.notes}
+                    maxLength={12000}
+                    onChange={(e) => updateNode({ notes: e.target.value })}
+                  />
+                </label>
+                <div className="field-label">
+                  Linked requirements{' '}
+                  <span>{node.data.requirements.length}</span>
+                </div>
+                <div className="linked-list">
+                  {node.data.requirements.map((id) => (
+                    <div className="linked-requirement" key={id}>
+                      <button onClick={() => openRequirement(id)}>
+                        <span>{id}</span>
+                        {requirements.find((r) => r.id === id)?.title}
+                        <ArrowUpRight size={14} />
+                      </button>
+                      <button
+                        className="icon-button"
+                        aria-label={`Unlink ${id}`}
+                        onClick={() =>
+                          updateNode({
+                            requirements: node.data.requirements.filter(
+                              (r) => r !== id,
+                            ),
+                          })
+                        }
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
                   ))}
-              </select>
-              <div className="inspector-actions">
-                <button
-                  className="button"
-                  onClick={() => {
-                    const id = crypto.randomUUID()
-                    update({
-                      ...board,
-                      nodes: [
-                        ...board.nodes,
-                        {
-                          ...structuredClone(node),
-                          id,
-                          position: {
-                            x: node.position.x + 40,
-                            y: node.position.y + 190,
-                          },
-                          data: {
-                            ...node.data,
-                            title: `${node.data.title.slice(0, 110)} copy`,
-                          },
-                        },
-                      ],
-                    })
-                    setSelected(id)
+                </div>
+                <select
+                  aria-label="Link a requirement"
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value)
+                      updateNode({
+                        requirements: [
+                          ...node.data.requirements,
+                          e.target.value,
+                        ],
+                      })
                   }}
                 >
-                  <Copy size={14} />
-                  Duplicate
-                </button>
+                  <option value="">+ Link a requirement</option>
+                  {requirements
+                    .filter((r) => !node.data.requirements.includes(r.id))
+                    .map((r) => (
+                      <option key={r.id} value={r.id}>
+                        {r.id} · {r.title}
+                      </option>
+                    ))}
+                </select>
+                <div className="inspector-actions">
+                  <button
+                    className="button"
+                    onClick={() => {
+                      const id = crypto.randomUUID()
+                      update({
+                        ...board,
+                        nodes: [
+                          ...board.nodes,
+                          {
+                            ...structuredClone(node),
+                            id,
+                            position: {
+                              x: node.position.x + 40,
+                              y: node.position.y + 190,
+                            },
+                            data: {
+                              ...node.data,
+                              title: `${node.data.title.slice(0, 110)} copy`,
+                            },
+                          },
+                        ],
+                      })
+                      setSelected(id)
+                    }}
+                  >
+                    <Copy size={14} />
+                    Duplicate
+                  </button>
+                  <button
+                    className="icon-button danger"
+                    aria-label="Delete node"
+                    onClick={removeNode}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            ) : edge ? (
+              <div className="inspector-body">
+                <div className="detail-kind">
+                  <Link2 size={16} /> Relationship
+                </div>
+                <h2>
+                  {board.nodes.find((n) => n.id === edge.source)?.data.title}
+                </h2>
+                <p className="muted">
+                  connects to{' '}
+                  {board.nodes.find((n) => n.id === edge.target)?.data.title}
+                </p>
+                <label>
+                  Connection label
+                  <input
+                    aria-label="Connection label"
+                    value={edge.label || ''}
+                    maxLength={120}
+                    onChange={(e) =>
+                      update({
+                        ...board,
+                        edges: board.edges.map((x) =>
+                          x.id === edge.id
+                            ? { ...x, label: e.target.value }
+                            : x,
+                        ),
+                      })
+                    }
+                  />
+                </label>
                 <button
-                  className="icon-button danger"
-                  aria-label="Delete node"
-                  onClick={removeNode}
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </div>
-          ) : edge ? (
-            <div className="inspector-body">
-              <div className="detail-kind">
-                <Link2 size={16} /> Relationship
-              </div>
-              <h2>
-                {board.nodes.find((n) => n.id === edge.source)?.data.title}
-              </h2>
-              <p className="muted">
-                connects to{' '}
-                {board.nodes.find((n) => n.id === edge.target)?.data.title}
-              </p>
-              <label>
-                Connection label
-                <input
-                  aria-label="Connection label"
-                  value={edge.label || ''}
-                  maxLength={120}
-                  onChange={(e) =>
+                  className="button danger"
+                  onClick={() => {
                     update({
                       ...board,
-                      edges: board.edges.map((x) =>
-                        x.id === edge.id ? { ...x, label: e.target.value } : x,
-                      ),
+                      edges: board.edges.filter((e) => e.id !== edge.id),
                     })
-                  }
-                />
-              </label>
-              <button
-                className="button danger"
-                onClick={() => {
-                  update({
-                    ...board,
-                    edges: board.edges.filter((e) => e.id !== edge.id),
-                  })
-                  setSelectedEdge(null)
-                }}
-              >
-                <Unplug size={15} />
-                Remove connection
-              </button>
-            </div>
-          ) : (
-            <div className="inspector-body overview-body">
-              <div className="overview-art">
-                <LayersIllustration />
+                    setSelectedEdge(null)
+                  }}
+                >
+                  <Unplug size={15} />
+                  Remove connection
+                </button>
               </div>
-              <h2>
-                Give your ideas
-                <br />a place to connect.
-              </h2>
-              <p>
-                Map the system, explore a flow, or leave a question for later.
-                This is your space to figure things out.
-              </p>
-              <label>
-                About this board
-                <textarea
-                  value={board.description}
-                  maxLength={1000}
-                  onChange={(e) =>
-                    update({ ...board, description: e.target.value })
-                  }
-                  rows={3}
-                />
-              </label>
-              <div className="board-facts">
-                <div>
-                  <span>Ideas mapped</span>
-                  <strong>{board.nodes.length}</strong>
+            ) : (
+              <div className="inspector-body overview-body">
+                <div className="overview-art">
+                  <LayersIllustration />
                 </div>
-                <div>
-                  <span>Decisions made</span>
-                  <strong>
-                    {
-                      board.nodes.filter((n) => n.data.status === 'Decided')
-                        .length
-                    }
-                  </strong>
-                </div>
-                <div>
-                  <span>Open questions</span>
-                  <strong>
-                    {
-                      board.nodes.filter((n) => n.data.status === 'Question')
-                        .length
-                    }
-                  </strong>
-                </div>
-              </div>
-              <div className="inspector-hint">
-                <MousePointer2 size={16} />
+                <h2>
+                  Give your ideas
+                  <br />a place to connect.
+                </h2>
                 <p>
-                  Select a node to edit its details and link it to your
-                  requirements.
+                  Map the system, explore a flow, or leave a question for later.
+                  This is your space to figure things out.
                 </p>
+                <label>
+                  About this board
+                  <textarea
+                    value={board.description}
+                    maxLength={1000}
+                    onChange={(e) =>
+                      update({ ...board, description: e.target.value })
+                    }
+                    rows={3}
+                  />
+                </label>
+                <div className="board-facts">
+                  <div>
+                    <span>Ideas mapped</span>
+                    <strong>{board.nodes.length}</strong>
+                  </div>
+                  <div>
+                    <span>Decisions made</span>
+                    <strong>
+                      {
+                        board.nodes.filter((n) => n.data.status === 'Decided')
+                          .length
+                      }
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Open questions</span>
+                    <strong>
+                      {
+                        board.nodes.filter((n) => n.data.status === 'Question')
+                          .length
+                      }
+                    </strong>
+                  </div>
+                </div>
+                <div className="inspector-hint">
+                  <MousePointer2 size={16} />
+                  <p>
+                    Select a node to edit its details and link it to your
+                    requirements.
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
-        </aside>
+            )}
+          </aside>
+        )}
       </div>
     </div>
   )

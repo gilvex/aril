@@ -26,6 +26,8 @@ import {
   Pencil,
   Maximize2,
   Minimize2,
+  PanelRightOpen,
+  PanelRightClose,
   Link2,
 } from 'lucide-react'
 import type { Board } from '../../../shared/api/workspace'
@@ -91,6 +93,8 @@ export function WireframeBoard({
   sendPresence,
 }: Props) {
   const graph = board.wireframe || empty
+  const [inspectorOpen, setInspectorOpen] = useState(true)
+  const inspectorToggle = useRef<HTMLButtonElement>(null)
   const [flow, setFlow] = useState<ReactFlowInstance<WireFlowNode> | null>(null)
   const [selection, setSelection] = useState(new Set<string>())
   const [edgeId, setEdgeId] = useState<string | null>(null)
@@ -395,13 +399,31 @@ export function WireframeBoard({
           <h1>
             {board.name} <span className="wire-heading-label">Wireframes</span>
           </h1>
-          <p>
-            {preview
-              ? 'Try the journey. Connected blocks lead to the next step.'
-              : 'Sketch the interface. Connect what happens next.'}
-          </p>
         </div>
         <div className="canvas-heading-actions">
+          <button
+            ref={inspectorToggle}
+            className="button"
+            aria-label={
+              inspectorOpen
+                ? 'Hide wireframe details'
+                : 'Show wireframe details'
+            }
+            title={
+              inspectorOpen
+                ? 'Hide wireframe details'
+                : 'Show wireframe details'
+            }
+            aria-expanded={inspectorOpen}
+            aria-controls="wireframe-inspector"
+            onClick={() => setInspectorOpen(!inspectorOpen)}
+          >
+            {inspectorOpen ? (
+              <PanelRightClose size={16} />
+            ) : (
+              <PanelRightOpen size={16} />
+            )}
+          </button>
           <button
             ref={full.button}
             className="button fullscreen-toggle"
@@ -661,457 +683,460 @@ export function WireframeBoard({
               : 'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side'}
           </div>
         </div>
-        <aside className="inspector wire-inspector">
-          <div className="inspector-heading">
-            <span>
-              {preview
-                ? 'Follow the flow'
-                : selected.length > 1
-                  ? `${selected.length} blocks selected`
-                  : node
-                    ? `${wireLabels[node.data.kind]} details`
-                    : edge
-                      ? 'Interaction'
-                      : 'Wireframe kit'}
-            </span>
-            {(node || edge || selected.length > 1) && (
+        {inspectorOpen && (
+          <aside id="wireframe-inspector" className="inspector wire-inspector">
+            <div className="inspector-heading">
+              <span>
+                {preview
+                  ? 'Follow the flow'
+                  : selected.length > 1
+                    ? `${selected.length} blocks selected`
+                    : node
+                      ? `${wireLabels[node.data.kind]} details`
+                      : edge
+                        ? 'Interaction'
+                        : 'Wireframe kit'}
+              </span>
               <button
                 className="icon-button"
                 aria-label="Close wireframe details"
                 onClick={() => {
-                  setSelection(new Set())
-                  setEdgeId(null)
+                  setInspectorOpen(false)
+                  inspectorToggle.current?.focus()
                 }}
               >
                 <X size={16} />
               </button>
-            )}
-          </div>
-          {preview ? (
-            <div className="inspector-body">
-              <Play size={22} />
-              <h2>Try the journey.</h2>
-              <p role="status">{previewMessage}</p>
-              {node && (
-                <>
-                  <strong>{node.data.title}</strong>
-                  {graph.edges
-                    .filter((e) => e.source === node.id)
-                    .map((e) => (
-                      <button
-                        className="button wire-flow-link"
-                        key={e.id}
-                        onClick={() => {
-                          focus(e.target)
-                          setPreviewMessage(
-                            `${e.label} → ${graph.nodes.find((n) => n.id === e.target)?.data.title}`,
-                          )
-                        }}
-                      >
-                        {e.label}
-                        <ArrowRight size={14} />
-                        {graph.nodes.find((n) => n.id === e.target)?.data.title}
-                      </button>
-                    ))}
-                </>
-              )}
-              <button className="button" onClick={() => setPreview(false)}>
-                <Pencil size={14} />
-                Back to editing
-              </button>
             </div>
-          ) : selected.length > 1 ? (
-            <div className="inspector-body">
-              <h2>Arrange together.</h2>
-              <p>
-                Drag any selected block to move the group. Screen contents move
-                with their frame.
-              </p>
-              <label>
-                Appearance
-                <select
-                  value=""
-                  onChange={(e) =>
-                    save({
-                      ...graph,
-                      nodes: graph.nodes.map((n) =>
-                        selection.has(n.id)
-                          ? {
-                              ...n,
-                              data: {
-                                ...n.data,
-                                tone: e.target
-                                  .value as WireNode['data']['tone'],
-                              },
-                            }
-                          : n,
-                      ),
-                    })
-                  }
-                >
-                  <option value="" disabled>
-                    Change selected blocks…
-                  </option>
-                  <option value="plain">Plain</option>
-                  <option value="soft">Soft</option>
-                  <option value="accent">Accent</option>
-                </select>
-              </label>
-              <button className="button" onClick={duplicate}>
-                <Copy size={14} />
-                Duplicate selection
-              </button>
-              <button
-                className="button danger"
-                onClick={() => {
-                  save(removeWireNodes(graph, selection))
-                  setSelection(new Set())
-                }}
-              >
-                <Trash2 size={14} />
-                Delete selected blocks
-              </button>
-            </div>
-          ) : node ? (
-            <div className="inspector-body" key={node.id}>
-              <label>
-                Label
-                <input
-                  aria-label="Block label"
-                  value={node.data.title}
-                  maxLength={120}
-                  onChange={(e) =>
-                    editData({ title: e.target.value || 'Untitled' })
-                  }
-                />
-              </label>
-              {node.data.kind !== 'button' && node.data.kind !== 'screen' && (
-                <label>
-                  {node.data.kind === 'input' ? 'Placeholder' : 'Content'}
-                  <textarea
-                    aria-label="Block content"
-                    rows={3}
-                    maxLength={2000}
-                    value={node.data.content}
-                    onChange={(e) => editData({ content: e.target.value })}
-                  />
-                </label>
-              )}
-              <div className="field-row">
-                {(['width', 'height'] as const).map((key) => (
-                  <label key={key}>
-                    {key === 'width' ? 'Width' : 'Height'}
-                    <input
-                      aria-label={`Block ${key}`}
-                      type="number"
-                      min={key === 'width' ? 60 : 32}
-                      max={2400}
-                      value={node[key]}
-                      onChange={(e) => {
-                        const value = e.target.valueAsNumber
-                        if (
-                          Number.isFinite(value) &&
-                          value >= (key === 'width' ? 60 : 32) &&
-                          value <= 2400
-                        )
-                          editNode({ [key]: value })
-                      }}
-                    />
-                  </label>
-                ))}
-              </div>
-              {node.data.kind === 'screen' ? (
-                <div className="wire-screen-presets">
-                  <button
-                    className="button"
-                    onClick={() => editNode({ width: 640, height: 460 })}
-                  >
-                    Desktop
-                  </button>
-                  <button
-                    className="button"
-                    onClick={() => editNode({ width: 320, height: 640 })}
-                  >
-                    Mobile
-                  </button>
-                </div>
-              ) : (
-                <label>
-                  On screen
-                  <select
-                    aria-label="Block screen"
-                    value={node.parentId || ''}
-                    onChange={(e) => {
-                      const parent = screens.find(
-                        (n) => n.id === e.target.value,
-                      )
-                      const absolute = wirePosition(node, graph.nodes)
-                      editNode({
-                        parentId: parent?.id,
-                        position: parent ? { x: 32, y: 72 } : absolute,
-                      })
-                    }}
-                  >
-                    <option value="">Canvas (no screen)</option>
-                    {screens.map((screen) => (
-                      <option key={screen.id} value={screen.id}>
-                        {screen.data.title}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              <label>
-                Appearance
-                <select
-                  aria-label="Block appearance"
-                  value={node.data.tone}
-                  onChange={(e) =>
-                    editData({
-                      tone: e.target.value as WireNode['data']['tone'],
-                    })
-                  }
-                >
-                  <option value="plain">Plain</option>
-                  <option value="soft">Soft</option>
-                  <option value="accent">Accent</option>
-                </select>
-              </label>
-              <section className="wire-interaction">
-                <h3>
-                  <Link2 size={15} />
-                  What happens next?
-                </h3>
-                <label>
-                  Trigger
-                  <input
-                    aria-label="Flow trigger"
-                    value={trigger}
-                    maxLength={120}
-                    onChange={(e) => setTrigger(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Destination
-                  <select
-                    aria-label="Flow destination"
-                    value={targetId}
-                    onChange={(e) => setTargetId(e.target.value)}
-                  >
-                    <option value="">Choose a block or screen…</option>
-                    {graph.nodes
-                      .filter((n) => n.id !== node.id)
-                      .map((n) => (
-                        <option key={n.id} value={n.id}>
-                          {wireLabels[n.data.kind]} · {n.data.title}
-                        </option>
+            {preview ? (
+              <div className="inspector-body">
+                <Play size={22} />
+                <h2>Try the journey.</h2>
+                <p role="status">{previewMessage}</p>
+                {node && (
+                  <>
+                    <strong>{node.data.title}</strong>
+                    {graph.edges
+                      .filter((e) => e.source === node.id)
+                      .map((e) => (
+                        <button
+                          className="button wire-flow-link"
+                          key={e.id}
+                          onClick={() => {
+                            focus(e.target)
+                            setPreviewMessage(
+                              `${e.label} → ${graph.nodes.find((n) => n.id === e.target)?.data.title}`,
+                            )
+                          }}
+                        >
+                          {e.label}
+                          <ArrowRight size={14} />
+                          {
+                            graph.nodes.find((n) => n.id === e.target)?.data
+                              .title
+                          }
+                        </button>
                       ))}
+                  </>
+                )}
+                <button className="button" onClick={() => setPreview(false)}>
+                  <Pencil size={14} />
+                  Back to editing
+                </button>
+              </div>
+            ) : selected.length > 1 ? (
+              <div className="inspector-body">
+                <h2>Arrange together.</h2>
+                <p>
+                  Drag any selected block to move the group. Screen contents
+                  move with their frame.
+                </p>
+                <label>
+                  Appearance
+                  <select
+                    value=""
+                    onChange={(e) =>
+                      save({
+                        ...graph,
+                        nodes: graph.nodes.map((n) =>
+                          selection.has(n.id)
+                            ? {
+                                ...n,
+                                data: {
+                                  ...n.data,
+                                  tone: e.target
+                                    .value as WireNode['data']['tone'],
+                                },
+                              }
+                            : n,
+                        ),
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Change selected blocks…
+                    </option>
+                    <option value="plain">Plain</option>
+                    <option value="soft">Soft</option>
+                    <option value="accent">Accent</option>
                   </select>
                 </label>
-                <button
-                  className="button"
-                  disabled={
-                    !targetId ||
-                    targetId === node.id ||
-                    !graph.nodes.some((n) => n.id === targetId)
-                  }
-                  onClick={() =>
-                    connect(node.id, targetId, trigger.trim() || 'On click')
-                  }
-                >
-                  <ArrowRight size={14} />
-                  Connect flow
-                </button>
-                {graph.edges
-                  .filter((e) => e.source === node.id)
-                  .map((e) => (
-                    <button
-                      className="wire-existing-flow"
-                      key={e.id}
-                      onClick={() => {
-                        setEdgeId(e.id)
-                        setSelection(new Set())
-                      }}
-                    >
-                      {e.label}
-                      <ArrowRight size={12} />
-                      {graph.nodes.find((n) => n.id === e.target)?.data.title}
-                    </button>
-                  ))}
-              </section>
-              <div className="inspector-actions">
                 <button className="button" onClick={duplicate}>
                   <Copy size={14} />
-                  Duplicate
+                  Duplicate selection
                 </button>
                 <button
-                  className="icon-button danger"
-                  aria-label={
-                    node.data.kind === 'screen'
-                      ? 'Delete screen and its blocks'
-                      : 'Delete block'
-                  }
+                  className="button danger"
                   onClick={() => {
                     save(removeWireNodes(graph, selection))
                     setSelection(new Set())
                   }}
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={14} />
+                  Delete selected blocks
                 </button>
               </div>
-              {node.data.kind === 'screen' && (
-                <p>
-                  Drag the screen’s title bar to move it with its blocks.
-                  Deleting a screen also deletes its contents; Undo restores
-                  them.
-                </p>
-              )}
-            </div>
-          ) : edge ? (
-            <div className="inspector-body">
-              <div className="detail-kind">
-                <ArrowRight size={16} />
-                Interaction
-              </div>
-              <h2>
-                {graph.nodes.find((n) => n.id === edge.source)?.data.title}
-              </h2>
-              <p>
-                leads to{' '}
-                {graph.nodes.find((n) => n.id === edge.target)?.data.title}
-              </p>
-              <label>
-                Interaction label
-                <input
-                  aria-label="Interaction label"
-                  value={edge.label}
-                  maxLength={120}
-                  onChange={(e) =>
-                    save({
-                      ...graph,
-                      edges: graph.edges.map((link) =>
-                        link.id === edge.id
-                          ? { ...link, label: e.target.value }
-                          : link,
-                      ),
-                    })
-                  }
-                />
-              </label>
-              <label>
-                Destination
-                <select
-                  aria-label="Interaction destination"
-                  value={edge.target}
-                  onChange={(e) =>
-                    save({
-                      ...graph,
-                      edges: graph.edges.map((link) =>
-                        link.id === edge.id
-                          ? { ...link, target: e.target.value }
-                          : link,
-                      ),
-                    })
-                  }
-                >
-                  {graph.nodes
-                    .filter((n) => n.id !== edge.source)
-                    .map((n) => (
-                      <option key={n.id} value={n.id}>
-                        {n.data.title}
-                      </option>
-                    ))}
-                </select>
-              </label>
-              <button className="button" onClick={() => focus(edge.target)}>
-                <ArrowRight size={14} />
-                Show destination
-              </button>
-              <button
-                className="button danger"
-                onClick={() => {
-                  save({
-                    ...graph,
-                    edges: graph.edges.filter((e) => e.id !== edge.id),
-                  })
-                  setEdgeId(null)
-                }}
-              >
-                <Trash2 size={14} />
-                Remove flow
-              </button>
-            </div>
-          ) : (
-            <div className="inspector-body overview-body">
-              <AppWindow size={30} strokeWidth={1.2} />
-              <h2>From idea to interface.</h2>
-              <p>
-                Start with a screen, add the pieces, then link the actions. Each
-                board keeps its own wireframes.
-              </p>
-              {!!graph.edges.length && (
-                <div className="wire-flow-index" aria-label="Board flows">
-                  <h3>Flows</h3>
-                  {graph.edges.map((link, index) => (
+            ) : node ? (
+              <div className="inspector-body" key={node.id}>
+                <label>
+                  Label
+                  <input
+                    aria-label="Block label"
+                    value={node.data.title}
+                    maxLength={120}
+                    onChange={(e) =>
+                      editData({ title: e.target.value || 'Untitled' })
+                    }
+                  />
+                </label>
+                {node.data.kind !== 'button' && node.data.kind !== 'screen' && (
+                  <label>
+                    {node.data.kind === 'input' ? 'Placeholder' : 'Content'}
+                    <textarea
+                      aria-label="Block content"
+                      rows={3}
+                      maxLength={2000}
+                      value={node.data.content}
+                      onChange={(e) => editData({ content: e.target.value })}
+                    />
+                  </label>
+                )}
+                <div className="field-row">
+                  {(['width', 'height'] as const).map((key) => (
+                    <label key={key}>
+                      {key === 'width' ? 'Width' : 'Height'}
+                      <input
+                        aria-label={`Block ${key}`}
+                        type="number"
+                        min={key === 'width' ? 60 : 32}
+                        max={2400}
+                        value={node[key]}
+                        onChange={(e) => {
+                          const value = e.target.valueAsNumber
+                          if (
+                            Number.isFinite(value) &&
+                            value >= (key === 'width' ? 60 : 32) &&
+                            value <= 2400
+                          )
+                            editNode({ [key]: value })
+                        }}
+                      />
+                    </label>
+                  ))}
+                </div>
+                {node.data.kind === 'screen' ? (
+                  <div className="wire-screen-presets">
                     <button
-                      key={link.id}
-                      onClick={() => {
-                        setEdgeId(link.id)
-                        setSelection(new Set())
+                      className="button"
+                      onClick={() => editNode({ width: 640, height: 460 })}
+                    >
+                      Desktop
+                    </button>
+                    <button
+                      className="button"
+                      onClick={() => editNode({ width: 320, height: 640 })}
+                    >
+                      Mobile
+                    </button>
+                  </div>
+                ) : (
+                  <label>
+                    On screen
+                    <select
+                      aria-label="Block screen"
+                      value={node.parentId || ''}
+                      onChange={(e) => {
+                        const parent = screens.find(
+                          (n) => n.id === e.target.value,
+                        )
+                        const absolute = wirePosition(node, graph.nodes)
+                        editNode({
+                          parentId: parent?.id,
+                          position: parent ? { x: 32, y: 72 } : absolute,
+                        })
                       }}
                     >
-                      <span>{index + 1}</span>
-                      <div>
-                        <strong>{link.label || 'On click'}</strong>
-                        <small>
-                          {
-                            graph.nodes.find((n) => n.id === link.source)?.data
-                              .title
-                          }{' '}
-                          →{' '}
-                          {
-                            graph.nodes.find((n) => n.id === link.target)?.data
-                              .title
-                          }
-                        </small>
-                      </div>
+                      <option value="">Canvas (no screen)</option>
+                      {screens.map((screen) => (
+                        <option key={screen.id} value={screen.id}>
+                          {screen.data.title}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <label>
+                  Appearance
+                  <select
+                    aria-label="Block appearance"
+                    value={node.data.tone}
+                    onChange={(e) =>
+                      editData({
+                        tone: e.target.value as WireNode['data']['tone'],
+                      })
+                    }
+                  >
+                    <option value="plain">Plain</option>
+                    <option value="soft">Soft</option>
+                    <option value="accent">Accent</option>
+                  </select>
+                </label>
+                <section className="wire-interaction">
+                  <h3>
+                    <Link2 size={15} />
+                    What happens next?
+                  </h3>
+                  <label>
+                    Trigger
+                    <input
+                      aria-label="Flow trigger"
+                      value={trigger}
+                      maxLength={120}
+                      onChange={(e) => setTrigger(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Destination
+                    <select
+                      aria-label="Flow destination"
+                      value={targetId}
+                      onChange={(e) => setTargetId(e.target.value)}
+                    >
+                      <option value="">Choose a block or screen…</option>
+                      {graph.nodes
+                        .filter((n) => n.id !== node.id)
+                        .map((n) => (
+                          <option key={n.id} value={n.id}>
+                            {wireLabels[n.data.kind]} · {n.data.title}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                  <button
+                    className="button"
+                    disabled={
+                      !targetId ||
+                      targetId === node.id ||
+                      !graph.nodes.some((n) => n.id === targetId)
+                    }
+                    onClick={() =>
+                      connect(node.id, targetId, trigger.trim() || 'On click')
+                    }
+                  >
+                    <ArrowRight size={14} />
+                    Connect flow
+                  </button>
+                  {graph.edges
+                    .filter((e) => e.source === node.id)
+                    .map((e) => (
+                      <button
+                        className="wire-existing-flow"
+                        key={e.id}
+                        onClick={() => {
+                          setEdgeId(e.id)
+                          setSelection(new Set())
+                        }}
+                      >
+                        {e.label}
+                        <ArrowRight size={12} />
+                        {graph.nodes.find((n) => n.id === e.target)?.data.title}
+                      </button>
+                    ))}
+                </section>
+                <div className="inspector-actions">
+                  <button className="button" onClick={duplicate}>
+                    <Copy size={14} />
+                    Duplicate
+                  </button>
+                  <button
+                    className="icon-button danger"
+                    aria-label={
+                      node.data.kind === 'screen'
+                        ? 'Delete screen and its blocks'
+                        : 'Delete block'
+                    }
+                    onClick={() => {
+                      save(removeWireNodes(graph, selection))
+                      setSelection(new Set())
+                    }}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+                {node.data.kind === 'screen' && (
+                  <p>
+                    Drag the screen’s title bar to move it with its blocks.
+                    Deleting a screen also deletes its contents; Undo restores
+                    them.
+                  </p>
+                )}
+              </div>
+            ) : edge ? (
+              <div className="inspector-body">
+                <div className="detail-kind">
+                  <ArrowRight size={16} />
+                  Interaction
+                </div>
+                <h2>
+                  {graph.nodes.find((n) => n.id === edge.source)?.data.title}
+                </h2>
+                <p>
+                  leads to{' '}
+                  {graph.nodes.find((n) => n.id === edge.target)?.data.title}
+                </p>
+                <label>
+                  Interaction label
+                  <input
+                    aria-label="Interaction label"
+                    value={edge.label}
+                    maxLength={120}
+                    onChange={(e) =>
+                      save({
+                        ...graph,
+                        edges: graph.edges.map((link) =>
+                          link.id === edge.id
+                            ? { ...link, label: e.target.value }
+                            : link,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Destination
+                  <select
+                    aria-label="Interaction destination"
+                    value={edge.target}
+                    onChange={(e) =>
+                      save({
+                        ...graph,
+                        edges: graph.edges.map((link) =>
+                          link.id === edge.id
+                            ? { ...link, target: e.target.value }
+                            : link,
+                        ),
+                      })
+                    }
+                  >
+                    {graph.nodes
+                      .filter((n) => n.id !== edge.source)
+                      .map((n) => (
+                        <option key={n.id} value={n.id}>
+                          {n.data.title}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+                <button className="button" onClick={() => focus(edge.target)}>
+                  <ArrowRight size={14} />
+                  Show destination
+                </button>
+                <button
+                  className="button danger"
+                  onClick={() => {
+                    save({
+                      ...graph,
+                      edges: graph.edges.filter((e) => e.id !== edge.id),
+                    })
+                    setEdgeId(null)
+                  }}
+                >
+                  <Trash2 size={14} />
+                  Remove flow
+                </button>
+              </div>
+            ) : (
+              <div className="inspector-body overview-body">
+                <AppWindow size={30} strokeWidth={1.2} />
+                <h2>From idea to interface.</h2>
+                <p>
+                  Start with a screen, add the pieces, then link the actions.
+                  Each board keeps its own wireframes.
+                </p>
+                {!!graph.edges.length && (
+                  <div className="wire-flow-index" aria-label="Board flows">
+                    <h3>Flows</h3>
+                    {graph.edges.map((link, index) => (
+                      <button
+                        key={link.id}
+                        onClick={() => {
+                          setEdgeId(link.id)
+                          setSelection(new Set())
+                        }}
+                      >
+                        <span>{index + 1}</span>
+                        <div>
+                          <strong>{link.label || 'On click'}</strong>
+                          <small>
+                            {
+                              graph.nodes.find((n) => n.id === link.source)
+                                ?.data.title
+                            }{' '}
+                            →{' '}
+                            {
+                              graph.nodes.find((n) => n.id === link.target)
+                                ?.data.title
+                            }
+                          </small>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <div className="wire-kit">
+                  {wireKinds.map((kind) => {
+                    const Icon = icons[kind]
+                    return (
+                      <button
+                        key={kind}
+                        disabled={graph.nodes.length >= 500}
+                        onClick={() => add(kind)}
+                      >
+                        <Icon size={18} />
+                        <span>{wireLabels[kind]}</span>
+                        <Plus size={13} />
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="wire-screen-list">
+                  {screens.map((screen) => (
+                    <button key={screen.id} onClick={() => focus(screen.id)}>
+                      <AppWindow size={14} />
+                      {screen.data.title}
+                      <ArrowRight size={13} />
                     </button>
                   ))}
                 </div>
-              )}
-              <div className="wire-kit">
-                {wireKinds.map((kind) => {
-                  const Icon = icons[kind]
-                  return (
-                    <button
-                      key={kind}
-                      disabled={graph.nodes.length >= 500}
-                      onClick={() => add(kind)}
-                    >
-                      <Icon size={18} />
-                      <span>{wireLabels[kind]}</span>
-                      <Plus size={13} />
-                    </button>
-                  )
-                })}
+                <p>
+                  Connect either side of a block to its destination, or use
+                  “What happens next?” in its details. Arrows choose the side
+                  facing their destination.
+                </p>
               </div>
-              <div className="wire-screen-list">
-                {screens.map((screen) => (
-                  <button key={screen.id} onClick={() => focus(screen.id)}>
-                    <AppWindow size={14} />
-                    {screen.data.title}
-                    <ArrowRight size={13} />
-                  </button>
-                ))}
-              </div>
-              <p>
-                Connect either side of a block to its destination, or use “What
-                happens next?” in its details. Arrows choose the side facing
-                their destination.
-              </p>
-            </div>
-          )}
-        </aside>
+            )}
+          </aside>
+        )}
       </div>
     </div>
   )

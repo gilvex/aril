@@ -284,6 +284,7 @@ code {
   overflow: hidden;
 }
 .sidebar {
+  position: relative;
   width: 224px;
   background: var(--sidebar);
   color: #bdb6c9;
@@ -292,6 +293,16 @@ code {
   flex-direction: column;
   flex-shrink: 0;
   z-index: 30;
+}
+.sidebar-close {
+  position: absolute;
+  right: 7px;
+  top: 5px;
+  color: #bdb6c9;
+}
+@media (min-width: 761px) {
+  .sidebar-collapsed .sidebar { display: none; }
+  .sidebar-close { display: none; }
 }
 .brand {
   display: flex;
@@ -649,7 +660,7 @@ code {
   }
 }
 .board-heading {
-  padding: 25px 28px 22px;
+  padding: 12px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1980,8 +1991,8 @@ code {
     padding: 25px;
   }
   .board-heading {
-    padding-top: 32px;
-    padding-bottom: 27px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
   .content-page {
     padding: 40px 50px;
@@ -2083,7 +2094,7 @@ code {
     width: 225px;
   }
   .board-heading {
-    padding: 22px 20px;
+    padding: 12px 20px;
   }
   .board-heading h1 {
     font-size: 20px;
@@ -2172,6 +2183,7 @@ code {
   .mobile-menu {
     display: inline-flex;
   }
+  .desktop-sidebar-toggle { display: none; }
   .topbar {
     height: 58px;
     padding: 0 10px;
@@ -2205,7 +2217,7 @@ code {
     padding: 0 10px;
   }
   .board-heading {
-    padding: 20px 16px;
+    padding: 12px 16px;
   }
   .board-heading h1 {
     font-size: 19px;
@@ -2225,9 +2237,6 @@ code {
     top: 201px;
     z-index: 10;
     box-shadow: -6px 0 30px #3822450c;
-  }
-  .inspector:has(.overview-body) {
-    display: none;
   }
   .canvas-layout {
     position: relative;

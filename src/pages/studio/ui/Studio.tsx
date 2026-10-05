@@ -19,6 +19,7 @@ import {
   Trash2,
   Menu,
   PanelLeftClose,
+  PanelLeftOpen,
   Sprout,
   FileJson,
   RotateCcw,
@@ -79,6 +80,7 @@ export function Studio({
   const [boardId, setBoardId] = useState(workspace.boards[0].id)
   const [requirementId, setRequirementId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [notice, setNotice] = useState(
     recovery ? 'Recovered unsaved edits from this tab.' : '',
   )
@@ -197,7 +199,9 @@ export function Studio({
     }
   }
   return (
-    <div className="studio-shell">
+    <div
+      className={`studio-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
+    >
       {sidebarOpen && (
         <button
           className="sidebar-backdrop"
@@ -205,7 +209,21 @@ export function Studio({
           onClick={() => setSidebarOpen(false)}
         />
       )}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <aside
+        id="studio-navigation"
+        className={`sidebar ${sidebarOpen ? 'open' : ''}`}
+      >
+        <button
+          className="icon-button sidebar-close"
+          aria-label="Close sidebar"
+          title="Close sidebar"
+          onClick={() => {
+            setSidebarCollapsed(true)
+            setSidebarOpen(false)
+          }}
+        >
+          <PanelLeftClose size={17} />
+        </button>
         <a
           className="brand"
           href="#"
@@ -327,8 +345,24 @@ export function Studio({
         <header className="topbar">
           <div className="breadcrumb">
             <button
+              className="icon-button desktop-sidebar-toggle"
+              aria-label={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
+              title={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
+              aria-expanded={!sidebarCollapsed}
+              aria-controls="studio-navigation"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            >
+              {sidebarCollapsed ? (
+                <PanelLeftOpen size={18} />
+              ) : (
+                <PanelLeftClose size={18} />
+              )}
+            </button>
+            <button
               className="icon-button mobile-menu"
               aria-label="Open navigation"
+              aria-expanded={sidebarOpen}
+              aria-controls="studio-navigation"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu size={20} />
@@ -944,10 +978,6 @@ export function Studio({
           </div>
         </div>
       )}
-      <button className="visually-hidden" onClick={() => setSidebarOpen(false)}>
-        <PanelLeftClose />
-        Close sidebar
-      </button>
     </div>
   )
 }
