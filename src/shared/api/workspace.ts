@@ -6,11 +6,14 @@ export type {
   Requirement,
   Envelope,
 } from '../../../domain/workspace'
+import { writeVersion, writeVersionHeader } from '../../../domain/freshness'
 export class ApiError extends Error {
   status: number
-  constructor(message: string, status: number) {
+  code?: string
+  constructor(message: string, status: number, code?: string) {
     super(message)
     this.status = status
+    this.code = code
   }
 }
 export const sessionTokenKey = 'pomegranate-studio-session'
@@ -26,7 +29,11 @@ export function authHeaders(): Record<string, string> {
 export async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...init,
-    headers: { ...authHeaders(), ...init?.headers },
+    headers: {
+      ...authHeaders(),
+      [writeVersionHeader]: writeVersion,
+      ...init?.headers,
+    },
   })
   if (!response.ok) {
     const body = await response
@@ -35,6 +42,7 @@ export async function request<T>(url: string, init?: RequestInit): Promise<T> {
     throw new ApiError(
       body.error || `Request failed (${response.status})`,
       response.status,
+      body.code,
     )
   }
   return response.status === 204

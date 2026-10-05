@@ -12,11 +12,16 @@ import {
   MergeConflict,
   type Operation,
 } from '../../../../domain/collaboration'
+import {
+  writeVersion,
+  canRebaseOperations,
+  type RecoveryDraft,
+} from '../../../../domain/freshness'
 
 export const draftKey = 'pomegranate-studio-draft-v2'
 export const scopedDraftKey = (workspaceId: string, profileId: string) =>
   `${draftKey}:${profileId}:${workspaceId}`
-export type Recovery = { base: Envelope; workspace: Workspace }
+export type Recovery = RecoveryDraft
 type HistoryItem = Operation[][]
 const viewsKey = 'pomegranate-studio-views'
 function keepViews(next: Workspace, local: Workspace): Workspace {
@@ -90,7 +95,11 @@ export function useWorkspace(
       if (diffWorkspace(base.current.workspace, current.current).length)
         sessionStorage.setItem(
           storageKey,
-          JSON.stringify({ base: base.current, workspace: current.current }),
+          JSON.stringify({
+            base: base.current,
+            workspace: current.current,
+            writeVersion,
+          }),
         )
       else sessionStorage.removeItem(storageKey)
     } catch {
@@ -107,6 +116,7 @@ export function useWorkspace(
       }
       try {
         const pending = diffWorkspace(base.current.workspace, current.current)
+        if (!canRebaseOperations(pending)) throw new Error('Stale removal')
         const merged = applyOperations(incoming.workspace, pending)
         base.current = incoming
         publish(keepViews(merged, current.current))
@@ -120,7 +130,7 @@ export function useWorkspace(
         blocked.current = true
         deferred.current = incoming
         setError(
-          'Someone changed the same field or removed an item you are editing. Export your edits, then reload the shared version.',
+          'A newer version arrived while this tab had conflicting edits or removals. Nothing from this draft was applied. Export your edits, then load the latest saved version.',
         )
         setSaveState('error')
       }
@@ -139,16 +149,49 @@ export function useWorkspace(
     setSaveState('saving')
     setError('')
     try {
+      let retries = 0
       while (operations.length) {
         const sent = structuredClone(current.current)
-        const result = await request<Envelope>('/api/workspace', {
-          method: 'PATCH',
-          headers: {
-            ...workspaceHeaders(workspaceId),
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ requestId: crypto.randomUUID(), operations }),
-        })
+        let result: Envelope
+        try {
+          result = await request<Envelope>('/api/workspace', {
+            method: 'PATCH',
+            headers: {
+              ...workspaceHeaders(workspaceId),
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              requestId: crypto.randomUUID(),
+              baseRevision: base.current.revision,
+              operations,
+            }),
+          })
+        } catch (err) {
+          // Only current-session, non-deleting edits may rebase after a race.
+          // A stale deletion or replacement must be reviewed by the user.
+          if (
+            err instanceof ApiError &&
+            err.code === 'STALE_REVISION' &&
+            retries++ < 3 &&
+            canRebaseOperations(operations)
+          ) {
+            const latest = await request<Envelope>('/api/workspace', {
+              headers: workspaceHeaders(workspaceId),
+            })
+            const rebased = applyOperations(latest.workspace, operations)
+            const additional = diffWorkspace(sent, current.current)
+            if (!canRebaseOperations(additional))
+              throw new MergeConflict(['stale removal'])
+            const next = applyOperations(rebased, additional)
+            base.current = latest
+            publish(keepViews(next, current.current))
+            setRevision(latest.revision)
+            persistDraft()
+            operations = diffWorkspace(latest.workspace, next)
+            continue
+          }
+          throw err
+        }
         const newerLocalEdits = diffWorkspace(sent, current.current)
         const next = keepViews(
           applyOperations(result.workspace, newerLocalEdits),
@@ -165,7 +208,7 @@ export function useWorkspace(
     } catch (err) {
       if (
         err instanceof MergeConflict ||
-        (err instanceof ApiError && err.status === 409)
+        (err instanceof ApiError && [409, 428].includes(err.status))
       )
         blocked.current = true
       setError(err instanceof Error ? err.message : 'Save failed.')

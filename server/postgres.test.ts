@@ -45,6 +45,7 @@ test(
           'Content-Type': 'application/json',
           'x-workspace-id': workspaceId,
           'x-pomegranate-auth': '1',
+          'x-pomegranate-write-version': '2',
         },
         ...(body === undefined ? {} : { body: JSON.stringify(body) }),
       })
@@ -103,13 +104,29 @@ test(
         edits.map((workspace, i) =>
           call(i, '/api/workspace', i ? peer.token : owner.token, 'PATCH', {
             requestId: randomUUID(),
+            baseRevision: original.revision,
             operations: diffWorkspace(original.workspace, workspace),
           }),
         ),
       )
-      assert.deepEqual(
-        responses.map((r) => r.status),
-        [200, 200],
+      assert.deepEqual(responses.map((r) => r.status).sort(), [200, 409])
+      const staleIndex = responses.findIndex((r) => r.status === 409)
+      const fresh = await a.read()
+      assert.equal(
+        (
+          await call(
+            staleIndex,
+            '/api/workspace',
+            staleIndex ? peer.token : owner.token,
+            'PATCH',
+            {
+              requestId: randomUUID(),
+              baseRevision: fresh.revision,
+              operations: diffWorkspace(original.workspace, edits[staleIndex]),
+            },
+          )
+        ).status,
+        200,
       )
       const current = await b.read()
       assert.equal(current.workspace.notes, 'A’s notes')
@@ -124,10 +141,12 @@ test(
       await Promise.all([
         call(0, '/api/workspace', owner.token, 'PATCH', {
           requestId: reqId,
+          baseRevision: current.revision,
           operations,
         }),
         call(1, '/api/workspace', owner.token, 'PATCH', {
           requestId: reqId,
+          baseRevision: current.revision,
           operations,
         }),
       ])
@@ -209,6 +228,7 @@ test(
       const latest = await b.read()
       await call(1, '/api/workspace', peer.token, 'PATCH', {
         requestId: randomUUID(),
+        baseRevision: latest.revision,
         operations: diffWorkspace(latest.workspace, {
           ...latest.workspace,
           notes: 'From a separate instance',

@@ -35,6 +35,10 @@ This loads `.env` and uses the configured storage backend. It uses POMEGRANATE_O
 
 ## Session and storage behavior
 
+Workspace writes require the current editor protocol (`x-pomegranate-write-version: 2`). PATCH requests also carry `baseRevision`; the server rejects stale revisions before applying operations and retains atomic compare-and-swap protection during concurrent saves. Old bundles receive HTTP 428 with a reload instruction. Current clients can rebase unrelated, non-deleting edits after a revision race; conflicting edits and stale removals stop with export/reload recovery.
+
+On opening a workspace, a recovery draft is automatically resumed only when its protocol, base revision, and base document match the latest saved workspace. Older drafts are held behind an out-of-date notice with a download option. Continuing fetches the saved workspace again and never replays that older draft. Incoming live updates also stop pending removals from being silently rebased.
+
 Sessions last 30 days. The server stores hashed opaque tokens, with an HttpOnly SameSite cookie plus a browser-local token fallback for embedded browsers that do not retain cookies. The fallback is sent in Authorization headers, never query strings. Members who connect Google can sign back into their existing profile after expiration or clearing site storage. Unlinked guest profiles still require a new invitation; their display names are not verified accounts.
 
 SQLite additions preserve existing workspace data. Back up the complete data directory while the server is stopped. Live presence is transient; saved documents, profiles, and activity survive restart. Pending edits use per-tab sessionStorage and survive reload, but not closing that tab. Export a pending or conflicting draft before closing it. Existing older drafts are explicitly offered for download before continuing with the saved workspace.

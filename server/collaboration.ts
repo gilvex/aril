@@ -87,12 +87,10 @@ export function installCollaboration(
     }
     const user = await store.redeemTransfer(input.data.token)
     if (!user) {
-      res
-        .status(401)
-        .json({
-          error:
-            'This access link expired or was already used. Open a fresh link from your local studio.',
-        })
+      res.status(401).json({
+        error:
+          'This access link expired or was already used. Open a fresh link from your local studio.',
+      })
       return
     }
     setSession(res, user.token)
@@ -282,11 +280,9 @@ export function installCollaboration(
         }))
     const id = (res.locals.profile as Profile).id
     if (!(await cloud.identity.profile(id))) {
-      res
-        .status(409)
-        .json({
-          error: 'This profile has not been migrated to the hosted studio.',
-        })
+      res.status(409).json({
+        error: 'This profile has not been migrated to the hosted studio.',
+      })
       return
     }
     const token = await cloud.createTransfer!(id)
@@ -500,7 +496,11 @@ export function installCollaboration(
   })
   app.patch('/api/workspace', async (req, res) => {
     const input = z
-      .object({ requestId: z.string().uuid(), operations: operationsSchema })
+      .object({
+        requestId: z.string().uuid(),
+        baseRevision: z.number().int().positive().safe(),
+        operations: operationsSchema,
+      })
       .safeParse(req.body)
     if (!input.success) {
       res.status(400).json({ error: 'Invalid changes.' })
@@ -519,6 +519,17 @@ export function installCollaboration(
           return
         }
         const current = await store.read(workspaceId)
+        if (input.data.baseRevision !== current.revision) {
+          res
+            .status(409)
+            .json({
+              code: 'STALE_REVISION',
+              revision: current.revision,
+              error:
+                'A newer workspace is already saved. Your older changes were not applied. Export your edits or load the latest saved version.',
+            })
+          return
+        }
         const next = applyOperations(current.workspace, input.data.operations)
         if (!input.data.operations.length) {
           res.json(current)
@@ -541,12 +552,10 @@ export function installCollaboration(
         res.json(saved)
         return
       }
-      res
-        .status(409)
-        .json({
-          error:
-            'This workspace is receiving simultaneous changes. Reload the shared version before retrying.',
-        })
+      res.status(409).json({
+        error:
+          'This workspace is receiving simultaneous changes. Reload the shared version before retrying.',
+      })
     } catch (err) {
       if (err instanceof MergeConflict || err instanceof z.ZodError) {
         res.status(409).json({

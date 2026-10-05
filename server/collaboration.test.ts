@@ -76,7 +76,11 @@ test('invited users share edits, profiles, cursors and activity without stale ov
   const call = (path: string, cookie = '', method = 'GET', body?: unknown) =>
     fetch(url + path, {
       method,
-      headers: { Cookie: cookie, 'Content-Type': 'application/json' },
+      headers: {
+        Cookie: cookie,
+        'Content-Type': 'application/json',
+        'x-pomegranate-write-version': '2',
+      },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     })
   let streamA: Awaited<ReturnType<typeof events>> | undefined
@@ -136,11 +140,16 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     changeA.boards[0].nodes[0].data.title = 'Runtime edited by owner'
     const changeB = structuredClone(initial.workspace)
     changeB.boards[0].nodes[0].position = { x: 77, y: 88 }
-    const patch = (
+    const patch = async (
       cookie: string,
       operations: Operation[],
       requestId = randomUUID(),
-    ) => call('/api/workspace', cookie, 'PATCH', { operations, requestId })
+    ) =>
+      call('/api/workspace', cookie, 'PATCH', {
+        operations,
+        requestId,
+        baseRevision: store.read().revision,
+      })
     const requestId = randomUUID()
     assert.equal(
       (
@@ -442,6 +451,7 @@ test('invited users share edits, profiles, cursors and activity without stale ov
       (
         await call('/api/workspace', cookieA, 'PATCH', {
           requestId: randomUUID(),
+          baseRevision: shared.revision,
           operations: diffWorkspace(shared.workspace, withWireframe),
         })
       ).status,

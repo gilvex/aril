@@ -73,6 +73,7 @@ test('workspace APIs isolate membership, documents, history, invites and event s
         Authorization: `Bearer ${token}`,
         'x-workspace-id': workspaceId,
         'Content-Type': 'application/json',
+        'x-pomegranate-write-version': '2',
       },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     })

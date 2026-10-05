@@ -26,6 +26,7 @@ async function call(
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
       'x-pomegranate-auth': '1',
+      'x-pomegranate-write-version': '2',
       'x-workspace-id': workspace,
     },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
@@ -145,6 +146,7 @@ try {
   )
   const patch = await call('/api/workspace', peer.token, 'PATCH', {
     requestId: randomUUID(),
+    baseRevision: initial.revision,
     operations: diffWorkspace(initial.workspace, {
       ...initial.workspace,
       notes: 'Verified through the deployed API',
@@ -186,6 +188,7 @@ try {
     (
       await call('/api/workspace', peer.token, 'PATCH', {
         requestId: randomUUID(),
+        baseRevision: latest.revision,
         operations: diffWorkspace(latest.workspace, withWireframe),
       })
     ).status,
@@ -222,6 +225,30 @@ try {
     ),
   )
   a.close()
+  const protectedState = await store.read(workspaceId)
+  const staleRemoval = {
+    requestId: randomUUID(),
+    baseRevision: latest.revision,
+    operations: diffWorkspace(withWireframe, latest.workspace),
+  }
+  assert.equal(
+    (await call('/api/workspace', peer.token, 'PATCH', staleRemoval)).status,
+    409,
+  )
+  const oldPage = await fetch(origin + '/api/workspace', {
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Bearer ' + peer.token,
+      'Content-Type': 'application/json',
+      'x-workspace-id': workspaceId,
+    },
+    body: JSON.stringify({
+      ...staleRemoval,
+      baseRevision: protectedState.revision,
+    }),
+  })
+  assert.equal(oldPage.status, 428)
+  assert.deepEqual(await store.read(workspaceId), protectedState)
   const reconnect = await stream(owner.token, randomUUID())
   await reconnect.next(
     'workspace',
@@ -238,6 +265,7 @@ try {
       savedEdit: true,
       reconnect: true,
       wireframes: true,
+      staleWritesBlocked: true,
     }),
   )
 } finally {

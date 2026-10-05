@@ -25,7 +25,11 @@ test('workspace persistence, stale-write protection, history and invalid graph r
   const fetch = (input: string, options?: RequestInit) =>
     globalThis.fetch(input, {
       ...options,
-      headers: { ...options?.headers, Cookie: cookie },
+      headers: {
+        ...options?.headers,
+        Cookie: cookie,
+        'x-pomegranate-write-version': '2',
+      },
     })
   const put = (body: unknown) =>
     fetch(`${url}/api/workspace`, {

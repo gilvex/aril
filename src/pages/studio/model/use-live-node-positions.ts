@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Idea } from '../../../shared/api/workspace'
 import type { Presence } from '../../../../domain/collaboration'
 
@@ -53,9 +53,13 @@ export function useLiveNodePositions<
     frame = requestAnimationFrame(step)
     return () => cancelAnimationFrame(frame)
   }, [nodes, peers, localDragging])
-  return nodes.map((node) =>
-    positions[node.id] && !localDragging.has(node.id)
-      ? { ...node, position: positions[node.id] }
-      : node,
+  return useMemo(
+    () =>
+      nodes.map((node) =>
+        positions[node.id] && !localDragging.has(node.id)
+          ? { ...node, position: positions[node.id] }
+          : node,
+      ),
+    [nodes, positions, localDragging],
   )
 }

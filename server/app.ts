@@ -6,6 +6,7 @@ import { openStore } from './store.ts'
 import type { Store } from './store-contract.ts'
 import { workspaceSchema } from '../domain/workspace.ts'
 import { installCollaboration } from './collaboration.ts'
+import { writeVersion, writeVersionHeader } from '../domain/freshness.ts'
 
 export function createApp(database: string, publicOrigin?: string) {
   return createApplication(openStore(database), publicOrigin)
@@ -56,6 +57,22 @@ export function createApplication<T extends Store>(
     next()
   })
   app.use(express.json({ limit: '5mb' }))
+  app.use('/api/workspace', (req, res, next) => {
+    if (
+      ['PATCH', 'PUT'].includes(req.method) &&
+      req.get(writeVersionHeader) !== writeVersion
+    ) {
+      res
+        .status(428)
+        .json({
+          code: 'CLIENT_UPDATE_REQUIRED',
+          error:
+            'This page is out of date. Export any unsaved edits, then reload to use the current editor. The shared workspace has not been changed.',
+        })
+      return
+    }
+    next()
+  })
   app.get('/api/health', async (_req, res) => {
     res.json({ ok: true })
   })

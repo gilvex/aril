@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import {
   ReactFlow,
   Background,
@@ -44,13 +44,14 @@ import {
   type WireNode,
 } from '../../../../domain/wireframe'
 import { WireframeBlock, type WireFlowNode } from './WireframeBlock'
-import { SelectionEdge } from './SelectionPresence'
+import { WireframeEdge } from './WireframeEdge'
+import { routeWireframes } from '../model/wire-routing'
 import { LiveCursors } from './LiveCursors'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
 
 const nodeTypes = { wireframe: WireframeBlock },
-  edgeTypes = { smoothstep: SelectionEdge }
+  edgeTypes = { smoothstep: WireframeEdge }
 const icons = {
   screen: AppWindow,
   text: Type,
@@ -106,6 +107,10 @@ export function WireframeBoard({
   const pendingFocus = useRef<string | null>(null)
   const full = useCanvasFullscreen()
   const liveNodes = useLiveNodePositions(graph.nodes, peers, moving)
+  const routes = useMemo(
+    () => routeWireframes(liveNodes, graph.edges),
+    [liveNodes, graph.edges],
+  )
   const selected = graph.nodes.filter((n) => selection.has(n.id))
   const node = selected.length === 1 ? selected[0] : undefined
   const edge = graph.edges.find((e) => e.id === edgeId)
@@ -510,7 +515,7 @@ export function WireframeBoard({
                         .color,
                 },
               }))}
-            edges={graph.edges.map((e) => {
+            edges={graph.edges.map((e, index) => {
               const selectors = [
                 ...(edgeId === e.id ? [profile] : []),
                 ...peers
@@ -523,7 +528,17 @@ export function WireframeBoard({
                 hidden: preview,
                 selected: edgeId === e.id,
                 zIndex: 2,
-                data: { selectors, currentUserId: profile.id },
+                data: {
+                  selectors,
+                  currentUserId: profile.id,
+                  route: routes.get(e.id),
+                  number: index + 1,
+                  muted: !!edgeId && edgeId !== e.id,
+                  select: () => {
+                    setEdgeId(e.id)
+                    setSelection(new Set())
+                  },
+                },
                 markerEnd: { type: MarkerType.ArrowClosed, color },
                 ariaLabel: `${e.label}: ${graph.nodes.find((n) => n.id === e.source)?.data.title} to ${graph.nodes.find((n) => n.id === e.target)?.data.title}`,
                 style: {
@@ -1027,6 +1042,36 @@ export function WireframeBoard({
                 Start with a screen, add the pieces, then link the actions. Each
                 board keeps its own wireframes.
               </p>
+              {!!graph.edges.length && (
+                <div className="wire-flow-index" aria-label="Board flows">
+                  <h3>Flows</h3>
+                  {graph.edges.map((link, index) => (
+                    <button
+                      key={link.id}
+                      onClick={() => {
+                        setEdgeId(link.id)
+                        setSelection(new Set())
+                      }}
+                    >
+                      <span>{index + 1}</span>
+                      <div>
+                        <strong>{link.label || 'On click'}</strong>
+                        <small>
+                          {
+                            graph.nodes.find((n) => n.id === link.source)?.data
+                              .title
+                          }{' '}
+                          →{' '}
+                          {
+                            graph.nodes.find((n) => n.id === link.target)?.data
+                              .title
+                          }
+                        </small>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="wire-kit">
                 {wireKinds.map((kind) => {
                   const Icon = icons[kind]

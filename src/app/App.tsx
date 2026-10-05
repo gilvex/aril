@@ -16,6 +16,7 @@ import { scopedDraftKey } from '../pages/studio/model/use-workspace'
 import { WorkspaceHome } from './WorkspaceHome'
 import type { StudioSummary } from '../../domain/studios'
 import { GoogleSignIn } from '../shared/ui/GoogleSignIn'
+import { isFreshDraft } from '../../domain/freshness'
 let sessionRequest: Promise<{ profile: Profile; token?: string }> | undefined
 function startSession() {
   const token = new URLSearchParams(location.hash.slice(1)).get('transfer')
@@ -39,6 +40,7 @@ export function App() {
   const [initial, setInitial] = useState<Envelope | null>(null)
   const [recovery, setRecovery] = useState<Recovery>()
   const [legacy, setLegacy] = useState<Workspace | null>(null)
+  const [staleDraftKey, setStaleDraftKey] = useState<string | null>(null)
   const [inviteRequired, setInviteRequired] = useState(false)
   const [token, setToken] = useState(
     () => new URLSearchParams(location.hash.slice(1)).get('invite') || '',
@@ -81,19 +83,28 @@ export function App() {
             if (
               Number.isSafeInteger(draft.base?.revision) &&
               draft.base.revision > 0
-            )
-              setRecovery({
+            ) {
+              const parsed = {
                 base: {
                   ...draft.base,
                   workspace: workspaceSchema.parse(draft.base.workspace),
                 },
                 workspace: workspaceSchema.parse(draft.workspace),
-              })
+                writeVersion: draft.writeVersion,
+              }
+              if (isFreshDraft(parsed, result)) setRecovery(parsed)
+              else {
+                setLegacy(parsed.workspace)
+                setStaleDraftKey(key)
+                setRecovery(undefined)
+              }
+            }
             sessionStorage.setItem(key, raw)
             if (studio.id === 'default') sessionStorage.removeItem(draftKey)
           }
           const old = localStorage.getItem('pomegranate-studio-draft-v1')
-          if (old) setLegacy(workspaceSchema.parse(JSON.parse(old).workspace))
+          if (old && !raw)
+            setLegacy(workspaceSchema.parse(JSON.parse(old).workspace))
         } catch {
           /* Malformed recovery data never replaces the server document. */
         }
@@ -110,10 +121,11 @@ export function App() {
     return (
       <div className="boot-screen">
         <img src="/mark.svg" alt="" />
-        <h1>You have an older recovery draft.</h1>
+        <h1>This draft is out of date.</h1>
         <p>
-          Your saved workspace is safe. Keep a copy of these unsaved edits
-          before opening the shared studio.
+          These edits came from an older page or saved revision and have not
+          been applied. Download a copy if you need them, then open the latest
+          shared workspace.
         </p>
         <textarea
           className="legacy-json"
@@ -133,7 +145,18 @@ export function App() {
             className="button primary"
             onClick={() => {
               localStorage.removeItem('pomegranate-studio-draft-v1')
+              if (staleDraftKey) sessionStorage.removeItem(staleDraftKey)
+              setStaleDraftKey(null)
+              setRecovery(undefined)
+              setInitial(null)
               setLegacy(null)
+              // Fetch again: collaborators may have edited while this notice was open.
+              if (studio)
+                void request<Envelope>('/api/workspace', {
+                  headers: workspaceHeaders(studio.id),
+                })
+                  .then(setInitial)
+                  .catch((err) => setError(String(err)))
             }}
           >
             Continue with saved workspace
