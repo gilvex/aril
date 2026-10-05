@@ -19,7 +19,13 @@ export function Avatar({ profile }: { profile: Profile }) {
     </span>
   )
 }
-export function PresenceAvatars({ profiles }: { profiles: Profile[] }) {
+export function PresenceAvatars({
+  profiles,
+  limit = 3,
+}: {
+  profiles: Profile[]
+  limit?: number
+}) {
   const people = [
     ...new Map(profiles.map((profile) => [profile.id, profile])).values(),
   ]
@@ -32,11 +38,11 @@ export function PresenceAvatars({ profiles }: { profiles: Profile[] }) {
       aria-label={`${names} viewing here`}
       title={`${names} viewing here`}
     >
-      {people.slice(0, 3).map((profile) => (
+      {people.slice(0, limit).map((profile) => (
         <Avatar key={profile.id} profile={profile} />
       ))}
-      {people.length > 3 && (
-        <span className="tab-presence-more">+{people.length - 3}</span>
+      {people.length > limit && (
+        <span className="tab-presence-more">+{people.length - limit}</span>
       )}
     </span>
   )

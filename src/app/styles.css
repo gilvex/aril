@@ -1112,12 +1112,12 @@ code {
   border: 1px solid #e0d9e8;
   border-radius: 7px;
   overflow: hidden;
-  bottom: 14px !important;
-  left: 10px !important;
+  bottom: 14px;
+  left: 10px;
 }
 .react-flow__controls-button {
-  width: 28px !important;
-  height: 28px !important;
+  width: 28px;
+  height: 28px;
   border-color: #eeeaf2 !important;
   color: #8b7c99 !important;
 }
@@ -1130,7 +1130,7 @@ code {
   border: 1px solid #e3dce9;
   border-radius: 8px;
   background: #fff !important;
-  bottom: 7px !important;
+  bottom: 7px;
   right: 7px !important;
 }
 .react-flow__attribution {
@@ -2968,4 +2968,105 @@ code {
 }
 @media (prefers-reduced-motion: reduce) {
   .studio-shell .sidebar { transition: none; }
+}
+
+/* Canvas-first navigation: a single app bar and controls over the working area. */
+.canvas-first .topbar { height: 56px; min-height: 56px; padding: 0 18px; gap: 12px; }
+.app-workspace-picker { display: flex; align-items: center; gap: 10px; min-width: 0; border: 0; background: none; color: var(--text); font-weight: 650; padding: 6px; }
+.app-workspace-picker img { width: 25px; height: 25px; }
+.app-workspace-picker span { max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.workspace-actions-menu { position: relative; }
+.workspace-actions-menu summary { list-style: none; display: grid; place-items: center; width: 34px; height: 34px; cursor: pointer; border-radius: 7px; }
+.workspace-actions-menu summary::-webkit-details-marker { display: none; }
+.workspace-actions-menu summary:hover { background: #f4f0f5; }
+.workspace-actions-popover { position: absolute; right: 0; top: calc(100% + 10px); width: 220px; padding: 6px; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 28px #30223d18; background: #fff; z-index: 50; }
+.workspace-actions-popover button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px; border: 0; border-radius: 6px; background: none; text-align: left; font-size: 12px; }
+.workspace-actions-popover button:hover { background: var(--accent-light); }
+.canvas-first .canvas-page, .canvas-first .canvas-page.canvas-fullscreen { padding-bottom: 0; }
+.canvas-first .canvas-layout { border-top: 0; }
+.canvas-first .canvas-surface { container-type: inline-size; }
+.floating-board-navigation { position: absolute; top: 16px; left: 18px; z-index: 12; display: flex; align-items: center; flex-wrap: wrap; max-width: calc(100% - 170px); padding: 4px; gap: 4px; background: #fff; border: 1px solid #e4deeb; border-radius: 10px; box-shadow: 0 3px 12px #30223d0b; }
+.board-picker-toggle { display: flex; align-items: center; gap: 9px; min-height: 38px; padding: 7px 10px; background: none; border: 0; border-radius: 6px; color: #34313d; font-size: 12px; font-weight: 650; min-width: 0; }
+.board-picker-toggle > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+.board-picker-toggle svg { flex-shrink: 0; }
+.board-picker-toggle:hover { background: #f6f3f7; }
+.floating-board-sections { display: flex; gap: 3px; padding-left: 4px; border-left: 1px solid var(--line); }
+.floating-board-sections button { display: flex; align-items: center; gap: 7px; min-height: 36px; padding: 7px 10px; border: 0; border-radius: 6px; background: none; color: #797084; font-size: 12px; white-space: nowrap; }
+.floating-board-sections button[aria-pressed="true"] { color: var(--accent); background: var(--accent-light); font-weight: 650; }
+.board-picker-popover { position: absolute; top: calc(100% + 8px); left: 0; width: 320px; max-width: calc(100cqw - 36px); padding: 7px; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 32px #30223d20; }
+.board-picker-list { max-height: min(320px, 40dvh); overflow-y: auto; }
+.board-picker-popover button { width: 100%; display: flex; align-items: center; gap: 9px; border: 0; border-radius: 6px; background: none; text-align: left; padding: 11px; font-size: 12px; }
+.board-picker-popover button > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.board-picker-popover button:hover, .board-picker-popover button[aria-current="page"] { color: var(--accent); background: var(--accent-light); }
+.board-picker-options { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 6px; }
+.board-picker-options form { display: flex; padding: 6px; gap: 4px; }
+.board-picker-options form input { min-width: 0; width: 100%; padding: 8px; border: 1px solid var(--line); border-radius: 6px; }
+.board-picker-options form button { width: 36px; flex-shrink: 0; }
+.board-picker-options button:disabled { opacity: .4; cursor: default; }
+.canvas-top-actions { position: absolute; top: 16px; right: 18px; z-index: 11; display: flex; gap: 6px; }
+.canvas-top-actions .button { min-height: 44px; box-shadow: 0 3px 12px #30223d0b; background: white; }
+.canvas-top-actions .touch-tool-label { display: inline; }
+.canvas-top-actions .fullscreen-toggle span { display: none; }
+.canvas-tool-dock { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 12; display: flex; align-items: center; gap: 4px; padding: 5px; border: 1px solid #e4deeb; border-radius: 12px; background: #fff; box-shadow: 0 5px 20px #30223d12; max-width: calc(100% - 125px); }
+.canvas-tool-dock > .button { min-height: 42px; padding: 8px 11px; border-color: transparent; background: transparent; color: #786c84; font-size: 12px; }
+.canvas-tool-dock > .button[aria-pressed="true"] { background: var(--accent-light); color: var(--accent); }
+.canvas-tool-dock .add-node-wrap { margin-left: 4px; padding-left: 7px; border-left: 1px solid var(--line); }
+.canvas-tool-dock .add-node-wrap > .button { min-height: 42px; white-space: nowrap; }
+.canvas-tool-dock .node-palette { top: auto; bottom: calc(100% + 14px); right: 0; max-height: calc(100dvh - 230px); overflow-y: auto; }
+.canvas-first .canvas-caption { display: none; }
+.canvas-first .canvas-tip { display: none; }
+.canvas-first .wire-preview .canvas-tip { display: block; bottom: 84px; max-width: calc(100% - 40px); white-space: normal; text-align: center; }
+.canvas-first .react-flow__controls { margin: 0; left: 18px; bottom: 18px; }
+.canvas-first .react-flow__minimap { bottom: 80px; }
+.canvas-first .touch-selection-hint { bottom: 90px; }
+@container (max-width: 780px) {
+  .floating-board-navigation { max-width: calc(100% - 160px); }
+  .board-picker-toggle { width: 100%; }
+  .floating-board-sections { border-left: 0; padding-left: 0; }
+  .canvas-tool-dock > .button { padding: 8px; }
+}
+@media (max-width: 1024px), (pointer: coarse) and (max-width: 1366px) {
+  .canvas-first .topbar { padding: 0 10px; gap: 4px; }
+  .canvas-first .breadcrumb { flex: 1; }
+  .app-workspace-picker { padding: 4px; gap: 6px; width: 100%; font-size: 13px; }
+  .app-workspace-picker img { width: 23px; height: 23px; }
+  .app-workspace-picker span { max-width: 150px; }
+  .canvas-first .topbar-actions > [aria-label="Undo"], .canvas-first .topbar-actions > [aria-label="Redo"] { display: none; }
+  .workspace-actions-menu summary { width: 36px; min-height: 44px; }
+  .floating-board-navigation { top: 12px; left: 12px; max-width: calc(100% - 24px); gap: 3px; }
+  .board-picker-toggle { min-height: 40px; width: auto; }
+  .floating-board-sections button { min-height: 40px; }
+  .canvas-tool-dock { inset: auto 12px max(12px, env(safe-area-inset-bottom, 0px)); transform: none; max-width: none; justify-content: center; gap: 3px; padding: 5px; }
+  .canvas-tool-dock > .button { min-height: 48px; min-width: 42px; flex-direction: column; gap: 3px; font-size: 10px; padding: 4px 7px; }
+  .canvas-tool-dock .touch-tool-label { display: block; font-size: 10px; }
+  .canvas-tool-dock .fullscreen-toggle span { max-width: 58px; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .canvas-tool-dock .add-node-wrap { margin-left: auto; padding-left: 5px; }
+  .canvas-tool-dock .add-node-wrap > .button { padding: 9px; min-height: 44px; font-size: 11px; }
+  .canvas-tool-dock .preview-toggle { max-width: 64px; }
+  .canvas-tool-dock .node-palette { max-width: calc(100vw - 34px); bottom: calc(100% + 12px); }
+  .canvas-first .react-flow__controls { bottom: 88px; left: 12px; }
+  .canvas-first .canvas-layout .inspector { bottom: 80px; max-height: min(62dvh, calc(100% - 100px)); border-radius: 14px 14px 0 0; }
+  .canvas-first .canvas-surface .touch-selection-hint { bottom: 86px; left: 66px; right: 12px; }
+}
+@media (max-width: 500px) {
+  .floating-board-navigation { flex-direction: column; align-items: stretch; width: fit-content; }
+  .board-picker-toggle { width: 100%; }
+  .floating-board-sections { border-left: 0; padding: 0; }
+  .floating-board-sections button { flex: 1; font-size: 11px; padding: 7px 8px; }
+  .app-workspace-picker span { max-width: 100px; }
+  .app-workspace-picker > svg { display: none; }
+  .canvas-first .collaboration-bar { gap: 0; margin-left: 0; padding-left: 0; }
+
+}
+
+@container (max-width: 500px) {
+  .floating-board-navigation { max-width: calc(100% - 36px); }
+  .canvas-top-actions { top: 120px; }
+  .canvas-tool-dock { max-width: calc(100% - 24px); }
+  .canvas-tool-dock > .button > span { display: none; }
+  .canvas-first .react-flow__controls { bottom: 88px; }
+}
+@media (max-width: 1024px), (pointer: coarse) and (max-width: 1366px) {
+  .canvas-tool-dock > .button > span { display: block; }
+  .canvas-first .react-flow__controls-button { width: 40px; height: 40px; }
 }

@@ -1,3 +1,5 @@
+import { CanvasChrome, type CanvasTool } from './CanvasChrome'
+import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { flushSync } from 'react-dom'
 import {
@@ -70,6 +72,7 @@ const icons = {
 }
 const empty: Wireframe = { nodes: [], edges: [] }
 type Props = {
+  navigation: ReactNode
   board: Board
   update: (board: Board, record?: boolean) => void
   checkpoint: () => void
@@ -88,6 +91,7 @@ type Props = {
 }
 
 export function WireframeBoard({
+  navigation,
   board,
   update,
   checkpoint,
@@ -98,8 +102,9 @@ export function WireframeBoard({
 }: Props) {
   const graph = board.wireframe || empty
   const compact = useCompactLayout()
+  const [tool, setTool] = useState<CanvasTool>('select')
   const [inspectorPreference, setInspectorOpen] = useState<boolean | null>(null)
-  const inspectorOpen = inspectorPreference ?? !compact
+  const inspectorOpen = inspectorPreference ?? false
   const [touchSelection, setTouchSelection] = useState(false)
   const inspectorToggle = useRef<HTMLButtonElement>(null)
   const editField = useRef<HTMLInputElement>(null)
@@ -135,6 +140,7 @@ export function WireframeBoard({
       setEdgeId(connection ? id : null)
       setInspectorOpen(true)
       setTouchSelection(false)
+      setTool('select')
       setPalette(false)
       setInsertPoint(null)
     })
@@ -457,117 +463,6 @@ export function WireframeBoard({
         selectionBefore.current = selection
       }}
     >
-      <div className="board-heading">
-        <div>
-          <h1>
-            {board.name} <span className="wire-heading-label">Wireframes</span>
-          </h1>
-        </div>
-        <div className="canvas-heading-actions">
-          <button
-            ref={inspectorToggle}
-            className="button"
-            aria-label={
-              inspectorOpen
-                ? 'Hide wireframe details'
-                : 'Show wireframe details'
-            }
-            title={
-              inspectorOpen
-                ? 'Hide wireframe details'
-                : 'Show wireframe details'
-            }
-            aria-expanded={inspectorOpen}
-            aria-controls="wireframe-inspector"
-            onClick={() => setInspectorOpen(!inspectorOpen)}
-          >
-            {inspectorOpen ? (
-              <PanelRightClose size={16} />
-            ) : (
-              <PanelRightOpen size={16} />
-            )}
-            <span className="touch-tool-label">Details</span>
-          </button>
-          {!preview && (
-            <button
-              className="button touch-select"
-              aria-label="Select multiple blocks"
-              aria-pressed={touchSelection}
-              onClick={() => setTouchSelection(!touchSelection)}
-            >
-              <MousePointer2 size={16} />
-              <span>{touchSelection ? 'Done' : 'Select'}</span>
-            </button>
-          )}
-          <button
-            ref={full.button}
-            className="button fullscreen-toggle"
-            aria-label={
-              full.fullscreen
-                ? 'Exit fullscreen'
-                : 'Expand wireframes to fullscreen'
-            }
-            aria-pressed={full.fullscreen}
-            onClick={() => void full.toggle()}
-          >
-            {full.fullscreen ? (
-              <Minimize2 size={16} />
-            ) : (
-              <Maximize2 size={16} />
-            )}
-            <span className="touch-tool-label">Expand</span>
-          </button>
-          <button
-            className={`button preview-toggle ${preview ? 'primary' : ''}`}
-            aria-pressed={preview}
-            onClick={() => {
-              setPreview(!preview)
-              setPalette(false)
-            }}
-          >
-            {preview ? <Pencil size={15} /> : <Play size={15} />}
-            <span>{preview ? 'Edit' : 'Preview flow'}</span>
-          </button>
-          {!preview && (
-            <div className="add-node-wrap">
-              <button
-                className="button primary"
-                aria-expanded={palette}
-                onClick={() => setPalette(!palette)}
-                disabled={graph.nodes.length >= 500}
-              >
-                <Plus size={16} />
-                Add block
-              </button>
-              {palette && (
-                <div className="node-palette wire-palette">
-                  <div className="popover-heading">
-                    Build your interface
-                    <button
-                      className="icon-button"
-                      aria-label="Close block menu"
-                      onClick={() => setPalette(false)}
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                  {wireKinds.map((kind) => {
-                    const Icon = icons[kind]
-                    return (
-                      <button key={kind} onClick={() => add(kind)}>
-                        <Icon size={17} />
-                        {wireLabels[kind]}
-                        <Plus size={14} />
-                      </button>
-                    )
-                  })}
-                  <p>Select a screen first to add blocks inside it.</p>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
       <div className="canvas-layout">
         <div
           ref={surface}
@@ -583,6 +478,110 @@ export function WireframeBoard({
           }}
           onPointerLeave={() => sendPresence({ cursor: null }, true)}
         >
+          <CanvasChrome
+            navigation={navigation}
+            tool={tool}
+            onTool={setTool}
+            multiSelect={touchSelection}
+            onMultiSelect={setTouchSelection}
+            preview={preview}
+            actions={
+              <>
+                <button
+                  ref={inspectorToggle}
+                  className="button"
+                  aria-label={
+                    inspectorOpen
+                      ? 'Hide wireframe details'
+                      : 'Show wireframe details'
+                  }
+                  title={
+                    inspectorOpen
+                      ? 'Hide wireframe details'
+                      : 'Show wireframe details'
+                  }
+                  aria-expanded={inspectorOpen}
+                  aria-controls="wireframe-inspector"
+                  onClick={() => setInspectorOpen(!inspectorOpen)}
+                >
+                  {inspectorOpen ? (
+                    <PanelRightClose size={16} />
+                  ) : (
+                    <PanelRightOpen size={16} />
+                  )}
+                  <span className="touch-tool-label">Details</span>
+                </button>
+                <button
+                  ref={full.button}
+                  className="button fullscreen-toggle"
+                  aria-label={
+                    full.fullscreen
+                      ? 'Exit fullscreen'
+                      : 'Expand wireframes to fullscreen'
+                  }
+                  aria-pressed={full.fullscreen}
+                  onClick={() => void full.toggle()}
+                >
+                  {full.fullscreen ? (
+                    <Minimize2 size={16} />
+                  ) : (
+                    <Maximize2 size={16} />
+                  )}
+                  <span className="touch-tool-label">Expand</span>
+                </button>
+              </>
+            }
+          >
+            <button
+              className={`button preview-toggle ${preview ? 'primary' : ''}`}
+              aria-pressed={preview}
+              onClick={() => {
+                setPreview(!preview)
+                setPalette(false)
+              }}
+            >
+              {preview ? <Pencil size={15} /> : <Play size={15} />}
+              <span>{preview ? 'Edit' : 'Preview flow'}</span>
+            </button>
+            {!preview && (
+              <div className="add-node-wrap">
+                <button
+                  className="button primary"
+                  aria-expanded={palette}
+                  onClick={() => setPalette(!palette)}
+                  disabled={graph.nodes.length >= 500}
+                >
+                  <Plus size={16} />
+                  Add block
+                </button>
+                {palette && (
+                  <div className="node-palette wire-palette">
+                    <div className="popover-heading">
+                      Build your interface
+                      <button
+                        className="icon-button"
+                        aria-label="Close block menu"
+                        onClick={() => setPalette(false)}
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                    {wireKinds.map((kind) => {
+                      const Icon = icons[kind]
+                      return (
+                        <button key={kind} onClick={() => add(kind)}>
+                          <Icon size={17} />
+                          {wireLabels[kind]}
+                          <Plus size={14} />
+                        </button>
+                      )
+                    })}
+                    <p>Select a screen first to add blocks inside it.</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </CanvasChrome>
           <div className="canvas-caption">
             {screens.length} screens
             <span className="caption-separator" />
@@ -664,8 +663,13 @@ export function WireframeBoard({
             onNodeContextMenu={(event, target) => openInsertMenu(event, target)}
             onMoveStart={() => setInsertPoint(null)}
             onNodesChange={onNodesChange}
-            nodesDraggable={!preview && (!compact || !touchSelection)}
-            nodesConnectable={!preview}
+            nodesDraggable={
+              !preview && tool === 'select' && (!compact || !touchSelection)
+            }
+            panOnDrag={tool === 'pan' || compact || preview ? true : [1, 2]}
+            selectionOnDrag={!compact && !preview && tool === 'select'}
+            zoomOnDoubleClick={false}
+            nodesConnectable={!preview && tool !== 'pan'}
             deleteKeyCode={preview ? null : ['Backspace', 'Delete']}
             onNodeClick={(event, clicked) => {
               if (preview) {

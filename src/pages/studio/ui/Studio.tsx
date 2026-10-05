@@ -1,3 +1,4 @@
+import { CanvasNavigation } from './CanvasNavigation'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   Workflow,
@@ -22,7 +23,7 @@ import {
   PanelLeftOpen,
   FileJson,
   RotateCcw,
-  PanelsTopLeft,
+  MoreHorizontal,
 } from 'lucide-react'
 import {
   downloadJson,
@@ -95,9 +96,28 @@ export function Studio({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const compact = useCompactLayout()
   const sidebarRef = useRef<HTMLElement>(null)
+  const actionsMenu = useRef<HTMLDetailsElement>(null)
+  useEffect(() => {
+    const dismiss = (event: PointerEvent) => {
+      if (!actionsMenu.current?.contains(event.target as Node))
+        actionsMenu.current?.removeAttribute('open')
+    }
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && actionsMenu.current?.open) {
+        actionsMenu.current.removeAttribute('open')
+        actionsMenu.current.querySelector('summary')?.focus()
+      }
+    }
+    document.addEventListener('pointerdown', dismiss)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('pointerdown', dismiss)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     try {
-      return localStorage.getItem('pomegranate-sidebar-collapsed') === 'true'
+      return localStorage.getItem('pomegranate-sidebar-collapsed') !== 'false'
     } catch {
       return false
     }
@@ -271,7 +291,7 @@ export function Studio({
   }
   return (
     <div
-      className={`studio-shell${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
+      className={`studio-shell canvas-first${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}
     >
       {sidebarOpen && (
         <button
@@ -474,18 +494,21 @@ export function Studio({
                 <PanelLeftClose size={18} />
               )}
             </button>
-            <span>Workspace</span>
-            <span>/</span>
-            <strong>
-              {compact
-                ? {
-                    canvas: 'Canvas',
-                    requirements: 'Brief',
-                    design: 'Design',
-                    notes: 'Notes',
-                  }[view]
-                : navigation.find((n) => n.id === view)?.name}
-            </strong>
+            <button
+              className="app-workspace-picker"
+              title="Switch workspace"
+              onClick={async () => {
+                if (await state.flush()) onWorkspaces(multiplayer.profile)
+                else
+                  setNotice(
+                    'Finish saving or resolve your unsaved edits before switching workspaces.',
+                  )
+              }}
+            >
+              <img src="/mark.svg" alt="" />
+              <span>{studio.name}</span>
+              <ChevronDown size={14} />
+            </button>
           </div>
           <div className="topbar-actions">
             <button
@@ -527,30 +550,42 @@ export function Studio({
             >
               <Redo2 size={17} />
             </button>
-            <button
-              className="icon-button"
-              aria-label="Revision history"
-              title="Revision history"
-              onClick={() => void loadHistory()}
-            >
-              <History size={17} />
-            </button>
-            <button
-              className="icon-button"
-              aria-label="Import workspace"
-              title="Import workspace"
-              onClick={() => importRef.current?.click()}
-            >
-              <Upload size={17} />
-            </button>
-            <button
-              className="button export-button"
-              aria-label="Export"
-              onClick={exportWorkspace}
-            >
-              <Download size={15} />
-              <span>Export</span>
-            </button>
+            <details ref={actionsMenu} className="workspace-actions-menu">
+              <summary aria-label="Workspace actions" title="Workspace actions">
+                <MoreHorizontal size={19} />
+              </summary>
+              <div
+                className="workspace-actions-popover"
+                onClick={(e) => {
+                  e.currentTarget.closest('details')?.removeAttribute('open')
+                }}
+              >
+                {compact && (
+                  <>
+                    <button disabled={!state.canUndo} onClick={state.undo}>
+                      <Undo2 size={16} />
+                      Undo
+                    </button>
+                    <button disabled={!state.canRedo} onClick={state.redo}>
+                      <Redo2 size={16} />
+                      Redo
+                    </button>
+                  </>
+                )}
+                <button onClick={() => void loadHistory()}>
+                  <History size={16} />
+                  Revision history
+                </button>
+                <button onClick={() => importRef.current?.click()}>
+                  <Upload size={16} />
+                  Import workspace
+                </button>
+                <button onClick={exportWorkspace}>
+                  <Download size={16} />
+                  Export workspace
+                </button>
+              </div>
+            </details>
             <CollaborationBar
               workspaceId={studio.id}
               profile={multiplayer.profile}
@@ -612,83 +647,6 @@ export function Studio({
         )}
         {view === 'canvas' && (
           <>
-            <div className="board-tabs">
-              <div>
-                {workspace.boards.map((b) => (
-                  <button
-                    className={b.id === board.id ? 'active' : ''}
-                    key={b.id}
-                    aria-label={b.name}
-                    onClick={() => setBoardId(b.id)}
-                  >
-                    <Workflow size={14} />
-                    {b.name}
-                    <PresenceAvatars
-                      profiles={present
-                        .filter(
-                          (person) =>
-                            (person.view === 'canvas' ||
-                              person.view === 'wireframes') &&
-                            person.boardId === b.id,
-                        )
-                        .map((person) => person.profile)}
-                    />
-                  </button>
-                ))}
-                <button
-                  aria-label="Add board"
-                  onClick={() => {
-                    setBoardName('')
-                    setModal('new')
-                  }}
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-              <button
-                className="icon-button delete-board"
-                disabled={workspace.boards.length <= 1}
-                aria-label="Delete current board"
-                title="Delete current board"
-                onClick={() => setModal('delete')}
-              >
-                <Trash2 size={15} />
-              </button>
-            </div>
-            <div
-              className="board-sections"
-              role="group"
-              aria-label="Board section"
-            >
-              <button
-                aria-pressed={canvasMode === 'canvas'}
-                onClick={() => setCanvasMode('canvas')}
-              >
-                <Workflow size={15} />
-                Blueprint
-                <PresenceAvatars
-                  profiles={present
-                    .filter(
-                      (p) => p.view === 'canvas' && p.boardId === board.id,
-                    )
-                    .map((p) => p.profile)}
-                />
-              </button>
-              <button
-                aria-pressed={canvasMode === 'wireframes'}
-                onClick={() => setCanvasMode('wireframes')}
-              >
-                <PanelsTopLeft size={15} />
-                Wireframes
-                <PresenceAvatars
-                  profiles={present
-                    .filter(
-                      (p) => p.view === 'wireframes' && p.boardId === board.id,
-                    )
-                    .map((p) => p.profile)}
-                />
-              </button>
-            </div>
             <Suspense
               fallback={
                 <div className="empty-message">Opening your canvas…</div>
@@ -696,6 +654,29 @@ export function Studio({
             >
               <BoardCanvas
                 key={board.id + ':' + canvasMode}
+                navigation={
+                  <CanvasNavigation
+                    board={board}
+                    boards={workspace.boards}
+                    mode={canvasMode}
+                    onBoard={setBoardId}
+                    onMode={setCanvasMode}
+                    present={present}
+                    onNew={() => {
+                      setBoardName('')
+                      setModal('new')
+                    }}
+                    onDelete={() => setModal('delete')}
+                    onRename={(name) =>
+                      change((w) => ({
+                        ...w,
+                        boards: w.boards.map((b) =>
+                          b.id === board.id ? { ...b, name } : b,
+                        ),
+                      }))
+                    }
+                  />
+                }
                 board={board}
                 requirements={workspace.requirements}
                 peers={multiplayer.peers.filter(

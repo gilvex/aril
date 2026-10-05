@@ -1,3 +1,5 @@
+import { CanvasChrome, type CanvasTool } from './CanvasChrome'
+import type { ReactNode } from 'react'
 import { LiveCursors } from './LiveCursors'
 import { ResizableInspector } from './ResizableInspector'
 import { flushSync } from 'react-dom'
@@ -28,8 +30,6 @@ import {
   ArrowUpRight,
   MousePointer2,
   Link2,
-  PencilLine,
-  Check,
   Unplug,
   Maximize2,
   Minimize2,
@@ -57,6 +57,7 @@ import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 const nodeTypes = { idea: IdeaNode }
 const edgeTypes = { smoothstep: SelectionEdge }
 type Props = {
+  navigation: ReactNode
   board: Board
   requirements: Requirement[]
   update: (board: Board, record?: boolean) => void
@@ -76,6 +77,7 @@ type Props = {
   ) => void
 }
 export function CanvasBoard({
+  navigation,
   board,
   requirements,
   update,
@@ -88,8 +90,9 @@ export function CanvasBoard({
 }: Props) {
   const [localDragging, setLocalDragging] = useState<Set<string>>(new Set())
   const compact = useCompactLayout()
+  const [tool, setTool] = useState<CanvasTool>('select')
   const [inspectorPreference, setInspectorOpen] = useState<boolean | null>(null)
-  const inspectorOpen = inspectorPreference ?? !compact
+  const inspectorOpen = inspectorPreference ?? false
   const [touchSelection, setTouchSelection] = useState(false)
   const inspectorToggle = useRef<HTMLButtonElement>(null)
   const editField = useRef<HTMLInputElement>(null)
@@ -166,7 +169,6 @@ export function CanvasBoard({
   >({})
   const [palette, setPalette] = useState(false)
   const [insertPoint, setInsertPoint] = useState<CanvasInsertPoint | null>(null)
-  const [editingName, setEditingName] = useState(false)
   const [flow, setFlow] = useState<ReactFlowInstance<
     Node<Idea['data']>
   > | null>(null)
@@ -178,6 +180,7 @@ export function CanvasBoard({
       setSelectedEdge(connection ? id : null)
       setInspectorOpen(true)
       setTouchSelection(false)
+      setTool('select')
       setPalette(false)
       setInsertPoint(null)
     })
@@ -369,122 +372,6 @@ export function CanvasBoard({
       }}
       className={`canvas-page${fullscreen ? ' canvas-fullscreen' : ''}`}
     >
-      <div className="board-heading">
-        <div>
-          {editingName ? (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                setEditingName(false)
-              }}
-              className="inline-name"
-            >
-              <input
-                autoFocus
-                aria-label="Board name"
-                value={board.name}
-                maxLength={100}
-                onChange={(e) =>
-                  update({ ...board, name: e.target.value || 'Untitled board' })
-                }
-              />
-              <button className="icon-button" aria-label="Finish renaming">
-                <Check size={17} />
-              </button>
-            </form>
-          ) : (
-            <h1>
-              {board.name}
-              <button
-                className="icon-button quiet"
-                onClick={() => setEditingName(true)}
-                aria-label="Rename board"
-              >
-                <PencilLine size={15} />
-              </button>
-            </h1>
-          )}
-        </div>
-        <div className="canvas-heading-actions">
-          <button
-            ref={inspectorToggle}
-            className="button"
-            aria-label={
-              inspectorOpen ? 'Hide board details' : 'Show board details'
-            }
-            title={inspectorOpen ? 'Hide board details' : 'Show board details'}
-            aria-expanded={inspectorOpen}
-            aria-controls="board-inspector"
-            onClick={() => setInspectorOpen(!inspectorOpen)}
-          >
-            {inspectorOpen ? (
-              <PanelRightClose size={16} />
-            ) : (
-              <PanelRightOpen size={16} />
-            )}
-            <span className="touch-tool-label">Details</span>
-          </button>
-          <button
-            className="button touch-select"
-            aria-label="Select multiple nodes"
-            aria-pressed={touchSelection}
-            onClick={() => setTouchSelection(!touchSelection)}
-          >
-            <MousePointer2 size={16} />
-            <span>{touchSelection ? 'Done' : 'Select'}</span>
-          </button>
-          <button
-            ref={fullscreenButtonRef}
-            className="button fullscreen-toggle"
-            aria-label={
-              fullscreen ? 'Exit fullscreen' : 'Expand canvas to fullscreen'
-            }
-            aria-pressed={fullscreen}
-            title={
-              fullscreen
-                ? 'Exit fullscreen (Esc)'
-                : 'Expand canvas to fullscreen'
-            }
-            onClick={() => void toggleFullscreen()}
-          >
-            {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-            <span>{fullscreen ? 'Exit fullscreen' : 'Fullscreen'}</span>
-          </button>
-          <div className="add-node-wrap">
-            <button
-              className="button primary"
-              onClick={() => setPalette(!palette)}
-            >
-              <Plus size={16} />
-              Add node
-            </button>
-            {palette && (
-              <div className="node-palette">
-                <div className="popover-heading">
-                  Add to your canvas
-                  <button
-                    className="icon-button"
-                    onClick={() => setPalette(false)}
-                    aria-label="Close node menu"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-                {nodeKinds.map((kind) => {
-                  const Icon = kindIcons[kind]
-                  return (
-                    <button key={kind} onClick={() => addNode(kind)}>
-                      <Icon size={17} />
-                      {kindLabels[kind]}
-                      <Plus size={14} />
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
       <div className="canvas-layout">
         <div
           className="canvas-surface"
@@ -499,6 +386,94 @@ export function CanvasBoard({
           }}
           onPointerLeave={() => sendPresence({ cursor: null }, true)}
         >
+          <CanvasChrome
+            navigation={navigation}
+            tool={tool}
+            onTool={setTool}
+            multiSelect={touchSelection}
+            onMultiSelect={setTouchSelection}
+            actions={
+              <>
+                <button
+                  ref={inspectorToggle}
+                  className="button"
+                  aria-label={
+                    inspectorOpen ? 'Hide board details' : 'Show board details'
+                  }
+                  title={
+                    inspectorOpen ? 'Hide board details' : 'Show board details'
+                  }
+                  aria-expanded={inspectorOpen}
+                  aria-controls="board-inspector"
+                  onClick={() => setInspectorOpen(!inspectorOpen)}
+                >
+                  {inspectorOpen ? (
+                    <PanelRightClose size={16} />
+                  ) : (
+                    <PanelRightOpen size={16} />
+                  )}
+                  <span className="touch-tool-label">Details</span>
+                </button>
+                <button
+                  ref={fullscreenButtonRef}
+                  className="button fullscreen-toggle"
+                  aria-label={
+                    fullscreen
+                      ? 'Exit fullscreen'
+                      : 'Expand canvas to fullscreen'
+                  }
+                  aria-pressed={fullscreen}
+                  title={
+                    fullscreen
+                      ? 'Exit fullscreen (Esc)'
+                      : 'Expand canvas to fullscreen'
+                  }
+                  onClick={() => void toggleFullscreen()}
+                >
+                  {fullscreen ? (
+                    <Minimize2 size={16} />
+                  ) : (
+                    <Maximize2 size={16} />
+                  )}
+                  <span>{fullscreen ? 'Exit fullscreen' : 'Fullscreen'}</span>
+                </button>
+              </>
+            }
+          >
+            <div className="add-node-wrap">
+              <button
+                className="button primary"
+                onClick={() => setPalette(!palette)}
+              >
+                <Plus size={16} />
+                Add node
+              </button>
+              {palette && (
+                <div className="node-palette">
+                  <div className="popover-heading">
+                    Add to your canvas
+                    <button
+                      className="icon-button"
+                      onClick={() => setPalette(false)}
+                      aria-label="Close node menu"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                  {nodeKinds.map((kind) => {
+                    const Icon = kindIcons[kind]
+                    return (
+                      <button key={kind} onClick={() => addNode(kind)}>
+                        <Icon size={17} />
+                        {kindLabels[kind]}
+                        <Plus size={14} />
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </CanvasChrome>
           <div className="canvas-caption">
             <span className="small-dot" />
             {board.nodes.length} ideas
@@ -567,7 +542,11 @@ export function CanvasBoard({
             }}
             onMoveStart={() => setInsertPoint(null)}
             onNodesChange={onNodesChange}
-            nodesDraggable={!compact || !touchSelection}
+            nodesDraggable={tool === 'select' && (!compact || !touchSelection)}
+            nodesConnectable={tool !== 'pan'}
+            panOnDrag={tool === 'pan' || compact ? true : [1, 2]}
+            selectionOnDrag={!compact && tool === 'select'}
+            zoomOnDoubleClick={false}
             onDelete={onDelete}
             onConnect={onConnect}
             onNodeClick={(event, clickedNode) => {
