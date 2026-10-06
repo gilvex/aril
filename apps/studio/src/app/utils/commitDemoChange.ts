@@ -1,5 +1,6 @@
 import type { Workspace } from '@pomegranate/domain/workspace'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import { diffWorkspace, type Profile } from '@pomegranate/domain/collaboration'
+import { demoRehearsalNodeId } from '../config/demoRehearsalNodeId.ts'
 import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 
@@ -12,6 +13,16 @@ export function commitDemoChange(
   completed = state.completedActions,
   now = Date.now(),
 ) {
+  const rehearsalProtected =
+    state.rehearsalProtected ||
+    (profile.id === state.profile.id &&
+      diffWorkspace(state.envelope.workspace, workspace).some((operation) => {
+        const text = JSON.stringify(operation)
+        return (
+          text.includes(`"${demoRehearsalNodeId}"`) ||
+          text.includes('"demo-maya-health-link"')
+        )
+      }))
   const envelope = {
     workspace,
     revision: state.envelope.revision + 1,
@@ -36,6 +47,7 @@ export function commitDemoChange(
       history,
       activity,
       completedActions: completed,
+      rehearsalProtected,
     }),
   )
   Object.assign(state, {
@@ -43,6 +55,7 @@ export function commitDemoChange(
     history,
     activity,
     completedActions: completed,
+    rehearsalProtected,
   })
   return envelope
 }

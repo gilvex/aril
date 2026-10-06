@@ -1,6 +1,7 @@
 import type { DemoState } from '../types/demoState.ts'
 import { createDemoPeers } from './createDemoPeers.ts'
 import { advanceDemoActions } from './advanceDemoActions.ts'
+import { advanceDemoRehearsal } from './advanceDemoRehearsal.ts'
 import { applyDemoActionPresence } from './applyDemoActionPresence.ts'
 
 export function createDemoStream(
@@ -26,7 +27,10 @@ export function createDemoStream(
             ),
           )
         const now = Date.now()
-        if (storage) advanceDemoActions(state, storage, now)
+        if (storage) {
+          advanceDemoActions(state, storage, now)
+          advanceDemoRehearsal(state, storage, now)
+        }
         if (revision !== state.envelope.revision) {
           revision = state.envelope.revision
           send('workspace', state.envelope)

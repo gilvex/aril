@@ -3,6 +3,7 @@ import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 import { createDemoWorkspace } from './createDemoWorkspace.ts'
 import { createDemoActions } from './createDemoActions.ts'
+import { createDemoRehearsalActions } from './createDemoRehearsalActions.ts'
 
 export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
   const now = new Date().toISOString()
@@ -30,6 +31,9 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
     actions: createDemoActions(envelope.workspace),
     completedActions: [],
     activeAction: null,
+    rehearsalActions: createDemoRehearsalActions(envelope.workspace),
+    rehearsalSlot: -1,
+    rehearsalProtected: false,
     activity: [
       {
         id: 3,
@@ -76,6 +80,7 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
         : []
       if (Array.isArray(saved.activity))
         state.activity = saved.activity.slice(0, 50)
+      state.rehearsalProtected = saved.rehearsalProtected === true
     }
   } catch {
     /* Invalid or older demo data starts a fresh sandbox. */

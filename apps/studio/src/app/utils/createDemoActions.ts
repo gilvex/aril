@@ -13,8 +13,8 @@ export function createDemoActions(seed: Workspace): DemoAction[] {
     actions.push({
       ...action,
       id: `demo-edit-${actions.length}`,
-      at: 3000 + actions.length * 6500,
-      duration: 2600,
+      at: 3000 + actions.length * 7000,
+      duration: 1800,
       operations: diffWorkspace(seed, changed),
     })
   }

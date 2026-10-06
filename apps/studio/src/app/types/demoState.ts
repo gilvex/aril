@@ -17,4 +17,7 @@ export type DemoState = {
   actions: DemoAction[]
   completedActions: string[]
   activeAction: DemoAction | null
+  rehearsalActions: DemoAction[]
+  rehearsalSlot: number
+  rehearsalProtected: boolean
 }

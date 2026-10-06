@@ -6,6 +6,9 @@ import { createDemoPeers } from '../src/app/utils/createDemoPeers.ts'
 import { sampleDemoCursor } from '../src/app/utils/sampleDemoCursor.ts'
 import { sampleDemoCurve } from '../src/app/utils/sampleDemoCurve.ts'
 import { advanceDemoActions } from '../src/app/utils/advanceDemoActions.ts'
+import { advanceDemoRehearsal } from '../src/app/utils/advanceDemoRehearsal.ts'
+import { commitDemoChange } from '../src/app/utils/commitDemoChange.ts'
+import { demoRehearsalNodeId } from '../src/app/config/demoRehearsalNodeId.ts'
 import { applyDemoActionPresence } from '../src/app/utils/applyDemoActionPresence.ts'
 import { createDemoStream } from '../src/app/utils/createDemoStream.ts'
 import { createDemoState } from '../src/app/utils/createDemoState.ts'
@@ -14,6 +17,63 @@ import { request } from '../src/shared/api/request.ts'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import { workspaceSchema, type Envelope, type Workspace } from '@pomegranate/domain/workspace'
 import { demoStorageKey } from '../src/app/config/demoStorageKey.ts'
+
+test('Maya repeatedly creates, connects, moves, edits and deletes without growing the demo', () => {
+  const state=createDemoState({getItem:()=>null})
+  const started=Date.parse(state.studio.createdAt)
+  const originalNodes=state.envelope.workspace.boards[0].nodes.length
+  const originalEdges=state.envelope.workspace.boards[0].edges.length
+  const storage={setItem:()=>{}}
+  let sawDrag=false
+  for(let elapsed=0;elapsed<125000;elapsed+=100) {
+    advanceDemoActions(state,storage,started+elapsed)
+    advanceDemoRehearsal(state,storage,started+elapsed)
+    sawDrag ||= state.activeAction?.targetId===demoRehearsalNodeId && !!state.activeAction.drag
+    const board=state.envelope.workspace.boards[0]
+    assert.ok(board.nodes.length<=originalNodes+1)
+    assert.ok(board.edges.length<=originalEdges+1)
+  }
+  assert.ok(sawDrag)
+  assert.ok(state.envelope.revision>35,'activity continues after the introductory sequence')
+  assert.equal(state.history.length,30)
+  assert.ok(state.activity.some(item=>item.message==='Removed the temporary probe and its connection'))
+  assert.ok(state.activity.filter(item=>item.message==='Created a health-check idea').length>=4)
+  workspaceSchema.parse(state.envelope.workspace)
+})
+
+test('visitor ownership survives refresh and prevents the repeating demo from editing or deleting their node', () => {
+  for(const change of ['rename','connect']) {
+    const values=new Map<string,string>()
+    const storage={getItem:(key:string)=>values.get(key)||null,setItem:(key:string,value:string)=>{values.set(key,value)}}
+    const state=createDemoState(storage)
+    advanceDemoRehearsal(state,storage,Date.parse(state.studio.createdAt)+6400)
+    const edited=structuredClone(state.envelope.workspace)
+    if(change==='rename') edited.boards[0].nodes.find(node=>node.id===demoRehearsalNodeId)!.data.title='Keep my custom check'
+    else edited.boards[0].edges.push({id:'visitor-edge',source:'game',target:demoRehearsalNodeId,type:'smoothstep'})
+    commitDemoChange(state,storage,edited,state.profile,'Visitor edit')
+    const restored=createDemoState(storage)
+    assert.equal(restored.rehearsalProtected,true)
+    for(let elapsed=0;elapsed<90000;elapsed+=500) advanceDemoRehearsal(restored,storage,Date.parse(restored.studio.createdAt)+elapsed)
+    assert.deepEqual(restored.envelope.workspace,edited)
+  }
+})
+
+test('repeating demo skips selected targets and refuses to remove new connections', () => {
+  const state=createDemoState({getItem:()=>null})
+  const storage={setItem:()=>{}}
+  const started=Date.parse(state.studio.createdAt)
+  for(let slot=0;slot<5;slot++) advanceDemoRehearsal(state,storage,started+6400+slot*3500)
+  state.presence={view:'canvas',boardId:'layers',selected:[demoRehearsalNodeId]}
+  const revision=state.envelope.revision
+  advanceDemoRehearsal(state,storage,started+23900)
+  assert.equal(state.envelope.revision,revision)
+  state.presence={}
+  state.rehearsalSlot=4
+  state.envelope.workspace.boards[0].edges.push({id:'new-link',source:'game',target:demoRehearsalNodeId,type:'smoothstep'})
+  advanceDemoRehearsal(state,storage,started+23900)
+  assert.equal(state.envelope.revision,revision)
+  assert.ok(state.envelope.workspace.boards[0].nodes.some(node=>node.id===demoRehearsalNodeId))
+})
 
 test('simulated edits preview drags then persist attributed revisions without replaying after refresh', () => {
   const values=new Map<string,string>()
