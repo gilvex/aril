@@ -3,12 +3,42 @@ import { test } from 'node:test'
 import { createDemoTransport } from '../src/app/utils/createDemoTransport.ts'
 import { createDemoWorkspace } from '../src/app/utils/createDemoWorkspace.ts'
 import { createDemoPeers } from '../src/app/utils/createDemoPeers.ts'
+import { sampleDemoCursor } from '../src/app/utils/sampleDemoCursor.ts'
 import { createDemoState } from '../src/app/utils/createDemoState.ts'
 import { apiTransport } from '../src/shared/api/apiTransport.ts'
 import { request } from '../src/shared/api/request.ts'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import { workspaceSchema, type Envelope, type Workspace } from '@pomegranate/domain/workspace'
 import { demoStorageKey } from '../src/app/config/demoStorageKey.ts'
+
+test('demo teammates stay on independent tasks regardless of visitor navigation or selections', () => {
+  const state = createDemoState({getItem:()=>null})
+  const time = Date.parse(state.studio.createdAt)+1000
+  const before = createDemoPeers(state,time)
+  state.presence = {view:'design',boardId:'system',selected:['panel'],requirement:{id:'R05',field:'title',typing:true}}
+  assert.deepEqual(createDemoPeers(state,time),before)
+  assert.deepEqual(before.map(peer=>peer.view),['canvas','wireframes','requirements','notes'])
+  assert.equal(before[2].requirement?.id,'R13')
+  assert.deepEqual(before[3].selected,['note:recipe-decisions'])
+  state.envelope.workspace.boards = state.envelope.workspace.boards.filter(board=>board.id!=='layers')
+  assert.ok(createDemoPeers(state,time).slice(0,2).every(peer=>peer.cursor===null && peer.boardId===null))
+})
+
+test('demo gestures pause to read, move continuously, and arrive without an orbit or wrap jump', () => {
+  const targets=[{id:'a',x:0,y:0,pause:2000},{id:'b',x:300,y:180,pause:3000}]
+  assert.deepEqual(sampleDemoCursor(targets,500),sampleDemoCursor(targets,1500))
+  let previous=sampleDemoCursor(targets,0).cursor!
+  let moved=0
+  for(let time=40;time<18000;time+=40) {
+    const current=sampleDemoCursor(targets,time).cursor!
+    const distance=Math.hypot(current.x-previous.x,current.y-previous.y)
+    assert.ok(distance<60,`unexpected jump at ${time}: ${distance}`)
+    if(distance>0) moved++
+    previous=current
+  }
+  assert.ok(moved>0)
+  assert.deepEqual(sampleDemoCursor([],100),{cursor:null,selected:[]})
+})
 
 test('demo contains valid editable project data, connected recipe screens and varied requirements', () => {
   const workspace = workspaceSchema.parse(createDemoWorkspace())

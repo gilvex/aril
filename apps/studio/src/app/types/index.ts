@@ -9,3 +9,4 @@ export type { JoinStudioScreenHandlersProps } from './useJoinStudioScreenHandler
 export type { StaleDraftScreenHandlersProps } from './useStaleDraftScreenHandlersProps.ts'
 
 export type { DemoState } from './demoState.ts'
+export type { DemoCursorTarget } from './demoCursorTarget.ts'

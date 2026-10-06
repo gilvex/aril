@@ -1,4 +1,9 @@
 .demo-entry { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
+/* Demo coordinates already include gesture easing; only bridge packet gaps. */
+.demo-mode .peer-cursor { transition: translate 45ms linear; }
+@media (prefers-reduced-motion: reduce) {
+ .demo-mode .peer-cursor { transition: none; }
+}
 .demo-entry .button { width: 100%; min-height: 48px; text-decoration: none; color: var(--accent-ink); background: var(--accent-light); border-color: transparent; justify-content: center; }
 .demo-entry .button > span { flex: 1; text-align: left; }
 .demo-entry p { margin: 10px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.6; }

@@ -1,22 +1,60 @@
 import type { Presence } from '@pomegranate/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
+import { sampleDemoCursor } from './sampleDemoCursor.ts'
 
 export function createDemoPeers(
   state: DemoState,
   now = Date.now(),
 ): Presence[] {
-  const { presence, envelope } = state
-  const board =
-    envelope.workspace.boards.find((item) => item.id === presence.boardId) ||
-    envelope.workspace.boards[0]
-  const wire = presence.view === 'wireframes'
-  const nodes = wire
-    ? board.wireframe?.nodes.filter((node) => !node.parentId) || []
-    : board.nodes
-  const phase = now / 1600
-  const node = nodes[wire ? 0 : 1] || nodes[0]
-  const x = (node?.position.x || 0) + 120
-  const y = (node?.position.y || 0) + 90
+  const elapsed = Math.max(0, now - Date.parse(state.studio.createdAt))
+  const board = state.envelope.workspace.boards.find(
+    (item) => item.id === 'layers',
+  )
+  const mayaTargets = ['game', 'template', 'eu', 'logs', 'base'].flatMap(
+    (id, index) => {
+      const node = board?.nodes.find((item) => item.id === id)
+      return node
+        ? [
+            {
+              id,
+              x: node.position.x + 60 + (index % 2) * 65,
+              y: node.position.y + 65,
+              pause: [3100, 4600, 2400, 5200, 3300][index],
+            },
+          ]
+        : []
+    },
+  )
+  const noahTargets = [
+    'runtime-heading',
+    'runtime-content',
+    'runtime-next',
+    'game-content',
+    'game-next',
+  ].flatMap((id, index) => {
+    const node = board?.wireframe?.nodes.find((item) => item.id === id)
+    const parent = board?.wireframe?.nodes.find(
+      (item) => item.id === node?.parentId,
+    )
+    return node
+      ? [
+          {
+            id,
+            x: node.position.x + (parent?.position.x || 0) + 70,
+            y: node.position.y + (parent?.position.y || 0) + 25,
+            pause: [4200, 6000, 1800, 5100, 2900][index],
+          },
+        ]
+      : []
+  })
+  const maya = sampleDemoCursor(mayaTargets, elapsed)
+  const noah = sampleDemoCursor(noahTargets, elapsed + 2300)
+  const requirement = state.envelope.workspace.requirements.find(
+    (item) => item.id === (Math.floor(elapsed / 26000) % 2 ? 'R01' : 'R13'),
+  )
+  const note = state.envelope.workspace.documents?.find(
+    (item) => item.id === 'recipe-decisions',
+  )
   return [
     {
       clientId: 'demo-maya',
@@ -26,28 +64,12 @@ export function createDemoPeers(
         color: '#7e64ba',
         avatar: '/demo-maya.svg',
       },
-      boardId: board.id,
-      view: presence.view || 'canvas',
-      cursor: {
-        x: x + Math.sin(phase) * 95,
-        y: y + Math.cos(phase * 0.7) * 55,
-      },
-      selected: node ? [node.id] : [],
+      boardId: board?.id || null,
+      view: 'canvas',
+      ...maya,
       selectedEdges: [],
       seenAt: now,
-      camera: {
-        x: x + Math.sin(phase * 0.2) * 160,
-        y,
-        zoom: wire ? 0.85 : 0.9,
-      },
-      requirement:
-        presence.view === 'requirements'
-          ? {
-              id: presence.requirement?.id || 'R13',
-              field: 'acceptance',
-              typing: true,
-            }
-          : null,
+      camera: board ? { x: 600, y: 300, zoom: 0.8 } : null,
     },
     {
       clientId: 'demo-noah',
@@ -57,19 +79,54 @@ export function createDemoPeers(
         color: '#359381',
         avatar: '/demo-noah.svg',
       },
-      boardId: board.id,
-      view: presence.view || 'canvas',
-      cursor: {
-        x: x + 340 + Math.cos(phase * 0.8) * 90,
-        y: y + 180 + Math.sin(phase) * 50,
-      },
-      selected: [],
-      selectedEdges:
-        (wire ? board.wireframe?.edges : board.edges)
-          ?.slice(0, 1)
-          .map((edge) => edge.id) || [],
+      boardId: board?.id || null,
+      view: 'wireframes',
+      ...noah,
+      selectedEdges: [],
       seenAt: now,
-      camera: { x: x + 340, y: y + 180, zoom: wire ? 0.7 : 0.8 },
+      camera: board ? { x: 1060, y: 270, zoom: 0.85 } : null,
+    },
+    {
+      clientId: 'demo-iris',
+      profile: {
+        id: 'demo-iris',
+        name: 'Iris · demo',
+        color: '#bd7840',
+        avatar: '/demo-iris.svg',
+      },
+      boardId: null,
+      view: 'requirements',
+      cursor: null,
+      selected: [],
+      seenAt: now,
+      camera: null,
+      requirement: requirement
+        ? {
+            id: requirement.id,
+            field: 'acceptance',
+            typing: elapsed % 14000 > 4500 && elapsed % 14000 < 8200,
+          }
+        : null,
+    },
+    {
+      clientId: 'demo-leo',
+      profile: {
+        id: 'demo-leo',
+        name: 'Leo · demo',
+        color: '#527ba7',
+        avatar: '/demo-leo.svg',
+      },
+      boardId: null,
+      view: 'notes',
+      cursor: null,
+      selected: note
+        ? [
+            `note:${note.id}`,
+            ...(elapsed % 19000 > 11000 ? ['note-field:body'] : []),
+          ]
+        : [],
+      seenAt: now,
+      camera: null,
     },
   ]
 }

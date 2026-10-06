@@ -11,6 +11,8 @@ export function createDemoStream(
     start(controller) {
       let ended = false
       let activity = ''
+      let presence = ''
+      let lastPresence = 0
       const tick = () => {
         if (ended) return
         const send = (event: string, data: unknown) =>
@@ -19,14 +21,22 @@ export function createDemoStream(
               `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`,
             ),
           )
-        send('presence', createDemoPeers(state))
+        const peers = createDemoPeers(state)
+        const signature = JSON.stringify(peers, (key, value) =>
+          key === 'seenAt' ? undefined : value,
+        )
+        if (signature !== presence || Date.now() - lastPresence > 5000) {
+          presence = signature
+          lastPresence = Date.now()
+          send('presence', peers)
+        }
         const next = JSON.stringify(state.activity)
         if (next !== activity) {
           activity = next
           send('activity', state.activity)
         }
       }
-      const timer = setInterval(tick, 160)
+      const timer = setInterval(tick, 40)
       const abort = () => {
         if (!ended) {
           stop()

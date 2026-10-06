@@ -14,3 +14,4 @@ export { createDemoStream } from './createDemoStream.ts'
 export { createDemoTransport } from './createDemoTransport.ts'
 
 export { initializeDemo } from './initializeDemo.ts'
+export { sampleDemoCursor } from './sampleDemoCursor.ts'

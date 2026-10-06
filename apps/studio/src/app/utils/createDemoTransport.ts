@@ -35,7 +35,7 @@ export function createDemoTransport(
           {
             ...state.studio,
             boardCount: state.envelope.workspace.boards.length,
-            memberCount: 3,
+            memberCount: 1 + createDemoPeers(state).length,
             members: [
               state.profile,
               ...createDemoPeers(state).map((peer) => peer.profile),
