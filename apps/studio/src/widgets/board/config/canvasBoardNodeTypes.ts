@@ -1,3 +1,3 @@
-import { IdeaNode } from '../ui/IdeaNode.tsx'
+import { IdeaNode } from '@/widgets/board/ui/IdeaNode.tsx'
 
 export const nodeTypes = { idea: IdeaNode }

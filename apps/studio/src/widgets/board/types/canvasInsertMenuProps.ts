@@ -1,5 +1,5 @@
+import type { CanvasInsertPoint } from '@/widgets/board/types/canvasInsertPoint.ts'
 import { type ReactNode } from 'react'
-import type { CanvasInsertPoint } from './canvasInsertPoint.ts'
 export type CanvasInsertMenuProps = {
   point: CanvasInsertPoint
   title: string

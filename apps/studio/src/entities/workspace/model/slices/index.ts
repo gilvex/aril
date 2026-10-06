@@ -1,1 +1,1 @@
-export { workspaceSlice } from './workspaceSlice.ts'
+export { workspaceSlice } from '@/entities/workspace/model/slices/workspaceSlice.ts'

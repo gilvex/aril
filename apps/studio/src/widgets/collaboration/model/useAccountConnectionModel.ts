@@ -1,5 +1,5 @@
+import { createAccountConnectionModel } from '@/widgets/collaboration/model/createAccountConnectionModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createAccountConnectionModel } from './createAccountConnectionModel.ts'
 
 export function useAccountConnectionModel(
   initialize: () => Parameters<typeof createAccountConnectionModel>[0],

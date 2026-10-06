@@ -1,5 +1,5 @@
-import type { CanvasInsertPoint } from '../types/canvasInsertPoint.ts'
-import type { CanvasTool } from '../types/canvasTool.ts'
+import type { CanvasInsertPoint } from '@/widgets/board/types/canvasInsertPoint.ts'
+import type { CanvasTool } from '@/widgets/board/types/canvasTool.ts'
 export function createWireframeBoardState() {
   const tool: CanvasTool = 'select'
   const inspectorPreference: boolean | null = null

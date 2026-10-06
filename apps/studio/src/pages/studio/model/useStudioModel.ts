@@ -1,5 +1,5 @@
+import { createStudioModel } from '@/pages/studio/model/createStudioModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createStudioModel } from './createStudioModel.ts'
 
 export function useStudioModel(
   initialize: () => Parameters<typeof createStudioModel>[0],

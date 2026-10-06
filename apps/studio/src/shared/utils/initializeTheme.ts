@@ -1,8 +1,8 @@
-import { preferenceState } from '../config/preferenceState.ts'
-import { key } from '../config/themeKey.ts'
-import { media } from '../config/themeMedia.ts'
-import { readPreference } from './readPreference.ts'
-import { apply } from './themeApply.ts'
+import { preferenceState } from '@/shared/config/preferenceState.ts'
+import { key } from '@/shared/config/themeKey.ts'
+import { media } from '@/shared/config/themeMedia.ts'
+import { readPreference } from '@/shared/utils/readPreference.ts'
+import { apply } from '@/shared/utils/themeApply.ts'
 export function initializeTheme() {
   apply()
   media.addEventListener('change', apply)

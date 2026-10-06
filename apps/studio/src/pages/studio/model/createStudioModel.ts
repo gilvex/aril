@@ -1,7 +1,7 @@
+import { selectStudio } from '@/pages/studio/model/selectors/selectStudio.ts'
+import { studioSlice } from '@/pages/studio/model/slices/studioSlice.ts'
+import type { StudioState } from '@/pages/studio/types/studioState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { StudioState } from '../types/studioState.ts'
-import { selectStudio } from './selectors/selectStudio.ts'
-import { studioSlice } from './slices/studioSlice.ts'
 
 export function createStudioModel(initial: StudioState) {
   const store = configureStore({

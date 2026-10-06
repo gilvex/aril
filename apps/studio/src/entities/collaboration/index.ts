@@ -1,2 +1,2 @@
-export { Avatar } from './ui/Avatar.tsx'
-export { PresenceAvatars } from './ui/PresenceAvatars.tsx'
+export { Avatar } from '@/entities/collaboration/ui/Avatar.tsx'
+export { PresenceAvatars } from '@/entities/collaboration/ui/PresenceAvatars.tsx'

@@ -1,4 +1,4 @@
-export { fetchHostedOrigin } from './fetchHostedOrigin.ts'
-export { fetchStudios } from './fetchStudios.ts'
-export { requestHostedAccess } from './requestHostedAccess.ts'
-export { requestWorkspaceCreation } from './requestWorkspaceCreation.ts'
+export { fetchHostedOrigin } from '@/pages/workspaces/model/requests/fetchHostedOrigin.ts'
+export { fetchStudios } from '@/pages/workspaces/model/requests/fetchStudios.ts'
+export { requestHostedAccess } from '@/pages/workspaces/model/requests/requestHostedAccess.ts'
+export { requestWorkspaceCreation } from '@/pages/workspaces/model/requests/requestWorkspaceCreation.ts'

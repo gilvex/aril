@@ -1,4 +1,4 @@
-import { query } from '../config/query.ts'
+import { query } from '@/shared/config/query.ts'
 export const subscribe = (notify: () => void) => {
   const media = window.matchMedia(query)
   media.addEventListener('change', notify)

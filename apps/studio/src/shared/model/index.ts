@@ -1,2 +1,2 @@
-export { useCompactLayout } from './useCompactLayout.ts'
-export { useThemePreference } from './useThemePreference.ts'
+export { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
+export { useThemePreference } from '@/shared/model/useThemePreference.ts'

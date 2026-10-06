@@ -1,1 +1,1 @@
-export { selectGoogleSignIn } from './selectGoogleSignIn.ts'
+export { selectGoogleSignIn } from '@/features/googleSignIn/model/selectors/selectGoogleSignIn.ts'

@@ -1,1 +1,1 @@
-export { selectCanvasFullscreen } from './selectCanvasFullscreen.ts'
+export { selectCanvasFullscreen } from '@/features/canvasFullscreen/model/selectors/selectCanvasFullscreen.ts'

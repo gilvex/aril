@@ -1,6 +1,7 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import type { LiveCursorsProps } from '@/widgets/board/types/liveCursorsProps.ts'
+import { SelectionBadges } from '@/widgets/board/ui/SelectionBadges.tsx'
 import { ViewportPortal, useViewport } from '@xyflow/react'
-import type { LiveCursorsProps } from '../types/liveCursorsProps.ts'
-import { SelectionBadges } from './SelectionBadges.tsx'
 
 export function LiveCursors({
   peers,
@@ -8,6 +9,8 @@ export function LiveCursors({
   profile,
   selectedIds,
 }: LiveCursorsProps) {
+  const { t } = useTranslation()
+
   const { zoom } = useViewport()
   return (
     <ViewportPortal>
@@ -37,7 +40,7 @@ export function LiveCursors({
           {peer.cursor && (
             <div
               className="peer-cursor"
-              aria-label={`${peer.profile.name} cursor`}
+              aria-label={t('{{name}} cursor', { name: peer.profile.name })}
               style={{
                 translate: `${peer.cursor.x}px ${peer.cursor.y}px`,
                 transform: `scale(${1 / zoom})`,

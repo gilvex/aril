@@ -1,7 +1,7 @@
+import { selectCanvasNavigation } from '@/features/boardNavigation/model/selectors/selectCanvasNavigation.ts'
+import { canvasNavigationSlice } from '@/features/boardNavigation/model/slices/canvasNavigationSlice.ts'
+import type { CanvasNavigationState } from '@/features/boardNavigation/types/canvasNavigationState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { CanvasNavigationState } from '../types/canvasNavigationState.ts'
-import { selectCanvasNavigation } from './selectors/selectCanvasNavigation.ts'
-import { canvasNavigationSlice } from './slices/canvasNavigationSlice.ts'
 
 export function createCanvasNavigationModel(initial: CanvasNavigationState) {
   const store = configureStore({

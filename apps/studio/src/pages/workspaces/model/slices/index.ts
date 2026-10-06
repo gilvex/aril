@@ -1,1 +1,1 @@
-export { workspaceHomeSlice } from './workspaceHomeSlice.ts'
+export { workspaceHomeSlice } from '@/pages/workspaces/model/slices/workspaceHomeSlice.ts'

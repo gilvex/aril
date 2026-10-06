@@ -1,5 +1,5 @@
+import type { CanvasNavigationState } from '@/features/boardNavigation/types/canvasNavigationState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { CanvasNavigationState } from '../../types/canvasNavigationState.ts'
 
 export const canvasNavigationSlice = createSlice({
   name: 'canvasNavigation',

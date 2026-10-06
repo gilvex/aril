@@ -1,3 +1,4 @@
-export { createGoogleSignInModel } from './createGoogleSignInModel.ts'
-export { createGoogleSignInState } from './createGoogleSignInState.ts'
-export { useGoogleSignInModel } from './useGoogleSignInModel.ts'
+export { createGoogleSignInModel } from '@/features/googleSignIn/model/createGoogleSignInModel.ts'
+export { createGoogleSignInState } from '@/features/googleSignIn/model/createGoogleSignInState.ts'
+export { useGoogleSignInModel } from '@/features/googleSignIn/model/useGoogleSignInModel.ts'
+export { useGoogleSignInHandlers } from './useGoogleSignInHandlers.tsx'

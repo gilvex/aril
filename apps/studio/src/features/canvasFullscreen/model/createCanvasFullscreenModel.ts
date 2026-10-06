@@ -1,7 +1,7 @@
+import { selectCanvasFullscreen } from '@/features/canvasFullscreen/model/selectors/selectCanvasFullscreen.ts'
+import { canvasFullscreenSlice } from '@/features/canvasFullscreen/model/slices/canvasFullscreenSlice.ts'
+import type { CanvasFullscreenState } from '@/features/canvasFullscreen/types/canvasFullscreenState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { CanvasFullscreenState } from '../types/canvasFullscreenState.ts'
-import { selectCanvasFullscreen } from './selectors/selectCanvasFullscreen.ts'
-import { canvasFullscreenSlice } from './slices/canvasFullscreenSlice.ts'
 
 export function createCanvasFullscreenModel(initial: CanvasFullscreenState) {
   const store = configureStore({

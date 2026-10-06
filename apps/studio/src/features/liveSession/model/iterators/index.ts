@@ -1,1 +1,1 @@
-export { connectLiveSession } from './connectLiveSession.ts'
+export { connectLiveSession } from '@/features/liveSession/model/iterators/connectLiveSession.ts'

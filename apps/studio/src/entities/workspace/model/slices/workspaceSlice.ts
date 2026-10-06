@@ -1,6 +1,6 @@
+import type { WorkspaceState } from '@/entities/workspace/types/workspaceState.ts'
 import type { Workspace } from '@pomegranate/domain/workspace'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { WorkspaceState } from '../../types/workspaceState.ts'
 export const workspaceSlice = createSlice({
   name: 'workspace',
   initialState: {} as WorkspaceState,

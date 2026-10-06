@@ -1,5 +1,5 @@
+import type { DesignBoardState } from '@/widgets/design/types/designBoardState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { DesignBoardState } from '../../types/designBoardState.ts'
 
 export const designBoardSlice = createSlice({
   name: 'designBoard',

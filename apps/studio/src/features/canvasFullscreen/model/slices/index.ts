@@ -1,1 +1,1 @@
-export { canvasFullscreenSlice } from './canvasFullscreenSlice.ts'
+export { canvasFullscreenSlice } from '@/features/canvasFullscreen/model/slices/canvasFullscreenSlice.ts'

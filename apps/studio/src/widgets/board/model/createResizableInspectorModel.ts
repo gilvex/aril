@@ -1,7 +1,7 @@
+import { selectResizableInspector } from '@/widgets/board/model/selectors/selectResizableInspector.ts'
+import { resizableInspectorSlice } from '@/widgets/board/model/slices/resizableInspectorSlice.ts'
+import type { ResizableInspectorState } from '@/widgets/board/types/resizableInspectorState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { ResizableInspectorState } from '../types/resizableInspectorState.ts'
-import { selectResizableInspector } from './selectors/selectResizableInspector.ts'
-import { resizableInspectorSlice } from './slices/resizableInspectorSlice.ts'
 
 export function createResizableInspectorModel(
   initial: ResizableInspectorState,

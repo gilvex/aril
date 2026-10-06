@@ -1,8 +1,8 @@
+import { requestWorkspaceCreation } from '@/pages/workspaces/model/requests/requestWorkspaceCreation.ts'
+import { workspaceHomeSlice } from '@/pages/workspaces/model/slices/workspaceHomeSlice.ts'
 import type { StudioSummary } from '@pomegranate/domain/studios'
 import type { SagaIterator } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
-import { requestWorkspaceCreation } from '../requests/requestWorkspaceCreation.ts'
-import { workspaceHomeSlice } from '../slices/workspaceHomeSlice.ts'
 export function* createWorkspace(
   name: string,
 ): SagaIterator<StudioSummary | undefined> {

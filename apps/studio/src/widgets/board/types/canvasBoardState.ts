@@ -1,5 +1,5 @@
-import type { CanvasInsertPoint } from './canvasInsertPoint.ts'
-import type { CanvasTool } from './canvasTool.ts'
+import type { CanvasInsertPoint } from '@/widgets/board/types/canvasInsertPoint.ts'
+import type { CanvasTool } from '@/widgets/board/types/canvasTool.ts'
 
 export type CanvasBoardState = {
   localDragging: string[]

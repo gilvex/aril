@@ -1,3 +1,3 @@
-import { WireframeEdge } from '../ui/WireframeEdge.tsx'
+import { WireframeEdge } from '@/widgets/board/ui/WireframeEdge.tsx'
 
 export const edgeTypes = { smoothstep: WireframeEdge }

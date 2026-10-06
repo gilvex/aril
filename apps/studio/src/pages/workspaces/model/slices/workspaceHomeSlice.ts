@@ -1,5 +1,5 @@
+import type { WorkspaceHomeState } from '@/pages/workspaces/types/workspaceHomeState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { WorkspaceHomeState } from '../../types/workspaceHomeState.ts'
 
 export const workspaceHomeSlice = createSlice({
   name: 'workspaceHome',

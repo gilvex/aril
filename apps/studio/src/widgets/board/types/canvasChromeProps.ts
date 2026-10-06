@@ -1,5 +1,5 @@
+import type { CanvasTool } from '@/widgets/board/types/canvasTool.ts'
 import type { ReactNode } from 'react'
-import type { CanvasTool } from './canvasTool.ts'
 export type CanvasChromeProps = {
   navigation: ReactNode
   actions: ReactNode

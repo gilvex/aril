@@ -1,1 +1,1 @@
-export { requirementFieldLabels } from './requirementFieldLabels.ts'
+export { requirementFieldLabels } from '@/widgets/requirements/config/requirementFieldLabels.ts'

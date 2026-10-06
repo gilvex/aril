@@ -1,3 +1,7 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useWireframeBlockHandlers } from '../model/useWireframeBlockHandlers.tsx'
+
+import type { WireFlowNode } from '@/widgets/board/types/wireFlowNode.ts'
 import {
   Handle,
   NodeResizer,
@@ -7,16 +11,20 @@ import {
 } from '@xyflow/react'
 import { Image, Menu, MoreHorizontal } from 'lucide-react'
 import { useEffect } from 'react'
-import type { WireFlowNode } from '../types/wireFlowNode.ts'
+
 export function WireframeBlock({
   id,
   data,
   selected,
 }: NodeProps<WireFlowNode>) {
+  const { t } = useTranslation()
+
   const updateNodeInternals = useUpdateNodeInternals()
   useEffect(() => {
     updateNodeInternals(id)
   }, [id, data.preview, updateNodeInternals])
+
+  const { handleClick } = useWireframeBlockHandlers({ data })
   return (
     <>
       <NodeResizer
@@ -33,7 +41,7 @@ export function WireframeBlock({
           id="left"
           type="source"
           position={Position.Left}
-          aria-label={`Connect on left of ${data.title}`}
+          aria-label={t('Connect on left of {{title}}', { title: data.title })}
         />
       )}
       <div
@@ -89,11 +97,8 @@ export function WireframeBlock({
         {data.preview && data.follow && (
           <button
             className="wire-hotspot nodrag nopan"
-            aria-label={`Follow ${data.title}`}
-            onClick={(event) => {
-              event.stopPropagation()
-              data.follow?.()
-            }}
+            aria-label={t('Follow {{title}}', { title: data.title })}
+            onClick={handleClick}
           />
         )}
       </div>
@@ -102,7 +107,7 @@ export function WireframeBlock({
           id="right"
           type="source"
           position={Position.Right}
-          aria-label={`Connect on right of ${data.title}`}
+          aria-label={t('Connect on right of {{title}}', { title: data.title })}
         />
       )}
     </>

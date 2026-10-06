@@ -1,7 +1,7 @@
+import { selectAgentAccess } from '@/features/agentAccess/model/selectors/selectAgentAccess.ts'
+import { agentAccessSlice } from '@/features/agentAccess/model/slices/agentAccessSlice.ts'
+import type { AgentAccessState } from '@/features/agentAccess/types/agentAccessState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { AgentAccessState } from '../types/agentAccessState.ts'
-import { selectAgentAccess } from './selectors/selectAgentAccess.ts'
-import { agentAccessSlice } from './slices/agentAccessSlice.ts'
 
 export function createAgentAccessModel(initial: AgentAccessState) {
   const store = configureStore({

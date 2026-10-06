@@ -1,1 +1,1 @@
-export { multiplayerSlice } from './multiplayerSlice.ts'
+export { multiplayerSlice } from '@/features/liveSession/model/slices/multiplayerSlice.ts'

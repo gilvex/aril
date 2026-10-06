@@ -1,7 +1,7 @@
+import { selectGoogleSignIn } from '@/features/googleSignIn/model/selectors/selectGoogleSignIn.ts'
+import { googleSignInSlice } from '@/features/googleSignIn/model/slices/googleSignInSlice.ts'
+import type { GoogleSignInState } from '@/features/googleSignIn/types/googleSignInState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { GoogleSignInState } from '../types/googleSignInState.ts'
-import { selectGoogleSignIn } from './selectors/selectGoogleSignIn.ts'
-import { googleSignInSlice } from './slices/googleSignInSlice.ts'
 
 export function createGoogleSignInModel(initial: GoogleSignInState) {
   const store = configureStore({

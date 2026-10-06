@@ -11,8 +11,8 @@ const sourceRoots = [
 ]
 const layers = ['shared', 'entities', 'features', 'widgets', 'pages', 'app']
 const browserStateExceptions = new Map([
-  ['widgets/board/ui/CanvasBoard.tsx', new Set(['flow'])],
-  ['widgets/board/ui/WireframeBoard.tsx', new Set(['flow'])],
+  ['widgets/board/model/useBlueprintController.ts', new Set(['flow'])],
+  ['widgets/board/model/useWireframeController.ts', new Set(['flow'])],
   ['widgets/board/model/useLiveNodePositions.ts', new Set(['positions'])],
   ['features/agentAccess/ui/AgentAccess.tsx', new Set(['secret'])],
 ])
@@ -75,6 +75,10 @@ for (const sourceRoot of sourceRoots) {
       : []
     if (components.length > 1)
       report('Keep one component per file, including memo/lazy components.')
+    for (const declaration of components) {
+      if (declaration.getText(source).split('\n').length > 125)
+        report('Keep components at most 125 lines; extract a focused component or hook.')
+    }
     if (
       isFrontend &&
       portable.includes('/types/') &&
@@ -118,6 +122,11 @@ for (const sourceRoot of sourceRoots) {
               'Put application state in a named Redux slice, not useState.',
             )
         }
+        if (ts.isJsxAttribute(node) && node.initializer && ts.isJsxExpression(node.initializer)) {
+          const callback = node.initializer.expression
+          if (callback && (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback)) && callback.getText(source).split('\n').length > 5)
+            report('Move substantial JSX callbacks into a named useCallback handler or utility.')
+        }
         const specifier =
           ts.isImportDeclaration(node) || ts.isExportDeclaration(node)
             ? node.moduleSpecifier
@@ -128,12 +137,14 @@ for (const sourceRoot of sourceRoots) {
         if (
           specifier &&
           ts.isStringLiteral(specifier) &&
-          specifier.text.startsWith('.')
+          (specifier.text.startsWith('.') || specifier.text.startsWith('@/'))
         ) {
           const target = path
             .relative(
               absolute,
-              path.resolve(path.dirname(file), specifier.text),
+              specifier.text.startsWith('@/')
+                ? path.resolve(absolute, specifier.text.slice(2))
+                : path.resolve(path.dirname(file), specifier.text),
             )
             .replaceAll('\\', '/')
             .split('/')
@@ -151,7 +162,7 @@ for (const sourceRoot of sourceRoots) {
           if (
             ['entities', 'features', 'widgets', 'pages'].includes(target[0]) &&
             (parts[0] !== target[0] || parts[1] !== target[1]) &&
-            target.slice(2).join('/') !== 'index.ts'
+            !['', 'index.ts', 'index'].includes(target.slice(2).join('/'))
           )
             report(
               `Import another slice through its public index.ts: ${target.slice(0, 2).join('/')}.`,

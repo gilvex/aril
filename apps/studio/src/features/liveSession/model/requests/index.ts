@@ -1,1 +1,1 @@
-export { openLiveChannel } from './openLiveChannel.ts'
+export { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'

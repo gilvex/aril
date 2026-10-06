@@ -1,8 +1,8 @@
+import { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
+import type { LiveConnectionOptions } from '@/features/liveSession/types/liveConnectionOptions.ts'
 import type { SagaIterator } from 'redux-saga'
 import { eventChannel } from 'redux-saga'
 import { call, delay, take } from 'redux-saga/effects'
-import type { LiveConnectionOptions } from '../../types/liveConnectionOptions.ts'
-import { openLiveChannel } from '../requests/openLiveChannel.ts'
 export function* connectLiveSession(
   options: LiveConnectionOptions,
 ): SagaIterator {

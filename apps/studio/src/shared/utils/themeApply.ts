@@ -1,6 +1,6 @@
-import { preferenceState } from '../config/preferenceState.ts'
-import { event } from '../config/themeEvent.ts'
-import { media } from '../config/themeMedia.ts'
+import { preferenceState } from '@/shared/config/preferenceState.ts'
+import { event } from '@/shared/config/themeEvent.ts'
+import { media } from '@/shared/config/themeMedia.ts'
 export function apply() {
   const theme =
     preferenceState.value === 'system'

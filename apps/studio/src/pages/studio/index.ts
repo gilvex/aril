@@ -1,1 +1,1 @@
-export { Studio } from './ui/Studio.tsx'
+export { Studio } from '@/pages/studio/ui/Studio.tsx'

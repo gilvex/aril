@@ -1,5 +1,5 @@
+import type { AppState } from '@/app/types/appState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { AppState } from '../../types/appState.ts'
 
 export const appSlice = createSlice({
   name: 'app',

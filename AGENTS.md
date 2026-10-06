@@ -26,3 +26,5 @@ See `docs/skills.md` for provenance, scope, and explicit invocation examples. Th
 ## Code conventions
 
 Follow [docs/code-rules.md](docs/code-rules.md). The user explicitly requires PascalCase component files, camelCase utilities/folders, one component or top-level utility per file, separate type files, public index barrels, and Redux Toolkit plus Redux-Saga generator iterators. Use `ui`, `model/{iterators,requests,saga,slices,selectors}`, `utils`, and `types` segments as needed. These conventions override conflicting FSD skill advice about widgets, file names, or model segmentation. `pnpm lint` includes `pnpm check:architecture`. Preserve the documented browser-handle/private-secret exceptions; do not add general application state with `useState`.
+
+Frontend imports support `@/` from `apps/studio/src`. Keep component declarations within 125 lines, extract substantial JSX callbacks into named handlers, and memoize reference-sensitive calculations/handlers with complete dependencies. UI messages belong in the English/Russian `shared/i18n` catalogs; preserve stored enum values and user-authored content when translating labels.

@@ -1,1 +1,1 @@
-export { GoogleSignIn } from './GoogleSignIn.tsx'
+export { GoogleSignIn } from '@/features/googleSignIn/ui/GoogleSignIn.tsx'

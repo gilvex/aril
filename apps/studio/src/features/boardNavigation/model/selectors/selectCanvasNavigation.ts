@@ -1,5 +1,5 @@
+import type { CanvasNavigationState } from '@/features/boardNavigation/types/canvasNavigationState.ts'
 import { createSelector } from '@reduxjs/toolkit'
-import type { CanvasNavigationState } from '../../types/canvasNavigationState.ts'
 
 export const selectCanvasNavigation = createSelector(
   [(state: CanvasNavigationState) => state],

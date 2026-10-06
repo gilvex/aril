@@ -1,5 +1,5 @@
+import type { CanvasFullscreenState } from '@/features/canvasFullscreen/types/canvasFullscreenState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { CanvasFullscreenState } from '../../types/canvasFullscreenState.ts'
 
 export const canvasFullscreenSlice = createSlice({
   name: 'canvasFullscreen',

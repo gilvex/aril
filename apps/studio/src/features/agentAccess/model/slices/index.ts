@@ -1,1 +1,1 @@
-export { agentAccessSlice } from './agentAccessSlice.ts'
+export { agentAccessSlice } from '@/features/agentAccess/model/slices/agentAccessSlice.ts'

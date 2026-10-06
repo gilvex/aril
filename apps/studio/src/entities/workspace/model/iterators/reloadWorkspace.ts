@@ -1,9 +1,9 @@
+import { fetchWorkspace } from '@/entities/workspace/model/requests/fetchWorkspace.ts'
+import type { WorkspaceRuntime } from '@/entities/workspace/types/workspaceRuntime.ts'
+import { keepViews } from '@/entities/workspace/utils/keepViews.ts'
 import type { Envelope } from '@pomegranate/domain/workspace'
 import type { SagaIterator } from 'redux-saga'
 import { call } from 'redux-saga/effects'
-import type { WorkspaceRuntime } from '../../types/workspaceRuntime.ts'
-import { keepViews } from '../../utils/keepViews.ts'
-import { fetchWorkspace } from '../requests/fetchWorkspace.ts'
 export function* reloadWorkspace(
   runtime: WorkspaceRuntime,
 ): SagaIterator<void> {

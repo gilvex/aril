@@ -1,1 +1,1 @@
-export { googleSignInSlice } from './googleSignInSlice.ts'
+export { googleSignInSlice } from '@/features/googleSignIn/model/slices/googleSignInSlice.ts'

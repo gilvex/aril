@@ -1,7 +1,7 @@
+import { selectCollaborationBar } from '@/widgets/collaboration/model/selectors/selectCollaborationBar.ts'
+import { collaborationBarSlice } from '@/widgets/collaboration/model/slices/collaborationBarSlice.ts'
+import type { CollaborationBarState } from '@/widgets/collaboration/types/collaborationBarState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { CollaborationBarState } from '../types/collaborationBarState.ts'
-import { selectCollaborationBar } from './selectors/selectCollaborationBar.ts'
-import { collaborationBarSlice } from './slices/collaborationBarSlice.ts'
 
 export function createCollaborationBarModel(initial: CollaborationBarState) {
   const store = configureStore({

@@ -1,7 +1,7 @@
+import { selectMultiplayer } from '@/features/liveSession/model/selectors/selectMultiplayer.ts'
+import { multiplayerSlice } from '@/features/liveSession/model/slices/multiplayerSlice.ts'
+import type { MultiplayerState } from '@/features/liveSession/types/multiplayerState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { MultiplayerState } from '../types/multiplayerState.ts'
-import { selectMultiplayer } from './selectors/selectMultiplayer.ts'
-import { multiplayerSlice } from './slices/multiplayerSlice.ts'
 
 export function createMultiplayerModel(initial: MultiplayerState) {
   const store = configureStore({

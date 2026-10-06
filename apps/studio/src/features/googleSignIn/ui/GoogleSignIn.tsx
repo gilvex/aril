@@ -1,12 +1,18 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useGoogleSignInHandlers } from '../model/useGoogleSignInHandlers.tsx'
+
+import { createGoogleSignInState } from '@/features/googleSignIn/model/createGoogleSignInState.ts'
+import { useGoogleSignInModel } from '@/features/googleSignIn/model/useGoogleSignInModel.ts'
+import type { GoogleSignInProps } from '@/features/googleSignIn/types/googleSignInProps.ts'
+import { loadGoogle } from '@/features/googleSignIn/utils/loadGoogle.ts'
+import { request } from '@/shared/api/request.ts'
+import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import type { Profile } from '@pomegranate/domain/collaboration'
 import { useEffect, useRef } from 'react'
-import { request } from '../../../shared/api/request.ts'
-import { sessionTokenKey } from '../../../shared/config/sessionTokenKey.ts'
-import { createGoogleSignInState } from '../model/createGoogleSignInState.ts'
-import { useGoogleSignInModel } from '../model/useGoogleSignInModel.ts'
-import type { GoogleSignInProps } from '../types/googleSignInProps.ts'
-import { loadGoogle } from '../utils/loadGoogle.ts'
+
 export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
+  const { t } = useTranslation()
+
   const root = useRef<HTMLDivElement>(null)
   const callback = useRef(onSuccess)
   useEffect(() => {
@@ -71,7 +77,9 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
           } catch (err) {
             if (active) {
               setStatus('')
-              setError(err instanceof Error ? err.message : 'Sign-in failed.')
+              setError(
+                err instanceof Error ? err.message : t('Sign-in failed.'),
+              )
             }
           }
         },
@@ -97,7 +105,9 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
     return () => {
       active = false
     }
-  }, [link, retry])
+  }, [link, retry, setError, setStatus, t])
+
+  const { handleClick } = useGoogleSignInHandlers({ setError, setRetry })
   return (
     <div className="google-signin">
       <p>{status}</p>
@@ -107,15 +117,8 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
           <p className="form-error" role="alert">
             {error}
           </p>
-          <button
-            type="button"
-            className="button"
-            onClick={() => {
-              setError('')
-              setRetry((value) => value + 1)
-            }}
-          >
-            Try Google again
+          <button type="button" className="button" onClick={handleClick}>
+            {t('Try Google again')}
           </button>
         </>
       )}

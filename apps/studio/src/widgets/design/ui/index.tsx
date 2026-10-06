@@ -1,1 +1,6 @@
-export { DesignBoard } from './DesignBoard.tsx'
+export { DesignBoard } from '@/widgets/design/ui/DesignBoard.tsx'
+export { DesignPreview } from './DesignPreview.tsx'
+export { DesignPrinciples } from './DesignPrinciples.tsx'
+export { DesignServiceRow } from './DesignServiceRow.tsx'
+export { DesignServicesPreview } from './DesignServicesPreview.tsx'
+export { DesignSettings } from './DesignSettings.tsx'

@@ -1,7 +1,7 @@
+import { selectAccountConnection } from '@/widgets/collaboration/model/selectors/selectAccountConnection.ts'
+import { accountConnectionSlice } from '@/widgets/collaboration/model/slices/accountConnectionSlice.ts'
+import type { AccountConnectionState } from '@/widgets/collaboration/types/accountConnectionState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { AccountConnectionState } from '../types/accountConnectionState.ts'
-import { selectAccountConnection } from './selectors/selectAccountConnection.ts'
-import { accountConnectionSlice } from './slices/accountConnectionSlice.ts'
 
 export function createAccountConnectionModel(initial: AccountConnectionState) {
   const store = configureStore({

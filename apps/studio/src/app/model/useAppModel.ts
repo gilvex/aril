@@ -1,5 +1,5 @@
+import { createAppModel } from '@/app/model/createAppModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createAppModel } from './createAppModel.ts'
 
 export function useAppModel(
   initialize: () => Parameters<typeof createAppModel>[0],

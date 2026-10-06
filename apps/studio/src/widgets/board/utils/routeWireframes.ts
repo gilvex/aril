@@ -1,11 +1,11 @@
+import type { WireRoute } from '@/widgets/board/types/wireRoute.ts'
+import type { Point } from '@/widgets/board/types/wireRoutingPoint.ts'
+import type { Rect } from '@/widgets/board/types/wireRoutingRect.ts'
+import { findPath } from '@/widgets/board/utils/findPath.ts'
+import { inside } from '@/widgets/board/utils/inside.ts'
+import { roundedPath } from '@/widgets/board/utils/roundedPath.ts'
+import { wireConnectionSides } from '@/widgets/board/utils/wireConnectionSides.ts'
 import { type Wireframe, type WireNode } from '@pomegranate/domain/wireframe'
-import type { WireRoute } from '../types/wireRoute.ts'
-import type { Point } from '../types/wireRoutingPoint.ts'
-import type { Rect } from '../types/wireRoutingRect.ts'
-import { findPath } from './findPath.ts'
-import { inside } from './inside.ts'
-import { roundedPath } from './roundedPath.ts'
-import { wireConnectionSides } from './wireConnectionSides.ts'
 export function routeWireframes(nodes: WireNode[], edges: Wireframe['edges']) {
   const byId = new Map(nodes.map((n) => [n.id, n]))
   const rects = new Map(

@@ -1,3 +1,5 @@
+import type { SharedEdge } from '@/widgets/board/types/sharedEdge.ts'
+import { SelectionBadges } from '@/widgets/board/ui/SelectionBadges.tsx'
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -5,8 +7,6 @@ import {
   useViewport,
   type EdgeProps,
 } from '@xyflow/react'
-import type { SharedEdge } from '../types/sharedEdge.ts'
-import { SelectionBadges } from './SelectionBadges.tsx'
 export function SelectionEdge(props: EdgeProps<SharedEdge>) {
   const [path, labelX, labelY] = getSmoothStepPath(props)
   const { zoom } = useViewport()

@@ -1,7 +1,7 @@
+import { requestHostedAccess } from '@/pages/workspaces/model/requests/requestHostedAccess.ts'
+import { workspaceHomeSlice } from '@/pages/workspaces/model/slices/workspaceHomeSlice.ts'
 import type { SagaIterator } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
-import { requestHostedAccess } from '../requests/requestHostedAccess.ts'
-import { workspaceHomeSlice } from '../slices/workspaceHomeSlice.ts'
 export function* openHostedWorkspace(): SagaIterator {
   yield put(workspaceHomeSlice.actions.setBusy(true))
   yield put(workspaceHomeSlice.actions.setError(''))

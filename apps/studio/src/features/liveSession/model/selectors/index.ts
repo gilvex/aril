@@ -1,1 +1,1 @@
-export { selectMultiplayer } from './selectMultiplayer.ts'
+export { selectMultiplayer } from '@/features/liveSession/model/selectors/selectMultiplayer.ts'

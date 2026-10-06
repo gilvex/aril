@@ -1,7 +1,7 @@
+import { selectDesignBoard } from '@/widgets/design/model/selectors/selectDesignBoard.ts'
+import { designBoardSlice } from '@/widgets/design/model/slices/designBoardSlice.ts'
+import type { DesignBoardState } from '@/widgets/design/types/designBoardState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { DesignBoardState } from '../types/designBoardState.ts'
-import { selectDesignBoard } from './selectors/selectDesignBoard.ts'
-import { designBoardSlice } from './slices/designBoardSlice.ts'
 
 export function createDesignBoardModel(initial: DesignBoardState) {
   const store = configureStore({

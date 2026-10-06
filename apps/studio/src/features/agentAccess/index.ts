@@ -1,1 +1,1 @@
-export { AgentAccess } from './ui/AgentAccess.tsx'
+export { AgentAccess } from '@/features/agentAccess/ui/AgentAccess.tsx'

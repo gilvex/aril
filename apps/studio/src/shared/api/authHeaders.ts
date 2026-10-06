@@ -1,4 +1,4 @@
-import { sessionTokenKey } from '../config/sessionTokenKey.ts'
+import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 export function authHeaders(): Record<string, string> {
   try {
     const token = localStorage.getItem(sessionTokenKey)

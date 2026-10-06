@@ -1,6 +1,6 @@
+import type { StudioRoute } from '@/shared/types/studioRoute.ts'
+import type { StudioView as View } from '@/shared/types/studioView.ts'
 import type { Workspace } from '@pomegranate/domain/workspace'
-import type { StudioRoute } from '../../../shared/types/studioRoute.ts'
-import type { StudioView as View } from '../../../shared/types/studioView.ts'
 export type StudioState = {
   initialRoute: StudioRoute
   view: View

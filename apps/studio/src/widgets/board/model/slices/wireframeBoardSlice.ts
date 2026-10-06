@@ -1,5 +1,5 @@
+import type { WireframeBoardState } from '@/widgets/board/types/wireframeBoardState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { WireframeBoardState } from '../../types/wireframeBoardState.ts'
 
 export const wireframeBoardSlice = createSlice({
   name: 'wireframeBoard',

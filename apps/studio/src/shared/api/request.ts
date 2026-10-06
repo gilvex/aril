@@ -1,6 +1,6 @@
+import { ApiError } from '@/shared/api/apiError.ts'
+import { authHeaders } from '@/shared/api/authHeaders.ts'
 import { writeVersion, writeVersionHeader } from '@pomegranate/domain/freshness'
-import { ApiError } from './apiError.ts'
-import { authHeaders } from './authHeaders.ts'
 export async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...init,

@@ -1,6 +1,9 @@
-import type { PresenceAvatarsProps } from '../types/presenceAvatarsProps.ts'
-import { Avatar } from './Avatar.tsx'
+import type { PresenceAvatarsProps } from '@/entities/collaboration/types/presenceAvatarsProps.ts'
+import { Avatar } from '@/entities/collaboration/ui/Avatar.tsx'
+import { useTranslation } from '@/shared/i18n/index.ts'
 export function PresenceAvatars({ profiles, limit = 3 }: PresenceAvatarsProps) {
+  const { t } = useTranslation()
+
   const people = [
     ...new Map(profiles.map((profile) => [profile.id, profile])).values(),
   ]
@@ -10,8 +13,8 @@ export function PresenceAvatars({ profiles, limit = 3 }: PresenceAvatarsProps) {
     <span
       className="tab-presence"
       role="img"
-      aria-label={`${names} viewing here`}
-      title={`${names} viewing here`}
+      aria-label={t('{{value}} viewing here', { value: names })}
+      title={t('{{value}} viewing here', { value: names })}
     >
       {people.slice(0, limit).map((profile) => (
         <Avatar key={profile.id} profile={profile} />

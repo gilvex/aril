@@ -1,5 +1,5 @@
+import type { StudioState } from '@/pages/studio/types/studioState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { StudioState } from '../../types/studioState.ts'
 
 export const studioSlice = createSlice({
   name: 'studio',

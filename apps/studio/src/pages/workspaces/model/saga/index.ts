@@ -1,1 +1,1 @@
-export { workspaceHomeSaga } from './workspaceHomeSaga.ts'
+export { workspaceHomeSaga } from '@/pages/workspaces/model/saga/workspaceHomeSaga.ts'

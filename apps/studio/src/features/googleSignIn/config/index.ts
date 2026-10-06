@@ -1,1 +1,1 @@
-export { scriptPromiseState } from './scriptPromiseState.ts'
+export { scriptPromiseState } from '@/features/googleSignIn/config/scriptPromiseState.ts'

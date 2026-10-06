@@ -1,41 +1,48 @@
-import { useEffect } from 'react'
-import { GoogleSignIn } from '../../../features/googleSignIn/index.ts'
-import { request } from '../../../shared/api/request.ts'
-import { createAccountConnectionState } from '../model/createAccountConnectionState.ts'
-import { useAccountConnectionModel } from '../model/useAccountConnectionModel.ts'
-import type { AccountConnectionProps } from '../types/accountConnectionProps.ts'
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useAccountConnectionHandlers } from '../model/useAccountConnectionHandlers.tsx'
+
+import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
+import { request } from '@/shared/api/request.ts'
+import { createAccountConnectionState } from '@/widgets/collaboration/model/createAccountConnectionState.ts'
+import { useAccountConnectionModel } from '@/widgets/collaboration/model/useAccountConnectionModel.ts'
+import type { AccountConnectionProps } from '@/widgets/collaboration/types/accountConnectionProps.ts'
+import { useCallback, useEffect } from 'react'
 
 export function AccountConnection({ onProfile }: AccountConnectionProps) {
+  const { t } = useTranslation()
+
   const { account, setAccount, error, setError } = useAccountConnectionModel(
     () => createAccountConnectionState(),
   )
 
-  const refresh = () =>
-    request<{ google: { email: string } | null }>('/api/account')
-      .then(setAccount)
-      .catch((err) => setError(String(err)))
+  const refresh = useCallback(
+    () =>
+      request<{ google: { email: string } | null }>('/api/account')
+        .then(setAccount)
+        .catch((err) => setError(String(err))),
+    [setAccount, setError],
+  )
   useEffect(() => {
     void refresh()
-  }, [])
+  }, [refresh])
+
+  const { handleSuccess } = useAccountConnectionHandlers({ onProfile, refresh })
   return (
     <section className="account-connection">
-      <strong>Keep your access</strong>
+      <strong>{t('Keep your access')}</strong>
       {error && <p className="form-error">{error}</p>}
       {account?.google ? (
         <p>
-          Connected to Google as <b>{account.google.email}</b>. Sign in with
-          this account to open your workspaces on another device.
+          {t('Connected to Google as')}
+          <b>{account.google.email}</b>
+          {t(
+            '. Sign in with this account to open your workspaces on another device.',
+          )}
         </p>
       ) : account ? (
-        <GoogleSignIn
-          link
-          onSuccess={(profile) => {
-            onProfile(profile)
-            void refresh()
-          }}
-        />
+        <GoogleSignIn link onSuccess={handleSuccess} />
       ) : (
-        <p>Loading account…</p>
+        <p>{t('Loading account…')}</p>
       )}
     </section>
   )

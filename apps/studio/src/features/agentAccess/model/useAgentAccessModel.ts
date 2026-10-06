@@ -1,5 +1,5 @@
+import { createAgentAccessModel } from '@/features/agentAccess/model/createAgentAccessModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createAgentAccessModel } from './createAgentAccessModel.ts'
 
 export function useAgentAccessModel(
   initialize: () => Parameters<typeof createAgentAccessModel>[0],

@@ -1,5 +1,5 @@
+import { createCanvasBoardModel } from '@/widgets/board/model/createCanvasBoardModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createCanvasBoardModel } from './createCanvasBoardModel.ts'
 
 export function useCanvasBoardModel(
   initialize: () => Parameters<typeof createCanvasBoardModel>[0],

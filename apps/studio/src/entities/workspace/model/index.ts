@@ -1,2 +1,2 @@
-export { createWorkspaceSession } from './createWorkspaceSession.ts'
-export { useWorkspace } from './useWorkspace.ts'
+export { createWorkspaceSession } from '@/entities/workspace/model/createWorkspaceSession.ts'
+export { useWorkspace } from '@/entities/workspace/model/useWorkspace.ts'

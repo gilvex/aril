@@ -1,17 +1,22 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
+import { defaultWidth } from '@/widgets/board/config/defaultWidth.ts'
+import { maxWidth } from '@/widgets/board/config/maxWidth.ts'
+import { minWidth } from '@/widgets/board/config/minWidth.ts'
+import { storageKey } from '@/widgets/board/config/storageKey.ts'
+import { createResizableInspectorState } from '@/widgets/board/model/createResizableInspectorState.ts'
+import { useResizableInspectorModel } from '@/widgets/board/model/useResizableInspectorModel.ts'
+import type { ResizableInspectorProps } from '@/widgets/board/types/resizableInspectorProps.ts'
 import { useEffect, useRef } from 'react'
-import { useCompactLayout } from '../../../shared/model/useCompactLayout.ts'
-import { defaultWidth } from '../config/defaultWidth.ts'
-import { maxWidth } from '../config/maxWidth.ts'
-import { minWidth } from '../config/minWidth.ts'
-import { storageKey } from '../config/storageKey.ts'
-import { createResizableInspectorState } from '../model/createResizableInspectorState.ts'
-import { useResizableInspectorModel } from '../model/useResizableInspectorModel.ts'
-import type { ResizableInspectorProps } from '../types/resizableInspectorProps.ts'
+import { useResizableInspectorHandlers } from '../model/useResizableInspectorHandlers.tsx'
+
 export function ResizableInspector({
   id,
   className = '',
   children,
 }: ResizableInspectorProps) {
+  const { t } = useTranslation()
+
   const compact = useCompactLayout()
   const panel = useRef<HTMLElement>(null)
   const drag = useRef<{ pointerId: number; x: number; width: number } | null>(
@@ -44,8 +49,22 @@ export function ResizableInspector({
     })
     observer.observe(layout)
     return () => observer.disconnect()
-  }, [compact])
+  }, [compact, setLimit])
 
+  const {
+    handleResizeDetailsPanelPointerDown,
+    handleResizeDetailsPanelPointerMove,
+    handleResizeDetailsPanelPointerUp,
+    handleResizeDetailsPanelLostPointerCapture,
+    handleResizeDetailsPanelKeyDown,
+  } = useResizableInspectorHandlers({
+    drag,
+    visibleWidth,
+    setResizing,
+    resize,
+    remember,
+    limit,
+  })
   return (
     <aside
       ref={panel}
@@ -60,60 +79,22 @@ export function ResizableInspector({
           className="inspector-resize-handle"
           role="separator"
           tabIndex={0}
-          aria-label="Resize details panel"
+          aria-label={t('Resize details panel')}
           aria-orientation="vertical"
           aria-controls={id}
           aria-valuemin={minWidth}
           aria-valuemax={limit}
           aria-valuenow={visibleWidth}
           aria-valuetext={`${visibleWidth} pixels wide`}
-          title="Drag to resize · Arrow keys to adjust · Double-click to reset"
-          onPointerDown={(event) => {
-            if (event.button !== 0) return
-            event.preventDefault()
-            event.currentTarget.focus()
-            event.currentTarget.setPointerCapture(event.pointerId)
-            drag.current = {
-              pointerId: event.pointerId,
-              x: event.clientX,
-              width: visibleWidth,
-            }
-            setResizing(true)
-          }}
-          onPointerMove={(event) => {
-            if (drag.current?.pointerId !== event.pointerId) return
-            resize(drag.current.width + drag.current.x - event.clientX)
-          }}
-          onPointerUp={(event) => {
-            if (drag.current?.pointerId !== event.pointerId) return
-            remember(
-              resize(drag.current.width + drag.current.x - event.clientX),
-            )
-            drag.current = null
-            setResizing(false)
-            event.currentTarget.releasePointerCapture(event.pointerId)
-          }}
-          onLostPointerCapture={() => {
-            drag.current = null
-            setResizing(false)
-          }}
+          title={t(
+            'Drag to resize · Arrow keys to adjust · Double-click to reset',
+          )}
+          onPointerDown={handleResizeDetailsPanelPointerDown}
+          onPointerMove={handleResizeDetailsPanelPointerMove}
+          onPointerUp={handleResizeDetailsPanelPointerUp}
+          onLostPointerCapture={handleResizeDetailsPanelLostPointerCapture}
           onDoubleClick={() => remember(resize(defaultWidth))}
-          onKeyDown={(event) => {
-            const step = event.shiftKey ? 40 : 10
-            const next =
-              event.key === 'ArrowLeft'
-                ? visibleWidth + step
-                : event.key === 'ArrowRight'
-                  ? visibleWidth - step
-                  : event.key === 'Home'
-                    ? minWidth
-                    : event.key === 'End'
-                      ? limit
-                      : null
-            if (next === null) return
-            event.preventDefault()
-            remember(resize(next))
-          }}
+          onKeyDown={handleResizeDetailsPanelKeyDown}
         />
       )}
       <div className="inspector-scroll">{children}</div>

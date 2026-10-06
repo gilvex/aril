@@ -1,1 +1,1 @@
-export { selectWorkspaceHome } from './selectWorkspaceHome.ts'
+export { selectWorkspaceHome } from '@/pages/workspaces/model/selectors/selectWorkspaceHome.ts'

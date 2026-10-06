@@ -1,7 +1,7 @@
+import { createWorkspaceSession } from '@/entities/workspace/model/createWorkspaceSession.ts'
+import type { Recovery } from '@/entities/workspace/types/recovery.ts'
 import type { Envelope } from '@pomegranate/domain/workspace'
 import { useEffect, useRef, useSyncExternalStore } from 'react'
-import type { Recovery } from '../types/recovery.ts'
-import { createWorkspaceSession } from './createWorkspaceSession.ts'
 export function useWorkspace(
   initial: Envelope,
   workspaceId: string,

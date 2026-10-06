@@ -1,5 +1,5 @@
+import { createWireframeBoardModel } from '@/widgets/board/model/createWireframeBoardModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createWireframeBoardModel } from './createWireframeBoardModel.ts'
 
 export function useWireframeBoardModel(
   initialize: () => Parameters<typeof createWireframeBoardModel>[0],

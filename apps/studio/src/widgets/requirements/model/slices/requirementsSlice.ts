@@ -1,5 +1,5 @@
+import type { RequirementsState } from '@/widgets/requirements/types/requirementsState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { RequirementsState } from '../../types/requirementsState.ts'
 
 export const requirementsSlice = createSlice({
   name: 'requirements',

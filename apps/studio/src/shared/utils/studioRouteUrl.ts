@@ -1,5 +1,5 @@
-import { routeKeys } from '../config/routeKeys.ts'
-import type { StudioRoute } from '../types/studioRoute.ts'
+import { routeKeys } from '@/shared/config/routeKeys.ts'
+import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 export function studioRouteUrl(href: string, route: StudioRoute | null) {
   const url = new URL(href)
   for (const key of routeKeys) url.searchParams.delete(key)

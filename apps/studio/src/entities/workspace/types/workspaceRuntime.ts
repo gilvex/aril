@@ -1,6 +1,6 @@
+import type { HistoryItem } from '@/entities/workspace/types/historyItem.ts'
+import type { WorkspaceState } from '@/entities/workspace/types/workspaceState.ts'
 import type { Envelope, Workspace } from '@pomegranate/domain/workspace'
-import type { HistoryItem } from './historyItem.ts'
-import type { WorkspaceState } from './workspaceState.ts'
 export type WorkspaceRuntime = {
   workspaceId: string
   current: { current: Workspace }

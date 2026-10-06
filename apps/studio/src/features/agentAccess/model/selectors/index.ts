@@ -1,1 +1,1 @@
-export { selectAgentAccess } from './selectAgentAccess.ts'
+export { selectAgentAccess } from '@/features/agentAccess/model/selectors/selectAgentAccess.ts'

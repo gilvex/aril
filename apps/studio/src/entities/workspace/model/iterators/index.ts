@@ -1,3 +1,3 @@
-export { flushWorkspace } from './flushWorkspace.ts'
-export { reloadWorkspace } from './reloadWorkspace.ts'
-export { saveAfterEdit } from './saveAfterEdit.ts'
+export { flushWorkspace } from '@/entities/workspace/model/iterators/flushWorkspace.ts'
+export { reloadWorkspace } from '@/entities/workspace/model/iterators/reloadWorkspace.ts'
+export { saveAfterEdit } from '@/entities/workspace/model/iterators/saveAfterEdit.ts'

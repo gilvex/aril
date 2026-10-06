@@ -1,5 +1,9 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useCanvasInsertMenuHandlers } from '../model/useCanvasInsertMenuHandlers.tsx'
+
+import type { CanvasInsertMenuProps } from '@/widgets/board/types/canvasInsertMenuProps.ts'
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import type { CanvasInsertMenuProps } from '../types/canvasInsertMenuProps.ts'
+
 export function CanvasInsertMenu({
   point,
   title,
@@ -7,6 +11,8 @@ export function CanvasInsertMenu({
   disabled,
   onClose,
 }: CanvasInsertMenuProps) {
+  const { t } = useTranslation()
+
   const menu = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
     const element = menu.current
@@ -39,6 +45,8 @@ export function CanvasInsertMenu({
       window.removeEventListener('resize', dismissOnResize)
     }
   }, [onClose])
+
+  const { handleKeyDown } = useCanvasInsertMenuHandlers({ onClose })
   return (
     <div
       ref={menu}
@@ -47,36 +55,7 @@ export function CanvasInsertMenu({
       tabIndex={-1}
       aria-label={title}
       onContextMenu={(event) => event.preventDefault()}
-      onKeyDown={(event) => {
-        event.stopPropagation()
-        if (event.key === 'Escape' || event.key === 'Tab') {
-          if (event.key === 'Escape') event.preventDefault()
-          onClose()
-          return
-        }
-        const buttons = [
-          ...event.currentTarget.querySelectorAll<HTMLButtonElement>(
-            'button:not(:disabled)',
-          ),
-        ]
-        const current = buttons.indexOf(
-          document.activeElement as HTMLButtonElement,
-        )
-        const index =
-          event.key === 'Home'
-            ? 0
-            : event.key === 'End'
-              ? buttons.length - 1
-              : event.key === 'ArrowDown'
-                ? (current + 1) % buttons.length
-                : event.key === 'ArrowUp'
-                  ? (current - 1 + buttons.length) % buttons.length
-                  : -1
-        if (index >= 0) {
-          event.preventDefault()
-          buttons[index]?.focus()
-        }
-      }}
+      onKeyDown={handleKeyDown}
     >
       <div className="canvas-insert-heading">{title}</div>
       {items.map((item) => (
@@ -93,7 +72,7 @@ export function CanvasInsertMenu({
           <span>{item.label}</span>
         </button>
       ))}
-      {disabled && <p>This board has reached its 500-item limit.</p>}
+      {disabled && <p>{t('This board has reached its 500-item limit.')}</p>}
     </div>
   )
 }

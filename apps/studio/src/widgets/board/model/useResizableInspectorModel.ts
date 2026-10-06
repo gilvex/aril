@@ -1,5 +1,5 @@
+import { createResizableInspectorModel } from '@/widgets/board/model/createResizableInspectorModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createResizableInspectorModel } from './createResizableInspectorModel.ts'
 
 export function useResizableInspectorModel(
   initialize: () => Parameters<typeof createResizableInspectorModel>[0],

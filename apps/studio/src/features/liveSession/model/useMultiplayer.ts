@@ -1,3 +1,9 @@
+import { connectLiveSession } from '@/features/liveSession/model/iterators/connectLiveSession.ts'
+import { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
+import { useMultiplayerModel } from '@/features/liveSession/model/useMultiplayerModel.ts'
+import { authHeaders } from '@/shared/api/authHeaders.ts'
+import { request } from '@/shared/api/request.ts'
+import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import type {
   Activity,
   DragPosition,
@@ -9,12 +15,6 @@ import type { LiveState } from '@pomegranate/domain/liveSession'
 import type { Envelope } from '@pomegranate/domain/workspace'
 import { useCallback, useEffect, useRef } from 'react'
 import { runSaga } from 'redux-saga'
-import { authHeaders } from '../../../shared/api/authHeaders.ts'
-import { request } from '../../../shared/api/request.ts'
-import { workspaceHeaders } from '../../../shared/api/workspaceHeaders.ts'
-import { connectLiveSession } from './iterators/connectLiveSession.ts'
-import { openLiveChannel } from './requests/openLiveChannel.ts'
-import { useMultiplayerModel } from './useMultiplayerModel.ts'
 
 export function useMultiplayer(
   initialProfile: Profile,
@@ -193,7 +193,17 @@ export function useMultiplayer(
       clearTimeout(pendingPresence.current)
       document.removeEventListener('visibilitychange', hide)
     }
-  }, [clientId, initialProfile.id, receive, sendPresence, workspaceId])
+  }, [
+    clientId,
+    initialProfile.id,
+    receive,
+    sendPresence,
+    setActivity,
+    setConnected,
+    setPeers,
+    setProfile,
+    workspaceId,
+  ])
   return {
     profile,
     setProfile,

@@ -1,3 +1,3 @@
-export { keepViews } from './keepViews.ts'
-export { loadViews } from './loadViews.ts'
-export { scopedDraftKey } from './scopedDraftKey.ts'
+export { keepViews } from '@/entities/workspace/utils/keepViews.ts'
+export { loadViews } from '@/entities/workspace/utils/loadViews.ts'
+export { scopedDraftKey } from '@/entities/workspace/utils/scopedDraftKey.ts'

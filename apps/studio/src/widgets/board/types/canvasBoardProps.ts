@@ -1,3 +1,4 @@
+import type { CanvasFullscreenControls } from '@/features/canvasFullscreen/index.ts'
 import type {
   CameraPresence,
   DragPosition,
@@ -6,7 +7,6 @@ import type {
 } from '@pomegranate/domain/collaboration'
 import type { Board, Requirement } from '@pomegranate/domain/workspace'
 import type { ReactNode } from 'react'
-import type { CanvasFullscreenControls } from '../../../features/canvasFullscreen/index.ts'
 
 export type CanvasBoardProps = {
   full: CanvasFullscreenControls

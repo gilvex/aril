@@ -1,7 +1,7 @@
+import { selectApp } from '@/app/model/selectors/selectApp.ts'
+import { appSlice } from '@/app/model/slices/appSlice.ts'
+import type { AppState } from '@/app/types/appState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { AppState } from '../types/appState.ts'
-import { selectApp } from './selectors/selectApp.ts'
-import { appSlice } from './slices/appSlice.ts'
 
 export function createAppModel(initial: AppState) {
   const store = configureStore({

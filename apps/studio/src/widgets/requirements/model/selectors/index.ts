@@ -1,1 +1,1 @@
-export { selectRequirements } from './selectRequirements.ts'
+export { selectRequirements } from '@/widgets/requirements/model/selectors/selectRequirements.ts'

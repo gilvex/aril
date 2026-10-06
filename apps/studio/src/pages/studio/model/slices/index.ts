@@ -1,1 +1,1 @@
-export { studioSlice } from './studioSlice.ts'
+export { studioSlice } from '@/pages/studio/model/slices/studioSlice.ts'

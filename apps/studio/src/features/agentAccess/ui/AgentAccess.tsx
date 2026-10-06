@@ -1,12 +1,21 @@
+import { createAgentAccessState } from '@/features/agentAccess/model/createAgentAccessState.ts'
+import { useAgentAccessModel } from '@/features/agentAccess/model/useAgentAccessModel.ts'
+import type { AgentAccessProps } from '@/features/agentAccess/types/agentAccessProps.ts'
+import { request } from '@/shared/api/request.ts'
+import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
+import { useTranslation } from '@/shared/i18n/index.ts'
 import type { AgentCredential } from '@pomegranate/domain/agentAccess'
 import { useEffect, useState } from 'react'
-import { request } from '../../../shared/api/request.ts'
-import { workspaceHeaders } from '../../../shared/api/workspaceHeaders.ts'
-import { createAgentAccessState } from '../model/createAgentAccessState.ts'
-import { useAgentAccessModel } from '../model/useAgentAccessModel.ts'
-import type { AgentAccessProps } from '../types/agentAccessProps.ts'
+import { useAgentAccessHandlers } from '../model/useAgentAccessHandlers.tsx'
+import { AgentCredentialRow } from './AgentCredentialRow.tsx'
+import { AgentSecret } from './AgentSecret.tsx'
+import { AgentSetupInstructions } from './AgentSetupInstructions.tsx'
+
+import { CreateAgentCredentialForm } from './CreateAgentCredentialForm.tsx'
 
 export function AgentAccess({ workspaceId }: AgentAccessProps) {
+  const { t } = useTranslation()
+
   const {
     credentials,
     setCredentials,
@@ -37,7 +46,7 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
       .catch(() => {
         if (active)
           setError(
-            'Could not load agent access. Close this dialog and try again.',
+            t('Could not load agent access. Close this dialog and try again.'),
           )
       })
       .finally(() => {
@@ -46,176 +55,55 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
     return () => {
       active = false
     }
-  }, [workspaceId])
+  }, [setCredentials, setError, setLoading, t, workspaceId])
+
+  const { handleClick } = useAgentAccessHandlers({ secret, setError })
   return (
     <section className="agent-access">
-      <h2 id="modal-title">Agent access</h2>
+      <h2 id="modal-title">{t('Agent access')}</h2>
       <p>
-        Connect Codex or another MCP client to this workspace. Edits appear in
-        revision history and team activity.
+        {t(
+          'Connect Codex or another MCP client to this workspace. Edits appear in revision history and team activity.',
+        )}
       </p>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault()
-          setBusy(true)
-          setError('')
-          setSecret('')
-          try {
-            const result = await request<{
-              credential: AgentCredential
-              token: string
-            }>('/api/agent-access', {
-              method: 'POST',
-              headers: {
-                ...workspaceHeaders(workspaceId),
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ name, scope, days }),
-            })
-            setCredentials((items) => [result.credential, ...items])
-            setSecret(result.token)
-          } catch (e) {
-            setError(
-              e instanceof Error ? e.message : 'Could not create credential.',
-            )
-          } finally {
-            setBusy(false)
-          }
-        }}
-      >
-        <label>
-          Connection name
-          <input
-            required
-            maxLength={60}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-        <div className="agent-access-options">
-          <label>
-            Access
-            <select
-              value={scope}
-              onChange={(e) => setScope(e.target.value as 'read' | 'write')}
-            >
-              <option value="read">Read only</option>
-              <option value="write">Read and edit</option>
-            </select>
-          </label>
-          <label>
-            Expires in
-            <select
-              value={days}
-              onChange={(e) => setDays(Number(e.target.value))}
-            >
-              <option value={7}>7 days</option>
-              <option value={30}>30 days</option>
-              <option value={90}>90 days</option>
-            </select>
-          </label>
-        </div>
-        <button
-          className="button primary"
-          disabled={busy || loading || !name.trim()}
-        >
-          Create credential
-        </button>
-      </form>
+      <CreateAgentCredentialForm
+        setBusy={setBusy}
+        setError={setError}
+        setSecret={setSecret}
+        workspaceId={workspaceId}
+        setCredentials={setCredentials}
+        name={name}
+        setName={setName}
+        scope={scope}
+        setScope={setScope}
+        days={days}
+        setDays={setDays}
+        busy={busy}
+        loading={loading}
+      />
       {secret && (
-        <div className="agent-secret">
-          <strong>Save your credential now</strong>
-          <p>
-            It is shown only here, until this dialog closes. Keep it out of
-            chats and Git.
-          </p>
-          <label>
-            Credential
-            <input
-              type="password"
-              readOnly
-              value={secret}
-              onFocus={(e) => e.target.select()}
-              autoComplete="off"
-            />
-          </label>
-          <button
-            className="button"
-            type="button"
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(secret)
-                setError('Credential copied.')
-              } catch {
-                setError('Select the credential field and copy it manually.')
-              }
-            }}
-          >
-            Copy credential
-          </button>
-        </div>
+        <AgentSecret t={t} secret={secret} handleClick={handleClick} />
       )}
-      <details className="agent-setup">
-        <summary>Connect your MCP client</summary>
-        <p>
-          From your local Pomegranate checkout, run <code>pnpm mcp:setup</code>.
-          Paste this studio address and the credential into the terminal
-          prompts. The setup stores it in your user configuration folder and
-          prints the MCP registration command.
-        </p>
-        <p>
-          Studio address: <code>{location.origin}</code>
-        </p>
-        <p>
-          Install the companion skill with <code>pnpm skill:install</code>, then
-          open a new chat. See <code>docs/agent-integration.md</code> for other
-          clients.
-        </p>
-      </details>
-      <h3>Your connections</h3>
+      <AgentSetupInstructions t={t} />
+      <h3>{t('Your connections')}</h3>
       {loading ? (
-        <p>Loading…</p>
+        <p>{t('Loading…')}</p>
       ) : !credentials.length ? (
-        <p>No agent connections yet.</p>
+        <p>{t('No agent connections yet.')}</p>
       ) : (
         <ul className="agent-credentials">
           {credentials.map((credential) => (
-            <li key={credential.id}>
-              <span>
-                <strong>{credential.name}</strong>
-                <small>
-                  {credential.scope === 'write' ? 'Read and edit' : 'Read only'}{' '}
-                  · {credential.expiresAt <= Date.now() ? 'Expired' : 'Expires'}{' '}
-                  {new Date(credential.expiresAt).toLocaleDateString()}
-                </small>
-              </span>
-              <button
-                type="button"
-                className="button"
-                disabled={busy}
-                aria-label={`Revoke ${credential.name}`}
-                onClick={async () => {
-                  setBusy(true)
-                  setError('')
-                  try {
-                    await request(`/api/agent-access/${credential.id}`, {
-                      method: 'DELETE',
-                      headers: workspaceHeaders(workspaceId),
-                    })
-                    setCredentials((items) =>
-                      items.filter((item) => item.id !== credential.id),
-                    )
-                    setSecret('')
-                  } catch {
-                    setError('Could not revoke this credential. Try again.')
-                  } finally {
-                    setBusy(false)
-                  }
-                }}
-              >
-                Revoke
-              </button>
-            </li>
+            <AgentCredentialRow
+              key={credential.id}
+              credential={credential}
+              t={t}
+              busy={busy}
+              setBusy={setBusy}
+              setError={setError}
+              workspaceId={workspaceId}
+              setCredentials={setCredentials}
+              setSecret={setSecret}
+            />
           ))}
         </ul>
       )}

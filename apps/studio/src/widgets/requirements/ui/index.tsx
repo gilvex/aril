@@ -1,2 +1,6 @@
-export { RequirementPeople } from './RequirementPeople.tsx'
-export { Requirements } from './Requirements.tsx'
+export { RequirementPeople } from '@/widgets/requirements/ui/RequirementPeople.tsx'
+export { Requirements } from '@/widgets/requirements/ui/Requirements.tsx'
+export { RequirementClassification } from './RequirementClassification.tsx'
+export { RequirementDetails } from './RequirementDetails.tsx'
+export { RequirementList } from './RequirementList.tsx'
+export { RequirementsHeader } from './RequirementsHeader.tsx'

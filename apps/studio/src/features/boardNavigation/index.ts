@@ -1,1 +1,1 @@
-export { CanvasNavigation } from './ui/CanvasNavigation.tsx'
+export { CanvasNavigation } from '@/features/boardNavigation/ui/CanvasNavigation.tsx'

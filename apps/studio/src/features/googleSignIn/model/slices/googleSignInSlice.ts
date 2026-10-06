@@ -1,5 +1,5 @@
+import type { GoogleSignInState } from '@/features/googleSignIn/types/googleSignInState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { GoogleSignInState } from '../../types/googleSignInState.ts'
 
 export const googleSignInSlice = createSlice({
   name: 'googleSignIn',

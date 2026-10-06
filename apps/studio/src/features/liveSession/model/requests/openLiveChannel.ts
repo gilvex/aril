@@ -1,3 +1,5 @@
+import { request } from '@/shared/api/request.ts'
+import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import {
   presenceSchema,
   type Presence,
@@ -13,8 +15,6 @@ import {
   type LiveState,
   type SignedCertificate,
 } from '@pomegranate/domain/liveSession'
-import { request } from '../../../../shared/api/request.ts'
-import { workspaceHeaders } from '../../../../shared/api/workspaceHeaders.ts'
 
 export async function openLiveChannel(
   workspaceId: string,

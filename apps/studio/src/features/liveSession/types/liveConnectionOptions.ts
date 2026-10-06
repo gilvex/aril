@@ -1,6 +1,6 @@
+import type { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
 import type { Presence } from '@pomegranate/domain/collaboration'
 import type { LiveState } from '@pomegranate/domain/liveSession'
-import type { openLiveChannel } from '../model/requests/openLiveChannel.ts'
 export type LiveConnectionOptions = {
   workspaceId: string
   clientId: string

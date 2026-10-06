@@ -1,11 +1,11 @@
+import { createWorkspace } from '@/pages/workspaces/model/iterators/createWorkspace.ts'
+import { openHostedWorkspace } from '@/pages/workspaces/model/iterators/openHostedWorkspace.ts'
+import { workspaceHomeSaga } from '@/pages/workspaces/model/saga/workspaceHomeSaga.ts'
+import { selectWorkspaceHome } from '@/pages/workspaces/model/selectors/selectWorkspaceHome.ts'
+import { workspaceHomeSlice } from '@/pages/workspaces/model/slices/workspaceHomeSlice.ts'
+import type { WorkspaceHomeState } from '@/pages/workspaces/types/workspaceHomeState.ts'
 import { configureStore } from '@reduxjs/toolkit'
 import { runSaga } from 'redux-saga'
-import type { WorkspaceHomeState } from '../types/workspaceHomeState.ts'
-import { createWorkspace } from './iterators/createWorkspace.ts'
-import { openHostedWorkspace } from './iterators/openHostedWorkspace.ts'
-import { workspaceHomeSaga } from './saga/workspaceHomeSaga.ts'
-import { selectWorkspaceHome } from './selectors/selectWorkspaceHome.ts'
-import { workspaceHomeSlice } from './slices/workspaceHomeSlice.ts'
 
 export function createWorkspaceHomeModel(initial: WorkspaceHomeState) {
   const store = configureStore({

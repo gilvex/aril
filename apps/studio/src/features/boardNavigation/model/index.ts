@@ -1,3 +1,5 @@
-export { createCanvasNavigationModel } from './createCanvasNavigationModel.ts'
-export { createCanvasNavigationState } from './createCanvasNavigationState.ts'
-export { useCanvasNavigationModel } from './useCanvasNavigationModel.ts'
+export { createCanvasNavigationModel } from '@/features/boardNavigation/model/createCanvasNavigationModel.ts'
+export { createCanvasNavigationState } from '@/features/boardNavigation/model/createCanvasNavigationState.ts'
+export { useCanvasNavigationModel } from '@/features/boardNavigation/model/useCanvasNavigationModel.ts'
+export { useBoardPickerItemHandlers } from './useBoardPickerItemHandlers.tsx'
+export { useCanvasNavigationHandlers } from './useCanvasNavigationHandlers.tsx'

@@ -1,5 +1,5 @@
+import type { MultiplayerState } from '@/features/liveSession/types/multiplayerState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { MultiplayerState } from '../../types/multiplayerState.ts'
 
 export const multiplayerSlice = createSlice({
   name: 'multiplayer',

@@ -1,5 +1,5 @@
+import { createCanvasNavigationModel } from '@/features/boardNavigation/model/createCanvasNavigationModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createCanvasNavigationModel } from './createCanvasNavigationModel.ts'
 
 export function useCanvasNavigationModel(
   initialize: () => Parameters<typeof createCanvasNavigationModel>[0],

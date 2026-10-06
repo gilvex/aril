@@ -1,5 +1,5 @@
+import { createMultiplayerModel } from '@/features/liveSession/model/createMultiplayerModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createMultiplayerModel } from './createMultiplayerModel.ts'
 
 export function useMultiplayerModel(
   initialize: () => Parameters<typeof createMultiplayerModel>[0],

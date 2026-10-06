@@ -1,5 +1,5 @@
+import type { ResizableInspectorState } from '@/widgets/board/types/resizableInspectorState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { ResizableInspectorState } from '../../types/resizableInspectorState.ts'
 
 export const resizableInspectorSlice = createSlice({
   name: 'resizableInspector',

@@ -1,10 +1,17 @@
+import { LanguagePicker } from '@/features/appearance/index.ts'
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useWorkspaceHomeHandlers } from '../model/useWorkspaceHomeHandlers.tsx'
+import { CreateWorkspaceForm } from './CreateWorkspaceForm.tsx'
+
+import { ThemePicker } from '@/features/appearance/index.ts'
+import { createWorkspaceHomeState } from '@/pages/workspaces/model/createWorkspaceHomeState.ts'
+import { useWorkspaceHomeModel } from '@/pages/workspaces/model/useWorkspaceHomeModel.ts'
+import type { WorkspaceHomeProps } from '@/pages/workspaces/types/workspaceHomeProps.ts'
 import { ArrowUpRight, Plus, Workflow } from 'lucide-react'
-import { ThemePicker } from '../../../features/appearance/index.ts'
-import { createWorkspaceHomeState } from '../model/createWorkspaceHomeState.ts'
-import { useWorkspaceHomeModel } from '../model/useWorkspaceHomeModel.ts'
-import type { WorkspaceHomeProps } from '../types/workspaceHomeProps.ts'
 
 export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
+  const { t } = useTranslation()
+
   const {
     studios,
     name,
@@ -18,93 +25,72 @@ export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
     openHostedWorkspace,
   } = useWorkspaceHomeModel(() => createWorkspaceHomeState())
 
+  const { handleSubmit } = useWorkspaceHomeHandlers({
+    createWorkspace,
+    name,
+    onOpen,
+  })
   return (
     <main className="workspace-home">
       <header className="workspace-home-header">
         <a className="brand" href="/">
           <img src="/mark.svg" alt="" />
           <span>
-            pomegranate<small>Planning studio</small>
+            {t('pomegranate')}
+            <small>{t('Planning studio')}</small>
           </span>
         </a>
         <div className="workspace-home-preferences">
           <ThemePicker />
+          <LanguagePicker />
           <span className="muted">{profile.name}</span>
         </div>
       </header>
       {hostedOrigin && (
         <div className="workspace-hosted">
-          <span>Your shared studio is ready online.</span>
+          <span>{t('Your shared studio is ready online.')}</span>
           <button
             className="button"
             disabled={busy}
             onClick={() => openHostedWorkspace()}
           >
-            Open hosted studio <ArrowUpRight size={15} />
+            {t('Open hosted studio')}
+            <ArrowUpRight size={15} />
           </button>
         </div>
       )}
       <div className="workspace-home-title">
         <div>
-          <span className="eyebrow">ROOM TO GROW</span>
-          <h1>Your workspaces.</h1>
+          <span className="eyebrow">{t('ROOM TO GROW')}</span>
+          <h1>{t('Your workspaces.')}</h1>
           <p>
-            A little space for every big idea. Only workspaces you belong to
-            appear here.
+            {t(
+              'A little space for every big idea. Only workspaces you belong to appear here.',
+            )}
           </p>
         </div>
         <button className="button primary" onClick={() => setCreating(true)}>
           <Plus size={16} />
-          New workspace
+          {t('New workspace')}
         </button>
       </div>
       {notice && <p role="status">{notice}</p>}
       {creating && (
-        <form
-          className="workspace-create"
-          onSubmit={(event) => {
-            event.preventDefault()
-            void createWorkspace(name).then((studio) => {
-              if (studio) onOpen(studio)
-            })
-          }}
-        >
-          <label>
-            Workspace name
-            <input
-              autoFocus
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="A new idea…"
-              maxLength={100}
-              required
-            />
-          </label>
-          <p>
-            Starts with a blank canvas. Invite collaborators from People when
-            you’re ready.
-          </p>
-          <div className="modal-actions">
-            <button
-              type="button"
-              className="button"
-              onClick={() => setCreating(false)}
-              disabled={busy}
-            >
-              Cancel
-            </button>
-            <button className="button primary" disabled={busy || !name.trim()}>
-              {busy ? 'Creating…' : 'Create workspace'}
-            </button>
-          </div>
-        </form>
+        <CreateWorkspaceForm
+          handleSubmit={handleSubmit}
+          t={t}
+          name={name}
+          setName={setName}
+          setCreating={setCreating}
+          busy={busy}
+        />
       )}
       {error && (
         <p className="form-error" role="alert">
           {error}
         </p>
       )}
-      {!studios && !error && <p>Loading your workspaces…</p>}
+      {!studios && !error && <p>{t('Loading your workspaces…')}</p>}
       <div className="workspace-grid">
         {studios?.map((studio) => (
           <button
@@ -116,11 +102,13 @@ export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
               <Workflow size={24} />
             </span>
             <span className="workspace-card-role">
-              {studio.role === 'owner' ? 'Your workspace' : 'Shared with you'}
+              {studio.role === 'owner'
+                ? t('Your workspace')
+                : t('Shared with you')}
             </span>
             <h2>{studio.name}</h2>
             <span className="workspace-card-footer">
-              Open planning studio
+              {t('Open planning studio')}
               <ArrowUpRight size={18} />
             </span>
           </button>
@@ -128,7 +116,9 @@ export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
       </div>
       {studios?.length === 0 && (
         <p>
-          No workspaces yet. Create one or open an invitation to join your team.
+          {t(
+            'No workspaces yet. Create one or open an invitation to join your team.',
+          )}
         </p>
       )}
     </main>

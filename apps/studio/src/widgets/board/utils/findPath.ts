@@ -1,7 +1,7 @@
-import type { Point } from '../types/wireRoutingPoint.ts'
-import type { Rect } from '../types/wireRoutingRect.ts'
-import { crosses } from './crosses.ts'
-import { inside } from './inside.ts'
+import type { Point } from '@/widgets/board/types/wireRoutingPoint.ts'
+import type { Rect } from '@/widgets/board/types/wireRoutingRect.ts'
+import { crosses } from '@/widgets/board/utils/crosses.ts'
+import { inside } from '@/widgets/board/utils/inside.ts'
 export function findPath(
   start: Point,
   end: Point,

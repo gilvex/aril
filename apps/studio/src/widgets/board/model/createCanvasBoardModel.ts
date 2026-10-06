@@ -1,7 +1,7 @@
+import { selectCanvasBoard } from '@/widgets/board/model/selectors/selectCanvasBoard.ts'
+import { canvasBoardSlice } from '@/widgets/board/model/slices/canvasBoardSlice.ts'
+import type { CanvasBoardState } from '@/widgets/board/types/canvasBoardState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { CanvasBoardState } from '../types/canvasBoardState.ts'
-import { selectCanvasBoard } from './selectors/selectCanvasBoard.ts'
-import { canvasBoardSlice } from './slices/canvasBoardSlice.ts'
 
 export function createCanvasBoardModel(initial: CanvasBoardState) {
   const store = configureStore({

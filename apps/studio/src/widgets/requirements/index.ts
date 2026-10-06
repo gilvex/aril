@@ -1,1 +1,1 @@
-export { Requirements } from './ui/Requirements.tsx'
+export { Requirements } from '@/widgets/requirements/ui/Requirements.tsx'

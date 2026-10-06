@@ -1,5 +1,5 @@
+import { createRequirementsModel } from '@/widgets/requirements/model/createRequirementsModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createRequirementsModel } from './createRequirementsModel.ts'
 
 export function useRequirementsModel(
   initialize: () => Parameters<typeof createRequirementsModel>[0],

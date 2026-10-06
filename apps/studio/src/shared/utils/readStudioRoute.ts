@@ -1,4 +1,4 @@
-import type { StudioRoute } from '../types/studioRoute.ts'
+import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 export function readStudioRoute(search: string): StudioRoute {
   const params = new URLSearchParams(search)
   const view = params.get('view')

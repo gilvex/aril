@@ -1,5 +1,5 @@
-import type { Point } from '../types/wireRoutingPoint.ts'
-import type { Rect } from '../types/wireRoutingRect.ts'
+import type { Point } from '@/widgets/board/types/wireRoutingPoint.ts'
+import type { Rect } from '@/widgets/board/types/wireRoutingRect.ts'
 export function crosses(a: Point, b: Point, r: Rect) {
   return a.x === b.x
     ? a.x > r.left &&

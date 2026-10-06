@@ -1,6 +1,10 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useCanvasChromeHandlers } from '../model/useCanvasChromeHandlers.tsx'
+
+import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
+import type { CanvasChromeProps } from '@/widgets/board/types/canvasChromeProps.ts'
 import { Hand, Link2, MousePointer2 } from 'lucide-react'
-import { useCompactLayout } from '../../../shared/model/useCompactLayout.ts'
-import type { CanvasChromeProps } from '../types/canvasChromeProps.ts'
+
 export function CanvasChrome({
   navigation,
   actions,
@@ -11,45 +15,57 @@ export function CanvasChrome({
   onMultiSelect,
   preview = false,
 }: CanvasChromeProps) {
+  const { t } = useTranslation()
+
   const compact = useCompactLayout()
+
+  const { handleClick } = useCanvasChromeHandlers({
+    onTool,
+    compact,
+    onMultiSelect,
+    multiSelect,
+  })
   return (
     <>
       {navigation}
       {!compact && <div className="canvas-top-actions">{actions}</div>}
-      <div className="canvas-tool-dock" role="group" aria-label="Canvas tools">
+      <div
+        className="canvas-tool-dock"
+        role="group"
+        aria-label={t('Canvas tools')}
+      >
         {!preview && (
           <>
             <button
               className="button"
-              aria-label={compact ? 'Select multiple items' : 'Select tool'}
+              aria-label={
+                compact ? t('Select multiple items') : t('Select tool')
+              }
               aria-pressed={compact ? multiSelect : tool === 'select'}
-              onClick={() => {
-                onTool('select')
-                if (compact) onMultiSelect(!multiSelect)
-              }}
+              onClick={handleClick}
             >
               <MousePointer2 size={17} />
-              <span>{compact && multiSelect ? 'Done' : 'Select'}</span>
+              <span>{compact && multiSelect ? t('Done') : t('Select')}</span>
             </button>
             {!compact && (
               <>
                 <button
                   className="button"
-                  aria-label="Pan tool"
+                  aria-label={t('Pan tool')}
                   aria-pressed={tool === 'pan'}
                   onClick={() => onTool('pan')}
                 >
                   <Hand size={17} />
-                  <span>Pan</span>
+                  <span>{t('Pan')}</span>
                 </button>
                 <button
                   className="button"
-                  aria-label="Connect tool"
+                  aria-label={t('Connect tool')}
                   aria-pressed={tool === 'connect'}
                   onClick={() => onTool('connect')}
                 >
                   <Link2 size={17} />
-                  <span>Connect</span>
+                  <span>{t('Connect')}</span>
                 </button>
               </>
             )}

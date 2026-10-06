@@ -1,4 +1,4 @@
-import type { GoogleApi } from '../types/googleApi.ts'
+import type { GoogleApi } from '@/features/googleSignIn/types/googleApi.ts'
 declare global {
   interface Window {
     google?: GoogleApi

@@ -1,5 +1,5 @@
+import type { AccountConnectionState } from '@/widgets/collaboration/types/accountConnectionState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { AccountConnectionState } from '../../types/accountConnectionState.ts'
 
 export const accountConnectionSlice = createSlice({
   name: 'accountConnection',

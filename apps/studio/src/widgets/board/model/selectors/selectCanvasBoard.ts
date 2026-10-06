@@ -1,5 +1,5 @@
+import type { CanvasBoardState } from '@/widgets/board/types/canvasBoardState.ts'
 import { createSelector } from '@reduxjs/toolkit'
-import type { CanvasBoardState } from '../../types/canvasBoardState.ts'
 
 export const selectCanvasBoard = createSelector(
   [(state: CanvasBoardState) => state],

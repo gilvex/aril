@@ -1,3 +1,14 @@
+import { viewsKey } from '@/entities/workspace/config/viewsKey.ts'
+import { flushWorkspace } from '@/entities/workspace/model/iterators/flushWorkspace.ts'
+import { reloadWorkspace } from '@/entities/workspace/model/iterators/reloadWorkspace.ts'
+import { workspaceSaga } from '@/entities/workspace/model/saga/workspaceSaga.ts'
+import { workspaceSlice } from '@/entities/workspace/model/slices/workspaceSlice.ts'
+import type { HistoryItem } from '@/entities/workspace/types/historyItem.ts'
+import type { Recovery } from '@/entities/workspace/types/recovery.ts'
+import type { WorkspaceRuntime } from '@/entities/workspace/types/workspaceRuntime.ts'
+import { keepViews } from '@/entities/workspace/utils/keepViews.ts'
+import { loadViews } from '@/entities/workspace/utils/loadViews.ts'
+import { scopedDraftKey } from '@/entities/workspace/utils/scopedDraftKey.ts'
 import {
   applyOperations,
   diffWorkspace,
@@ -9,17 +20,6 @@ import {
 import type { Envelope, Workspace } from '@pomegranate/domain/workspace'
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
-import { viewsKey } from '../config/viewsKey.ts'
-import type { HistoryItem } from '../types/historyItem.ts'
-import type { Recovery } from '../types/recovery.ts'
-import type { WorkspaceRuntime } from '../types/workspaceRuntime.ts'
-import { keepViews } from '../utils/keepViews.ts'
-import { loadViews } from '../utils/loadViews.ts'
-import { scopedDraftKey } from '../utils/scopedDraftKey.ts'
-import { flushWorkspace } from './iterators/flushWorkspace.ts'
-import { reloadWorkspace } from './iterators/reloadWorkspace.ts'
-import { workspaceSaga } from './saga/workspaceSaga.ts'
-import { workspaceSlice } from './slices/workspaceSlice.ts'
 export function createWorkspaceSession(
   initial: Envelope,
   workspaceId: string,

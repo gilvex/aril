@@ -1,4 +1,4 @@
-import type { AvatarProps } from '../types/avatarProps.ts'
+import type { AvatarProps } from '@/entities/collaboration/types/avatarProps.ts'
 
 export function Avatar({ profile }: AvatarProps) {
   return (

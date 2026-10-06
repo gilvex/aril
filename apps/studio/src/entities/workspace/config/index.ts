@@ -1,2 +1,2 @@
-export { draftKey } from './draftKey.ts'
-export { viewsKey } from './viewsKey.ts'
+export { draftKey } from '@/entities/workspace/config/draftKey.ts'
+export { viewsKey } from '@/entities/workspace/config/viewsKey.ts'

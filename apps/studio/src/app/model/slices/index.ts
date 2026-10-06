@@ -1,1 +1,1 @@
-export { appSlice } from './appSlice.ts'
+export { appSlice } from '@/app/model/slices/appSlice.ts'

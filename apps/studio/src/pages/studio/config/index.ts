@@ -1,1 +1,1 @@
-export { navigation } from './navigation.ts'
+export { navigation } from '@/pages/studio/config/navigation.ts'

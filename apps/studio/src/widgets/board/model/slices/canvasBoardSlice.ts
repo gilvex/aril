@@ -1,5 +1,5 @@
+import type { CanvasBoardState } from '@/widgets/board/types/canvasBoardState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { CanvasBoardState } from '../../types/canvasBoardState.ts'
 
 export const canvasBoardSlice = createSlice({
   name: 'canvasBoard',

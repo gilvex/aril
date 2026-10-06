@@ -1,1 +1,1 @@
-export { selectCanvasNavigation } from './selectCanvasNavigation.ts'
+export { selectCanvasNavigation } from '@/features/boardNavigation/model/selectors/selectCanvasNavigation.ts'

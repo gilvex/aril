@@ -1,1 +1,1 @@
-export { CollaborationBar } from './ui/CollaborationBar.tsx'
+export { CollaborationBar } from '@/widgets/collaboration/ui/CollaborationBar.tsx'

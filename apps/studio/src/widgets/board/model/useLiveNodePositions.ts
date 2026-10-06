@@ -1,6 +1,6 @@
+import type { Position } from '@/widgets/board/types/position.ts'
 import type { Presence } from '@pomegranate/domain/collaboration'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Position } from '../types/position.ts'
 export function useLiveNodePositions<
   T extends { id: string; position: Position },
 >(nodes: T[], peers: Presence[], localDragging: Set<string>) {

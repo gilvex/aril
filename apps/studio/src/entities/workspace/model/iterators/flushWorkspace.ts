@@ -1,3 +1,8 @@
+import { commitWorkspace } from '@/entities/workspace/model/requests/commitWorkspace.ts'
+import { fetchWorkspace } from '@/entities/workspace/model/requests/fetchWorkspace.ts'
+import type { WorkspaceRuntime } from '@/entities/workspace/types/workspaceRuntime.ts'
+import { keepViews } from '@/entities/workspace/utils/keepViews.ts'
+import { ApiError } from '@/shared/api/apiError.ts'
 import {
   applyOperations,
   diffWorkspace,
@@ -7,11 +12,6 @@ import { canRebaseOperations } from '@pomegranate/domain/freshness'
 import type { Envelope } from '@pomegranate/domain/workspace'
 import type { SagaIterator } from 'redux-saga'
 import { call } from 'redux-saga/effects'
-import { ApiError } from '../../../../shared/api/apiError.ts'
-import type { WorkspaceRuntime } from '../../types/workspaceRuntime.ts'
-import { keepViews } from '../../utils/keepViews.ts'
-import { commitWorkspace } from '../requests/commitWorkspace.ts'
-import { fetchWorkspace } from '../requests/fetchWorkspace.ts'
 export function* flushWorkspace(
   runtime: WorkspaceRuntime,
 ): SagaIterator<boolean> {

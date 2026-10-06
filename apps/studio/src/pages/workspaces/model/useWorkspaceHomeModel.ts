@@ -1,5 +1,5 @@
+import { createWorkspaceHomeModel } from '@/pages/workspaces/model/createWorkspaceHomeModel.ts'
 import { useEffect, useRef, useSyncExternalStore } from 'react'
-import { createWorkspaceHomeModel } from './createWorkspaceHomeModel.ts'
 
 export function useWorkspaceHomeModel(
   initialize: () => Parameters<typeof createWorkspaceHomeModel>[0],

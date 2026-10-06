@@ -1,17 +1,26 @@
-import { requirementFieldLabels } from '../config/requirementFieldLabels.ts'
-import type { RequirementPeopleProps } from '../types/requirementPeopleProps.ts'
-import { Avatar } from '../../../entities/collaboration/index.ts'
+import { Avatar } from '@/entities/collaboration/index.ts'
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { requirementFieldLabels } from '@/widgets/requirements/config/requirementFieldLabels.ts'
+import type { RequirementPeopleProps } from '@/widgets/requirements/types/requirementPeopleProps.ts'
 export function RequirementPeople({
   people,
   currentUserId,
 }: RequirementPeopleProps) {
+  const { t } = useTranslation()
+
   if (!people.length) return null
   return (
-    <span className="requirement-people" aria-label="Requirement collaborators">
+    <span
+      className="requirement-people"
+      aria-label={t('Requirement collaborators')}
+    >
       {people.map(({ profile, requirement }) => {
         const action = requirement.field
-          ? `${requirement.typing ? 'Typing in' : 'Editing'} ${requirementFieldLabels[requirement.field]}`
-          : 'Viewing'
+          ? t(
+              requirement.typing ? 'Typing in {{field}}' : 'Editing {{field}}',
+              { field: t(requirementFieldLabels[requirement.field]) },
+            )
+          : t('Viewing')
         return (
           <span
             className="requirement-person"
@@ -22,7 +31,7 @@ export function RequirementPeople({
             <span>
               <strong>
                 {profile.name}
-                {profile.id === currentUserId ? ' (you)' : ''}
+                {profile.id === currentUserId ? t(' (you)') : ''}
               </strong>
               <small>{action}</small>
             </span>

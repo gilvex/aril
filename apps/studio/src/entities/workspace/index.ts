@@ -1,4 +1,4 @@
-export { draftKey } from './config/draftKey.ts'
-export { useWorkspace } from './model/useWorkspace.ts'
-export type { Recovery } from './types/recovery.ts'
-export { scopedDraftKey } from './utils/scopedDraftKey.ts'
+export { draftKey } from '@/entities/workspace/config/draftKey.ts'
+export { useWorkspace } from '@/entities/workspace/model/useWorkspace.ts'
+export type { Recovery } from '@/entities/workspace/types/recovery.ts'
+export { scopedDraftKey } from '@/entities/workspace/utils/scopedDraftKey.ts'

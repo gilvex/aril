@@ -1,7 +1,7 @@
+import { selectRequirements } from '@/widgets/requirements/model/selectors/selectRequirements.ts'
+import { requirementsSlice } from '@/widgets/requirements/model/slices/requirementsSlice.ts'
+import type { RequirementsState } from '@/widgets/requirements/types/requirementsState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { RequirementsState } from '../types/requirementsState.ts'
-import { selectRequirements } from './selectors/selectRequirements.ts'
-import { requirementsSlice } from './slices/requirementsSlice.ts'
 
 export function createRequirementsModel(initial: RequirementsState) {
   const store = configureStore({

@@ -1,1 +1,1 @@
-export { DesignBoard } from './ui/DesignBoard.tsx'
+export { DesignBoard } from '@/widgets/design/ui/DesignBoard.tsx'

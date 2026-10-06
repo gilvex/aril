@@ -1,5 +1,5 @@
+import type { AgentAccessState } from '@/features/agentAccess/types/agentAccessState.ts'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { AgentAccessState } from '../../types/agentAccessState.ts'
 
 export const agentAccessSlice = createSlice({
   name: 'agentAccess',

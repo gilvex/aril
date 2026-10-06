@@ -1,8 +1,8 @@
+import type { Recovery } from '@/entities/workspace/index.ts'
+import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 import type { Profile } from '@pomegranate/domain/collaboration'
 import type { StudioSummary } from '@pomegranate/domain/studios'
 import type { Envelope, Workspace } from '@pomegranate/domain/workspace'
-import type { Recovery } from '../../entities/workspace/index.ts'
-import type { StudioRoute } from '../../shared/types/studioRoute.ts'
 
 export type AppState = {
   startupRoute: StudioRoute

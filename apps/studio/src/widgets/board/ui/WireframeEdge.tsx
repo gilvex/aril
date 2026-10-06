@@ -1,3 +1,6 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
+import type { RoutedEdge } from '@/widgets/board/types/routedEdge.ts'
+import { SelectionBadges } from '@/widgets/board/ui/SelectionBadges.tsx'
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -5,9 +8,9 @@ import {
   useViewport,
   type EdgeProps,
 } from '@xyflow/react'
-import { SelectionBadges } from './SelectionBadges.tsx'
-import type { RoutedEdge } from '../types/routedEdge.ts'
 export function WireframeEdge(props: EdgeProps<RoutedEdge>) {
+  const { t } = useTranslation()
+
   const fallback = getSmoothStepPath(props)
   const { path, labelX, labelY } = props.data?.route || {
     path: fallback[0],
@@ -35,7 +38,10 @@ export function WireframeEdge(props: EdgeProps<RoutedEdge>) {
       <EdgeLabelRenderer>
         <button
           type="button"
-          aria-label={`Select flow ${props.data?.number}: ${props.label || 'On click'}`}
+          aria-label={t('Select flow {{value}}: {{value2}}', {
+            value: props.data?.number,
+            value2: props.label || 'On click',
+          })}
           title={String(props.label || 'On click')}
           onClick={props.data?.select}
           className={`wire-edge-label nodrag nopan${zoom < 0.7 && !active ? ' is-compact' : ''}${active ? ' is-active' : ''}${props.data?.muted ? ' is-muted' : ''}`}

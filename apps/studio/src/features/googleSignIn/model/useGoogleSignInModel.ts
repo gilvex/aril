@@ -1,5 +1,5 @@
+import { createGoogleSignInModel } from '@/features/googleSignIn/model/createGoogleSignInModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createGoogleSignInModel } from './createGoogleSignInModel.ts'
 
 export function useGoogleSignInModel(
   initialize: () => Parameters<typeof createGoogleSignInModel>[0],

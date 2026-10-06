@@ -1,7 +1,7 @@
+import { selectWireframeBoard } from '@/widgets/board/model/selectors/selectWireframeBoard.ts'
+import { wireframeBoardSlice } from '@/widgets/board/model/slices/wireframeBoardSlice.ts'
+import type { WireframeBoardState } from '@/widgets/board/types/wireframeBoardState.ts'
 import { configureStore } from '@reduxjs/toolkit'
-import type { WireframeBoardState } from '../types/wireframeBoardState.ts'
-import { selectWireframeBoard } from './selectors/selectWireframeBoard.ts'
-import { wireframeBoardSlice } from './slices/wireframeBoardSlice.ts'
 
 export function createWireframeBoardModel(initial: WireframeBoardState) {
   const store = configureStore({

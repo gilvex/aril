@@ -1,1 +1,1 @@
-export { useMultiplayer } from './model/useMultiplayer.ts'
+export { useMultiplayer } from '@/features/liveSession/model/useMultiplayer.ts'

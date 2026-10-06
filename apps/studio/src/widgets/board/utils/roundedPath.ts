@@ -1,4 +1,4 @@
-import type { Point } from '../types/wireRoutingPoint.ts'
+import type { Point } from '@/widgets/board/types/wireRoutingPoint.ts'
 export function roundedPath(points: Point[]) {
   let path = `M ${points[0].x} ${points[0].y}`
   for (let i = 1; i < points.length - 1; i++) {

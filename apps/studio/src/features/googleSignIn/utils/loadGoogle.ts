@@ -1,4 +1,4 @@
-import { scriptPromiseState } from '../config/scriptPromiseState.ts'
+import { scriptPromiseState } from '@/features/googleSignIn/config/scriptPromiseState.ts'
 export function loadGoogle() {
   return (scriptPromiseState.value ??= new Promise<void>((resolve, reject) => {
     const script = document.createElement('script')

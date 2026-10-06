@@ -1,5 +1,5 @@
+import { createCollaborationBarModel } from '@/widgets/collaboration/model/createCollaborationBarModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createCollaborationBarModel } from './createCollaborationBarModel.ts'
 
 export function useCollaborationBarModel(
   initialize: () => Parameters<typeof createCollaborationBarModel>[0],

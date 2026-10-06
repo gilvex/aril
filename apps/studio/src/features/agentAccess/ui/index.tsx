@@ -1,1 +1,5 @@
-export { AgentAccess } from './AgentAccess.tsx'
+export { AgentAccess } from '@/features/agentAccess/ui/AgentAccess.tsx'
+export { AgentCredentialRow } from './AgentCredentialRow.tsx'
+export { AgentSecret } from './AgentSecret.tsx'
+export { AgentSetupInstructions } from './AgentSetupInstructions.tsx'
+export { CreateAgentCredentialForm } from './CreateAgentCredentialForm.tsx'

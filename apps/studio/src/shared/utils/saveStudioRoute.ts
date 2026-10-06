@@ -1,5 +1,5 @@
-import type { StudioRoute } from '../types/studioRoute.ts'
-import { studioRouteUrl } from './studioRouteUrl.ts'
+import type { StudioRoute } from '@/shared/types/studioRoute.ts'
+import { studioRouteUrl } from '@/shared/utils/studioRouteUrl.ts'
 
 export function saveStudioRoute(route: StudioRoute | null) {
   const next = studioRouteUrl(location.href, route)

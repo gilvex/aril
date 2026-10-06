@@ -1,5 +1,5 @@
+import { createDesignBoardModel } from '@/widgets/design/model/createDesignBoardModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createDesignBoardModel } from './createDesignBoardModel.ts'
 
 export function useDesignBoardModel(
   initialize: () => Parameters<typeof createDesignBoardModel>[0],

@@ -1,5 +1,5 @@
+import { createCanvasFullscreenModel } from '@/features/canvasFullscreen/model/createCanvasFullscreenModel.ts'
 import { useRef, useSyncExternalStore } from 'react'
-import { createCanvasFullscreenModel } from './createCanvasFullscreenModel.ts'
 
 export function useCanvasFullscreenModel(
   initialize: () => Parameters<typeof createCanvasFullscreenModel>[0],
