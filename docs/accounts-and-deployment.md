@@ -25,7 +25,7 @@ The API checks exact configured hosts and origins. Self-hosted installations set
 
 ## Installable app
 
-The manifest uses standalone display, a stable root identity/start URL, 192/512-pixel icons, a maskable Android icon and an Apple touch icon. On mobile, use the browser's **Install app / Add to Home Screen** option; on iPhone/iPad use **Share → Add to Home Screen**. The same instructions are available in the workspace menu and before signing in. Installation opens the same authenticated studio; native install availability depends on the browser.
+The manifest uses standalone display, a stable root identity/start URL, 192/512-pixel icons, a maskable Android icon and an Apple touch icon. On mobile, use the browser's **Install app / Add to Home Screen** option; on iPhone/iPad use **Share → Add to Home Screen**. The same instructions are available in the workspace menu and before signing in on touch-first devices (coarse primary pointer, no hover). Desktop users do not see the in-app install option, even in a narrow browser window; installed standalone windows also hide it. Installation opens the same authenticated studio; native install availability depends on the browser.
 
 The service worker is registered only for production builds. It caches only `/offline.html`, `/offline.js` and the public logo. Navigations use the network and show a reconnect screen on network failure. API requests, auth tokens, documents, live event streams and editor bundles are never cached or replayed by it. The normal browser HTTP cache can still cache static hashed assets. Updates use the browser's normal service-worker lifecycle without forcing reloads of open editors. No offline document editing is introduced.
 
