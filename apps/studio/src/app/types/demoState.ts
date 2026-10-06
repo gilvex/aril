@@ -6,6 +6,7 @@ import type {
 import type { StudioSummary } from '@pomegranate/domain/studios'
 import type { Envelope } from '@pomegranate/domain/workspace'
 import type { DemoAction } from './demoAction.ts'
+import type { DemoPlanner } from './demoPlanner.ts'
 
 export type DemoState = {
   profile: Profile
@@ -17,7 +18,5 @@ export type DemoState = {
   actions: DemoAction[]
   completedActions: string[]
   activeAction: DemoAction | null
-  rehearsalActions: DemoAction[]
-  rehearsalSlot: number
-  rehearsalProtected: boolean
+  planner: DemoPlanner
 }

@@ -13,8 +13,8 @@ export function createDemoActions(seed: Workspace): DemoAction[] {
     actions.push({
       ...action,
       id: `demo-edit-${actions.length}`,
-      at: 3000 + actions.length * 7000,
-      duration: 1800,
+      at: 3000 + actions.length * 10000,
+      duration: 4200,
       operations: diffWorkspace(seed, changed),
     })
   }
@@ -160,5 +160,5 @@ export function createDemoActions(seed: Workspace): DemoAction[] {
         '\n\n## Next review\nWalk through runtime → game layer → blueprint with two independently configured servers.'
     },
   )
-  return actions
+  return actions.filter((action) => action.peerId !== 'demo-maya')
 }

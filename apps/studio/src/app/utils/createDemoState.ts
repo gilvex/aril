@@ -3,7 +3,6 @@ import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 import { createDemoWorkspace } from './createDemoWorkspace.ts'
 import { createDemoActions } from './createDemoActions.ts'
-import { createDemoRehearsalActions } from './createDemoRehearsalActions.ts'
 
 export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
   const now = new Date().toISOString()
@@ -31,9 +30,19 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
     actions: createDemoActions(envelope.workspace),
     completedActions: [],
     activeAction: null,
-    rehearsalActions: createDemoRehearsalActions(envelope.workspace),
-    rehearsalSlot: -1,
-    rehearsalProtected: false,
+    planner: {
+      seed: Math.floor(Math.random() * 4294967295) + 1,
+      sequence: 0,
+      owned: {},
+      protectedIds: [],
+      recent: [],
+      nextAt: 3500,
+      lastTick: 0,
+      action: null,
+      cursor: { x: 650, y: 230 },
+      camera: { x: 650, y: 300, zoom: 0.8 },
+      selected: [],
+    },
     activity: [
       {
         id: 3,
@@ -80,7 +89,34 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
         : []
       if (Array.isArray(saved.activity))
         state.activity = saved.activity.slice(0, 50)
-      state.rehearsalProtected = saved.rehearsalProtected === true
+      if (
+        saved.planner &&
+        Number.isSafeInteger(saved.planner.sequence) &&
+        typeof saved.planner.seed === 'number'
+      ) {
+        state.planner.sequence = saved.planner.sequence
+        state.planner.seed = saved.planner.seed >>> 0
+        state.planner.protectedIds = Array.isArray(saved.planner.protectedIds)
+          ? saved.planner.protectedIds.filter(
+              (id: unknown) => typeof id === 'string',
+            )
+          : []
+        state.planner.recent = Array.isArray(saved.planner.recent)
+          ? saved.planner.recent.slice(-8)
+          : []
+        const nodes =
+          state.envelope.workspace.boards.find((board) => board.id === 'layers')
+            ?.nodes || []
+        for (const node of nodes) {
+          if (
+            node.id.startsWith('demo-maya-idea-') &&
+            !state.planner.protectedIds.includes(node.id) &&
+            JSON.stringify(saved.planner.owned?.[node.id]) ===
+              JSON.stringify(node)
+          )
+            state.planner.owned[node.id] = structuredClone(node)
+        }
+      }
     }
   } catch {
     /* Invalid or older demo data starts a fresh sandbox. */

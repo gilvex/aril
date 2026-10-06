@@ -10,30 +10,38 @@ export function sampleDemoCursor(targets: DemoCursorTarget[], elapsed: number) {
       camera: targets[0].camera || null,
       selected: [targets[0].id],
     }
-  const durations = targets.map((point, index) => {
-    const next = targets[(index + 1) % targets.length]
-    return Math.max(
-      point.camera ? 1100 : 320,
-      Math.min(1800, Math.hypot(next.x - point.x, next.y - point.y) * 1.8),
+  let seed = 12345 + targets.length
+  const random = () => {
+    seed ^= seed << 13
+    seed ^= seed >>> 17
+    seed ^= seed << 5
+    return (seed >>> 0) / 4294967296
+  }
+  let time = Math.max(0, elapsed),
+    index = 0,
+    previous = -1
+  // Deterministic random walk: varied visits and reading times without a loop reset.
+  for (;;) {
+    const point = targets[index]
+    const choices = targets
+      .map((_, i) => i)
+      .filter((i) => i !== index && (targets.length < 3 || i !== previous))
+    const nextIndex = choices[Math.floor(random() * choices.length)]
+    const next = targets[nextIndex]
+    const pause = point.pause * (0.85 + random() * 0.55)
+    const duration = Math.max(
+      1500,
+      Math.hypot(next.x - point.x, next.y - point.y) * 6,
     )
-  })
-  const total = targets.reduce(
-    (sum, point, index) => sum + point.pause + durations[index],
-    0,
-  )
-  let time = Math.max(0, elapsed) % total
-  for (const [index, point] of targets.entries()) {
-    const duration = durations[index]
-    if (time < point.pause)
+    const direction = random() > 0.5 ? 1 : -1
+    if (time < pause)
       return {
         cursor: { x: point.x, y: point.y },
         camera: point.camera || null,
         selected: time > 140 ? [point.id] : [],
       }
-    if (time < point.pause + duration) {
-      const next = targets[(index + 1) % targets.length]
-      const progress = (time - point.pause) / duration
-      const direction = index % 2 ? -1 : 1
+    if (time < pause + duration) {
+      const progress = (time - pause) / duration
       const camera =
         point.camera && next.camera
           ? {
@@ -41,9 +49,8 @@ export function sampleDemoCursor(targets: DemoCursorTarget[], elapsed: number) {
                 point.camera,
                 next.camera,
                 progress,
-                direction * 0.45,
+                direction * 0.3,
               ),
-              // Interpolate logarithmic zoom for a constant proportional scale change.
               zoom: Math.exp(
                 sampleDemoCurve(
                   { x: Math.log(point.camera.zoom), y: 0 },
@@ -60,11 +67,8 @@ export function sampleDemoCursor(targets: DemoCursorTarget[], elapsed: number) {
         selected: [point.id],
       }
     }
-    time -= point.pause + duration
-  }
-  return {
-    cursor: { x: targets[0].x, y: targets[0].y },
-    camera: targets[0].camera || null,
-    selected: [targets[0].id],
+    time -= pause + duration
+    previous = index
+    index = nextIndex
   }
 }

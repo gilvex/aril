@@ -1,4 +1,5 @@
 import type { Operation, Presence } from '@pomegranate/domain/collaboration'
+import type { DemoMotion } from './demoMotion.ts'
 
 export type DemoAction = {
   id: string
@@ -13,4 +14,6 @@ export type DemoAction = {
   focus?: { x: number; y: number }
   drag?: { from: { x: number; y: number }; to: { x: number; y: number } }
   field?: NonNullable<Presence['requirement']>['field']
+  motion?: DemoMotion
+  intent?: string
 }

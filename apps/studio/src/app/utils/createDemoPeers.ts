@@ -1,6 +1,7 @@
 import type { Presence } from '@pomegranate/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { sampleDemoCursor } from './sampleDemoCursor.ts'
+import { sampleDemoPlannerPresence } from './sampleDemoPlannerPresence.ts'
 
 export function createDemoPeers(
   state: DemoState,
@@ -9,26 +10,6 @@ export function createDemoPeers(
   const elapsed = Math.max(0, now - Date.parse(state.studio.createdAt))
   const board = state.envelope.workspace.boards.find(
     (item) => item.id === 'layers',
-  )
-  const mayaTargets = ['game', 'template', 'eu', 'logs', 'base'].flatMap(
-    (id, index) => {
-      const node = board?.nodes.find((item) => item.id === id)
-      return node
-        ? [
-            {
-              id,
-              x: node.position.x + 60 + (index % 2) * 65,
-              y: node.position.y + 65,
-              pause: [3100, 4600, 2400, 5200, 3300][index],
-              camera: {
-                x: node.position.x + 130,
-                y: node.position.y + 100,
-                zoom: [0.8, 1.05, 0.85, 0.95, 0.7][index],
-              },
-            },
-          ]
-        : []
-    },
   )
   const noahTargets = [
     'runtime-heading',
@@ -57,7 +38,7 @@ export function createDemoPeers(
         ]
       : []
   })
-  const maya = sampleDemoCursor(mayaTargets, elapsed)
+  const maya = sampleDemoPlannerPresence(state, now)
   const noah = sampleDemoCursor(noahTargets, elapsed + 2300)
   const requirement = state.envelope.workspace.requirements.find(
     (item) => item.id === (Math.floor(elapsed / 26000) % 2 ? 'R01' : 'R13'),

@@ -1,6 +1,5 @@
 import type { Workspace } from '@pomegranate/domain/workspace'
-import { diffWorkspace, type Profile } from '@pomegranate/domain/collaboration'
-import { demoRehearsalNodeId } from '../config/demoRehearsalNodeId.ts'
+import type { Profile } from '@pomegranate/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 
@@ -13,16 +12,34 @@ export function commitDemoChange(
   completed = state.completedActions,
   now = Date.now(),
 ) {
-  const rehearsalProtected =
-    state.rehearsalProtected ||
-    (profile.id === state.profile.id &&
-      diffWorkspace(state.envelope.workspace, workspace).some((operation) => {
-        const text = JSON.stringify(operation)
-        return (
-          text.includes(`"${demoRehearsalNodeId}"`) ||
-          text.includes('"demo-maya-health-link"')
-        )
-      }))
+  const planner = {
+    ...state.planner,
+    owned: { ...state.planner.owned },
+    protectedIds: [...state.planner.protectedIds],
+  }
+  if (profile.id === state.profile.id) {
+    const before = state.envelope.workspace.boards.find(
+      (board) => board.id === 'layers',
+    )
+    const after = workspace.boards.find((board) => board.id === 'layers')
+    for (const id of Object.keys(planner.owned)) {
+      const nodeBefore = before?.nodes.find((node) => node.id === id)
+      const nodeAfter = after?.nodes.find((node) => node.id === id)
+      const edgesBefore = before?.edges.filter(
+        (edge) => edge.source === id || edge.target === id,
+      )
+      const edgesAfter = after?.edges.filter(
+        (edge) => edge.source === id || edge.target === id,
+      )
+      if (
+        JSON.stringify(nodeBefore) !== JSON.stringify(nodeAfter) ||
+        JSON.stringify(edgesBefore) !== JSON.stringify(edgesAfter)
+      ) {
+        planner.protectedIds.push(id)
+        delete planner.owned[id]
+      }
+    }
+  }
   const envelope = {
     workspace,
     revision: state.envelope.revision + 1,
@@ -47,7 +64,13 @@ export function commitDemoChange(
       history,
       activity,
       completedActions: completed,
-      rehearsalProtected,
+      planner: {
+        seed: planner.seed,
+        sequence: planner.sequence,
+        owned: planner.owned,
+        protectedIds: planner.protectedIds,
+        recent: planner.recent,
+      },
     }),
   )
   Object.assign(state, {
@@ -55,7 +78,7 @@ export function commitDemoChange(
     history,
     activity,
     completedActions: completed,
-    rehearsalProtected,
   })
+  Object.assign(state.planner, planner)
   return envelope
 }
