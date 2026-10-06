@@ -34,6 +34,8 @@ export function useAppController() {
     setLegacy,
     staleDraftKey,
     setStaleDraftKey,
+    googleLinked,
+    setGoogleLinked,
     inviteRequired,
     setInviteRequired,
     token,
@@ -51,7 +53,11 @@ export function useAppController() {
     ;(sessionRequestState.value ??= startSession())
       .then((result) => {
         if (result.token) localStorage.setItem(sessionTokenKey, result.token)
-        if (!cancelled) setProfile(result.profile)
+        if (!cancelled) {
+          setGoogleLinked(!!result.googleLinked)
+          setInviteRequired(!!result.inviteRequired)
+          setProfile(result.profile)
+        }
       })
       .catch((err) => {
         if (cancelled) return
@@ -62,7 +68,7 @@ export function useAppController() {
     return () => {
       cancelled = true
     }
-  }, [setError, setInviteRequired, setProfile])
+  }, [setError, setInviteRequired, setProfile, setGoogleLinked])
   useEffect(() => {
     if (!profile || token || !startupRoute.workspaceId) return
     let cancelled = false
@@ -184,6 +190,8 @@ export function useAppController() {
     token,
     restoringRoute,
     initial,
+    googleLinked,
+    setGoogleLinked,
     inviteRequired,
     setBusy,
     name,

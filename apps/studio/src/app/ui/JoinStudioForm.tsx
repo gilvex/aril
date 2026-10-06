@@ -12,7 +12,6 @@ export function JoinStudioForm({
   setProfile,
   setInviteRequired,
   setToken,
-  setName,
   busy,
 }: JoinStudioFormProps) {
   const { t } = useTranslation()
@@ -30,18 +29,6 @@ export function JoinStudioForm({
   return (
     <form className="join-form" onSubmit={handleSubmit}>
       <p>{t('Join Aril with an invitation from someone in the studio.')}</p>
-      {!profile && (
-        <label>
-          {t('Your name')}
-          <input
-            autoComplete="nickname"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-            maxLength={60}
-          />
-        </label>
-      )}
       <label>
         {t('Invite code')}
         <input
@@ -53,7 +40,7 @@ export function JoinStudioForm({
       </label>
       <button
         className="button primary"
-        disabled={busy || (!profile && !name.trim()) || !token.trim()}
+        disabled={busy || !profile || !token.trim()}
       >
         {busy && <Spinner />}
         {busy

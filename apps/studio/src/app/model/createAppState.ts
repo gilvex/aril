@@ -33,6 +33,7 @@ export function createAppState() {
     recovery,
     legacy,
     staleDraftKey,
+    googleLinked: false,
     inviteRequired,
     token,
     name,

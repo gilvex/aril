@@ -1,6 +1,7 @@
 import type { Profile } from '@pomegranate/domain/collaboration'
 
 export type JoinStudioScreenProps = {
+  googleLinked: boolean
   inviteRequired: boolean
   token: string
   setBusy: (

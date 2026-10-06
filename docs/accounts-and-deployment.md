@@ -10,12 +10,13 @@ The SQLite migration retains the original tables and copies the existing Pomegra
 
 1. In [Google Auth Platform](https://console.cloud.google.com/auth/clients), configure the consent screen and create a **Web application** OAuth client. Add the exact development and production URLs to **Authorized JavaScript origins** (for development, `http://127.0.0.1:5173`). If the app is in testing, add the intended users as test users.
 2. Copy `.env.example` to `.env` and set `GOOGLE_CLIENT_ID` to the web client ID. No Google client secret is used by this ID-token flow. Restart the API. The client ID is public configuration; never put a client secret in frontend variables.
-3. Existing invitees open their original signed-in browser, then **Profile → Keep your access → Continue with Google**. Linking preserves their profile, pictures and all workspace memberships.
-4. On another browser/device, choose **Continue with Google** on the invitation/sign-in screen. Their existing workspaces return without a new invitation. New users must first accept a workspace invitation, then connect Google.
+3. New users sign in with Google first. This creates a Google-linked profile without workspace membership. They then enter their invitation code (or accept the code preserved in an invitation link). There is no separate guest-account creation step.
+4. Returning Google users get their existing workspaces on any device. A profile without any memberships returns to invitation entry after refresh and cannot create a workspace until invited.
+5. Existing guest profiles keep their current sessions, data and memberships. Connect Google from the original signed-in browser using **Profile → Keep your access → Continue with Google**. Accepting further invitations also requires connecting Google first.
 
 The server verifies Google's JWT signature, issuer, expiration, audience, verified email and one-use nonce with the official Google library. Accounts are keyed by Google's stable subject, never automatically merged by name or email. Linking requires the existing authenticated studio session. A Google identity already connected to a different profile is rejected. Account email is only returned to that user's private account endpoint, not broadcast in presence.
 
-If an old guest session has expired before Google was connected, a new invitation is still necessary. Existing guest identities have no verified email that can safely be used to recover them automatically. Google sign-in remains visibly unavailable until the host configures the client ID; a live Google sign-in must be tested after configuration.
+If an old guest session has expired before Google was connected, a new invitation is still necessary. Existing guest identities have no verified email that can safely be used to recover them automatically. Google sign-in remains visibly unavailable until the host configures the client ID; new invitations cannot be redeemed without it. Local first-owner bootstrap is available only when Google is not configured. A live Google sign-in must be tested after configuration.
 
 ## Hosting and moving existing users online
 

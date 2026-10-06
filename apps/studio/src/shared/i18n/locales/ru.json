@@ -719,5 +719,11 @@
   "Compare colors, fonts, density, and mobile previews.": "Сравните цвета, шрифты, плотность и мобильные варианты.",
   "Read the guide, edit Markdown, or add your own document.": "Прочитайте руководство, редактируйте Markdown или добавьте документ.",
   "Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.": "Откройте участников, чтобы следовать за симулируемым коллегой. Попробуйте отмену, историю и экспорт в меню пространства.",
-  "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.": "Это локальное демо. Войдите вне демо, чтобы подключить аккаунт или пригласить настоящих участников."
+  "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.": "Это локальное демо. Войдите вне демо, чтобы подключить аккаунт или пригласить настоящих участников.",
+  "Sign in with Google, then use your invitation code to join a workspace.": "Войдите через Google, затем введите код приглашения, чтобы присоединиться к рабочему пространству.",
+  "Signed in as {{name}}": "Вы вошли как {{name}}",
+  "Google sign-in is not configured. Contact the studio host to continue.": "Вход через Google не настроен. Обратитесь к администратору студии.",
+  "Sign in with Google before accepting an invitation.": "Войдите через Google, прежде чем принять приглашение.",
+  "Enter a valid invite code.": "Введите действительный код приглашения.",
+  "Accept a workspace invitation before creating a workspace.": "Примите приглашение, прежде чем создавать рабочее пространство."
 }

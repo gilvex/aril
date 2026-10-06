@@ -5,6 +5,9 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: {} as AppState,
   reducers: {
+    setGoogleLinked: (state, action: PayloadAction<boolean>) => {
+      state.googleLinked = action.payload
+    },
     setRestoringRoute: (
       state,
       action: PayloadAction<AppState['restoringRoute']>,

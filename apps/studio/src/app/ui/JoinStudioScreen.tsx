@@ -1,3 +1,4 @@
+import { AccountActions } from '@/features/accountActions/index.ts'
 import { useCallback } from 'react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
@@ -13,8 +14,8 @@ import './loginScreen.css'
 
 export function JoinStudioScreen(props: JoinStudioScreenProps) {
   const { t } = useTranslation()
-  const { inviteRequired, token, profile, error } = props
-  const { handleSuccess } = useJoinStudioScreenHandlers(props)
+  const { inviteRequired, token, profile, error, googleLinked } = props
+  const { handleSuccess } = useJoinStudioScreenHandlers()
   const retry = useCallback(() => location.reload(), [])
   const joining = inviteRequired || !!token
   const switching =
@@ -26,7 +27,7 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
         <section className="login-auth" aria-labelledby="login-title">
           <h1 id="login-title">
             {t(
-              profile && token
+              profile && joining
                 ? 'Join your team’s studio'
                 : switching
                   ? 'Choose another account'
@@ -35,27 +36,30 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
           </h1>
           <p className="login-description">
             {t(
-              profile && token
+              profile && googleLinked && joining
                 ? 'Accept your invitation to add this workspace to your account.'
-                : 'Continue with your linked Google account.',
+                : 'Sign in with Google, then use your invitation code to join a workspace.',
             )}
           </p>
-          {!profile && joining && <GoogleSignIn onSuccess={handleSuccess} />}
-          {joining ? (
+          {joining && (!profile || !googleLinked) && (
+            <GoogleSignIn link={!!profile} onSuccess={handleSuccess} />
+          )}
+          {joining && profile && googleLinked ? (
             <>
-              {!profile && (
-                <div className="login-divider">
-                  <span>{t('or')}</span>
-                </div>
-              )}
-              <LoginInvitation {...props} />
               <p className="login-help">
-                {t('Ask a workspace member for an invitation.')}
+                {t('Signed in as {{name}}', { name: profile.name })}
               </p>
+              <LoginInvitation {...props} />
             </>
-          ) : !error ? (
+          ) : !joining && !error ? (
             <LoadingStatus label={t('Opening your shared workspace…')} />
           ) : null}
+          {joining && (
+            <p className="login-help">
+              {t('Ask a workspace member for an invitation.')}
+            </p>
+          )}
+          {profile && joining && <AccountActions />}
           {error && (
             <p className="form-error" role="alert">
               {error}

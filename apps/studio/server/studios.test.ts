@@ -83,6 +83,11 @@ test('workspace APIs isolate membership, documents, history, invites and event s
       store.identity.invite(owner.profile.id).token,
       'Mira',
     )!
+    store.identity.linkGoogle(
+      invited.profile.id,
+      'mira-subject',
+      'mira@example.test',
+    )
     const response = await call(
       '/api/studios',
       owner.token,

@@ -35,9 +35,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
       if (!active) return
       if (!config.googleClientId) {
         setStatus(
-          link
-            ? 'Google sign-in is awaiting setup by the studio host. Your current invitation access still works.'
-            : 'Google sign-in is not enabled yet. Use an invitation to join.',
+          'Google sign-in is not configured. Contact the studio host to continue.',
         )
         return
       }

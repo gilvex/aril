@@ -14,5 +14,9 @@ export async function verifyGoogle(
     (payload as { nonce?: string }).nonce !== nonce
   )
     throw new Error('Google identity could not be verified.')
-  return { subject: payload.sub, email: payload.email }
+  return {
+    subject: payload.sub,
+    email: payload.email,
+    name: payload.name || 'New collaborator',
+  }
 }

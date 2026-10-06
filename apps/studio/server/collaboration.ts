@@ -81,14 +81,20 @@ export function installCollaboration(
       return
     }
     const bearer = req.get('authorization')?.match(/^Bearer ([\w-]{43})$/)?.[1]
-    const cookie = req.headers.cookie?.split(';').map((part) => part.trim())
+    const cookie = req.headers.cookie
+      ?.split(';')
+      .map((part) => part.trim())
       .find((part) => part.startsWith('pomegranate_session='))
       ?.slice('pomegranate_session='.length)
-    for (const token of new Set([bearer, cookie].filter((value): value is string => !!value))) {
+    for (const token of new Set(
+      [bearer, cookie].filter((value): value is string => !!value),
+    )) {
       await store.identity.revokeSession(token)
     }
     res.clearCookie('pomegranate_session', {
-      httpOnly: true, sameSite: 'strict', path: '/',
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/',
       secure: publicOrigin?.startsWith('https:') || false,
     })
     res.status(204).end()
@@ -162,7 +168,7 @@ export function installCollaboration(
       if (input.data.link) {
         if (!current) {
           res.status(401).json({
-            error: 'Join with your invitation before connecting Google.',
+            error: 'Sign in with Google before accepting an invitation.',
           })
           return
         }
@@ -188,14 +194,11 @@ export function installCollaboration(
         })
         return
       }
-      const signedIn = await store.identity.signInGoogle(google.subject)
-      if (!signedIn) {
-        res.status(403).json({
-          error:
-            'Join with an invitation first, then connect Google from your profile. If you joined before, connect it in that original browser.',
-        })
-        return
-      }
+      const signedIn = await store.identity.registerGoogle(
+        google.subject,
+        google.email,
+        google.name,
+      )
       setSession(res, signedIn.token)
       res.json(signedIn)
     } catch {
@@ -207,14 +210,21 @@ export function installCollaboration(
   app.get('/api/session', async (req, res) => {
     const profile = await cookieProfile(req)
     if (profile) {
-      res.json({ profile })
+      res.json({
+        profile,
+        googleLinked: !!(await store.identity.account(profile.id)),
+        inviteRequired: (await store.studios(profile.id)).length === 0,
+      })
       return
     }
     const loopback =
       ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(
         req.socket.remoteAddress || '',
       ) && ['127.0.0.1', 'localhost', '[::1]'].includes(req.hostname)
-    const first = loopback ? await store.identity.bootstrap() : null
+    const first =
+      loopback && !process.env.GOOGLE_CLIENT_ID
+        ? await store.identity.bootstrap()
+        : null
     if (first) {
       setSession(res, first.token)
       res.json({ profile: first.profile, token: first.token })
@@ -227,6 +237,13 @@ export function installCollaboration(
   })
   const joinAttempts = new Map<string, { count: number; until: number }>()
   app.post('/api/join', async (req, res) => {
+    const current = await cookieProfile(req)
+    if (!current || !(await store.identity.account(current.id))) {
+      res
+        .status(401)
+        .json({ error: 'Sign in with Google before accepting an invitation.' })
+      return
+    }
     const key = req.socket.remoteAddress || 'unknown'
     const attempt = joinAttempts.get(key)
     if (attempt && attempt.until > Date.now() && attempt.count >= 20) {
@@ -246,19 +263,16 @@ export function installCollaboration(
     const input = z
       .object({
         token: z.string().min(20).max(100),
-        name: z.string().trim().min(1).max(60),
       })
       .safeParse(req.body)
     if (!input.success) {
-      res
-        .status(400)
-        .json({ error: 'Enter your name and a valid invite code.' })
+      res.status(400).json({ error: 'Enter a valid invite code.' })
       return
     }
     const joined = await store.identity.join(
       input.data.token,
-      input.data.name,
-      (await cookieProfile(req))?.id,
+      current.name,
+      current.id,
     )
     if (!joined) {
       res
@@ -319,6 +333,14 @@ export function installCollaboration(
     }),
   )
   app.post('/api/studios', async (req, res) => {
+    if (!(await store.studios((res.locals.profile as Profile).id)).length) {
+      res
+        .status(403)
+        .json({
+          error: 'Accept a workspace invitation before creating a workspace.',
+        })
+      return
+    }
     const input = z
       .object({ name: z.string().trim().min(1).max(100) })
       .safeParse(req.body)

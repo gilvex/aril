@@ -26,6 +26,7 @@ export function App() {
     token,
     restoringRoute,
     initial,
+    googleLinked,
     inviteRequired,
     setBusy,
     name,
@@ -69,9 +70,16 @@ export function App() {
         setError={setError}
       />
     )
-  else if (!profile || token || restoringRoute || (studio && !initial))
+  else if (
+    !profile ||
+    inviteRequired ||
+    token ||
+    restoringRoute ||
+    (studio && !initial)
+  )
     content = (
       <JoinStudioScreen
+        googleLinked={googleLinked}
         inviteRequired={inviteRequired}
         token={token}
         setBusy={setBusy}

@@ -109,6 +109,25 @@ export function identityStore(db: DatabaseSync) {
         .get(subject)
       return row ? session(String(row.user_id)) : null
     },
+    registerGoogle: (subject: string, email: string, name: string) => {
+      db.exec('BEGIN IMMEDIATE')
+      try {
+        const existing = db
+          .prepare('SELECT user_id FROM accounts WHERE subject=?')
+          .get(subject)
+        const user = existing
+          ? session(String(existing.user_id))
+          : create(name.trim().slice(0, 60) || 'New collaborator')
+        db.prepare(
+          'INSERT INTO accounts VALUES (?,?,?) ON CONFLICT(subject) DO UPDATE SET email=excluded.email',
+        ).run(subject, user.profile.id, email)
+        db.exec('COMMIT')
+        return user
+      } catch (error) {
+        db.exec('ROLLBACK')
+        throw error
+      }
+    },
     bootstrap: () => {
       if (count()) return null
       const user = create('Workspace owner')

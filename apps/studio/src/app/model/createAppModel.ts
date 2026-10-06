@@ -12,6 +12,8 @@ export function createAppModel(initial: AppState) {
   })
   const getSnapshot = () => selectApp(store.getState())
   const actions = {
+    setGoogleLinked: (value: boolean) =>
+      store.dispatch(appSlice.actions.setGoogleLinked(value)),
     setRestoringRoute: (
       value:
         | AppState['restoringRoute']

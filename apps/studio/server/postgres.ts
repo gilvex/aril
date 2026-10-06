@@ -452,6 +452,33 @@ ${agentTable}
         ).rows[0]
         return row ? session(row.user_id) : null
       },
+      registerGoogle: async (subject: string, email: string, name: string) =>
+        transaction(async (client) => {
+          await query(
+            'LOCK TABLE studio.accounts IN EXCLUSIVE MODE',
+            [],
+            client,
+          )
+          const existing = (
+            await query(
+              'SELECT user_id FROM studio.accounts WHERE subject=$1',
+              [subject],
+              client,
+            )
+          ).rows[0]
+          const user = existing
+            ? await session(existing.user_id, client)
+            : await create(
+                name.trim().slice(0, 60) || 'New collaborator',
+                client,
+              )
+          await query(
+            'INSERT INTO studio.accounts VALUES ($1,$2,$3) ON CONFLICT(subject) DO UPDATE SET email=excluded.email',
+            [subject, user.profile.id, email],
+            client,
+          )
+          return user
+        }),
     },
     cloud: {
       revision: async (workspaceId: string) =>

@@ -719,5 +719,11 @@
   "Compare colors, fonts, density, and mobile previews.": "Compare colors, fonts, density, and mobile previews.",
   "Read the guide, edit Markdown, or add your own document.": "Read the guide, edit Markdown, or add your own document.",
   "Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.": "Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.",
-  "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.": "This is a local demo. Sign in outside the demo to connect an account or invite real teammates."
+  "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.": "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.",
+  "Sign in with Google, then use your invitation code to join a workspace.": "Sign in with Google, then use your invitation code to join a workspace.",
+  "Signed in as {{name}}": "Signed in as {{name}}",
+  "Google sign-in is not configured. Contact the studio host to continue.": "Google sign-in is not configured. Contact the studio host to continue.",
+  "Sign in with Google before accepting an invitation.": "Sign in with Google before accepting an invitation.",
+  "Enter a valid invite code.": "Enter a valid invite code.",
+  "Accept a workspace invitation before creating a workspace.": "Accept a workspace invitation before creating a workspace."
 }

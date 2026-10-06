@@ -8,8 +8,8 @@ export function LoginInvitation(props: JoinStudioFormProps) {
   const { t } = useTranslation()
   const disclosure = useRef<HTMLDetailsElement>(null)
   useEffect(() => {
-    if (props.token && disclosure.current) disclosure.current.open = true
-  }, [props.token])
+    if (props.profile && disclosure.current) disclosure.current.open = true
+  }, [props.profile])
   return (
     <details ref={disclosure} className="login-invitation">
       <summary>

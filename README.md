@@ -45,7 +45,7 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 - Installable PWA with standalone mobile windows, home-screen icons and an offline reconnect screen. Use **Install app** in the workspace menu for browser-specific instructions. Opening and syncing workspaces requires a connection; shared documents and authenticated requests are never cached by the service worker.
 - Invite-only multiplayer: editable names and pictures, live cursors and selections, shared edits, and a durable team activity feed.
 - Create and switch between private workspaces; accept invitations into an existing profile. Documents, history and live presence are isolated per workspace.
-- Optional Google account linking retains invited users' workspace access across devices once the host configures a Google client ID.
+- Google-first sign-in creates a linked profile, then invitation redemption grants workspace access. Returning users keep access across devices; existing guest profiles can link Google without losing memberships.
 
 Select a node to edit it. Drag from its right handle to another node's left handle to connect them. Use the canvas controls to zoom or fit the diagram. Ctrl/Cmd+Z undoes a change; Ctrl/Cmd+Shift+Z redoes it. Ctrl/Cmd+S saves immediately when focus is outside a text field.
 

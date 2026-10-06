@@ -97,16 +97,23 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     const invitation = (await (
       await call('/api/invites', cookieA, 'POST')
     ).json()) as { token: string }
-    const joinResponse = await call('/api/join', '', 'POST', {
+    const googleUser = store.identity.registerGoogle(
+      'sam-subject',
+      'sam@example.test',
+      'Sam',
+    )
+    const cookieB = 'pomegranate_session=' + googleUser.token
+    const joinResponse = await call('/api/join', cookieB, 'POST', {
       token: invitation.token,
       name: 'Sam',
     })
     assert.equal(joinResponse.status, 200)
-    const cookieB = joinResponse.headers.get('set-cookie')!.split(';')[0]
+    assert.equal(joinResponse.headers.get('set-cookie'), null)
     const joined = (await joinResponse.json()) as {
       profile: { id: string }
       token: string
     }
+    joined.token = googleUser.token
     const peerProfile = joined.profile
     const bearerSession = await fetch(`${url}/api/session`, {
       headers: { Authorization: `Bearer ${joined.token}` },
@@ -117,7 +124,7 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     assert.notEqual(ownerProfile.id, peerProfile.id)
     assert.equal(
       (
-        await call('/api/join', '', 'POST', {
+        await call('/api/join', cookieB, 'POST', {
           token: invitation.token,
           name: 'Imposter',
         })

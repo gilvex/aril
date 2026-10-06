@@ -51,6 +51,38 @@ test(
       })
     try {
       const owner = (await a.identity.bootstrap())!
+      const googleRace = await Promise.all([
+        a.identity.registerGoogle(
+          'same-google-subject',
+          'google@example.test',
+          'Google User',
+        ),
+        b.identity.registerGoogle(
+          'same-google-subject',
+          'google@example.test',
+          'Google User',
+        ),
+      ])
+      assert.equal(googleRace[0].profile.id, googleRace[1].profile.id)
+      assert.deepEqual(await b.studios(googleRace[0].profile.id), [])
+      assert.equal(
+        (
+          await call(1, '/api/studios', googleRace[0].token, 'POST', {
+            name: 'Not invited',
+          })
+        ).status,
+        403,
+      )
+      const googleInvite = await a.identity.invite(owner.profile.id)
+      assert.equal(
+        (
+          await call(1, '/api/join', googleRace[1].token, 'POST', {
+            token: googleInvite.token,
+          })
+        ).status,
+        200,
+      )
+      assert.equal((await a.studios(googleRace[0].profile.id)).length, 1)
       const agent = await a.agents.create(
         owner.profile.id,
         'default',
