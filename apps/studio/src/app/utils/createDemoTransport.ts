@@ -4,7 +4,7 @@ import {
   operationsSchema,
 } from '@pomegranate/domain/collaboration'
 import { workspaceSchema } from '@pomegranate/domain/workspace'
-import { demoStorageKey } from '../config/demoStorageKey.ts'
+import { commitDemoChange } from './commitDemoChange.ts'
 import { createDemoState } from './createDemoState.ts'
 import { createDemoStream } from './createDemoStream.ts'
 import { createDemoPeers } from './createDemoPeers.ts'
@@ -25,7 +25,8 @@ export function createDemoTransport(
       return fail('This workspace is not part of the demo.', 404)
     try {
       const body = typeof init?.body === 'string' ? JSON.parse(init.body) : {}
-      if (path === '/api/events') return createDemoStream(state, init?.signal)
+      if (path === '/api/events')
+        return createDemoStream(state, init?.signal, storage)
       if (path === '/api/session')
         return Response.json({ profile: state.profile })
       if (path === '/api/studios' && method === 'GET')
@@ -86,16 +87,15 @@ export function createDemoTransport(
             ? applyOperations(state.envelope.workspace, operations)
             : body.workspace,
         )
-        const next = {
-          workspace,
-          revision: state.envelope.revision + 1,
-          savedAt: new Date().toISOString(),
-        }
-        const history = [next, ...state.history].slice(0, 30)
         try {
-          storage.setItem(
-            demoStorageKey,
-            JSON.stringify({ envelope: next, history }),
+          return Response.json(
+            commitDemoChange(
+              state,
+              storage,
+              workspace,
+              state.profile,
+              describeOperations(operations),
+            ),
           )
         } catch {
           return fail(
@@ -103,19 +103,6 @@ export function createDemoTransport(
             507,
           )
         }
-        state.envelope = next
-        state.history = history
-        state.activity = [
-          {
-            id: Date.now(),
-            userId: state.profile.id,
-            name: state.profile.name,
-            message: describeOperations(operations),
-            createdAt: next.savedAt,
-          },
-          ...state.activity,
-        ].slice(0, 50)
-        return Response.json(next)
       }
       if (path === '/api/history')
         return Response.json(

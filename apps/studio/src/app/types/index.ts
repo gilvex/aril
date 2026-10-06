@@ -10,3 +10,4 @@ export type { StaleDraftScreenHandlersProps } from './useStaleDraftScreenHandler
 
 export type { DemoState } from './demoState.ts'
 export type { DemoCursorTarget } from './demoCursorTarget.ts'
+export type { DemoAction } from './demoAction.ts'

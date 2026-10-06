@@ -5,12 +5,84 @@ import { createDemoWorkspace } from '../src/app/utils/createDemoWorkspace.ts'
 import { createDemoPeers } from '../src/app/utils/createDemoPeers.ts'
 import { sampleDemoCursor } from '../src/app/utils/sampleDemoCursor.ts'
 import { sampleDemoCurve } from '../src/app/utils/sampleDemoCurve.ts'
+import { advanceDemoActions } from '../src/app/utils/advanceDemoActions.ts'
+import { applyDemoActionPresence } from '../src/app/utils/applyDemoActionPresence.ts'
+import { createDemoStream } from '../src/app/utils/createDemoStream.ts'
 import { createDemoState } from '../src/app/utils/createDemoState.ts'
 import { apiTransport } from '../src/shared/api/apiTransport.ts'
 import { request } from '../src/shared/api/request.ts'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import { workspaceSchema, type Envelope, type Workspace } from '@pomegranate/domain/workspace'
 import { demoStorageKey } from '../src/app/config/demoStorageKey.ts'
+
+test('simulated edits preview drags then persist attributed revisions without replaying after refresh', () => {
+  const values=new Map<string,string>()
+  const storage={getItem:(key:string)=>values.get(key)||null,setItem:(key:string,value:string)=>{values.set(key,value)}}
+  const state=createDemoState(storage)
+  const started=Date.parse(state.studio.createdAt)
+  const initial=structuredClone(state.envelope.workspace)
+  for(const action of state.actions) {
+    const during=started+action.at+action.duration/2
+    advanceDemoActions(state,storage,during)
+    assert.equal(state.activeAction?.id,action.id)
+    const peer=applyDemoActionPresence(createDemoPeers(state,during),state,during).find(peer=>peer.clientId===action.peerId)!
+    assert.equal(peer.view,action.view)
+    if(action.drag) {
+      assert.equal(peer.dragging?.[0].id,action.targetId)
+      assert.notDeepEqual(peer.dragging?.[0].position,action.drag.from)
+      assert.notDeepEqual(peer.dragging?.[0].position,action.drag.to)
+    }
+    const revision=state.envelope.revision
+    advanceDemoActions(state,storage,started+action.at+action.duration)
+    assert.equal(state.envelope.revision,revision+1)
+    assert.equal(state.activeAction,null)
+    assert.equal(state.activity[0].userId,action.peerId)
+    workspaceSchema.parse(state.envelope.workspace)
+  }
+  assert.notDeepEqual(state.envelope.workspace,initial)
+  assert.equal(state.history.length,9)
+  const restored=createDemoState(storage)
+  assert.equal(restored.completedActions.length,8)
+  advanceDemoActions(restored,storage,Date.parse(restored.studio.createdAt)+60000)
+  assert.deepEqual(restored.envelope,state.envelope)
+})
+
+test('simulated actions yield to selected targets, changed fields, deletions and storage failures', () => {
+  for(const situation of ['selected','edited','deleted','storage','suspended']) {
+    const state=createDemoState({getItem:()=>null})
+    const action=state.actions[0]
+    const start=Date.parse(state.studio.createdAt)
+    if(situation==='selected') state.presence={view:'canvas',boardId:'layers',selected:['game']}
+    if(situation==='edited') state.envelope.workspace.boards[0].nodes.find(node=>node.id==='game')!.position={x:333,y:444}
+    if(situation==='deleted') state.envelope.workspace.boards[0].nodes=state.envelope.workspace.boards[0].nodes.filter(node=>node.id!=='game')
+    const before=structuredClone(state.envelope)
+    advanceDemoActions(state,{setItem:()=>{if(situation==='storage') throw new Error('Quota')}},start+action.at+action.duration+(situation==='suspended'?2100:0))
+    assert.deepEqual(state.envelope,before,situation)
+    assert.equal(state.activeAction,null)
+    assert.ok(state.completedActions.includes(action.id))
+  }
+  const state=createDemoState({getItem:()=>null})
+  state.presence={view:'canvas',boardId:'layers',selected:['game'],following:'demo-maya'}
+  advanceDemoActions(state,{setItem:()=>{}},Date.parse(state.studio.createdAt)+4000)
+  assert.equal(state.activeAction?.id,state.actions[0].id,'following must not block the demo actor')
+  state.presence.following=null
+  advanceDemoActions(state,{setItem:()=>{}},Date.parse(state.studio.createdAt)+4100)
+  assert.equal(state.activeAction,null,'taking over cancels an in-flight drag')
+})
+
+test('demo stream publishes simulated revisions through the normal workspace event', async () => {
+  const state=createDemoState({getItem:()=>null})
+  const abort=new AbortController()
+  const reader=createDemoStream(state,abort.signal).body!.getReader()
+  try {
+    await reader.read()
+    advanceDemoActions(state,{setItem:()=>{}},Date.parse(state.studio.createdAt)+5600)
+    let received=''
+    for(let i=0;i<8 && !received.includes('event: workspace');i++) received+=new TextDecoder().decode((await reader.read()).value)
+    assert.match(received,/event: workspace/)
+    assert.match(received,/"revision":2/)
+  } finally { abort.abort(); await reader.cancel() }
+})
 
 test('demo teammates stay on independent tasks regardless of visitor navigation or selections', () => {
   const state = createDemoState({getItem:()=>null})

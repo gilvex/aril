@@ -2,6 +2,7 @@ import { workspaceSchema } from '@pomegranate/domain/workspace'
 import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 import { createDemoWorkspace } from './createDemoWorkspace.ts'
+import { createDemoActions } from './createDemoActions.ts'
 
 export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
   const now = new Date().toISOString()
@@ -26,6 +27,9 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
     envelope,
     history: [structuredClone(envelope)],
     presence: {},
+    actions: createDemoActions(envelope.workspace),
+    completedActions: [],
+    activeAction: null,
     activity: [
       {
         id: 3,
@@ -67,6 +71,11 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
           ...item,
           workspace: workspaceSchema.parse(item.workspace),
         }))
+      state.completedActions = Array.isArray(saved.completedActions)
+        ? saved.completedActions.filter((id: unknown) => typeof id === 'string')
+        : []
+      if (Array.isArray(saved.activity))
+        state.activity = saved.activity.slice(0, 50)
     }
   } catch {
     /* Invalid or older demo data starts a fresh sandbox. */

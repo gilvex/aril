@@ -1,9 +1,12 @@
 import type { DemoState } from '../types/demoState.ts'
 import { createDemoPeers } from './createDemoPeers.ts'
+import { advanceDemoActions } from './advanceDemoActions.ts'
+import { applyDemoActionPresence } from './applyDemoActionPresence.ts'
 
 export function createDemoStream(
   state: DemoState,
   signal?: AbortSignal | null,
+  storage?: Pick<Storage, 'setItem'>,
 ) {
   const encoder = new TextEncoder()
   let stop = () => {}
@@ -13,6 +16,7 @@ export function createDemoStream(
       let activity = ''
       let presence = ''
       let lastPresence = 0
+      let revision = state.envelope.revision
       const tick = () => {
         if (ended) return
         const send = (event: string, data: unknown) =>
@@ -21,7 +25,17 @@ export function createDemoStream(
               `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`,
             ),
           )
-        const peers = createDemoPeers(state)
+        const now = Date.now()
+        if (storage) advanceDemoActions(state, storage, now)
+        if (revision !== state.envelope.revision) {
+          revision = state.envelope.revision
+          send('workspace', state.envelope)
+        }
+        const peers = applyDemoActionPresence(
+          createDemoPeers(state, now),
+          state,
+          now,
+        )
         const signature = JSON.stringify(peers, (key, value) =>
           key === 'seenAt' ? undefined : value,
         )
