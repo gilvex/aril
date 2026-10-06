@@ -5,6 +5,12 @@ export const requirementsSlice = createSlice({
   name: 'requirements',
   initialState: {} as RequirementsState,
   reducers: {
+    setViewState: (
+      state,
+      action: PayloadAction<Partial<Omit<RequirementsState, 'activity'>>>,
+    ) => {
+      Object.assign(state, action.payload)
+    },
     setQuery: (state, action: PayloadAction<RequirementsState['query']>) => {
       state.query = action.payload
     },

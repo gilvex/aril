@@ -83,6 +83,7 @@ export function StudioContent(props: StudioContentProps) {
       <Suspense fallback={<div className="empty-message">{t('Loading…')}</div>}>
         {view === 'requirements' && (
           <Requirements
+            workspaceId={props.studio.id}
             workspace={workspace}
             change={change}
             selected={requirementId}

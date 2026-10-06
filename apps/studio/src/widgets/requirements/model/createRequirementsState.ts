@@ -1,7 +1,18 @@
-import type { RequirementPresence } from '@pomegranate/domain/collaboration'
-export function createRequirementsState() {
-  const query: string = ''
-  const category: string = 'All areas'
-  const activity: RequirementPresence | null = null
-  return { query, category, activity }
+import type { RequirementsState } from '../types/requirementsState.ts'
+import { readRequirementsPreference } from '../utils/readRequirementsPreference.ts'
+export function createRequirementsState(preferenceKey = ''): RequirementsState {
+  return {
+    query: '',
+    category: 'All areas',
+    activity: null,
+    priority: '',
+    status: '',
+    view: 'list',
+    groupBy: 'status',
+    checkedIds: [],
+    detailWidth: 560,
+    draggingId: null,
+    dropGroup: null,
+    ...readRequirementsPreference(preferenceKey),
+  }
 }

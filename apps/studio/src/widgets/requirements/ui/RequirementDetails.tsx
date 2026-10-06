@@ -1,128 +1,113 @@
+import { ArrowLeft, Check, Trash2, X } from 'lucide-react'
+import { useCallback, type ChangeEvent } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { RequirementPeople } from '@/widgets/requirements/ui/RequirementPeople.tsx'
-import { ArrowUpRight, Trash2, X } from 'lucide-react'
 import { useRequirementDetailsHandlers } from '../model/useRequirementDetailsHandlers.tsx'
-
-import { RequirementClassification } from './RequirementClassification.tsx'
-
 import type { RequirementDetailsProps } from '../types/requirementDetailsProps.ts'
-export function RequirementDetails({
-  current,
-  selectRequirement,
-  peopleFor,
-  profile,
-  fieldProps,
-  update,
-  fieldHint,
-  workspace,
-  openBoard,
-  change,
-}: RequirementDetailsProps) {
+import { RequirementAvatars } from './RequirementAvatars.tsx'
+import { RequirementProperties } from './RequirementProperties.tsx'
+import { RequirementLinks } from './RequirementLinks.tsx'
+export function RequirementDetails(props: RequirementDetailsProps) {
   const { t } = useTranslation()
-
-  const { handleRequirementAreaChange, handleClick } =
-    useRequirementDetailsHandlers({
-      update,
-      change,
-      current,
-      selectRequirement,
-    })
+  const {
+    current,
+    selectRequirement,
+    peopleFor,
+    profile,
+    fieldProps,
+    fieldHint,
+    update,
+  } = props
+  const { handleClick: remove } = useRequirementDetailsHandlers(props)
+  const edit = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) =>
+      update({
+        [event.target.name]:
+          event.target.name === 'title'
+            ? event.target.value || 'Untitled requirement'
+            : event.target.value,
+      }),
+    [update],
+  )
   return (
-    <aside className="requirement-detail">
-      <div className="inspector-heading">
+    <div className="req-document">
+      <header className="req-document-header">
+        <button
+          className="button subtle req-back"
+          onClick={() => selectRequirement(null)}
+        >
+          <ArrowLeft size={16} />
+          {t('Back to requirements')}
+        </button>
         <span>{current.id}</span>
+        <RequirementAvatars
+          people={peopleFor(current.id)}
+          currentUserId={profile.id}
+        />
         <button
           className="icon-button"
           aria-label={t('Close requirement')}
           onClick={() => selectRequirement(null)}
         >
-          <X size={16} />
+          <X size={17} />
         </button>
-      </div>
-      <div className="inspector-body">
-        <RequirementPeople
-          people={peopleFor(current.id)}
-          currentUserId={profile.id}
+      </header>
+      <label className="req-document-title">
+        <span className="visually-hidden">{t('Requirement title')}</span>
+        <textarea
+          name="title"
+          aria-label={t('Requirement title')}
+          {...fieldProps('title')}
+          value={current.title}
+          maxLength={160}
+          rows={2}
+          onChange={edit}
         />
-        <label>
-          {t('Requirement')}
-          <input
-            aria-label={t('Requirement title')}
-            {...fieldProps('title')}
-            value={current.title}
-            maxLength={160}
-            onChange={(e) =>
-              update({ title: e.target.value || 'Untitled requirement' })
-            }
-          />
-          {fieldHint('title')}
-        </label>
-        <label>
-          {t('The problem')}
-          <textarea
-            aria-label={t('Requirement description')}
-            {...fieldProps('description')}
-            rows={5}
-            maxLength={5000}
-            value={current.description}
-            onChange={(e) => update({ description: e.target.value })}
-          />
-          {fieldHint('description')}
-        </label>
-        <RequirementClassification
-          fieldProps={fieldProps}
-          current={current}
-          update={update}
-          fieldHint={fieldHint}
+        {fieldHint('title')}
+      </label>
+      <RequirementProperties {...props} />
+      <label className="req-document-field">
+        <span>{t('Problem')}</span>
+        {fieldHint('description')}
+        <textarea
+          name="description"
+          aria-label={t('Requirement description')}
+          {...fieldProps('description')}
+          value={current.description}
+          maxLength={5000}
+          rows={4}
+          placeholder={t('Describe the problem this solves…')}
+          onChange={edit}
         />
-        <label>
-          {t('Area')}
-          <select
-            {...fieldProps('category')}
-            aria-label={t('Requirement area')}
-            value={current.category}
-            onChange={handleRequirementAreaChange}
-          >
-            {['Deployment', 'Access', 'Operations', 'Experience'].map((x) => (
-              <option key={x} value={x}>
-                {t(x)}
-              </option>
-            ))}
-          </select>
-          {fieldHint('category')}
-        </label>
-        <label>
-          {t('What does success look like?')}
-          <textarea
-            aria-label={t('Acceptance criteria')}
-            {...fieldProps('acceptance')}
-            rows={5}
-            maxLength={5000}
-            value={current.acceptance}
-            onChange={(e) => update({ acceptance: e.target.value })}
-          />
-          {fieldHint('acceptance')}
-        </label>
-        <div className="field-label">{t('Connected boards')}</div>
-        {workspace.boards
-          .filter((b) =>
-            b.nodes.some((n) => n.data.requirements.includes(current.id)),
-          )
-          .map((b) => (
-            <button
-              className="board-link"
-              key={b.id}
-              onClick={() => openBoard(b.id)}
-            >
-              {b.name}
-              <ArrowUpRight size={14} />
-            </button>
-          ))}
-        <button className="button danger" onClick={handleClick}>
-          <Trash2 size={14} />
-          {t('Delete requirement')}
+      </label>
+      <label className="req-document-field">
+        <span>{t('Acceptance criteria')}</span>
+        {fieldHint('acceptance')}
+        <textarea
+          name="acceptance"
+          aria-label={t('Acceptance criteria')}
+          {...fieldProps('acceptance')}
+          value={current.acceptance}
+          maxLength={5000}
+          rows={5}
+          placeholder={t('Describe the outcomes needed to call this ready…')}
+          onChange={edit}
+        />
+      </label>
+      <RequirementLinks {...props} />
+      <footer className="req-document-footer">
+        <span>
+          <Check size={14} />
+          {t('Changes save automatically')}
+        </span>
+        <button
+          className="icon-button"
+          aria-label={t('Delete requirement')}
+          title={t('Delete requirement')}
+          onClick={remove}
+        >
+          <Trash2 size={15} />
         </button>
-      </div>
-    </aside>
+      </footer>
+    </div>
   )
 }

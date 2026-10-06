@@ -4,3 +4,4 @@ export { useRequirementsModel } from '@/widgets/requirements/model/useRequiremen
 export { useRequirementClassificationHandlers } from './useRequirementClassificationHandlers.tsx'
 export { useRequirementDetailsHandlers } from './useRequirementDetailsHandlers.tsx'
 export { useRequirementsController } from './useRequirementsController.tsx'
+export { useRequirementResize } from './useRequirementResize.ts'

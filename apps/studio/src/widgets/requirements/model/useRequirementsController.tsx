@@ -1,3 +1,5 @@
+import { filterRequirements } from '../utils/filterRequirements.ts'
+import { moveRequirements } from '../utils/moveRequirements.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { requirementFieldLabels } from '@/widgets/requirements/config/requirementFieldLabels.ts'
 import { createRequirementsState } from '@/widgets/requirements/model/createRequirementsState.ts'
@@ -8,6 +10,7 @@ import type { Requirement } from '@pomegranate/domain/workspace'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import type { UseRequirementsControllerProps } from '../types/useRequirementsControllerProps.ts'
 export function useRequirementsController({
+  workspaceId,
   workspace,
   selected,
   onSelect,
@@ -18,8 +21,44 @@ export function useRequirementsController({
 }: UseRequirementsControllerProps) {
   const { t } = useTranslation()
 
-  const { query, setQuery, category, setCategory, activity, setActivity } =
-    useRequirementsModel(() => createRequirementsState())
+  const preferenceKey =
+    'pomegranate-requirements:' + profile.id + ':' + workspaceId
+  const viewState = useRequirementsModel(() =>
+    createRequirementsState(preferenceKey),
+  )
+  const {
+    query,
+    setQuery,
+    category,
+    setCategory,
+    activity,
+    setActivity,
+    setViewState,
+    priority,
+    status,
+    view,
+    groupBy,
+    detailWidth,
+    checkedIds,
+  } = viewState
+  const anchor = useRef<string | null>(null)
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        preferenceKey,
+        JSON.stringify({ view, groupBy, detailWidth }),
+      )
+    } catch {
+      /* Optional preference. */
+    }
+  }, [preferenceKey, view, groupBy, detailWidth])
+  useEffect(() => {
+    const remaining = checkedIds.filter((id) =>
+      workspace.requirements.some((item) => item.id === id),
+    )
+    if (remaining.length !== checkedIds.length)
+      setViewState({ checkedIds: remaining })
+  }, [workspace.requirements, checkedIds, setViewState])
 
   const current = useMemo(
     () => workspace.requirements.find((r) => r.id === selected),
@@ -139,7 +178,7 @@ export function useRequirementsController({
           {editors.some((person) => person.requirement.typing)
             ? t('typing in')
             : t('editing')}{' '}
-          {requirementFieldLabels[name]}
+          {t(requirementFieldLabels[name])}
         </span>
       ) : null
     },
@@ -147,14 +186,50 @@ export function useRequirementsController({
   )
   const results = useMemo(
     () =>
-      workspace.requirements.filter(
-        (r) =>
-          (category === 'All areas' || r.category === category) &&
-          `${r.id} ${r.title} ${r.description}`
-            .toLowerCase()
-            .includes(query.toLowerCase()),
-      ),
-    [workspace, category, query],
+      filterRequirements(workspace.requirements, {
+        query,
+        category,
+        priority,
+        status,
+      }),
+    [workspace.requirements, query, category, priority, status],
+  )
+  const checked = useMemo(() => new Set(checkedIds), [checkedIds])
+  const toggleChecked = useCallback(
+    (id: string, range = false) => {
+      const next = new Set(checkedIds)
+      const from = results.findIndex((item) => item.id === anchor.current)
+      const to = results.findIndex((item) => item.id === id)
+      if (range && from >= 0 && to >= 0)
+        results
+          .slice(Math.min(from, to), Math.max(from, to) + 1)
+          .forEach((item) => next.add(item.id))
+      else if (next.has(id)) next.delete(id)
+      else next.add(id)
+      anchor.current = id
+      setViewState({ checkedIds: [...next] })
+    },
+    [checkedIds, results, setViewState],
+  )
+  const move = useCallback(
+    (
+      ids: string[],
+      field: 'status' | 'priority' | 'category',
+      value: string,
+    ) => {
+      change((w) => moveRequirements(w, ids, field, value))
+    },
+    [change],
+  )
+  const clearFilters = useCallback(
+    () =>
+      setViewState({
+        query: '',
+        category: 'All areas',
+        status: '',
+        priority: '',
+      }),
+    [setViewState],
   )
   const update = useCallback(
     (patch: Partial<Requirement>) => {
@@ -174,26 +249,41 @@ export function useRequirementsController({
     },
     [currentId, typingTimer, setActivity, change, selected],
   )
-  const add = useCallback(() => {
-    const id = `R-${crypto.randomUUID().slice(0, 6)}`
-    change((w) => ({
-      ...w,
-      requirements: [
-        ...w.requirements,
-        {
-          id,
-          title: 'New requirement',
-          description: '',
-          acceptance: '',
-          category: 'Experience',
-          priority: 'Should have',
-          status: 'Captured',
-        },
-      ],
-    }))
-    selectRequirement(id)
-  }, [change, selectRequirement])
+  const add = useCallback(
+    (defaults: Partial<Requirement> = {}) => {
+      const id = `R-${crypto.randomUUID().slice(0, 6)}`
+      change((w) => ({
+        ...w,
+        requirements: [
+          ...w.requirements,
+          {
+            id,
+            title: 'New requirement',
+            description: '',
+            acceptance: '',
+            category:
+              category === 'All areas'
+                ? 'Experience'
+                : (category as Requirement['category']),
+            priority: priority || 'Should have',
+            status: status || 'Captured',
+            ...defaults,
+          },
+        ],
+      }))
+      selectRequirement(id)
+    },
+    [change, selectRequirement, category, priority, status],
+  )
   return {
+    ...viewState,
+    workspace,
+    selected,
+    profile,
+    checked,
+    toggleChecked,
+    move,
+    clearFilters,
     add,
     query,
     setQuery,

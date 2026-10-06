@@ -12,6 +12,9 @@ export function createRequirementsModel(initial: RequirementsState) {
   })
   const getSnapshot = () => selectRequirements(store.getState())
   const actions = {
+    setViewState: (patch: Partial<Omit<RequirementsState, 'activity'>>) => {
+      store.dispatch(requirementsSlice.actions.setViewState(patch))
+    },
     setQuery: (
       value:
         | RequirementsState['query']

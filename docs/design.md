@@ -33,3 +33,11 @@ Canvas, Requirements, Design, and Notes are one-click buttons beside the workspa
 Light, Dark and System are personal appearance options in the desktop workspace actions menu, mobile More sheet and workspace chooser. The setting is stored in this browser, synchronized across its tabs, and applied before React loads. System follows operating-system changes. Appearance never changes the shared document or design-study accent.
 
 Dark mode keeps berry actions and Manrope/DM Sans typography. Its palette uses aubergine canvas `#19161f`, surface `#25212d`, raised fill `#393141`, strong text `#f1ebf5`, muted text `#aaa0b6`, borders `#443b50`, and accent text `#f0a1be`. Semantic tokens cover forms, floating canvas controls, wireframe blocks, requirement rows, collaboration panels and dialogs. Node kinds retain distinct green, blue, pink and purple accents; collaborator colors remain unchanged.
+
+## Requirements list and board views
+
+Requirements use one compact toolbar and shared search/area/status/priority filters. The List view has independent checkboxes for bulk changes; clicking the requirement opens a wide, resizable document editor. Shift-click selects a visible range, and select-all applies to the current results. Bulk actions update status, priority or area in one undoable document change.
+
+Board view groups the same requirements by status or priority. Drag a card between lanes or use its Move to control with a keyboard or touch screen; only the grouping field changes. Lane add buttons create an item in that group. Empty lanes remain available as drop targets. Selecting a card opens the same editor, with field-level collaborator presence and links to blueprint nodes.
+
+View, grouping and editor width are local preferences scoped to profile and workspace. Filters and selection are temporary and never broadcast as document changes. On phones, the detail editor fills the workspace with a Back to requirements button. The page uses the existing light/dark tokens and English/Russian catalogs.

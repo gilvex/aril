@@ -1,133 +1,48 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { RequirementsProps } from '@/widgets/requirements/types/requirementsProps.ts'
-import { ListFilter, Search } from 'lucide-react'
+import type { RequirementsProps } from '../types/requirementsProps.ts'
 import { useRequirementsController } from '../model/useRequirementsController.tsx'
-import { RequirementDetails } from './RequirementDetails.tsx'
-import { RequirementList } from './RequirementList.tsx'
-import { RequirementsHeader } from './RequirementsHeader.tsx'
-
+import { RequirementsToolbar } from './RequirementsToolbar.tsx'
+import { RequirementsFilters } from './RequirementsFilters.tsx'
+import { RequirementsBulkActions } from './RequirementsBulkActions.tsx'
+import { RequirementsTable } from './RequirementsTable.tsx'
+import { RequirementsBoard } from './RequirementsBoard.tsx'
+import { RequirementEditor } from './RequirementEditor.tsx'
+import './requirements.css'
 export function Requirements(props: RequirementsProps) {
   const { t } = useTranslation()
-
-  const {
-    workspace,
-    change,
-    selected,
-    onSelect,
-    openBoard,
-    profile,
-    peers,
-    sendPresence,
-  } = props
-
-  const {
-    add,
-    query,
-    setQuery,
-    category,
-    setCategory,
-    results,
-    selectRequirement,
-    peopleFor,
-    current,
-    fieldProps,
-    update,
-    fieldHint,
-  } = useRequirementsController({
-    workspace,
-    selected,
-    onSelect,
-    sendPresence,
-    peers,
-    profile,
-    change,
-  })
+  const model = useRequirementsController(props)
   return (
-    <div className="content-page">
-      <RequirementsHeader t={t} add={add} />
-      <div className="requirements-summary">
-        <div>
-          <strong>{workspace.requirements.length}</strong>
-          <span>{t('requirements captured')}</span>
+    <section className="requirements-page">
+      <RequirementsToolbar model={model} />
+      <RequirementsFilters model={model} />
+      {model.checkedIds.length > 0 && <RequirementsBulkActions model={model} />}
+      <div
+        className={
+          'requirements-workspace ' + (model.current ? 'has-detail' : '')
+        }
+      >
+        <div className="requirements-collection">
+          {model.view === 'board' ? (
+            <RequirementsBoard model={model} />
+          ) : model.results.length ? (
+            <RequirementsTable model={model} />
+          ) : (
+            <div className="empty-message">
+              <h3>{t('No matching requirements')}</h3>
+              <button className="button" onClick={model.clearFilters}>
+                {t('Clear filters')}
+              </button>
+            </div>
+          )}
         </div>
-        <div>
-          <strong>
-            {
-              workspace.requirements.filter((r) => r.priority === 'Must have')
-                .length
-            }
-          </strong>
-          <span>{t('must-haves')}</span>
-        </div>
-        <div>
-          <strong>
-            {workspace.requirements.filter((r) => r.status === 'Ready').length}
-          </strong>
-          <span>{t('ready for implementation')}</span>
-        </div>
-        <p>
-          {t('Start with the problems.')}
-          <br />
-          {t('Connect them to the solution.')}
-        </p>
-      </div>
-      <div className="requirements-toolbar">
-        <label className="search-field">
-          <Search size={16} />
-          <input
-            placeholder={t('Find a requirement…')}
-            aria-label={t('Search requirements')}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
-        <label className="filter-field">
-          <ListFilter size={15} />
-          <select
-            aria-label={t('Filter requirements by area')}
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {[
-              'All areas',
-              'Deployment',
-              'Access',
-              'Operations',
-              'Experience',
-            ].map((x) => (
-              <option key={x} value={x}>
-                {t(x)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <span className="muted">
-          {results.length} {t('results')}
-        </span>
-      </div>
-      <div className="requirements-layout">
-        <RequirementList
-          results={results}
-          selected={selected}
-          selectRequirement={selectRequirement}
-          peopleFor={peopleFor}
-          profile={profile}
-        />
-        {current && (
-          <RequirementDetails
-            current={current}
-            selectRequirement={selectRequirement}
-            peopleFor={peopleFor}
-            profile={profile}
-            fieldProps={fieldProps}
-            update={update}
-            fieldHint={fieldHint}
-            workspace={workspace}
-            openBoard={openBoard}
-            change={change}
+        {model.current && (
+          <RequirementEditor
+            model={model}
+            change={props.change}
+            openBoard={props.openBoard}
           />
         )}
       </div>
-    </div>
+    </section>
   )
 }

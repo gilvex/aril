@@ -5,6 +5,7 @@ import type {
 } from '@pomegranate/domain/collaboration'
 import type { Workspace } from '@pomegranate/domain/workspace'
 export type RequirementsProps = {
+  workspaceId: string
   workspace: Workspace
   change: (fn: (w: Workspace) => Workspace) => void
   selected: string | null
