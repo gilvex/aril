@@ -2831,6 +2831,8 @@ code {
 .boot-screen > .google-signin { width: 340px; max-width: calc(100vw - 36px); }
 .google-signin-control { --google-button-scale: 1.2; width: 100%; min-height: 48px; }
 .google-signin-button { width: calc(100% / var(--google-button-scale)); min-height: 40px; transform: scale(var(--google-button-scale)); transform-origin: top left; }
+/* Match Google's light document so the browser keeps its iframe padding transparent in dark mode. */
+.google-signin-button iframe { color-scheme: light; }
 .workspace-home-header .brand { color: var(--text-strong, #34313d); }
 .workspace-home-header .brand small { color: var(--text-secondary, #77717f); }
 .workspace-hosted { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding: 18px 22px; margin: -36px 0 36px; border: 1px solid var(--line, #dfccd3); background: var(--accent-light); border-radius: 14px; font-size: 14px; }
