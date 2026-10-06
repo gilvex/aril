@@ -58,13 +58,37 @@ export const workspaceSchema = z
       .max(50),
     requirements: z.array(requirementSchema).max(500),
     notes: z.string().max(50000),
+    notesTitle: z.string().min(1).max(120).optional(),
+    documents: z
+      .array(
+        z.object({
+          id: z
+            .string()
+            .min(1)
+            .max(90)
+            .refine((id) => id !== 'project-notes'),
+          title: z.string().min(1).max(120),
+          body: z.string().max(50000),
+        }),
+      )
+      .max(50)
+      .optional(),
     design: z.object({
       accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),
       density: z.enum(['Comfortable', 'Compact']),
       direction: z.string().max(12000),
+      headingFont: z
+        .enum(['Manrope', 'DM Sans', 'System', 'Georgia'])
+        .optional(),
+      bodyFont: z.enum(['Manrope', 'DM Sans', 'System', 'Georgia']).optional(),
     }),
   })
   .superRefine((workspace, context) => {
+    if (
+      new Set(workspace.documents?.map((d) => d.id)).size !==
+      (workspace.documents?.length || 0)
+    )
+      context.addIssue({ code: 'custom', message: 'Duplicate document IDs' })
     if (
       new Set(workspace.boards.map((b) => b.id)).size !==
       workspace.boards.length

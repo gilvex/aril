@@ -1,23 +1,7 @@
-export type DesignPreviewProps = {
-  design: {
-    accent: string
-    density: 'Comfortable' | 'Compact'
-    direction: string
-  }
-  tab: string
-  setTab: (
-    value:
-      | import('../types/designBoardState.ts').DesignBoardState['tab']
-      | ((
-          current: import('../types/designBoardState.ts').DesignBoardState['tab'],
-        ) => import('../types/designBoardState.ts').DesignBoardState['tab']),
-  ) => void
-  selected: string[]
-  setSelected: (
-    value:
-      | import('../types/designBoardState.ts').DesignBoardState['selected']
-      | ((
-          current: import('../types/designBoardState.ts').DesignBoardState['selected'],
-        ) => import('../types/designBoardState.ts').DesignBoardState['selected']),
-  ) => void
+import type { Workspace } from '@pomegranate/domain/workspace'
+import type { DesignBoardState } from './designBoardState.ts'
+export type DesignPreviewProps = DesignBoardState & {
+  design: Workspace['design']
+  setSelected: (value: string[] | ((current: string[]) => string[])) => void
+  patch: (value: Partial<DesignBoardState>) => void
 }

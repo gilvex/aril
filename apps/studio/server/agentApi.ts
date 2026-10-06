@@ -83,7 +83,14 @@ export function installAgentApi(
     if (
       input.data.operations.some(
         (op) =>
-          !['boards', 'requirements', 'notes', 'design'].includes(op.path[0]),
+          ![
+            'boards',
+            'requirements',
+            'notes',
+            'notesTitle',
+            'documents',
+            'design',
+          ].includes(op.path[0]),
       )
     ) {
       res.status(400).json({ error: 'Unsupported change path.' })

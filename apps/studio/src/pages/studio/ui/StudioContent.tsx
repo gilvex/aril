@@ -100,10 +100,19 @@ export function StudioContent(props: StudioContentProps) {
             update={(design) => change((w) => ({ ...w, design }))}
           />
         )}
+        {view === 'notes' && (
+          <StudioNotes
+            key={props.studio.id}
+            workspace={workspace}
+            change={change}
+            workspaceId={props.studio.id}
+            profileId={multiplayer.profile.id}
+            peers={multiplayer.peers}
+            sendPresence={sendPresence}
+            followed={followed}
+          />
+        )}
       </Suspense>
-      {view === 'notes' && (
-        <StudioNotes workspace={workspace} change={change} />
-      )}
       <footer className="statusbar">
         <span>
           <span className="small-dot" />

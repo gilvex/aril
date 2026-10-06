@@ -44,3 +44,7 @@ The new `agent_credentials` table is additive in SQLite and Postgres. No studio 
 ## Validation
 
 `pnpm test` covers an actual SDK client/stdio server handshake, reads and edits against a temporary SQLite instance, scope/expiry/revocation, account-route isolation, ownership checks, stale writes, idempotency, graph validation, history attribution, and absence of plaintext tokens in the database. The optional `POSTGRES_TEST_URL` suite uses an isolated schema and verifies cross-instance credential access/revocation. Never use production planning documents as test fixtures.
+
+## Notebook paths
+
+The original note remains accessible through `["notes"]`, and its optional title through `["notesTitle"]`. Additional notebook entries are returned in the `documents` array; operations address them by ID: `["documents", id]`, `["documents", id, "title"]`, or `["documents", id, "body"]`. Creating an entry supplies `{ id, title, body }`; `project-notes` is reserved for the original note. IDs are limited to 90 characters, titles to 120, and bodies to 50,000. Current schema is available through `get_schema`. Legacy notes edits preserve additional documents.

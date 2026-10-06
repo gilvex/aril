@@ -12,6 +12,9 @@ export function createDesignBoardModel(initial: DesignBoardState) {
   })
   const getSnapshot = () => selectDesignBoard(store.getState())
   const actions = {
+    patch: (value: Partial<DesignBoardState>) => {
+      store.dispatch(designBoardSlice.actions.patch(value))
+    },
     setTab: (
       value:
         | DesignBoardState['tab']

@@ -41,3 +41,11 @@ Requirements use one compact toolbar and shared search/area/status/priority filt
 Board view groups the same requirements by status or priority. Drag a card between lanes or use its Move to control with a keyboard or touch screen; only the grouping field changes. Lane add buttons create an item in that group. Empty lanes remain available as drop targets. Selecting a card opens the same editor, with field-level collaborator presence and links to blueprint nodes.
 
 View, grouping and editor width are local preferences scoped to profile and workspace. Filters and selection are temporary and never broadcast as document changes. On phones, the detail editor fills the workspace with a Back to requirements button. The page uses the existing light/dark tokens and English/Russian catalogs.
+
+## Design workbench and notebook (October 2026)
+
+Design now opens directly onto a sample deployment screen, with a collapsible Styles panel. Accent, heading/body fonts, density, and direction notes are shared document settings. Sample screen, device, preview appearance, search, and server selection stay local to the mounted preview. Preview actions never call deployment services. The sample theme is independent of the studio appearance. Mobile Styles opens as an overlay panel.
+
+Notes now provides a searchable document list, Markdown editor, Edit/Split/Read modes, and a collapsible heading outline. On phones the list opens as a drawer and Split stacks editing above reading. Formatting preserves the text selection; links to boards and requirements open in a new tab so unfinished edits remain in place. Raw HTML is not rendered. Existing project notes are preserved as the first document and cannot be deleted from the UI; additional notes can be renamed, deleted, and recovered with Undo. No sample documents are inserted into existing workspaces.
+
+Both layouts use the studio's berry accent, existing variable fonts, semantic light/dark colors, and compact toolbars. Their working surfaces replace the former marketing headings and static explanation cards.

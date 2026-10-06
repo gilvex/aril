@@ -42,7 +42,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_workspace',
     {
       description:
-        'Read the connected workspace, current revision, board IDs, requirements, notes, and design direction. By default returns a compact overview; use full=true for all board nodes and edges.',
+        'Read the connected workspace, current revision, board IDs, requirements, original notes, notebook documents, and design settings. By default returns a compact overview; use full=true for all board nodes and edges.',
       inputSchema: z.object({ full: z.boolean().default(false) }),
       annotations: read,
     },

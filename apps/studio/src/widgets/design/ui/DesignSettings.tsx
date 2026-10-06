@@ -1,38 +1,45 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { Check } from 'lucide-react'
-
+import { Check, X } from 'lucide-react'
 import type { DesignSettingsProps } from '../types/designSettingsProps.ts'
+const fonts = ['Manrope', 'DM Sans', 'System', 'Georgia'] as const
 export function DesignSettings({
   colors,
   update,
   design,
+  close,
 }: DesignSettingsProps) {
   const { t } = useTranslation()
-
   return (
-    <div className="design-settings">
+    <aside className="design-style-panel">
+      <header>
+        <h2>{t('Styles')}</h2>
+        <button
+          className="icon-button"
+          aria-label={t('Close styles')}
+          onClick={close}
+        >
+          <X size={17} />
+        </button>
+      </header>
       <section>
-        <h3>
-          01 <span>{t('Color direction')}</span>
-        </h3>
-        <p>{t('See the accent on a real working screen.')}</p>
-        <div className="swatches">
-          {colors.map((c) => (
+        <h3>{t('Accent')}</h3>
+        <div className="design-color-options">
+          {colors.map((color) => (
             <button
-              key={c}
-              style={{ background: c }}
-              aria-label={t('Use accent {{value}}', { value: c })}
-              onClick={() => update({ ...design, accent: c })}
+              key={color}
+              style={{ background: color }}
+              aria-label={t('Use accent {{value}}', { value: color })}
+              aria-pressed={design.accent === color}
+              onClick={() => update({ ...design, accent: color })}
             >
-              {design.accent === c && <Check size={18} color="white" />}
+              {design.accent === color && <Check size={17} />}
             </button>
           ))}
         </div>
-        <label className="color-picker">
+        <label className="design-custom-color">
           {t('Custom accent')}
           <input
             type="color"
-            aria-label={t('Custom accent')}
             value={design.accent}
             onChange={(e) => update({ ...design, accent: e.target.value })}
           />
@@ -40,52 +47,64 @@ export function DesignSettings({
         </label>
       </section>
       <section>
-        <h3>
-          02 <span>{t('Room to breathe')}</span>
-        </h3>
+        <h3>{t('Typography')}</h3>
+        <label>
+          {t('Headings')}
+          <select
+            value={design.headingFont || 'Manrope'}
+            onChange={(e) =>
+              update({
+                ...design,
+                headingFont: e.target.value as typeof design.headingFont,
+              })
+            }
+          >
+            {fonts.map((font) => (
+              <option key={font}>{font}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          {t('Body text')}
+          <select
+            value={design.bodyFont || 'DM Sans'}
+            onChange={(e) =>
+              update({
+                ...design,
+                bodyFont: e.target.value as typeof design.bodyFont,
+              })
+            }
+          >
+            {fonts.map((font) => (
+              <option key={font}>{font}</option>
+            ))}
+          </select>
+        </label>
+      </section>
+      <section>
+        <h3>{t('Density')}</h3>
         <div className="segmented">
-          {(['Comfortable', 'Compact'] as const).map((d) => (
+          {(['Comfortable', 'Compact'] as const).map((density) => (
             <button
-              key={t(d)}
-              className={design.density === d ? 'active' : ''}
-              onClick={() => update({ ...design, density: d })}
+              key={density}
+              aria-pressed={design.density === density}
+              className={design.density === density ? 'active' : ''}
+              onClick={() => update({ ...design, density })}
             >
-              {d}
+              {t(density)}
             </button>
           ))}
         </div>
-        <p>
-          {t(
-            'Keep dense lists useful without making every screen feel crowded.',
-          )}
-        </p>
       </section>
-      <section>
-        <h3>
-          03 <span>{t('Type with purpose')}</span>
-        </h3>
-        <div className="type-sample">
-          {t('Aa')}{' '}
-          <span>
-            {t('Manrope')}
-            <br />
-            <small>{t('Headlines & structure')}</small>
-          </span>
-        </div>
-        <div className="body-sample">
-          {t('A familiar place for complex systems.')}
-          <small>{t('DM Sans · Interface & body')}</small>
-        </div>
-      </section>
-      <label>
+      <label className="design-direction">
         {t('Direction notes')}
         <textarea
-          rows={5}
+          rows={7}
           value={design.direction}
           maxLength={12000}
           onChange={(e) => update({ ...design, direction: e.target.value })}
         />
       </label>
-    </div>
+    </aside>
   )
 }

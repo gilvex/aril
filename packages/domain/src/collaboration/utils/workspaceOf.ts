@@ -24,5 +24,6 @@ export function workspaceOf(document: Json): Workspace {
     ...value,
     boards,
     requirements: Object.values(value.requirements as object),
+    documents: Object.values((value.documents || {}) as object),
   })
 }

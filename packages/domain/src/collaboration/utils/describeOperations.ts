@@ -20,7 +20,11 @@ export function describeOperations(operations: Operation[]): string {
     return 'Updated connections'
   if (operations.some((o) => o.path[0] === 'requirements'))
     return 'Updated requirements'
-  if (operations.some((o) => o.path[0] === 'notes'))
+  if (
+    operations.some((o) =>
+      ['notes', 'notesTitle', 'documents'].includes(o.path[0]),
+    )
+  )
     return 'Updated project notes'
   if (operations.some((o) => o.path[0] === 'design'))
     return 'Updated design direction'

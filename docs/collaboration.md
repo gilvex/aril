@@ -46,3 +46,9 @@ Sessions last 30 days. The server stores hashed opaque tokens, with an HttpOnly 
 SQLite additions preserve existing workspace data. Back up the complete data directory while the server is stopped. Live presence is transient; saved documents, profiles, and activity survive restart. Pending edits use per-tab sessionStorage and survive reload, but not closing that tab. Export a pending or conflicting draft before closing it. Existing older drafts are explicitly offered for download before continuing with the saved workspace.
 
 SQLite supports one process and up to 64 live connections. Vercel uses Postgres for saved documents and private Supabase WebSocket channels for transient presence, so collaborators can connect to different function instances without writing cursor rows. See accounts-and-deployment.md for authorization, reconnects, and setup. This is a trusted-team planning studio; deployment permissions, enterprise tenants, SSO and revocation remain separate work.
+
+### Notebook collaboration
+
+Additional notes merge by document ID and field. The original note remains in `notes`; its optional title is `notesTitle`. Additional entries use `documents: [{ id, title, body }]`, with at most 50 entries and 50,000 characters per body. Older documents need no database migration. Editing different documents merges; concurrent edits to one body retain the existing conflict/recovery behavior rather than merging characters.
+
+Transient note presence uses the existing selected-ID channel (`note:<id>` and `note-field:title` / `note-field:body`). It shows who is viewing or editing the selected document without writing database presence records. Following a participant also selects their note, but does not mirror scrolling or text cursors. The last selected note is a browser preference scoped to the profile and workspace. It is not part of shared undo/history.

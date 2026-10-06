@@ -126,7 +126,7 @@ export function useStudioController({
         view: view === 'canvas' ? canvasMode : view,
         boardId: view === 'canvas' ? board.id : null,
         cursor: null,
-        selected: [],
+        ...(view !== 'notes' ? { selected: [] } : {}),
         selectedEdges: [],
         camera: null,
         dragging: [],

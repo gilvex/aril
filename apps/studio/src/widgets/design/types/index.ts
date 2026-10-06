@@ -1,8 +1,4 @@
 export * from './designBoardProps.ts'
 export * from './designBoardState.ts'
 export * from './designPreviewProps.ts'
-export type { DesignPrinciplesProps } from './designPrinciplesProps.ts'
-export type { DesignServiceRowProps } from './designServiceRowProps.ts'
-export type { DesignServicesPreviewProps } from './designServicesPreviewProps.ts'
 export * from './designSettingsProps.ts'
-export type { DesignServiceRowHandlersProps } from './useDesignServiceRowHandlersProps.ts'

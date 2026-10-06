@@ -107,6 +107,8 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
           before: state.workspace.notes,
           after: 'Agent planning note',
         },
+        { path: ['documents', 'agent-note'], after: { id: 'agent-note', title: 'Recipe', body: 'Runtime → game layer → blueprint' } },
+        { path: ['notesTitle'], after: 'Project brief' },
       ],
     }
     assert.equal(
@@ -160,6 +162,8 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
     })
     assert.ok(!edited.isError, JSON.stringify(edited))
     assert.equal(instance.store.read().workspace.notes, 'Agent planning note')
+    assert.equal(instance.store.read().workspace.documents?.[0].title, 'Recipe')
+    assert.equal(instance.store.read().workspace.notesTitle, 'Project brief')
     assert.equal(instance.store.read().revision, state.revision + 1)
     const duplicate = await client.callTool({
       name: 'apply_changes',

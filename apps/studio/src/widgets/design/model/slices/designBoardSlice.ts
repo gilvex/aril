@@ -5,6 +5,9 @@ export const designBoardSlice = createSlice({
   name: 'designBoard',
   initialState: {} as DesignBoardState,
   reducers: {
+    patch: (state, action: PayloadAction<Partial<DesignBoardState>>) => {
+      Object.assign(state, action.payload)
+    },
     setTab: (state, action: PayloadAction<DesignBoardState['tab']>) => {
       state.tab = action.payload
     },

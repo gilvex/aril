@@ -30,9 +30,14 @@ Operation paths address collections **by ID**, even though read responses contai
 | Wireframe flow       | `["boards", boardId, "wireframe", "edges", edgeId]`     |
 | Requirement          | `["requirements", requirementId]`                       |
 | Project notes        | `["notes"]`                                             |
+| Project notes title  | `["notesTitle"]`                                        |
+| Notebook document    | `["documents", documentId]`                             |
+| Note body            | `["documents", documentId, "body"]`                     |
 | Design direction     | `["design", "direction"]`                               |
 
 An update includes the exact current `before` value and proposed `after`. Creation omits `before`; deletion omits `after`. Choose unique IDs for new items. Prefer editing a field over replacing its entire parent.
+
+The original project note remains in `notes`, with optional `notesTitle`. Additional `documents` contain `{ id, title, body }`; do not use the reserved ID `project-notes`. Notes support Markdown (50,000 characters per document, up to 50 additional documents). Design settings also support optional `headingFont` and `bodyFont`: `Manrope`, `DM Sans`, `System`, or `Georgia`. Read current values before editing them.
 
 Example title change (replace IDs, revision, UUID, and values from the actual read):
 

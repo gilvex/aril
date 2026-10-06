@@ -15,7 +15,16 @@ export function applyOperations(
   const doc = documentOf(workspace)
   const conflicts: string[] = []
   for (const op of operationsSchema.parse(operations) as Operation[]) {
-    if (!['boards', 'requirements', 'notes', 'design'].includes(op.path[0]))
+    if (
+      ![
+        'boards',
+        'requirements',
+        'notes',
+        'notesTitle',
+        'documents',
+        'design',
+      ].includes(op.path[0])
+    )
       throw new Error('Unsupported change path')
     let parent = doc as Record<string, Json>
     let missing = false

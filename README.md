@@ -35,8 +35,8 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 - Every board has a separate Wireframes section: resizable screen frames, text, buttons, inputs, cards, images and navigation blocks, labeled interaction arrows, and a click-through flow preview.
 - Drag nodes, connect handles, label connections, create boards, duplicate/delete nodes, and attach requirements.
 - Fifteen requirements derived from the product brief, with priorities, status, acceptance criteria, filtering, and links back to boards.
-- A design board with saved accent, density, and direction controls, plus an interactive sample interface.
-- Project notes, autosave, undo/redo, JSON import/export, and restoration of the last 30 saved revisions.
+- A design workbench with saved accent, typography, density, and direction controls; desktop/mobile and light/dark sample previews with server, activity, and access screens.
+- A searchable notebook with Markdown editing, split/reading views, heading outline, and links to boards and requirements. Existing project notes remain the first document. Autosave, undo/redo, JSON import/export, and restoration of the last 30 saved revisions cover every document.
 - Responsive navigation and canvas controls, labeled inputs, keyboard focus handling, and reduced-motion support.
 - Invite-only multiplayer: editable names and pictures, live cursors and selections, shared edits, and a durable team activity feed.
 - Create and switch between private workspaces; accept invitations into an existing profile. Documents, history and live presence are isolated per workspace.
