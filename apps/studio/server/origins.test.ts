@@ -15,6 +15,7 @@ test('custom and legacy domains work without admitting foreign hosts or origins'
     [
       'https://www.aril.studio',
       'https://arilapp.vercel.app',
+      'https://aril.gilgil.co',
       'https://pomegranate.gilgil.co',
       'https://pomegrenate.vercel.app',
     ],
@@ -38,6 +39,7 @@ test('custom and legacy domains work without admitting foreign hosts or origins'
       'aril.studio',
       'www.aril.studio',
       'arilapp.vercel.app',
+      'aril.gilgil.co',
       'pomegranate.gilgil.co',
       'pomegrenate.vercel.app',
     ]) {

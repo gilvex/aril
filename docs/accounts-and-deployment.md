@@ -60,3 +60,5 @@ The editor flushes pending changes first and stops the action if saving fails. I
 The existing Vercel project is now named `arilapp` (the project ID and connected repository are unchanged). Its branded Vercel address is `https://arilapp.vercel.app`. The configured custom domain `https://aril.studio` redirects to `https://www.aril.studio`; both are explicitly allowed by the application, alongside the legacy hosts.
 
 Google Auth Platform must list `https://www.aril.studio`, `https://aril.studio` and `https://arilapp.vercel.app` as Authorized JavaScript origins when those addresses are used for login. Existing linked users sign in again on each new origin; guest sessions and local browser preferences do not transfer across domains. No redirect URI is required by the current Google Identity Services ID-token flow.
+
+The additional `https://aril.gilgil.co` host is also allowed. The previous domains were removed from the Vercel project during the move; old links and MCP configurations should use `https://arilapp.vercel.app` or the configured custom domain. The MCP setup default now uses the branded Vercel address.

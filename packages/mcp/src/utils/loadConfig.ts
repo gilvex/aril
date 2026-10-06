@@ -7,7 +7,7 @@ export async function loadConfig(): Promise<AgentConfig> {
     return validateConfig({
       origin:
         process.env.POMEGRANATE_AGENT_ORIGIN ||
-        'https://pomegrenate.vercel.app',
+        'https://arilapp.vercel.app',
       token: process.env.POMEGRANATE_AGENT_TOKEN,
     })
   try {

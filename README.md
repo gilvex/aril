@@ -2,7 +2,7 @@
 
 A persistent, collaborative planning space for Aril: a future self-hostable, open-source deployment platform with a managed SaaS offering. Previously named Pomegranate.
 
-The product uses the Aril name and seed logo. Existing package names, environment variables, storage/session keys, database schema and MCP identifiers retain `pomegranate` for compatibility. Existing workspace names and user-authored documents are preserved. The Vercel project is `arilapp`, at https://arilapp.vercel.app. The custom domain https://aril.studio is supported once its DNS is configured; the original production domains remain supported for existing links and sessions.
+The product uses the Aril name and seed logo. Existing package names, environment variables, storage/session keys, database schema and MCP identifiers retain `pomegranate` for compatibility. Existing workspace names and user-authored documents are preserved. The Vercel project is `arilapp`, at https://arilapp.vercel.app. The custom domain https://aril.studio redirects to https://www.aril.studio; https://aril.gilgil.co is also supported. Sign in with your linked Google account when moving to a new domain.
 
 The pnpm monorepo contains:
 

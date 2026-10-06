@@ -14,7 +14,7 @@ try {
     if (
       (
         await input.question(
-          'Replace the existing Pomegranate MCP connection? [y/N] ',
+          'Replace the existing Aril MCP connection? [y/N] ',
         )
       ).toLowerCase() !== 'y'
     )
@@ -24,8 +24,8 @@ try {
   }
   origin =
     (
-      await input.question('Studio address [https://pomegrenate.vercel.app]: ')
-    ).trim() || 'https://pomegrenate.vercel.app'
+      await input.question('Studio address [https://arilapp.vercel.app]: ')
+    ).trim() || 'https://arilapp.vercel.app'
 } finally {
   input.close()
 }
