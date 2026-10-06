@@ -1,3 +1,4 @@
+import type { CanvasFullscreenControls } from '../model/use-canvas-fullscreen'
 import { useFollowViewport } from '../model/use-follow-viewport'
 import type { CameraPresence } from '../../../../domain/collaboration'
 import { CanvasChrome, type CanvasTool } from './CanvasChrome'
@@ -59,6 +60,7 @@ import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 const nodeTypes = { idea: IdeaNode }
 const edgeTypes = { smoothstep: SelectionEdge }
 type Props = {
+  full: CanvasFullscreenControls
   following: Presence | null
   navigation: ReactNode
   board: Board
@@ -81,6 +83,7 @@ type Props = {
   ) => void
 }
 export function CanvasBoard({
+  full,
   navigation,
   following,
   board,
@@ -121,42 +124,12 @@ export function CanvasBoard({
   const selected = selectedNodes.length === 1 ? selectedNodes[0].id : null
   const setSelected = (id: string | null) =>
     setSelectedIds(new Set(id ? [id] : []))
-  const [fullscreen, setFullscreen] = useState(false)
   const canvasRef = useRef<HTMLDivElement>(null)
-  const fullscreenButtonRef = useRef<HTMLButtonElement>(null)
-  useEffect(() => {
-    const syncFullscreen = () => {
-      setFullscreen(document.fullscreenElement === canvasRef.current)
-      if (!document.fullscreenElement) fullscreenButtonRef.current?.focus()
-    }
-    const escapeFullscreen = (event: KeyboardEvent) => {
-      if (fullscreen && event.key === 'Escape' && !document.fullscreenElement) {
-        setFullscreen(false)
-        fullscreenButtonRef.current?.focus()
-      }
-    }
-    document.addEventListener('fullscreenchange', syncFullscreen)
-    document.addEventListener('keydown', escapeFullscreen)
-    return () => {
-      document.removeEventListener('fullscreenchange', syncFullscreen)
-      document.removeEventListener('keydown', escapeFullscreen)
-    }
-  }, [fullscreen])
-  const toggleFullscreen = async () => {
-    if (fullscreen) {
-      if (document.fullscreenElement === canvasRef.current)
-        await document.exitFullscreen()
-      setFullscreen(false)
-      fullscreenButtonRef.current?.focus()
-    } else {
-      setFullscreen(true)
-      try {
-        await canvasRef.current?.requestFullscreen?.()
-      } catch {
-        /* Expanded viewport is the fallback for embedded browsers. */
-      }
-    }
-  }
+  const {
+    fullscreen,
+    button: fullscreenButtonRef,
+    toggle: toggleFullscreen,
+  } = full
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
   useEffect(() => {
     if (following) {

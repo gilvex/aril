@@ -57,7 +57,7 @@ import { routeWireframes, wireConnectionSides } from '../model/wire-routing'
 import { LiveCursors } from './LiveCursors'
 import { ResizableInspector } from './ResizableInspector'
 import { useLiveNodePositions } from '../model/use-live-node-positions'
-import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
+import type { CanvasFullscreenControls } from '../model/use-canvas-fullscreen'
 import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
 import { CanvasInsertMenu, type CanvasInsertPoint } from './CanvasInsertMenu'
 
@@ -74,6 +74,7 @@ const icons = {
 }
 const empty: Wireframe = { nodes: [], edges: [] }
 type Props = {
+  full: CanvasFullscreenControls
   following: Presence | null
   navigation: ReactNode
   board: Board
@@ -95,6 +96,7 @@ type Props = {
 }
 
 export function WireframeBoard({
+  full,
   navigation,
   following,
   board,
@@ -141,7 +143,6 @@ export function WireframeBoard({
     sendPresence,
   )
   const pendingFocus = useRef<string | null>(null)
-  const full = useCanvasFullscreen()
   const liveNodes = useLiveNodePositions(graph.nodes, peers, moving)
   const routes = useMemo(
     () => routeWireframes(liveNodes, graph.edges),
@@ -474,7 +475,6 @@ export function WireframeBoard({
 
   return (
     <div
-      ref={full.element}
       className={`canvas-page wireframe-page${full.fullscreen ? ' canvas-fullscreen' : ''}${preview ? ' wire-preview' : ''}`}
       onPointerDownCapture={() => {
         selectionBefore.current = selection

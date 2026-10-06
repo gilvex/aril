@@ -36,10 +36,6 @@ export function CanvasNavigation({
   const [open, setOpen] = useState(false)
   const [renaming, setRenaming] = useState(false)
   const [name, setName] = useState(board.name)
-  const openBoardDialog = async (action: () => void) => {
-    if (document.fullscreenElement) await document.exitFullscreen()
-    action()
-  }
   const root = useRef<HTMLDivElement>(null)
   const toggle = useRef<HTMLButtonElement>(null)
   useEffect(() => {
@@ -138,7 +134,7 @@ export function CanvasNavigation({
             <button
               onClick={() => {
                 setOpen(false)
-                void openBoardDialog(onNew)
+                onNew()
               }}
             >
               <Plus size={15} />
@@ -182,7 +178,7 @@ export function CanvasNavigation({
               disabled={boards.length < 2}
               onClick={() => {
                 setOpen(false)
-                void openBoardDialog(onDelete)
+                onDelete()
               }}
             >
               <Trash2 size={15} />

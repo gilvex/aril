@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
+// Own this at the stable studio root, outside keyed/lazy board components.
 export function useCanvasFullscreen() {
   const element = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
@@ -39,3 +40,8 @@ export function useCanvasFullscreen() {
   }
   return { element, button, fullscreen, toggle }
 }
+
+export type CanvasFullscreenControls = Pick<
+  ReturnType<typeof useCanvasFullscreen>,
+  'button' | 'fullscreen' | 'toggle'
+>

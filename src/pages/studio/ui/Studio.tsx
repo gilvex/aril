@@ -1,3 +1,4 @@
+import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
 import { CanvasNavigation } from './CanvasNavigation'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
@@ -21,6 +22,7 @@ import {
   FileJson,
   RotateCcw,
   MoreHorizontal,
+  Minimize2,
 } from 'lucide-react'
 import {
   downloadJson,
@@ -71,6 +73,7 @@ export function Studio({
   studio: StudioSummary
   onWorkspaces: (profile: Profile) => void
 }) {
+  const full = useCanvasFullscreen()
   const state = useWorkspace(initial, studio.id, initialProfile.id, recovery)
   const multiplayer = useMultiplayer(initialProfile, state.receive, studio.id)
   const { workspace, change } = state
@@ -324,7 +327,8 @@ export function Studio({
   }
   return (
     <div
-      className={`studio-shell canvas-first top-navigation${followed ? ' is-following' : ''}`}
+      ref={full.element}
+      className={`studio-shell canvas-first top-navigation${full.fullscreen ? ' studio-fullscreen' : ''}${followed ? ' is-following' : ''}`}
       onPointerDownCapture={(event) => {
         if (
           followId &&
@@ -534,6 +538,17 @@ export function Studio({
             </div>
           )}
           <div className="topbar-actions">
+            {full.fullscreen && view !== 'canvas' && (
+              <button
+                ref={full.button}
+                className="icon-button"
+                aria-label="Exit fullscreen"
+                title="Exit fullscreen (Esc)"
+                onClick={() => void full.toggle()}
+              >
+                <Minimize2 size={18} />
+              </button>
+            )}
             <button
               className={`save-indicator ${state.saveState}`}
               onClick={() => void state.flush()}
@@ -645,6 +660,7 @@ export function Studio({
               }
             >
               <BoardCanvas
+                full={full}
                 key={board.id + ':' + canvasMode}
                 following={
                   followed?.boardId === board.id &&
