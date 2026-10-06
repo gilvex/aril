@@ -1,3 +1,4 @@
+import { agentCredentials, agentTable } from './agent-credentials.ts'
 import { Pool, type PoolClient, type QueryResultRow } from 'pg'
 import { readFileSync } from 'node:fs'
 import { randomBytes, randomUUID, createHash } from 'node:crypto'
@@ -101,6 +102,7 @@ export async function openPostgres(
         CREATE TABLE IF NOT EXISTS studio.accounts (subject TEXT PRIMARY KEY,user_id TEXT NOT NULL UNIQUE REFERENCES studio.profiles(id),email TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS studio.auth_challenges (token_hash TEXT PRIMARY KEY,nonce TEXT NOT NULL,user_id TEXT,expires_at BIGINT NOT NULL);
         CREATE TABLE IF NOT EXISTS studio.transfers (token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES studio.profiles(id),expires_at BIGINT NOT NULL);
+${agentTable}
         CREATE TABLE IF NOT EXISTS studio.migrations (id TEXT PRIMARY KEY);
         CREATE INDEX IF NOT EXISTS activity_workspace ON studio.studio_activity(workspace_id,id);`,
         [],
@@ -177,6 +179,9 @@ export async function openPostgres(
     }
   }
   const store = {
+    agents: agentCredentials(
+      async (text, values) => (await query(text, values)).rows,
+    ),
     read,
     save: async (
       workspace: Workspace,

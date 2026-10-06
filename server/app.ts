@@ -1,3 +1,4 @@
+import { installAgentApi, installAgentManagement } from './agent-api.ts'
 import express from 'express'
 import { z } from 'zod'
 import { resolve } from 'node:path'
@@ -62,13 +63,11 @@ export function createApplication<T extends Store>(
       ['PATCH', 'PUT'].includes(req.method) &&
       req.get(writeVersionHeader) !== writeVersion
     ) {
-      res
-        .status(428)
-        .json({
-          code: 'CLIENT_UPDATE_REQUIRED',
-          error:
-            'This page is out of date. Export any unsaved edits, then reload to use the current editor. The shared workspace has not been changed.',
-        })
+      res.status(428).json({
+        code: 'CLIENT_UPDATE_REQUIRED',
+        error:
+          'This page is out of date. Export any unsaved edits, then reload to use the current editor. The shared workspace has not been changed.',
+      })
       return
     }
     next()
@@ -76,7 +75,11 @@ export function createApplication<T extends Store>(
   app.get('/api/health', async (_req, res) => {
     res.json({ ok: true })
   })
+  installAgentApi(app, store, (event, data, id) =>
+    collaboration.broadcast(event, data, id),
+  )
   const collaboration = installCollaboration(app, store, publicOrigin)
+  installAgentManagement(app, store)
   app.get('/api/workspace', async (_req, res) => {
     res.json(await store.read(res.locals.workspaceId))
   })

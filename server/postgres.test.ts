@@ -51,6 +51,45 @@ test(
       })
     try {
       const owner = (await a.identity.bootstrap())!
+      const agent = await a.agents.create(
+        owner.profile.id,
+        'default',
+        'PG agent',
+        'write',
+        30,
+      )
+      assert.equal(
+        (await b.agents.authenticate(agent.token))?.workspaceId,
+        'default',
+      )
+      assert.equal(
+        (await b.agents.list(owner.profile.id, 'default'))[0].name,
+        'PG agent',
+      )
+      const agentRead = await call(1, '/api/agent/workspace', agent.token)
+      assert.equal(agentRead.status, 200)
+      const agentState = await a.read()
+      const agentEdit = await call(
+        1,
+        '/api/agent/workspace',
+        agent.token,
+        'PATCH',
+        {
+          baseRevision: agentState.revision,
+          requestId: randomUUID(),
+          operations: [
+            {
+              path: ['notes'],
+              before: agentState.workspace.notes,
+              after: 'PG agent test',
+            },
+          ],
+        },
+      )
+      assert.equal(agentEdit.status, 200)
+      assert.equal((await a.read()).workspace.notes, 'PG agent test')
+      await a.agents.revoke(agent.credential.id, owner.profile.id, 'default')
+      assert.equal(await b.agents.authenticate(agent.token), undefined)
       const invitation = await a.identity.invite(owner.profile.id)
       const races = await Promise.all([
         a.identity.join(invitation.token, 'Sam'),
@@ -131,8 +170,8 @@ test(
       const current = await b.read()
       assert.equal(current.workspace.notes, 'A’s notes')
       assert.equal(current.workspace.design.direction, 'B’s design')
-      assert.equal(current.revision, 3)
-      assert.equal((await b.history()).length, 2)
+      assert.equal(current.revision, original.revision + 2)
+      assert.equal((await b.history()).length, current.revision - 1)
       const reqId = randomUUID(),
         operations = diffWorkspace(current.workspace, {
           ...current.workspace,
@@ -150,7 +189,7 @@ test(
           operations,
         }),
       ])
-      assert.equal((await a.read()).revision, 4)
+      assert.equal((await a.read()).revision, current.revision + 1)
       const transfer = await a.createTransfer(peer.profile.id)
       const redeemed = await call(1, '/api/auth/transfer', '', 'POST', {
         token: transfer,
@@ -201,7 +240,10 @@ test(
           clearTimeout(timeout)
         }
       }
-      await next('workspace', (value) => (value as Envelope).revision === 4)
+      await next(
+        'workspace',
+        (value) => (value as Envelope).revision === current.revision + 1,
+      )
       const presence = {
         clientId,
         boardId: current.workspace.boards[0].id,

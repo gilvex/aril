@@ -81,3 +81,7 @@ Integration tests exercise real HTTP requests, two live event streams, and tempo
 - [Installed skills and provenance](docs/skills.md)
 
 The project-local Juxtopposed-inspired skill is unofficial; it is not a skill authored or endorsed by Juxtopposed. The open-source license for Pomegranate is still to be selected.
+
+## MCP and companion skill
+
+Other chats can read and edit a workspace through the local MCP server and Pomegranate studio skill. Open **Workspace actions → Agent access** to create a scoped credential, then follow [Agent integration](docs/agent-integration.md). Agent edits use the same freshness checks, history, and live updates as browser edits.

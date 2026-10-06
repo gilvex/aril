@@ -101,3 +101,10 @@ This update supersedes the deployment blockers recorded above.
 ## Dark appearance (2026-10-06)
 
 Lint, the existing test suite (20 passed, optional Postgres test skipped), and production build pass. Browser checks use an isolated SQLite fixture: desktop blueprint, node inspector, requirements, design study and recipe wireframe preview; 390px mobile More sheet; Light/Dark/System selection; saved Dark survives reload. No production planning content is used as a test write target.
+
+## MCP and planning skill (2026-10-06)
+
+- Lint and production build pass. The normal suite passes 22 tests; the optional Postgres suite also passed separately against a generated isolated schema, including agent edits and cross-instance revocation. Live planning documents were not used as fixtures.
+- A real MCP SDK client launched the stdio server and read/edited a temporary studio. Checks cover readonly and workspace isolation, expiration, revocation, credential ownership, blocked account routes, stale revisions, idempotent retries, invalid graphs, activity/history, and hashed credential storage.
+- Browser verification on a separate SQLite fixture: desktop Agent access opens, creates a read/write connection and revokes it. Mobile More exposes the same dialog and fits at 390px width. The companion skill passes the official quick validator.
+- Connection uses local stdio plus HTTPS API access; remote OAuth MCP clients are outside this implementation.

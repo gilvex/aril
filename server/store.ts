@@ -1,3 +1,4 @@
+import { agentCredentials, agentTable } from './agent-credentials.ts'
 import { DatabaseSync } from 'node:sqlite'
 import { randomUUID } from 'node:crypto'
 import { mkdirSync } from 'node:fs'
@@ -23,6 +24,15 @@ export function openStore(path: string) {
     CREATE TABLE IF NOT EXISTS studio_activity (id INTEGER PRIMARY KEY AUTOINCREMENT, workspace_id TEXT NOT NULL, user_id TEXT NOT NULL, name TEXT NOT NULL, message TEXT NOT NULL, created_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS studio_receipts (workspace_id TEXT NOT NULL, id TEXT NOT NULL, revision INTEGER NOT NULL, PRIMARY KEY(workspace_id,id));
     CREATE TABLE IF NOT EXISTS studio_migrations (id TEXT PRIMARY KEY);`)
+  db.exec(agentTable.replaceAll('studio.', ''))
+  const agents = agentCredentials(async (sql, values) => {
+    const statement = db.prepare(
+      sql.replaceAll('studio.', '').replace(/\$\d+/g, '?'),
+    )
+    if (sql.trimStart().startsWith('SELECT')) return statement.all(...values)
+    statement.run(...values)
+    return []
+  })
   const identity = identityStore(db)
   if (
     !db
@@ -152,6 +162,7 @@ export function openStore(path: string) {
     read,
     save,
     identity,
+    agents,
     member: (userId: string, workspaceId: string) =>
       !!db
         .prepare('SELECT 1 FROM members WHERE user_id=? AND workspace_id=?')

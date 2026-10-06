@@ -1,3 +1,4 @@
+import { AgentAccess } from './AgentAccess'
 import { ThemePicker } from '../../../shared/ui/ThemePicker'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
 import { CanvasNavigation } from './CanvasNavigation'
@@ -151,7 +152,14 @@ export function Studio({
     recovery ? 'Recovered unsaved edits from this tab.' : '',
   )
   const [modal, setModal] = useState<
-    'new' | 'history' | 'delete' | 'import' | 'export' | 'reload' | null
+    | 'new'
+    | 'history'
+    | 'delete'
+    | 'import'
+    | 'export'
+    | 'reload'
+    | 'agents'
+    | null
   >(null)
   const [boardName, setBoardName] = useState('')
   const [pendingImport, setPendingImport] = useState<Workspace | null>(null)
@@ -406,6 +414,15 @@ export function Studio({
               <ActivityIcon size={18} />
               Team activity
             </button>
+            <button
+              onClick={() => {
+                setSidebarOpen(false)
+                setModal('agents')
+              }}
+            >
+              <Workflow size={18} />
+              Agent access
+            </button>
             <span>Tools</span>
             <button disabled={!state.canUndo} onClick={state.undo}>
               <Undo2 size={18} />
@@ -524,6 +541,10 @@ export function Studio({
                   >
                     <ActivityIcon size={16} />
                     Team activity
+                  </button>
+                  <button onClick={() => setModal('agents')}>
+                    <Workflow size={16} />
+                    Agent access
                   </button>
                   <ThemePicker />
                   <span className="overflow-group-label">Tools</span>
@@ -883,6 +904,7 @@ export function Studio({
             >
               <X size={18} />
             </button>
+            {modal === 'agents' && <AgentAccess workspaceId={studio.id} />}
             {modal === 'reload' && (
               <>
                 <h2 id="modal-title">Reload the saved workspace?</h2>

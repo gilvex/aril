@@ -3136,3 +3136,17 @@ code {
   background: var(--canvas, #f8f6fb);
 }
 .studio-fullscreen > .modal-backdrop { z-index: 120; }
+
+.agent-access form, .agent-access label { display: grid; gap: 8px; }
+.agent-access form { gap: 16px; margin: 20px 0; }
+.agent-access label { font-size: 13px; }
+.agent-access input, .agent-access select { width: 100%; min-width: 0; }
+.agent-access-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.agent-secret { border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 16px 0; }
+.agent-secret .button { margin-top: 10px; }
+.agent-setup { margin: 20px 0; }
+.agent-setup summary { cursor: pointer; }
+.agent-setup code { overflow-wrap: anywhere; }
+.agent-credentials { list-style: none; padding: 0; }
+.agent-credentials li { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.agent-credentials small { display: block; margin-top: 4px; }
