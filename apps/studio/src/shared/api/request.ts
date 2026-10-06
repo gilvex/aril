@@ -1,8 +1,9 @@
 import { ApiError } from '@/shared/api/apiError.ts'
+import { apiFetch } from './apiFetch.ts'
 import { authHeaders } from '@/shared/api/authHeaders.ts'
 import { writeVersion, writeVersionHeader } from '@pomegranate/domain/freshness'
 export async function request<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
+  const response = await apiFetch(url, {
     ...init,
     headers: {
       ...authHeaders(),

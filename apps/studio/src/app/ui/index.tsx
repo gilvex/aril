@@ -7,3 +7,9 @@ export { LoginHeader } from './LoginHeader.tsx'
 export { LoginBlueprint } from './LoginBlueprint.tsx'
 export { LoginInvitation } from './LoginInvitation.tsx'
 export { SessionChangedScreen } from './SessionChangedScreen.tsx'
+
+export { DemoEntry } from './DemoEntry.tsx'
+
+export { DemoBanner } from './DemoBanner.tsx'
+
+export { DemoGuide } from './DemoGuide.tsx'

@@ -8,6 +8,7 @@ import type { JoinStudioScreenProps } from '../types/joinStudioScreenProps.ts'
 import { LoginHeader } from './LoginHeader.tsx'
 import { LoginBlueprint } from './LoginBlueprint.tsx'
 import { LoginInvitation } from './LoginInvitation.tsx'
+import { DemoEntry } from './DemoEntry.tsx'
 import './loginScreen.css'
 
 export function JoinStudioScreen(props: JoinStudioScreenProps) {
@@ -65,6 +66,7 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
               {t('Try again')}
             </button>
           )}
+          {!profile && <DemoEntry />}
         </section>
         <LoginBlueprint />
       </main>

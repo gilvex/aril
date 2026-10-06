@@ -7,3 +7,5 @@ export type { AppHandlersProps } from './useAppHandlersProps.ts'
 export type { JoinStudioFormHandlersProps } from './useJoinStudioFormHandlersProps.ts'
 export type { JoinStudioScreenHandlersProps } from './useJoinStudioScreenHandlersProps.ts'
 export type { StaleDraftScreenHandlersProps } from './useStaleDraftScreenHandlersProps.ts'
+
+export type { DemoState } from './demoState.ts'

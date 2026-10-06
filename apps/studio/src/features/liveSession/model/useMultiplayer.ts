@@ -2,6 +2,7 @@ import { connectLiveSession } from '@/features/liveSession/model/iterators/conne
 import { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
 import { useMultiplayerModel } from '@/features/liveSession/model/useMultiplayerModel.ts'
 import { authHeaders } from '@/shared/api/authHeaders.ts'
+import { apiFetch } from '@/shared/api/apiFetch.ts'
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import type {
@@ -129,7 +130,7 @@ export function useMultiplayer(
     }
     const connect = async () => {
       try {
-        const response = await fetch(`/api/events?clientId=${clientId}`, {
+        const response = await apiFetch(`/api/events?clientId=${clientId}`, {
           headers: { ...authHeaders(), ...workspaceHeaders(workspaceId) },
           signal: controller.signal,
         })

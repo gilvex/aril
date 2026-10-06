@@ -702,5 +702,22 @@
   "Sign in to Aril": "Войти в Aril",
   "Continue with your linked Google account.": "Продолжите со связанным аккаунтом Google.",
   "Join with an invitation": "Войти по приглашению",
-  "Ask a workspace member for an invitation.": "Попросите участника пространства пригласить вас."
+  "Ask a workspace member for an invitation.": "Попросите участника пространства пригласить вас.",
+  "Try demo": "Открыть демо",
+  "No sign-in. A complete project you can edit and explore.": "Без входа. Готовый проект, который можно изучать и редактировать.",
+  "Demo workspace": "Демонстрационное пространство",
+  "Demo": "Демо",
+  "Saved in this tab · simulated teammates": "Сохранено в этой вкладке · участники симулируются",
+  "Reset demo": "Сбросить демо",
+  "Exit demo": "Выйти из демо",
+  "Explore features": "Возможности",
+  "Demo guide": "Обзор демо",
+  "Reset this demo? Your demo edits will be removed. Real workspaces are not affected.": "Сбросить демо? Ваши изменения в демо будут удалены. Реальные пространства не изменятся.",
+  "Edit nodes, link requirements, and move a group with Ctrl / Cmd.": "Редактируйте узлы, связывайте требования и перемещайте группы с Ctrl / Cmd.",
+  "Explore six connected screens. Use Preview flow to click through.": "Изучите шесть связанных экранов. Откройте предпросмотр сценария для переходов по кнопкам.",
+  "Try status and priority boards, filters, and bulk edits.": "Попробуйте доски статусов и приоритетов, фильтры и массовое редактирование.",
+  "Compare colors, fonts, density, and mobile previews.": "Сравните цвета, шрифты, плотность и мобильные варианты.",
+  "Read the guide, edit Markdown, or add your own document.": "Прочитайте руководство, редактируйте Markdown или добавьте документ.",
+  "Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.": "Откройте участников, чтобы следовать за симулируемым коллегой. Попробуйте отмену, историю и экспорт в меню пространства.",
+  "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.": "Это локальное демо. Войдите вне демо, чтобы подключить аккаунт или пригласить настоящих участников."
 }

@@ -1,4 +1,5 @@
 import { LoadingStatus } from '@/shared/ui/index.tsx'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useAccountConnectionHandlers } from '../model/useAccountConnectionHandlers.tsx'
 
@@ -28,6 +29,14 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
   }, [refresh])
 
   const { handleSuccess } = useAccountConnectionHandlers({ onProfile, refresh })
+  if (isDemoMode())
+    return (
+      <p className="collaboration-hint">
+        {t(
+          'This is a local demo. Sign in outside the demo to connect an account or invite real teammates.',
+        )}
+      </p>
+    )
   return (
     <section className="account-connection">
       <strong>{t('Keep your access')}</strong>

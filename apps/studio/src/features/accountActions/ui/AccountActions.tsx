@@ -4,10 +4,17 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useAccountActions } from '../model/useAccountActions.ts'
 import type { AccountActionsProps } from '../types/accountActionsProps.ts'
 import './accountActions.css'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 
 export function AccountActions(props: AccountActionsProps) {
   const { t } = useTranslation()
   const state = useAccountActions(props)
+  if (isDemoMode())
+    return (
+      <a className="button" href="/">
+        {t('Exit demo')}
+      </a>
+    )
   return (
     <section className="account-actions" aria-label={t('Account actions')}>
       <div className="account-actions-buttons">

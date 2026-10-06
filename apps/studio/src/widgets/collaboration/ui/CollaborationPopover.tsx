@@ -1,4 +1,5 @@
 import { Spinner } from '@/shared/ui/index.tsx'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AccountConnection } from '@/widgets/collaboration/ui/AccountConnection.tsx'
@@ -89,7 +90,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
           />
           <button
             className="button primary"
-            disabled={busy}
+            disabled={busy || isDemoMode()}
             onClick={createInvite}
           >
             {busy ? <Spinner /> : <Link size={14} />}
@@ -112,7 +113,9 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
           )}
           <p className="collaboration-hint">
             {t(
-              'Invitees can edit this workspace and invite others. Share the address of the hosted studio when joining from another device.',
+              isDemoMode()
+                ? 'This is a local demo. Sign in outside the demo to connect an account or invite real teammates.'
+                : 'Invitees can edit this workspace and invite others. Share the address of the hosted studio when joining from another device.',
             )}
           </p>
         </>

@@ -1,4 +1,5 @@
 import { sessionRequestState } from '@/app/config/sessionRequestState.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { rememberWorkspaceVisit } from '@/shared/utils/rememberWorkspaceVisit.ts'
 import { createAppState } from '@/app/model/createAppState.ts'
 import { useAppModel } from '@/app/model/useAppModel.ts'
@@ -132,7 +133,8 @@ export function useAppController() {
             sessionStorage.setItem(key, raw)
             if (studio.id === 'default') sessionStorage.removeItem(draftKey)
           }
-          const old = localStorage.getItem('pomegranate-studio-draft-v1')
+          const old =
+            !isDemoMode() && localStorage.getItem('pomegranate-studio-draft-v1')
           if (old && !raw)
             setLegacy(workspaceSchema.parse(JSON.parse(old).workspace))
         } catch {

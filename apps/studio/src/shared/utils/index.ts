@@ -9,3 +9,5 @@ export { subscribe } from '@/shared/utils/themeSubscribe.ts'
 export { subscribe as useCompactLayoutSubscribe } from '@/shared/utils/useCompactLayoutSubscribe.ts'
 export { readWorkspaceVisits } from './readWorkspaceVisits.ts'
 export { rememberWorkspaceVisit } from './rememberWorkspaceVisit.ts'
+
+export { isDemoMode } from './isDemoMode.ts'

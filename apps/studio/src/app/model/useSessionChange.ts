@@ -2,9 +2,11 @@ import { useEffect, useSyncExternalStore } from 'react'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import { sessionChangeKey } from '@/shared/config/sessionChangeKey.ts'
 import { sessionChangeStore, sessionChanged } from './sessionChangeStore.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 
 export function useSessionChange() {
   useEffect(() => {
+    if (isDemoMode()) return
     const change = (event: StorageEvent) => {
       if (
         event.storageArea === localStorage &&

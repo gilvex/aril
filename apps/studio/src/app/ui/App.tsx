@@ -1,4 +1,7 @@
 import { Studio } from '@/pages/studio/index.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
+import { DemoBanner } from './DemoBanner.tsx'
+import './demo.css'
 import { useSessionChange } from '../model/useSessionChange.ts'
 import { SessionChangedScreen } from './SessionChangedScreen.tsx'
 import { WorkspaceHome } from '@/pages/workspaces/index.ts'
@@ -105,7 +108,11 @@ export function App() {
     )
   return (
     <>
-      <div className="app-content" inert={loading && !sessionChanged}>
+      <div
+        className={`app-content${isDemoMode() ? ' demo-mode' : ''}`}
+        inert={loading && !sessionChanged}
+      >
+        {isDemoMode() && <DemoBanner />}
         {sessionChanged ? <SessionChangedScreen /> : content}
       </div>
       <InitialLoadingScreen loading={loading && !sessionChanged} />

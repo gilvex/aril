@@ -702,5 +702,22 @@
   "Sign in to Aril": "Sign in to Aril",
   "Continue with your linked Google account.": "Continue with your linked Google account.",
   "Join with an invitation": "Join with an invitation",
-  "Ask a workspace member for an invitation.": "Ask a workspace member for an invitation."
+  "Ask a workspace member for an invitation.": "Ask a workspace member for an invitation.",
+  "Try demo": "Try demo",
+  "No sign-in. A complete project you can edit and explore.": "No sign-in. A complete project you can edit and explore.",
+  "Demo workspace": "Demo workspace",
+  "Demo": "Demo",
+  "Saved in this tab · simulated teammates": "Saved in this tab · simulated teammates",
+  "Reset demo": "Reset demo",
+  "Exit demo": "Exit demo",
+  "Explore features": "Explore features",
+  "Demo guide": "Demo guide",
+  "Reset this demo? Your demo edits will be removed. Real workspaces are not affected.": "Reset this demo? Your demo edits will be removed. Real workspaces are not affected.",
+  "Edit nodes, link requirements, and move a group with Ctrl / Cmd.": "Edit nodes, link requirements, and move a group with Ctrl / Cmd.",
+  "Explore six connected screens. Use Preview flow to click through.": "Explore six connected screens. Use Preview flow to click through.",
+  "Try status and priority boards, filters, and bulk edits.": "Try status and priority boards, filters, and bulk edits.",
+  "Compare colors, fonts, density, and mobile previews.": "Compare colors, fonts, density, and mobile previews.",
+  "Read the guide, edit Markdown, or add your own document.": "Read the guide, edit Markdown, or add your own document.",
+  "Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.": "Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.",
+  "This is a local demo. Sign in outside the demo to connect an account or invite real teammates.": "This is a local demo. Sign in outside the demo to connect an account or invite real teammates."
 }

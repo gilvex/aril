@@ -1,8 +1,13 @@
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import { sessionChangeKey } from '@/shared/config/sessionChangeKey.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import type { AccountAction } from '../types/accountAction.ts'
 
 export function finishLogout(mode: AccountAction) {
+  if (isDemoMode()) {
+    location.assign('/')
+    return
+  }
   try {
     window.google?.accounts.id.disableAutoSelect?.()
   } catch {
