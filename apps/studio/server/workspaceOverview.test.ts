@@ -15,6 +15,9 @@ test('workspace overviews are membership-scoped and expose bounded diagram metad
   const url = `http://127.0.0.1:${(server.address() as { port: number }).port}`
   try {
     const owner = store.identity.bootstrap()!
+    const avatar =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jB6kAAAAASUVORK5CYII='
+    store.identity.update(owner.profile.id, owner.profile.name, avatar)
     const privateStudio = store.createStudio(
       owner.profile.id,
       'Private workspace',
@@ -44,10 +47,21 @@ test('workspace overviews are membership-scoped and expose bounded diagram metad
       'y',
     ])
     assert.deepEqual(Object.keys(overview[0].members[0]).sort(), [
+      'avatar',
       'color',
       'id',
       'name',
     ])
+    assert.equal(
+      overview[0].members.find((member) => member.id === owner.profile.id)
+        ?.avatar,
+      avatar,
+    )
+    assert.equal(
+      overview[0].members.find((member) => member.id === invited.profile.id)
+        ?.avatar,
+      '',
+    )
     assert.equal(JSON.stringify(overview).includes(privateStudio.id), false)
     const all = store.studioOverviews(owner.profile.id)
     assert.equal(all.find((s) => s.id === privateStudio.id)?.nodes.length, 0)

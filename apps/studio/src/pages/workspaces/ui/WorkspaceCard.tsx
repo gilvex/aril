@@ -53,7 +53,7 @@ export const WorkspaceCard = memo(function WorkspaceCard({
             title={studio.members.map((member) => member.name).join(', ')}
           >
             {studio.members.map((member) => (
-              <Avatar key={member.id} profile={{ ...member, avatar: '' }} />
+              <Avatar key={member.id} profile={member} />
             ))}
             {studio.memberCount > 3 && (
               <span className="workspace-member-more">

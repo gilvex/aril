@@ -84,7 +84,7 @@
   .workspace-library .workspace-card h2 { font-size: 14px; flex-basis: 100%; }
   .workspace-card-title .workspace-open-icon { display: none; }
   .workspace-card-meta { margin-top: 9px; min-height: 0; font-size: 10px; line-height: 1.5; }
-  .workspace-members { display: none; }
+  .workspace-members .person-avatar, .workspace-member-more { width: 23px; height: 23px; font-size: 8px; }
   .workspace-library-footer { position: sticky; bottom: 0; flex-shrink: 0; padding: 12px 20px max(20px, env(safe-area-inset-bottom)); background: var(--canvas, #f8f7fa); border-top: 1px solid var(--line); }
   .workspace-library-footer .workspace-create-mobile { display: flex; width: 100%; min-height: 48px; justify-content: center; }
   .workspace-library-footer .install-app { margin: 0 auto 10px; }
