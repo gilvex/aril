@@ -1,33 +1,16 @@
-import { X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
+import { useCallback } from 'react'
 import { requirementOptions } from '../config/requirementOptions.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
 export function RequirementsFilters({ model }: RequirementsViewProps) {
   const { t } = useTranslation()
-  const active =
-    model.category !== 'All areas' ||
-    model.status ||
-    model.priority ||
-    model.query
+  const reset = useCallback(
+    () =>
+      model.setViewState({ category: 'All areas', priority: '', status: '' }),
+    [model],
+  )
   return (
     <div className="requirements-filters">
-      {model.view === 'board' && (
-        <label>
-          {t('Group by')}
-          <select
-            aria-label={t('Group requirements by')}
-            value={model.groupBy}
-            onChange={(event) =>
-              model.setViewState({
-                groupBy: event.target.value as 'status' | 'priority',
-              })
-            }
-          >
-            <option value="status">{t('Status')}</option>
-            <option value="priority">{t('Priority')}</option>
-          </select>
-        </label>
-      )}
       <label>
         {t('Area')}
         <select
@@ -81,15 +64,15 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
           ))}
         </select>
       </label>
-      {active && (
-        <button className="button subtle" onClick={model.clearFilters}>
-          <X size={13} />
-          {t('Clear filters')}
-        </button>
-      )}
-      <span className="requirements-result-count" role="status">
-        {t('requirementCount', { count: model.results.length })}
-      </span>
+      <button
+        className="req-reset-filters"
+        disabled={
+          model.category === 'All areas' && !model.priority && !model.status
+        }
+        onClick={reset}
+      >
+        {t('Reset filters')}
+      </button>
     </div>
   )
 }

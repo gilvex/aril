@@ -631,5 +631,18 @@
   "No matching servers": "Серверы не найдены",
   "Restart sample": "Перезапустить пример",
   "3 instances": "3 экземпляра",
-  "Sample event {{number}}": "Пример события {{number}}"
+  "Sample event {{number}}": "Пример события {{number}}",
+  "Status board": "По статусу",
+  "Priority board": "По приоритету",
+  "Filters": "Фильтры",
+  "{{shown}} of {{total}} requirements": "Требований: {{shown}} из {{total}}",
+  "Active filters": "Активные фильтры",
+  "Remove area filter": "Убрать фильтр области",
+  "Remove priority filter": "Убрать фильтр приоритета",
+  "Remove status filter": "Убрать фильтр статуса",
+  "Clear search": "Очистить поиск",
+  "Reset filters": "Сбросить фильтры",
+  "Actions for {{id}}": "Действия для {{id}}",
+  "{{count}} hidden by filters": "Скрыто фильтрами: {{count}}",
+  "Add": "Добавить"
 }

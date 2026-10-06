@@ -2,6 +2,8 @@ import type { RequirementsState } from '../types/requirementsState.ts'
 import { readRequirementsPreference } from '../utils/readRequirementsPreference.ts'
 export function createRequirementsState(preferenceKey = ''): RequirementsState {
   return {
+    panel: null,
+    menuId: null,
     query: '',
     category: 'All areas',
     activity: null,

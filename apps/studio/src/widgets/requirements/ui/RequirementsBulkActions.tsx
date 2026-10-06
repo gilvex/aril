@@ -1,4 +1,5 @@
 import { useCallback, type ChangeEvent } from 'react'
+import { X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { requirementOptions } from '../config/requirementOptions.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
@@ -11,13 +12,22 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
     },
     [model],
   )
+  const hiddenCount = model.checkedIds.filter(
+    (id) => !model.results.some((item) => item.id === id),
+  ).length
   return (
     <div
       className="requirements-bulk"
+      role="group"
       aria-label={t('Bulk requirement actions')}
     >
       <strong>
         {t('{{count}} selected', { count: model.checkedIds.length })}
+        {!!hiddenCount && (
+          <small>
+            {t('{{count}} hidden by filters', { count: hiddenCount })}
+          </small>
+        )}
       </strong>
       {(['status', 'priority', 'category'] as const).map((field) => (
         <select
@@ -52,10 +62,11 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
         </select>
       ))}
       <button
-        className="button subtle"
+        className="icon-button"
+        aria-label={t('Clear selection')}
         onClick={() => model.setViewState({ checkedIds: [] })}
       >
-        {t('Clear selection')}
+        <X size={17} />
       </button>
     </div>
   )

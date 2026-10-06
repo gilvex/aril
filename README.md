@@ -34,7 +34,7 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 - Four editable starter diagrams: deployment blueprint, platform architecture, first deployment, and product structure.
 - Every board has a separate Wireframes section: resizable screen frames, text, buttons, inputs, cards, images and navigation blocks, labeled interaction arrows, and a click-through flow preview.
 - Drag nodes, connect handles, label connections, create boards, duplicate/delete nodes, and attach requirements.
-- Fifteen requirements derived from the product brief, with priorities, status, acceptance criteria, filtering, and links back to boards.
+- Fifteen requirements derived from the product brief, with compact list/status/priority views, on-demand search and filters, removable filter chips, and links back to boards. Cards support drag-and-drop or a keyboard/touch Move to control; bulk edits stay in a separate bottom bar and identify selections hidden by filters. Details include acceptance criteria and live collaborator activity.
 - A design workbench with saved accent, typography, density, and direction controls; desktop/mobile and light/dark sample previews with server, activity, and access screens.
 - A searchable notebook with Markdown editing, split/reading views, heading outline, and links to boards and requirements. Existing project notes remain the first document. Autosave, undo/redo, JSON import/export, and restoration of the last 30 saved revisions cover every document.
 - Responsive navigation and canvas controls, labeled inputs, keyboard focus handling, and reduced-motion support.

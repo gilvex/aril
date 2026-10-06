@@ -1,6 +1,8 @@
 import type { RequirementPresence } from '@pomegranate/domain/collaboration'
 import type { Requirement } from '@pomegranate/domain/workspace'
 export type RequirementsState = {
+  panel: 'filters' | 'search' | null
+  menuId: string | null
   query: string
   category: string
   activity: RequirementPresence | null

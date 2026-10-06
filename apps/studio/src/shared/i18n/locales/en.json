@@ -631,5 +631,18 @@
   "No matching servers": "No matching servers",
   "Restart sample": "Restart sample",
   "3 instances": "3 instances",
-  "Sample event {{number}}": "Sample event {{number}}"
+  "Sample event {{number}}": "Sample event {{number}}",
+  "Status board": "Status board",
+  "Priority board": "Priority board",
+  "Filters": "Filters",
+  "{{shown}} of {{total}} requirements": "{{shown}} of {{total}} requirements",
+  "Active filters": "Active filters",
+  "Remove area filter": "Remove area filter",
+  "Remove priority filter": "Remove priority filter",
+  "Remove status filter": "Remove status filter",
+  "Clear search": "Clear search",
+  "Reset filters": "Reset filters",
+  "Actions for {{id}}": "Actions for {{id}}",
+  "{{count}} hidden by filters": "{{count}} hidden by filters",
+  "Add": "Add"
 }

@@ -1,46 +1,54 @@
-import { Columns3, List, Plus, Search } from 'lucide-react'
+import { Columns3, List, Plus } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
+import { useRequirementsToolbar } from '../model/useRequirementsToolbar.ts'
+import { RequirementsCommands } from './RequirementsCommands.tsx'
+import { RequirementFilterChips } from './RequirementFilterChips.tsx'
 export function RequirementsToolbar({ model }: RequirementsViewProps) {
   const { t } = useTranslation()
+  const controls = useRequirementsToolbar({ model })
+  const value = model.view === 'list' ? 'list' : model.groupBy
   return (
     <header className="requirements-topbar">
-      <h1>
-        {t('Requirements')} <span>{model.workspace.requirements.length}</span>
-      </h1>
-      <div
-        className="requirements-view-toggle"
-        role="group"
-        aria-label={t('Requirements view')}
-      >
-        <button
-          aria-pressed={model.view === 'list'}
-          onClick={() => model.setViewState({ view: 'list' })}
+      <h1 className="visually-hidden">{t('Requirements')}</h1>
+      <div className="requirements-view-picker">
+        {model.view === 'list' ? <List size={16} /> : <Columns3 size={16} />}
+        <select
+          aria-label={t('Requirements view')}
+          value={value}
+          onChange={controls.changeView}
         >
-          <List size={16} />
-          {t('List')}
-        </button>
-        <button
-          aria-pressed={model.view === 'board'}
-          onClick={() => model.setViewState({ view: 'board' })}
+          <option value="list">{t('List')}</option>
+          <option value="status">{t('Status board')}</option>
+          <option value="priority">{t('Priority board')}</option>
+        </select>
+        <span
+          className="requirements-view-count"
+          role="status"
+          aria-label={t('{{shown}} of {{total}} requirements', {
+            shown: model.results.length,
+            total: model.workspace.requirements.length,
+          })}
         >
-          <Columns3 size={16} />
-          {t('Board')}
+          {model.results.length === model.workspace.requirements.length
+            ? model.results.length
+            : model.results.length +
+              ' / ' +
+              model.workspace.requirements.length}
+        </span>
+      </div>
+      <RequirementFilterChips model={model} />
+      <div className="requirements-command-group" ref={controls.root}>
+        <RequirementsCommands model={model} controls={controls} />
+        <button
+          className="button primary req-add"
+          aria-label={t('Add requirement')}
+          onClick={controls.addRequirement}
+        >
+          <Plus size={16} />
+          {t('Add')}
         </button>
       </div>
-      <label className="requirements-search">
-        <Search size={16} />
-        <input
-          aria-label={t('Search requirements')}
-          placeholder={t('Search requirements…')}
-          value={model.query}
-          onChange={(event) => model.setQuery(event.target.value)}
-        />
-      </label>
-      <button className="button primary" onClick={() => model.add()}>
-        <Plus size={16} />
-        {t('Add requirement')}
-      </button>
     </header>
   )
 }

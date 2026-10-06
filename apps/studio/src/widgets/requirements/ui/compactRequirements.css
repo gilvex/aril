@@ -1,0 +1,83 @@
+/* Board-first controls share one quiet row with the workspace underneath. */
+.requirements-topbar { flex-wrap: nowrap; gap: 12px; padding: 12px 18px 8px; background: transparent; border: 0; position: relative; z-index: 6; }
+.requirements-topbar h1.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.requirements-view-picker { display: flex; align-items: center; gap: 8px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface, #fff); flex-shrink: 0; }
+.requirements-view-picker select { width: auto; border: 0; padding: 7px 22px 7px 0; background-color: transparent; font-size: 12px; font-weight: 650; box-shadow: none; color: var(--text-strong, #423a4c); }
+.requirements-view-count { border-radius: 5px; background: var(--surface-muted, #f2eef5); color: var(--text-secondary, #746c7e); padding: 3px 6px; font-size: 10px; white-space: nowrap; }
+.requirements-command-group { display: flex; align-items: center; gap: 0; flex-shrink: 0; margin-left: auto; background: var(--surface, #fff); border: 1px solid var(--line); border-radius: 7px; padding: 3px; position: relative; }
+.req-command { display: inline-flex; align-items: center; justify-content: center; gap: 7px; background: transparent; border: 0; border-right: 1px solid var(--line); padding: 7px 11px; font-size: 12px; color: var(--text-secondary, #746c7e); min-height: 32px; }
+.req-command.is-active { color: var(--accent-ink, #9c3f5d); }
+.req-command > small { background: var(--accent-light); border-radius: 20px; padding: 2px 5px; font-size: 10px; }
+.req-command > i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.requirements-command-group .req-add { padding: 7px 11px; min-height: 32px; font-size: 12px; margin-left: 5px; }
+.requirements-filter-chips { display: flex; align-items: center; gap: 6px; min-width: 0; overflow-x: auto; margin-left: auto; }
+.requirements-filter-chips:empty { display: none; }
+.requirements-filter-chips > button { display: inline-flex; align-items: center; gap: 7px; border: 0; background: var(--accent-light); color: var(--accent-ink, #9c3f5d); padding: 6px 9px; border-radius: 20px; font-size: 11px; flex-shrink: 0; }
+.requirements-filter-chips > button > span { max-width: 160px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.requirements-filter-chips + .requirements-command-group { margin-left: 0; }
+.requirements-filter-chips:empty + .requirements-command-group { margin-left: auto; }
+.requirements-popover { position: absolute; top: calc(100% + 8px); right: 0; width: 288px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface, #fff); box-shadow: 0 8px 28px #20142b20; color: var(--text-strong, #423a4c); }
+.requirements-popover header, .requirements-popover footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; }
+.requirements-popover header { margin-bottom: 12px; }
+.requirements-popover footer { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 12px; color: var(--muted); font-size: 11px; }
+.requirements-popover .requirements-filters { display: flex; flex-direction: column; align-items: stretch; gap: 13px; padding: 0; border: 0; background: transparent; overflow: visible; }
+.requirements-popover .requirements-filters > label { flex-direction: column; align-items: stretch; gap: 6px; font-size: 11px; }
+.requirements-popover .requirements-filters select { width: 100%; max-width: none; font-size: 12px; }
+.req-reset-filters { border: 0; background: transparent; padding: 3px 0; text-align: left; font-size: 11px; color: var(--accent-ink, #9c3f5d); }
+.req-reset-filters:disabled { opacity: .5; }
+.requirements-popover .requirements-search { margin: 0; min-width: 0; max-width: none; width: 100%; flex-direction: row; }
+.requirements-popover .requirements-search input { font-size: 13px; }
+.requirements-popover.panel-search { width: 340px; }
+.requirements-content { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; }
+.requirements-collection { min-height: 0; }
+.requirements-board { padding: 0 12px 12px; gap: 10px; grid-template-columns: repeat(3, minmax(310px, 1fr)); min-height: 0; }
+.req-lane { border: 0; border-left: 1px solid var(--line); border-radius: 0; background: transparent; padding-left: 10px; }
+.req-lane:first-child { border-left: 0; padding-left: 0; }
+.req-lane.is-drop-target { background: var(--accent-light); border-radius: 7px; }
+.req-lane > header { padding: 7px 8px 9px; }
+.req-lane h2 .req-badge { font-weight: 650; font-size: 13px; }
+.req-lane-cards { padding: 0 5px 8px; scrollbar-width: thin; }
+.req-card { padding: 11px 12px; margin-bottom: 8px; box-shadow: none; cursor: grab; }
+.req-card.is-checked { border-color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent); }
+.req-card.is-selected:not(.is-checked) { border-color: var(--line-strong, #b6a5c2); background: var(--surface-muted, #fcfaff); }
+.req-card-top { display: flex; align-items: flex-start; gap: 9px; }
+.req-card-top > input { margin-top: 2px !important; }
+.req-card-open { display: flex; align-items: baseline; gap: 9px; flex: 1; min-width: 0; width: auto; padding: 0; }
+.req-card-open small { font-size: 10px; font-weight: 400; color: var(--muted); flex-shrink: 0; max-width: 65px; overflow: hidden; text-overflow: ellipsis; }
+.req-card-open strong { font-size: 14px; font-weight: 650; line-height: 1.45; overflow-wrap: anywhere; }
+.req-card-meta { display: flex; align-items: center; gap: 6px 10px; flex-wrap: wrap; margin-top: 7px; font-size: 10px; }
+.req-card-meta .req-badge { font-size: 10px; gap: 4px; }
+.req-card-category { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; }
+.req-card-links { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+.req-card-menu-toggle { margin-left: auto; padding: 2px; width: 24px; height: 24px; }
+.req-card-editing { font-size: 10px; color: var(--muted); margin-top: 5px; }
+.req-card-move { padding-top: 10px; margin-top: 8px; border-top: 1px solid var(--line); }
+.requirements-bulk-slot { display: flex; justify-content: center; flex: 0 0 auto; padding: 6px 12px 12px; }
+.requirements-bulk { background: var(--surface, #fff); border: 1px solid var(--line); border-radius: 9px; box-shadow: 0 3px 14px #2416320b; gap: 0; padding: 5px 8px; max-width: 100%; flex-wrap: nowrap; }
+.requirements-bulk strong { padding: 0 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.requirements-bulk strong small { display: block; color: var(--muted); font-size: 9px; font-weight: 400; }
+.requirements-bulk select { border: 0; border-left: 1px solid var(--line); border-radius: 0; background-color: transparent; width: 94px; min-width: 0; padding: 7px 6px; font-size: 11px; box-shadow: none; }
+.requirements-bulk .icon-button { margin-left: 5px; }
+@media (max-width: 760px) {
+  .requirements-topbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; padding: 10px 12px 5px; gap: 8px; }
+  .requirements-view-picker { min-width: 0; gap: 4px; padding: 3px 7px; }
+  .requirements-view-picker > svg { display: none; }
+  .requirements-view-picker select { flex: 1; min-width: 0; width: 100%; font-size: 12px; padding-right: 15px; min-height: 34px; }
+  .requirements-view-count { font-size: 9px; padding: 3px 4px; }
+  .requirements-command-group { margin-left: 0; }
+  .req-command { min-height: 34px; padding: 7px 9px; }
+  .req-command > span { display: none; }
+  .requirements-command-group .req-add { min-height: 34px; padding: 7px 9px; }
+  .requirements-filter-chips { grid-column: 1 / -1; grid-row: 2; margin-left: 0; }
+  .requirements-popover, .requirements-popover.panel-search { position: fixed; top: auto; right: 12px; left: 12px; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); width: auto; max-height: calc(100dvh - 180px); overflow: auto; border-radius: 14px; padding: 18px; box-shadow: 0 -8px 40px #24163230; }
+  .requirements-popover .requirements-filters select, .requirements-popover .requirements-search input { font-size: 16px; }
+  .requirements-board { grid-template-columns: repeat(3, minmax(300px, 86vw)); padding: 0 8px 8px; gap: 7px; }
+  .req-card-open strong { font-size: 14px; }
+  .req-card-meta, .req-card-meta .req-badge { font-size: 11px; }
+  .req-card-menu-toggle { height: 30px; width: 30px; }
+  .requirements-bulk-slot { padding: 5px 8px 8px; }
+  .requirements-bulk { flex-wrap: wrap; justify-content: center; gap: 3px; padding: 5px; }
+  .requirements-bulk strong { padding: 0 5px; }
+  .requirements-bulk select { width: 75px; font-size: 11px; min-height: 34px; }
+  .has-detail .requirements-content { visibility: hidden; }
+}

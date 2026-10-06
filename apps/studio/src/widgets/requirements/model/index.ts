@@ -5,3 +5,5 @@ export { useRequirementClassificationHandlers } from './useRequirementClassifica
 export { useRequirementDetailsHandlers } from './useRequirementDetailsHandlers.tsx'
 export { useRequirementsController } from './useRequirementsController.tsx'
 export { useRequirementResize } from './useRequirementResize.ts'
+export * from './useRequirementCard.ts'
+export * from './useRequirementsToolbar.ts'
