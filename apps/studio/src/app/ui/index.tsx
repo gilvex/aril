@@ -13,3 +13,5 @@ export { DemoEntry } from './DemoEntry.tsx'
 export { DemoBanner } from './DemoBanner.tsx'
 
 export { DemoGuide } from './DemoGuide.tsx'
+
+export { GuestJoinScreen } from './GuestJoinScreen.tsx'

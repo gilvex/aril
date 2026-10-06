@@ -1,3 +1,4 @@
+import { ApiError } from '@/shared/api/apiError.ts'
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import {
@@ -180,8 +181,18 @@ export async function openLiveChannel(
         certificate = next.certificate
         await socket.setAuth(next.token)
         if (subscribed) await channel.track({ certificate })
-        refreshTimer = setTimeout(() => void refresh(), 240000)
-      } catch {
+        refreshTimer = setTimeout(
+          () => void refresh(),
+          next.refreshAfterMs || 240000,
+        )
+      } catch (error) {
+        if (error instanceof ApiError && [401, 403].includes(error.status)) {
+          close()
+          peers.clear()
+          emit()
+          onConnection(false)
+          return
+        }
         if (!closed) refreshTimer = setTimeout(() => void refresh(), 5000)
       } finally {
         refreshing = undefined
@@ -211,7 +222,10 @@ export async function openLiveChannel(
         emit()
       }
     })
-  refreshTimer = setTimeout(() => void refresh(), 240000)
+  refreshTimer = setTimeout(
+    () => void refresh(),
+    config.refreshAfterMs || 240000,
+  )
   const staleTimer = setInterval(() => {
     let changed = false
     for (const [id, peer] of peers) {

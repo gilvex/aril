@@ -6,3 +6,5 @@ export { FollowPerson } from './FollowPerson.tsx'
 export { ProfileForm } from './ProfileForm.tsx'
 export { TeamActivityList } from './TeamActivityList.tsx'
 export { WorkspaceAccountMenu } from './WorkspaceAccountMenu.tsx'
+
+export { PeopleInvites } from './PeopleInvites.tsx'

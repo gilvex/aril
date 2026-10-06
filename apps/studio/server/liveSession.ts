@@ -23,7 +23,9 @@ export function createLiveSession(
   if (!secret || !url || !apiKey)
     throw new Error('Realtime configuration is missing')
   const topic = `pomegranate:live:${workspaceId}`
-  const expiresAt = Date.now() + 5 * 60 * 1000
+  const expiresAt = profile.guestExpiresAt
+    ? Math.min(profile.guestExpiresAt, Date.now() + 30000)
+    : Date.now() + 5 * 60 * 1000
   const encoded = (value: unknown) =>
     Buffer.from(JSON.stringify(value)).toString('base64url')
   const claims = encoded({
@@ -59,6 +61,7 @@ export function createLiveSession(
   })
   return {
     transport: 'websocket',
+    refreshAfterMs: profile.guestExpiresAt ? 15000 : 240000,
     url,
     apiKey,
     token,

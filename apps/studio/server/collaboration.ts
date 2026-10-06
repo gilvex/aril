@@ -10,6 +10,8 @@ import {
 import { liveJoinSchema } from '@pomegranate/domain/liveSession'
 import type { Express, Request, Response } from 'express'
 import { z } from 'zod'
+import { installGuestJoin } from './utils/installGuestJoin.ts'
+import { installGuestManagement } from './utils/installGuestManagement.ts'
 import { cloudEvents } from './cloudEvents.ts'
 import { verifyGoogle } from './google.ts'
 import { createLiveSession } from './liveSession.ts'
@@ -69,6 +71,7 @@ export function installCollaboration(
       maxAge: 30 * 86400000,
       path: '/',
     })
+  installGuestJoin(app, store, setSession)
   app.get('/api/auth/config', async (_req, res) =>
     res.json({
       googleClientId: process.env.GOOGLE_CLIENT_ID || null,
@@ -155,6 +158,15 @@ export function installCollaboration(
       return
     }
     const current = await cookieProfile(req)
+    if (current?.guestExpiresAt) {
+      res
+        .status(403)
+        .json({
+          error:
+            'Guest access cannot be converted to a permanent account. Sign out to use Google.',
+        })
+      return
+    }
     const nonce = await store.identity.consumeChallenge(
       input.data.challenge,
       current?.id,
@@ -292,7 +304,30 @@ export function installCollaboration(
       return
     }
     res.locals.profile = profile
+    if (
+      profile.guestExpiresAt &&
+      (/^\/(invites|guest-links|agent-access|hosted-access)(\/|$)/.test(
+        req.path,
+      ) ||
+        (req.path === '/studios' && req.method === 'POST'))
+    ) {
+      res
+        .status(403)
+        .json({
+          error:
+            'Temporary guests cannot invite others, create workspaces, or grant agent access.',
+        })
+      return
+    }
     next()
+  })
+  installGuestManagement(app, store, (ids) => {
+    for (const [key, client] of clients)
+      if (ids.includes(client.userId)) {
+        client.res.end()
+        clients.delete(key)
+        presenceChanged(client.workspaceId)
+      }
   })
   app.get('/api/studios', async (_req, res) =>
     res.json(await store.studios((res.locals.profile as Profile).id)),
@@ -327,6 +362,7 @@ export function installCollaboration(
   })
   app.get('/api/account', async (_req, res) =>
     res.json({
+      guestExpiresAt: res.locals.profile.guestExpiresAt || null,
       google:
         (await store.identity.account((res.locals.profile as Profile).id)) ||
         null,
@@ -334,11 +370,9 @@ export function installCollaboration(
   )
   app.post('/api/studios', async (req, res) => {
     if (!(await store.studios((res.locals.profile as Profile).id)).length) {
-      res
-        .status(403)
-        .json({
-          error: 'Accept a workspace invitation before creating a workspace.',
-        })
+      res.status(403).json({
+        error: 'Accept a workspace invitation before creating a workspace.',
+      })
       return
     }
     const input = z
@@ -428,11 +462,15 @@ export function installCollaboration(
         return
       }
     }
-    const profile = await store.identity.update(
+    const updatedProfile = await store.identity.update(
       (res.locals.profile as Profile).id,
       name,
       avatar,
     )
+    const profile = {
+      ...updatedProfile,
+      guestExpiresAt: res.locals.profile.guestExpiresAt || null,
+    }
     for (const client of clients.values())
       if (client.userId === profile.id) client.presence.profile = profile
     for (const workspaceId of new Set(

@@ -1,6 +1,7 @@
 import type { Profile } from '@pomegranate/domain/collaboration'
 import { randomBytes, randomUUID } from 'node:crypto'
 import type { DatabaseSync } from 'node:sqlite'
+import { guestTables } from './guestLinks.ts'
 import { hash } from './utils/hash.ts'
 
 const colors = [
@@ -26,11 +27,15 @@ export function identityStore(db: DatabaseSync) {
     db.exec(
       "ALTER TABLE invites ADD COLUMN workspace_id TEXT NOT NULL DEFAULT 'default'",
     )
+  db.exec(guestTables.replaceAll('studio.', ''))
   const count = () =>
     Number(db.prepare('SELECT COUNT(*) AS count FROM profiles').get()!.count)
   const profile = (id: string) =>
-    db.prepare('SELECT * FROM profiles WHERE id = ?').get(id) as
-      Profile | undefined
+    db
+      .prepare(
+        `SELECT p.*,g.expires_at AS guestExpiresAt FROM profiles p LEFT JOIN guest_profiles gp ON gp.user_id=p.id LEFT JOIN guest_links g ON g.id=gp.link_id WHERE p.id = ?`,
+      )
+      .get(id) as Profile | undefined
   function create(name = 'New collaborator') {
     const id = randomUUID()
     const token = randomBytes(32).toString('base64url')
@@ -59,6 +64,44 @@ export function identityStore(db: DatabaseSync) {
   return {
     count,
     profile,
+    redeemGuest: (token: string, name: string) => {
+      db.exec('BEGIN IMMEDIATE')
+      try {
+        const link = db
+          .prepare(
+            'SELECT id,workspace_id,expires_at FROM guest_links WHERE token_hash=? AND revoked_at IS NULL AND expires_at>?',
+          )
+          .get(hash(token), Date.now())
+        if (!link) {
+          db.exec('ROLLBACK')
+          return null
+        }
+        const user = create(name)
+        db.prepare('INSERT INTO guest_profiles VALUES (?,?)').run(
+          user.profile.id,
+          String(link.id),
+        )
+        db.prepare('INSERT INTO members VALUES (?,?,?)').run(
+          String(link.workspace_id),
+          user.profile.id,
+          'guest',
+        )
+        db.prepare('UPDATE sessions SET expires_at=? WHERE token_hash=?').run(
+          Number(link.expires_at),
+          hash(user.token),
+        )
+        db.exec('COMMIT')
+        return {
+          ...user,
+          profile: profile(user.profile.id)!,
+          workspaceId: String(link.workspace_id),
+          expiresAt: Number(link.expires_at),
+        }
+      } catch (error) {
+        db.exec('ROLLBACK')
+        throw error
+      }
+    },
     account: (id: string) =>
       db.prepare('SELECT email FROM accounts WHERE user_id=?').get(id) as
         { email: string } | undefined,
@@ -87,6 +130,7 @@ export function identityStore(db: DatabaseSync) {
         : undefined
     },
     linkGoogle: (id: string, subject: string, email: string) => {
+      if (profile(id)?.guestExpiresAt) return false
       const account = db
         .prepare('SELECT user_id FROM accounts WHERE subject=?')
         .get(subject)
@@ -142,9 +186,9 @@ export function identityStore(db: DatabaseSync) {
       if (!/^[\w-]{43}$/.test(token)) return undefined
       const row = db
         .prepare(
-          'SELECT user_id FROM sessions WHERE token_hash = ? AND expires_at > ?',
+          `SELECT s.user_id FROM sessions s LEFT JOIN guest_profiles gp ON gp.user_id=s.user_id LEFT JOIN guest_links g ON g.id=gp.link_id WHERE s.token_hash = ? AND s.expires_at > ? AND (gp.user_id IS NULL OR (g.revoked_at IS NULL AND g.expires_at>?))`,
         )
-        .get(hash(token), Date.now())
+        .get(hash(token), Date.now(), Date.now())
       return row ? profile(String(row.user_id)) : undefined
     },
     revokeSession: (token: string) => {

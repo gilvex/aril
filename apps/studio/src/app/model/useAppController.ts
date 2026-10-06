@@ -1,3 +1,4 @@
+import { useTranslation } from '@/shared/i18n/index.ts'
 import { sessionRequestState } from '@/app/config/sessionRequestState.ts'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { rememberWorkspaceVisit } from '@/shared/utils/rememberWorkspaceVisit.ts'
@@ -16,6 +17,7 @@ import type { Envelope } from '@pomegranate/domain/workspace'
 import { workspaceSchema } from '@pomegranate/domain/workspace'
 import { useEffect } from 'react'
 export function useAppController() {
+  const { t } = useTranslation()
   const {
     startupRoute,
     restoringRoute,
@@ -48,6 +50,38 @@ export function useAppController() {
     setError,
   } = useAppModel(() => createAppState())
 
+  useEffect(() => {
+    if (!profile?.guestExpiresAt) return
+    let cancelled = false
+    const ended = () => {
+      if (cancelled) return
+      setProfile(null)
+      setInviteRequired(true)
+      setError(
+        t(
+          'Your guest access has ended. Ask for a new guest link or sign in with Google.',
+        ),
+      )
+    }
+    const expire = () => {
+      if (Date.now() >= profile.guestExpiresAt!) ended()
+    }
+    const expiry = setTimeout(
+      expire,
+      Math.min(2147483647, Math.max(0, profile.guestExpiresAt - Date.now())),
+    )
+    const check = setInterval(() => {
+      expire()
+      void request('/api/session').catch((error) => {
+        if (error instanceof ApiError && error.status === 401) ended()
+      })
+    }, 10000)
+    return () => {
+      cancelled = true
+      clearTimeout(expiry)
+      clearInterval(check)
+    }
+  }, [profile?.guestExpiresAt, setProfile, setInviteRequired, setError, t])
   useEffect(() => {
     let cancelled = false
     ;(sessionRequestState.value ??= startSession())

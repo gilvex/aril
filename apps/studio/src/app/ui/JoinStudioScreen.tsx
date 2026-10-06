@@ -1,3 +1,4 @@
+import { GuestJoinScreen } from './GuestJoinScreen.tsx'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { useCallback } from 'react'
 import { InstallApp } from '@/features/installApp/index.ts'
@@ -20,6 +21,7 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
   const joining = inviteRequired || !!token
   const switching =
     new URLSearchParams(location.search).get('account') === 'switch'
+  if (token.startsWith('guest:')) return <GuestJoinScreen {...props} />
   return (
     <div className="login-screen">
       <LoginHeader />

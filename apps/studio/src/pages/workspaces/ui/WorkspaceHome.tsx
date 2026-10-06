@@ -41,6 +41,7 @@ export function WorkspaceHome({
       </header>
       <div className="workspace-library-content">
         <WorkspaceToolbar
+          canCreate={!profile.guestExpiresAt}
           count={studios?.length}
           search={search}
           sort={sort}
@@ -53,7 +54,7 @@ export function WorkspaceHome({
             {notice}
           </p>
         )}
-        {hostedOrigin && (
+        {hostedOrigin && !profile.guestExpiresAt && (
           <div className="workspace-hosted">
             <span>{t('Your shared studio is ready online.')}</span>
             <button className="button" disabled={busy} onClick={openHosted}>
@@ -89,13 +90,15 @@ export function WorkspaceHome({
       </div>
       <footer className="workspace-library-footer">
         <InstallApp />
-        <button
-          className="button primary workspace-create-mobile"
-          onClick={create}
-        >
-          <Plus size={18} />
-          {t('New workspace')}
-        </button>
+        {!profile.guestExpiresAt && (
+          <button
+            className="button primary workspace-create-mobile"
+            onClick={create}
+          >
+            <Plus size={18} />
+            {t('New workspace')}
+          </button>
+        )}
       </footer>
       {creating && (
         <WorkspaceCreateDialog

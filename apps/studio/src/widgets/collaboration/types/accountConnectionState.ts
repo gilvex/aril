@@ -1,4 +1,6 @@
 export type AccountConnectionState = {
-  account: { google: { email: string } | null } | undefined
+  account:
+    | { guestExpiresAt?: number | null; google: { email: string } | null }
+    | undefined
   error: string
 }

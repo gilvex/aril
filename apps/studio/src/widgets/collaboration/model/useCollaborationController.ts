@@ -39,6 +39,7 @@ export function useCollaborationController({
     const dialog = root.current?.querySelector<HTMLElement>('[role="dialog"]')
     dialog?.querySelector<HTMLElement>('input,button')?.focus()
     const close = (event: KeyboardEvent) => {
+      if ((event.target as Element).closest('[data-studio-select-menu]')) return
       if (event.key === 'Escape') {
         setPanel(null)
         opener.current?.focus()
@@ -62,6 +63,7 @@ export function useCollaborationController({
       }
     }
     const outside = (event: PointerEvent) => {
+      if ((event.target as Element).closest('[data-studio-select-menu]')) return
       if (!root.current?.contains(event.target as Node)) setPanel(null)
     }
     document.addEventListener('keydown', close)

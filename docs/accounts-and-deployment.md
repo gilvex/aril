@@ -4,7 +4,7 @@ The home screen lists only workspaces you belong to. Create a workspace with a n
 
 Invitations grant access to exactly one workspace, expire after 24 hours and work once. Opening an invitation while signed in adds membership to your existing profile. Each workspace has separate documents, revisions, activity, receipt IDs and live collaboration streams. Browser recovery drafts and cameras are scoped to both profile and workspace.
 
-The SQLite migration retains the original tables and copies the existing Pomegranate document, snapshots and activity into the default workspace. All profiles that existed at migration time keep access. Subsequent profiles are only added by invitation or workspace creation. Owner/member labels identify who created the workspace; both currently have edit and invite permissions. Revocation and granular roles are not implemented.
+The SQLite migration retains the original tables and copies the existing Pomegranate document, snapshots and activity into the default workspace. All profiles that existed at migration time keep access. Subsequent profiles are only added by invitation or workspace creation. Owner/member labels identify who created the workspace; both currently have edit and invite permissions. Permanent member revocation and granular roles are not implemented. Temporary guest links can be revoked.
 
 ## Google sign-in setup
 
@@ -63,3 +63,11 @@ The existing Vercel project is now named `arilapp` (the project ID and connected
 Google Auth Platform must list `https://www.aril.studio`, `https://aril.studio` and `https://arilapp.vercel.app` as Authorized JavaScript origins when those addresses are used for login. Existing linked users sign in again on each new origin; guest sessions and local browser preferences do not transfer across domains. No redirect URI is required by the current Google Identity Services ID-token flow.
 
 The additional `https://aril.gilgil.co` host is also allowed. The previous domains were removed from the Vercel project during the move; old links and MCP configurations should use `https://arilapp.vercel.app` or the configured custom domain. The MCP setup default now uses the branded Vercel address.
+
+## Temporary guests
+
+People → Temporary guest links creates a reusable, workspace-scoped editing link. Choose a name and duration from 5 minutes to 30 days, counted from creation. Anyone holding the link enters a display name without Google. The link opens a separate temporary profile; it never grants permanent membership to an existing Google account. Tokens travel in the URL fragment and are stored only as hashes on the server. Link secrets are shown once, kept outside Redux, and never included in the management list.
+
+All permanent workspace members can list and revoke guest links. Revocation invalidates both future joins and every existing guest session from that link. Every authenticated HTTP request checks the link, and session expiry cannot exceed its expiry. Open document streams recheck within 10 seconds on hosted Postgres (15 seconds on SQLite; same-process revocation disconnects immediately). Hosted live-cursor credentials last at most 30 seconds and refresh every 15 seconds, so an already-issued socket credential may remain valid for up to 30 seconds after revocation. This does not permit further document saves. Guest browsers check access every 10 seconds and return to sign-in when access ends; local recovery drafts remain available.
+
+Guests can edit, export, collaborate and update their temporary profile, but cannot invite others, manage guest links, create workspaces, issue agent credentials, transfer sessions to another host, or link Google to make access permanent. Sign out and use Google plus a permanent invitation for durable membership. Existing profiles, memberships, and normal Google-first invitations are unchanged. The additive guest_links and guest_profiles tables work on SQLite and Postgres. Tests use generated fixtures and isolated Postgres schemas.

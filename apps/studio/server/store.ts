@@ -11,6 +11,7 @@ import { mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { agentCredentials, agentTable } from './agentCredentials.ts'
+import { guestLinks } from './guestLinks.ts'
 import { identityStore } from './identity.ts'
 import type { StudioOverview } from '@pomegranate/domain/studios'
 import { sqliteStudioOverviews } from './utils/sqliteStudioOverviews.ts'
@@ -36,6 +37,14 @@ export function openStore(path: string) {
     return []
   })
   const identity = identityStore(db)
+  const guests = guestLinks(async (sql, values) => {
+    const statement = db.prepare(
+      sql.replaceAll('studio.', '').replace(/\$\d+/g, '?'),
+    )
+    if (sql.trimStart().startsWith('SELECT')) return statement.all(...values)
+    statement.run(...values)
+    return []
+  })
   if (
     !db
       .prepare('SELECT id FROM studio_migrations WHERE id = ?')
@@ -165,10 +174,11 @@ export function openStore(path: string) {
     save,
     identity,
     agents,
+    guests,
     member: (userId: string, workspaceId: string) =>
       !!db
-        .prepare('SELECT 1 FROM members WHERE user_id=? AND workspace_id=?')
-        .get(userId, workspaceId),
+        .prepare(`SELECT 1 FROM members m WHERE m.user_id=? AND m.workspace_id=? AND (m.role!='guest' OR EXISTS (SELECT 1 FROM guest_profiles gp JOIN guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>?))`)
+        .get(userId, workspaceId, Date.now()),
     studios: (userId: string) =>
       db
         .prepare(

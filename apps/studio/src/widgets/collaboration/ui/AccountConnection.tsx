@@ -11,7 +11,7 @@ import type { AccountConnectionProps } from '@/widgets/collaboration/types/accou
 import { useCallback, useEffect } from 'react'
 
 export function AccountConnection({ onProfile }: AccountConnectionProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const { account, setAccount, error, setError } = useAccountConnectionModel(
     () => createAccountConnectionState(),
@@ -19,7 +19,10 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
 
   const refresh = useCallback(
     () =>
-      request<{ google: { email: string } | null }>('/api/account')
+      request<{
+        guestExpiresAt?: number | null
+        google: { email: string } | null
+      }>('/api/account')
         .then(setAccount)
         .catch((err) => setError(String(err))),
     [setAccount, setError],
@@ -35,6 +38,14 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
         {t(
           'This is a local demo. Sign in outside the demo to connect an account or invite real teammates.',
         )}
+      </p>
+    )
+  if (account?.guestExpiresAt)
+    return (
+      <p className="collaboration-hint">
+        {t('Guest access expires {{time}}', {
+          time: new Date(account.guestExpiresAt).toLocaleString(i18n.language),
+        })}
       </p>
     )
   return (

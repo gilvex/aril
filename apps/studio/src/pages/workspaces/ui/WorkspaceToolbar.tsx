@@ -5,6 +5,7 @@ import type { WorkspaceToolbarProps } from '../types/workspaceToolbarProps.ts'
 import type { WorkspaceSort } from '../types/workspaceSort.ts'
 
 export function WorkspaceToolbar({
+  canCreate = true,
   count,
   search,
   sort,
@@ -55,13 +56,15 @@ export function WorkspaceToolbar({
         <option value="recent">{t('Last opened')}</option>
         <option value="name">{t('Name')}</option>
       </select>
-      <button
-        className="button primary workspace-create-desktop"
-        onClick={onCreate}
-      >
-        <Plus size={16} />
-        {t('New workspace')}
-      </button>
+      {canCreate && (
+        <button
+          className="button primary workspace-create-desktop"
+          onClick={onCreate}
+        >
+          <Plus size={16} />
+          {t('New workspace')}
+        </button>
+      )}
     </div>
   )
 }

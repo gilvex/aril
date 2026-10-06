@@ -9,6 +9,7 @@ import {
 import { randomBytes, randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { Pool, type PoolClient, type QueryResultRow } from 'pg'
+import { guestLinks, guestTables } from './guestLinks.ts'
 import { agentCredentials, agentTable } from './agentCredentials.ts'
 import type { Store } from './storeContract.ts'
 import { hash } from './utils/postgresHash.ts'
@@ -102,6 +103,7 @@ export async function openPostgres(
         CREATE TABLE IF NOT EXISTS studio.auth_challenges (token_hash TEXT PRIMARY KEY,nonce TEXT NOT NULL,user_id TEXT,expires_at BIGINT NOT NULL);
         CREATE TABLE IF NOT EXISTS studio.transfers (token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES studio.profiles(id),expires_at BIGINT NOT NULL);
 ${agentTable}
+${guestTables}
         CREATE TABLE IF NOT EXISTS studio.migrations (id TEXT PRIMARY KEY);
         CREATE INDEX IF NOT EXISTS activity_workspace ON studio.studio_activity(workspace_id,id);`,
         [],
@@ -126,7 +128,7 @@ ${agentTable}
   const profile = async (id: string, client?: PoolClient) =>
     (
       await query<Profile>(
-        'SELECT * FROM studio.profiles WHERE id=$1',
+        `SELECT p.*,g.expires_at::float8 AS "guestExpiresAt" FROM studio.profiles p LEFT JOIN studio.guest_profiles gp ON gp.user_id=p.id LEFT JOIN studio.guest_links g ON g.id=gp.link_id WHERE p.id=$1`,
         [id],
         client,
       )
@@ -136,8 +138,8 @@ ${agentTable}
   const member = async (id: string, workspaceId: string) =>
     !!(
       await query(
-        'SELECT 1 FROM studio.members WHERE user_id=$1 AND workspace_id=$2',
-        [id, workspaceId],
+        `SELECT 1 FROM studio.members m WHERE m.user_id=$1 AND m.workspace_id=$2 AND (m.role!='guest' OR EXISTS (SELECT 1 FROM studio.guest_profiles gp JOIN studio.guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>$3))`,
+        [id, workspaceId, Date.now()],
       )
     ).rowCount
   async function session(id: string, client?: PoolClient) {
@@ -178,6 +180,7 @@ ${agentTable}
     }
   }
   const store = {
+    guests: guestLinks(async (sql, values) => (await query(sql, values)).rows),
     agents: agentCredentials(
       async (text, values) => (await query(text, values)).rows,
     ),
@@ -310,6 +313,39 @@ ${agentTable}
       return row ? workspaceSchema.parse(row.body) : null
     },
     identity: {
+      redeemGuest: async (token: string, name: string) =>
+        transaction(async (client) => {
+          const link = (
+            await query(
+              'UPDATE studio.guest_links SET id=id WHERE token_hash=$1 AND revoked_at IS NULL AND expires_at>$2 RETURNING id,workspace_id,expires_at',
+              [hash(token), Date.now()],
+              client,
+            )
+          ).rows[0]
+          if (!link) return null
+          const user = await create(name, client)
+          await query(
+            'INSERT INTO studio.guest_profiles VALUES ($1,$2)',
+            [user.profile.id, link.id],
+            client,
+          )
+          await query(
+            'INSERT INTO studio.members VALUES ($1,$2,$3)',
+            [link.workspace_id, user.profile.id, 'guest'],
+            client,
+          )
+          await query(
+            'UPDATE studio.sessions SET expires_at=$1 WHERE token_hash=$2',
+            [link.expires_at, hash(user.token)],
+            client,
+          )
+          return {
+            ...user,
+            profile: (await profile(user.profile.id, client))!,
+            workspaceId: String(link.workspace_id),
+            expiresAt: Number(link.expires_at),
+          }
+        }),
       count,
       profile,
       revokeSession: async (token: string) => {
@@ -328,7 +364,7 @@ ${agentTable}
         if (!/^[\w-]{43}$/.test(token)) return undefined
         const row = (
           await query(
-            'SELECT user_id FROM studio.sessions WHERE token_hash=$1 AND expires_at>$2',
+            `SELECT s.user_id FROM studio.sessions s LEFT JOIN studio.guest_profiles gp ON gp.user_id=s.user_id LEFT JOIN studio.guest_links g ON g.id=gp.link_id WHERE s.token_hash=$1 AND s.expires_at>$2 AND (gp.user_id IS NULL OR (g.revoked_at IS NULL AND g.expires_at>$2))`,
             [hash(token), Date.now()],
           )
         ).rows[0]
@@ -423,6 +459,7 @@ ${agentTable}
       },
       linkGoogle: async (id: string, subject: string, email: string) =>
         transaction(async (client) => {
+          if ((await profile(id, client))?.guestExpiresAt) return false
           await query(
             'LOCK TABLE studio.accounts IN EXCLUSIVE MODE',
             [],

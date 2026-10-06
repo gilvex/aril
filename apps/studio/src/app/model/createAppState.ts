@@ -19,7 +19,9 @@ export function createAppState() {
   const token: string = (() =>
     isDemoMode()
       ? ''
-      : new URLSearchParams(location.hash.slice(1)).get('invite') || '')()
+      : new URLSearchParams(location.hash.slice(1)).get('guest')
+        ? 'guest:' + new URLSearchParams(location.hash.slice(1)).get('guest')
+        : new URLSearchParams(location.hash.slice(1)).get('invite') || '')()
   const name: string = ''
   const busy: boolean = false
   const error: string = ''
