@@ -1,8 +1,8 @@
-import { randomBytes, randomUUID, createHash } from 'node:crypto'
-import type { DatabaseSync } from 'node:sqlite'
 import type { Profile } from '@pomegranate/domain/collaboration'
+import { randomBytes, randomUUID } from 'node:crypto'
+import type { DatabaseSync } from 'node:sqlite'
+import { hash } from './utils/hash.ts'
 
-const hash = (value: string) => createHash('sha256').update(value).digest('hex')
 const colors = [
   '#b34568',
   '#426cbd',

@@ -41,3 +41,7 @@ Use $feature-sliced-design to organize this feature.
 All seven skills passed the bundled skill-creator metadata/frontmatter validator. Supporting resources were included by the installer. Validation confirms file structure and metadata, not design quality or future application behavior. The validator's missing PyYAML dependency was installed only in a temporary directory.
 
 For updates, compare upstream revisions and preserve custom files. The installer refuses to overwrite existing skill directories; do not delete the entire skills directory to update one skill.
+
+## FSD verification — 2026-10-06
+
+Rechecked https://github.com/feature-sliced/skills at master commit `fd71da42a89e916f2ced63e5349fd865c87070a6`. The already-installed `feature-sliced-design` directory matches the upstream download, including supporting references and evaluations. No duplicate skill or replacement of custom skills was needed. The user’s explicit conventions in [code-rules.md](code-rules.md) override upstream advice on widgets, casing, and technical model segments.

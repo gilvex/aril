@@ -1,18 +1,19 @@
-import { agentCredentials, agentTable } from './agent-credentials.ts'
-import { Pool, type PoolClient, type QueryResultRow } from 'pg'
-import { readFileSync } from 'node:fs'
-import { randomBytes, randomUUID, createHash } from 'node:crypto'
-import {
-  workspaceSchema,
-  type Workspace,
-  type Envelope,
-} from '@pomegranate/domain/workspace'
+import type { Activity, Profile } from '@pomegranate/domain/collaboration'
 import { createSeed } from '@pomegranate/domain/seed'
 import { blankStudio, type StudioSummary } from '@pomegranate/domain/studios'
-import type { Profile, Activity } from '@pomegranate/domain/collaboration'
-import type { Store } from './store-contract.ts'
+import {
+  workspaceSchema,
+  type Envelope,
+  type Workspace,
+} from '@pomegranate/domain/workspace'
+import { randomBytes, randomUUID } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import { Pool, type PoolClient, type QueryResultRow } from 'pg'
+import { agentCredentials, agentTable } from './agentCredentials.ts'
+import type { Store } from './storeContract.ts'
+import { hash } from './utils/postgresHash.ts'
+import { postgresUrl } from './utils/postgresPostgresUrl.ts'
 
-const hash = (value: string) => createHash('sha256').update(value).digest('hex')
 const colors = [
   '#b34568',
   '#426cbd',
@@ -21,11 +22,7 @@ const colors = [
   '#a66a25',
   '#287b94',
 ]
-export function postgresUrl() {
-  const url = process.env.POSTGRES_URL || process.env.DATABASE_URL
-  if (!url) throw new Error('A Postgres connection URL is required.')
-  return url
-}
+export { postgresUrl } from './utils/postgresPostgresUrl.ts'
 export async function openPostgres(
   connectionString = postgresUrl(),
   schema = 'pomegranate',

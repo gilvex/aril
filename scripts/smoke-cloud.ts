@@ -11,7 +11,7 @@ import {
   publicKey,
   verifyCertificate,
   type LiveConfig,
-} from '@pomegranate/domain/live-session'
+} from '@pomegranate/domain/liveSession'
 
 const origin = process.env.SMOKE_ORIGIN
 if (!origin) throw new Error('Set SMOKE_ORIGIN to the deployment being tested.')

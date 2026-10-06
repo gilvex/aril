@@ -1,6 +1,6 @@
 import { serveStdio } from '@modelcontextprotocol/server/stdio'
-import { createMcpServer } from './server.ts'
-import { loadConfig } from './config.ts'
+import { loadConfig } from './config/index.ts'
+import { createMcpServer } from './server/index.ts'
 
 try {
   const config = await loadConfig()

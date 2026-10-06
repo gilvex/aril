@@ -6,15 +6,23 @@ The studio is an interactive React application built with Vite and TypeScript. R
 
 For this editor, SSR and content-oriented rendering are not current requirements. Vite keeps the development and self-hosted runtime small. Next.js and Astro remain possible choices for later product surfaces; choosing Vite for the studio does not settle the final platform's framework.
 
-The frontend uses a small Feature-Sliced Design structure:
+The frontend follows the project conventions in [code-rules.md](code-rules.md):
 
-- `apps/studio/src/app`: entry point and global styles.
-- `apps/studio/src/pages/studio`: the complete studio page, its state model, and its page-local UI.
-- `apps/studio/src/shared/api`: transport and shared contract exports.
-- `packages/domain/src`: runtime schema, operations, and starter content shared by the studio and MCP.
-- `apps/studio/server`: HTTP boundary and persistence.
+- `app`: startup, authentication/route restoration, and global styles.
+- `pages/studio` and `pages/workspaces`: page composition and navigation models.
+- `widgets/board`, `widgets/requirements`, `widgets/design`, and `widgets/collaboration`: editors with their own Redux models.
+- `features`: board navigation, canvas fullscreen, appearance, Google sign-in, agent access, and live sessions.
+- `entities/workspace`: document state, revision-safe autosave, undo/recovery, and Saga iterators.
+- `entities/collaboration`: shared profile avatars. Canvas selection/cursor presentation stays in the board widget; requirement presence stays in the requirements widget, keeping React Flow out of the initial page bundle.
+- `shared`: transport, browser integration, routing utilities, and theme primitives.
+- `packages/domain`: schemas and pure operations, with one function/type per file and public module index barrels.
+- `packages/mcp`: stdio bridge, requests, configuration utilities, and types.
 
-Avoid empty architectural layers. Extract reusable entities/features/widgets only when a second concrete use warrants the boundary. Page-local UI modules can collaborate within the same page slice. The graph editor is lazy-loaded.
+Slices use `ui`, `model`, `utils`, and `types`; model segments separate Redux slices, selectors, requests, Saga iterators, and lifecycle watchers. Import another slice through its root index. Graph editors remain lazy-loaded. Do not create empty layers or segments.
+
+Redux stores are scoped to the mounted app, workspace session, editor, or form. Model hooks subscribe using React's `useSyncExternalStore`; stable commands dispatch named slice actions. UI state factories live beside the model. Selections serialize as arrays, with memoized Set selectors for React Flow. Store instances and developer instrumentation never retain the one-time agent credential. React Flow instances and interpolated animation frames remain local rendering state.
+
+Autosave uses a Saga debounce and generator workers for commit/reload. Resetting debounce does not cancel an in-flight database commit; edits made while saving are drained in revision order. Workspace listing/creation and hosted handoff use request functions and Saga iterators. Live WebSocket setup/retry has a cancellable Saga lifecycle; the underlying signed presence protocol and authoritative document event stream remain unchanged.
 
 ## Persistence
 
@@ -26,20 +34,20 @@ Server-sent events carry authoritative snapshots, transient presence, and the la
 
 ## Local API
 
-| Method | Route                    | Contract                                                                     |
-| ------ | ------------------------ | ---------------------------------------------------------------------------- |
-| GET    | `/api/health`            | Health response.                                                             |
-| GET    | `/api/session`           | Current profile; first local visit creates the initial profile.               |
-| POST   | `/api/join`              | `{ token, name }`; consumes a single-use invite and creates a session.         |
-| POST   | `/api/invites`           | Creates an invite valid for 24 hours.                                         |
-| PUT    | `/api/profile`           | `{ name, avatar }`; PNG/JPEG/WebP data URL or empty avatar.                    |
-| GET    | `/api/events?clientId=UUID` | Authenticated event stream, up to 64 simultaneous connections.             |
-| POST   | `/api/presence`          | Board, view, world cursor, and selected node IDs; identity is server-derived. |
-| PATCH  | `/api/workspace`         | `{ requestId, operations: [{ path, before?, after? }] }`; 409 on conflict.    |
-| GET    | `/api/workspace`         | `{ workspace, revision, savedAt }`.                                          |
-| PUT    | `/api/workspace`         | `{ workspace, revision }`; returns updated envelope; 400 invalid, 409 stale. |
-| GET    | `/api/history`           | Available previous revision numbers and timestamps.                          |
-| GET    | `/api/history/:revision` | Workspace snapshot; 404 if absent.                                           |
+| Method | Route                       | Contract                                                                      |
+| ------ | --------------------------- | ----------------------------------------------------------------------------- |
+| GET    | `/api/health`               | Health response.                                                              |
+| GET    | `/api/session`              | Current profile; first local visit creates the initial profile.               |
+| POST   | `/api/join`                 | `{ token, name }`; consumes a single-use invite and creates a session.        |
+| POST   | `/api/invites`              | Creates an invite valid for 24 hours.                                         |
+| PUT    | `/api/profile`              | `{ name, avatar }`; PNG/JPEG/WebP data URL or empty avatar.                   |
+| GET    | `/api/events?clientId=UUID` | Authenticated event stream, up to 64 simultaneous connections.                |
+| POST   | `/api/presence`             | Board, view, world cursor, and selected node IDs; identity is server-derived. |
+| PATCH  | `/api/workspace`            | `{ requestId, operations: [{ path, before?, after? }] }`; 409 on conflict.    |
+| GET    | `/api/workspace`            | `{ workspace, revision, savedAt }`.                                           |
+| PUT    | `/api/workspace`            | `{ workspace, revision }`; returns updated envelope; 400 invalid, 409 stale.  |
+| GET    | `/api/history`              | Available previous revision numbers and timestamps.                           |
+| GET    | `/api/history/:revision`    | Workspace snapshot; 404 if absent.                                            |
 
 The server restricts API hostnames and browser origins to loopback plus an explicitly configured public origin, rejects oversized JSON, and disables API caching. Except health, session lookup, and joining, API routes require an invited session. All members have equal studio access. These endpoints are not the future deployment API promised by requirement R10.
 

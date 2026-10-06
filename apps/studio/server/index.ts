@@ -1,6 +1,6 @@
-import { dataDirectory } from './paths.ts'
 import { resolve } from 'node:path'
 import { createApp, createApplication } from './app.ts'
+import { dataDirectory } from './paths.ts'
 import { openPostgres } from './postgres.ts'
 const { app, store, collaboration } =
   process.env.POMEGRANATE_STORAGE === 'postgres'

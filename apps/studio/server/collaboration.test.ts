@@ -1,19 +1,19 @@
-import { test } from 'node:test'
-import assert from 'node:assert/strict'
-import { mkdtempSync, rmSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { randomUUID } from 'node:crypto'
-import { createApp } from './app.ts'
-import { openStore } from './store.ts'
 import {
   applyOperations,
   diffWorkspace,
   type Operation,
 } from '@pomegranate/domain/collaboration'
-import type { Envelope } from '@pomegranate/domain/workspace'
 import { createSeed } from '@pomegranate/domain/seed'
 import { makeWireNode } from '@pomegranate/domain/wireframe'
+import type { Envelope } from '@pomegranate/domain/workspace'
+import assert from 'node:assert/strict'
+import { randomUUID } from 'node:crypto'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { test } from 'node:test'
+import { createApp } from './app.ts'
+import { openStore } from './store.ts'
 
 async function events(
   url: string,

@@ -22,3 +22,7 @@ See `docs/skills.md` for provenance, scope, and explicit invocation examples. Th
 ## Monorepo layout
 
 `apps/studio` owns the React frontend and HTTP server. `packages/domain` owns shared schemas and operations; import them through `@pomegranate/domain/*`. `packages/mcp` owns the stdio MCP bridge and setup CLI. `packages/studio-skill` owns the companion SKILL.md and installer. Use pnpm workspace dependencies rather than relative imports between packages. Root `scripts/` contains administrator utilities; root `api/` and `vercel.json` adapt the studio for the existing Vercel project. Root `.env` and `data/` retain their existing locations. Never run migration or live smoke utilities as routine package tests.
+
+## Code conventions
+
+Follow [docs/code-rules.md](docs/code-rules.md). The user explicitly requires PascalCase component files, camelCase utilities/folders, one component or top-level utility per file, separate type files, public index barrels, and Redux Toolkit plus Redux-Saga generator iterators. Use `ui`, `model/{iterators,requests,saga,slices,selectors}`, `utils`, and `types` segments as needed. These conventions override conflicting FSD skill advice about widgets, file names, or model segmentation. `pnpm lint` includes `pnpm check:architecture`. Preserve the documented browser-handle/private-secret exceptions; do not add general application state with `useState`.

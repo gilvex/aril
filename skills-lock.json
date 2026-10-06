@@ -47,7 +47,8 @@
         "references/migration-guide.md": "92180128b64c97db7c3d33458e210dd04153bdc59817bba8add9660499319ae4",
         "references/state-management.md": "b85460b2f5538f56ba3f279723db317ae0e4e21d2e4218f78b8fe4460835f0f2",
         "SKILL.md": "cdea84378bf7579ecf85e284f39202d41fe44a4cab295fb399aceb3296a38746"
-      }
+      },
+      "verifiedOn": "2026-10-06"
     },
     {
       "name": "frontend-design",

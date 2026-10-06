@@ -2,14 +2,14 @@
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { RealtimeClient } from '@supabase/realtime-js'
-import { createLiveSession } from '../apps/studio/server/live-session.ts'
+import { createLiveSession } from '../apps/studio/server/liveSession.ts'
 import {
   encode64,
   publicKey,
   signMessage,
   verifyMessage,
   verifyCertificate,
-} from '@pomegranate/domain/live-session'
+} from '@pomegranate/domain/liveSession'
 
 const room = 'smoke-' + randomUUID()
 const keys = await crypto.subtle.generateKey('Ed25519', true, [

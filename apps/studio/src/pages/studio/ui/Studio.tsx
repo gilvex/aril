@@ -1,105 +1,93 @@
-import { AgentAccess } from './AgentAccess'
-import { ThemePicker } from '../../../shared/ui/ThemePicker'
-import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
-import { CanvasNavigation } from './CanvasNavigation'
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { workspaceSchema } from '@pomegranate/domain/workspace'
 import {
-  Workflow,
-  ListChecks,
-  Palette,
-  NotebookPen,
-  ChevronDown,
-  ArrowUpRight,
-  Undo2,
-  Redo2,
-  Download,
-  Upload,
-  History,
-  Check,
-  LoaderCircle,
-  AlertCircle,
-  X,
-  Menu,
   Activity as ActivityIcon,
+  AlertCircle,
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  Download,
   FileJson,
-  RotateCcw,
-  MoreHorizontal,
+  History,
+  LoaderCircle,
+  Menu,
   Minimize2,
+  MoreHorizontal,
+  NotebookPen,
+  Redo2,
+  RotateCcw,
+  Undo2,
+  Upload,
+  Workflow,
+  X,
 } from 'lucide-react'
-import {
-  downloadJson,
-  request,
-  workspaceHeaders,
-  workspaceSchema,
-  type Workspace,
-  type Envelope,
-} from '../../../shared/api/workspace'
-import { useWorkspace, type Recovery } from '../model/use-workspace'
-import { useMultiplayer } from '../model/use-multiplayer'
-import { Avatar, CollaborationBar, PresenceAvatars } from './CollaborationBar'
-import type { Profile } from '@pomegranate/domain/collaboration'
-import type { StudioSummary } from '@pomegranate/domain/studios'
-import { useCompactLayout } from '../../../shared/lib/use-compact-layout'
-import {
-  readStudioRoute,
-  saveStudioRoute,
-} from '../../../shared/lib/browser-route'
-const CanvasBoard = lazy(() =>
-  import('./CanvasBoard').then((module) => ({ default: module.CanvasBoard })),
-)
-const WireframeBoard = lazy(() =>
-  import('./WireframeBoard').then((module) => ({
-    default: module.WireframeBoard,
-  })),
-)
-import { Requirements } from './Requirements'
-import { DesignBoard } from './DesignBoard'
-
-type View = 'canvas' | 'requirements' | 'design' | 'notes'
-const navigation = [
-  { id: 'canvas' as const, name: 'Canvas', icon: Workflow },
-  { id: 'requirements' as const, name: 'Requirements', icon: ListChecks },
-  { id: 'design' as const, name: 'Design direction', icon: Palette },
-  { id: 'notes' as const, name: 'Project notes', icon: NotebookPen },
-]
+import { Suspense, useEffect, useRef } from 'react'
+import { Avatar } from '../../../entities/collaboration/index.ts'
+import { PresenceAvatars } from '../../../entities/collaboration/index.ts'
+import { useWorkspace } from '../../../entities/workspace/index.ts'
+import { AgentAccess } from '../../../features/agentAccess/index.ts'
+import { ThemePicker } from '../../../features/appearance/index.ts'
+import { CanvasNavigation } from '../../../features/boardNavigation/index.ts'
+import { useCanvasFullscreen } from '../../../features/canvasFullscreen/index.ts'
+import { useMultiplayer } from '../../../features/liveSession/index.ts'
+import { downloadJson } from '../../../shared/api/downloadJson.ts'
+import { request } from '../../../shared/api/request.ts'
+import { workspaceHeaders } from '../../../shared/api/workspaceHeaders.ts'
+import { useCompactLayout } from '../../../shared/model/useCompactLayout.ts'
+import { saveStudioRoute } from '../../../shared/utils/saveStudioRoute.ts'
+import { CollaborationBar } from '../../../widgets/collaboration/index.ts'
+import { DesignBoard } from '../../../widgets/design/index.ts'
+import { Requirements } from '../../../widgets/requirements/index.ts'
+import { navigation } from '../config/navigation.ts'
+import { createStudioState } from '../model/createStudioState.ts'
+import { useStudioModel } from '../model/useStudioModel.ts'
+import type { StudioProps } from '../types/studioProps.ts'
+import type { StudioView as View } from '../../../shared/types/studioView.ts'
+import { CanvasBoard } from './CanvasBoard.tsx'
+import { WireframeBoard } from './WireframeBoard.tsx'
 export function Studio({
   initial,
   recovery,
   initialProfile,
   studio,
   onWorkspaces,
-}: {
-  initial: Envelope
-  recovery?: Recovery
-  initialProfile: Profile
-  studio: StudioSummary
-  onWorkspaces: (profile: Profile) => void
-}) {
+}: StudioProps) {
   const full = useCanvasFullscreen()
   const state = useWorkspace(initial, studio.id, initialProfile.id, recovery)
   const multiplayer = useMultiplayer(initialProfile, state.receive, studio.id)
   const { workspace, change } = state
-  const [initialRoute] = useState(() => readStudioRoute(location.search))
-  const [view, setView] = useState<View>(initialRoute.view)
-  const [canvasMode, setCanvasMode] = useState<'canvas' | 'wireframes'>(
-    initialRoute.canvasMode,
-  )
+  const {
+    view,
+    setView,
+    canvasMode,
+    setCanvasMode,
+    boardId,
+    setBoardId,
+    requirementId,
+    setRequirementId,
+    sidebarOpen,
+    setSidebarOpen,
+    collaborationPanel,
+    setCollaborationPanel,
+    notice,
+    setNotice,
+    modal,
+    setModal,
+    boardName,
+    setBoardName,
+    pendingImport,
+    setPendingImport,
+    snapshots,
+    setSnapshots,
+    historyLoading,
+    setHistoryLoading,
+    followId,
+    setFollowId,
+  } = useStudioModel(() => createStudioState(workspace, recovery))
+
   const BoardCanvas = canvasMode === 'wireframes' ? WireframeBoard : CanvasBoard
-  const [boardId, setBoardId] = useState(
-    initialRoute.boardId || workspace.boards[0].id,
-  )
-  const [requirementId, setRequirementId] = useState<string | null>(() =>
-    workspace.requirements.some(
-      (item) => item.id === initialRoute.requirementId,
-    )
-      ? initialRoute.requirementId!
-      : null,
-  )
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   const compact = useCompactLayout()
-  const [collaborationPanel, setCollaborationPanel] = useState<
-    'profile' | 'people' | 'activity' | null
-  >(null)
+
   const sidebarRef = useRef<HTMLElement>(null)
   const actionsMenu = useRef<HTMLDetailsElement>(null)
   useEffect(() => {
@@ -148,25 +136,7 @@ export function Studio({
       mobileMenuToggle.current?.focus()
     }
   }, [compact, sidebarOpen])
-  const [notice, setNotice] = useState(
-    recovery ? 'Recovered unsaved edits from this tab.' : '',
-  )
-  const [modal, setModal] = useState<
-    | 'new'
-    | 'history'
-    | 'delete'
-    | 'import'
-    | 'export'
-    | 'reload'
-    | 'agents'
-    | null
-  >(null)
-  const [boardName, setBoardName] = useState('')
-  const [pendingImport, setPendingImport] = useState<Workspace | null>(null)
-  const [snapshots, setSnapshots] = useState<
-    { revision: number; savedAt: string }[]
-  >([])
-  const [historyLoading, setHistoryLoading] = useState(false)
+
   useEffect(() => {
     if (!modal) return
     const previous = document.activeElement as HTMLElement | null
@@ -212,7 +182,7 @@ export function Studio({
     })
   }, [studio.id, board.id, view, canvasMode, routedRequirementId])
   const { sendPresence } = multiplayer
-  const [followId, setFollowId] = useState<string | null>(null)
+
   const followedPeer = multiplayer.connected
     ? multiplayer.peers.find((p) => p.clientId === followId)
     : undefined

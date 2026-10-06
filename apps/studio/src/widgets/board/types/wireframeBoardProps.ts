@@ -1,0 +1,31 @@
+import type {
+  CameraPresence,
+  DragPosition,
+  Presence,
+  Profile,
+} from '@pomegranate/domain/collaboration'
+import type { Board } from '@pomegranate/domain/workspace'
+import type { ReactNode } from 'react'
+import type { CanvasFullscreenControls } from '../../../features/canvasFullscreen/index.ts'
+
+export type WireframeBoardProps = {
+  full: CanvasFullscreenControls
+  following: Presence | null
+  navigation: ReactNode
+  board: Board
+  update: (board: Board, record?: boolean) => void
+  checkpoint: () => void
+  peers: Presence[]
+  profile: Profile
+  saveState: 'saved' | 'pending' | 'saving' | 'error'
+  sendPresence: (
+    changes: {
+      camera?: CameraPresence | null
+      cursor?: { x: number; y: number } | null
+      selected?: string[]
+      selectedEdges?: string[]
+      dragging?: DragPosition[]
+    },
+    force?: boolean,
+  ) => void
+}

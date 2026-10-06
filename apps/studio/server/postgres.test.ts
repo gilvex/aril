@@ -1,10 +1,10 @@
-import { test } from 'node:test'
-import assert from 'node:assert/strict'
-import { openPostgres } from './postgres.ts'
-import { createApplication } from './app.ts'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import { randomUUID } from 'node:crypto'
 import type { Envelope } from '@pomegranate/domain/workspace'
+import assert from 'node:assert/strict'
+import { randomUUID } from 'node:crypto'
+import { test } from 'node:test'
+import { createApplication } from './app.ts'
+import { openPostgres } from './postgres.ts'
 
 test(
   'Postgres: concurrent instances share isolated edits, invites and transfers without cursor rows',

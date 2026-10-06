@@ -1,19 +1,19 @@
-import { test } from 'node:test'
-import assert from 'node:assert/strict'
-import { randomUUID } from 'node:crypto'
-import { createSeed } from '@pomegranate/domain/seed'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
 import {
   applyOperations,
   diffWorkspace,
   presenceSchema,
 } from '@pomegranate/domain/collaboration'
+import { createSeed } from '@pomegranate/domain/seed'
 import {
   makeWireNode,
   removeWireNodes,
   wireframeSchema,
   wirePosition,
 } from '@pomegranate/domain/wireframe'
+import { workspaceSchema } from '@pomegranate/domain/workspace'
+import assert from 'node:assert/strict'
+import { randomUUID } from 'node:crypto'
+import { test } from 'node:test'
 
 test('wireframes merge by block, preserve blueprints, support undo and keep cameras private', () => {
   const original = createSeed()

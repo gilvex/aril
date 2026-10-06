@@ -1,5 +1,3 @@
-import type { Express, Request, Response } from 'express'
-import { z } from 'zod'
 import {
   applyOperations,
   describeOperations,
@@ -9,12 +7,14 @@ import {
   type Presence,
   type Profile,
 } from '@pomegranate/domain/collaboration'
-import type { Store } from './store-contract.ts'
-import { cloudEvents } from './cloud-events.ts'
+import { liveJoinSchema } from '@pomegranate/domain/liveSession'
+import type { Express, Request, Response } from 'express'
+import { z } from 'zod'
+import { cloudEvents } from './cloudEvents.ts'
 import { verifyGoogle } from './google.ts'
+import { createLiveSession } from './liveSession.ts'
 import { openPostgres } from './postgres.ts'
-import { createLiveSession } from './live-session.ts'
-import { liveJoinSchema } from '@pomegranate/domain/live-session'
+import type { Store } from './storeContract.ts'
 
 export function installCollaboration(
   app: Express,
@@ -493,12 +493,10 @@ export function installCollaboration(
     }
     const workspaceId = res.locals.workspaceId as string
     if (store.cloud) {
-      res
-        .status(428)
-        .json({
-          error: 'Reload to use WebSocket live sessions.',
-          code: 'CLIENT_UPDATE_REQUIRED',
-        })
+      res.status(428).json({
+        error: 'Reload to use WebSocket live sessions.',
+        code: 'CLIENT_UPDATE_REQUIRED',
+      })
       return
     }
     const key = `${workspaceId}:${(res.locals.profile as Profile).id}:${input.data.clientId}`

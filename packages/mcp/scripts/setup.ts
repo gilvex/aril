@@ -1,9 +1,9 @@
+import { access } from 'node:fs/promises'
 import { createInterface } from 'node:readline/promises'
 import { Writable } from 'node:stream'
-import { access } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
-import { defaultConfigPath, validateConfig, saveConfig } from '../src/config.ts'
-import { createAgentClient } from '../src/server.ts'
+import { defaultConfigPath,saveConfig,validateConfig } from '../src/config/index.ts'
+import { createAgentClient } from '../src/server/index.ts'
 
 const path = process.env.POMEGRANATE_MCP_CONFIG || defaultConfigPath()
 const input = createInterface({ input: process.stdin, output: process.stdout })

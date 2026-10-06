@@ -1,0 +1,5 @@
+export { writeVersion } from './config/writeVersion.ts'
+export { writeVersionHeader } from './config/writeVersionHeader.ts'
+export type { RecoveryDraft } from './types/recoveryDraft.ts'
+export { canRebaseOperations } from './utils/canRebaseOperations.ts'
+export { isFreshDraft } from './utils/isFreshDraft.ts'

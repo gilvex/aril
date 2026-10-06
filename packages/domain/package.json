@@ -7,7 +7,7 @@
   },
   "name": "@pomegranate/domain",
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./src/*/index.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json"

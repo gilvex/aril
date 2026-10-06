@@ -1,18 +1,15 @@
-import { frontendDirectory } from './paths.ts'
-import { installAgentApi, installAgentManagement } from './agent-api.ts'
-import express from 'express'
-import { z } from 'zod'
-import { resolve } from 'node:path'
-import { existsSync } from 'node:fs'
-import { openStore } from './store.ts'
-import type { Store } from './store-contract.ts'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
-import { installCollaboration } from './collaboration.ts'
 import { writeVersion, writeVersionHeader } from '@pomegranate/domain/freshness'
+import { workspaceSchema } from '@pomegranate/domain/workspace'
+import express from 'express'
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { z } from 'zod'
+import { installAgentApi, installAgentManagement } from './agentApi.ts'
+import { installCollaboration } from './collaboration.ts'
+import { frontendDirectory } from './paths.ts'
+import type { Store } from './storeContract.ts'
 
-export function createApp(database: string, publicOrigin?: string) {
-  return createApplication(openStore(database), publicOrigin)
-}
+export { createApp } from './utils/appCreateApp.ts'
 export function createApplication<T extends Store>(
   store: T,
   publicOrigin?: string,

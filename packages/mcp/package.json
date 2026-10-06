@@ -7,7 +7,9 @@
   },
   "name": "@pomegranate/mcp",
   "exports": {
-    "./*": "./src/*.ts"
+    "./config": "./src/config/index.ts",
+    "./server": "./src/server/index.ts",
+    "./index": "./src/index.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/build.mjs",

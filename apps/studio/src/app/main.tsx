@@ -1,12 +1,12 @@
-import { initializeTheme } from '../shared/lib/theme'
+import '@fontsource-variable/dm-sans'
+import '@fontsource-variable/manrope'
+import '@xyflow/react/dist/style.css'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { App } from './App'
-import '@fontsource-variable/manrope'
-import '@fontsource-variable/dm-sans'
-import '@xyflow/react/dist/style.css'
+import { initializeTheme } from '../shared/utils/initializeTheme.ts'
 import './styles.css'
 import './theme.css'
+import { App } from './ui/App.tsx'
 
 initializeTheme()
 

@@ -10,13 +10,14 @@
   "scripts": {
     "dev": "pnpm --filter @pomegranate/studio dev",
     "build": "pnpm -r --if-present build",
-    "lint": "eslint .",
+    "lint": "eslint . && node scripts/checkArchitecture.mjs",
     "test": "pnpm --filter @pomegranate/studio test",
     "start": "pnpm --filter @pomegranate/studio start",
     "invite": "node --env-file-if-exists=.env scripts/invite.ts",
     "mcp": "pnpm --filter @pomegranate/mcp start",
     "mcp:setup": "pnpm --filter @pomegranate/mcp setup",
-    "skill:install": "pnpm --filter @pomegranate/studio-skill install:skill"
+    "skill:install": "pnpm --filter @pomegranate/studio-skill install:skill",
+    "check:architecture": "node scripts/checkArchitecture.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

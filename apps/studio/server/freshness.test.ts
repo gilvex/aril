@@ -1,14 +1,14 @@
-import { test } from 'node:test'
+import { diffWorkspace } from '@pomegranate/domain/collaboration'
+import { isFreshDraft, writeVersion } from '@pomegranate/domain/freshness'
+import { createSeed } from '@pomegranate/domain/seed'
+import { makeWireNode } from '@pomegranate/domain/wireframe'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { test } from 'node:test'
 import { createApp } from './app.ts'
-import { createSeed } from '@pomegranate/domain/seed'
-import { makeWireNode } from '@pomegranate/domain/wireframe'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import { isFreshDraft, writeVersion } from '@pomegranate/domain/freshness'
 
 test('recovery requires the current protocol, revision and unchanged base document', () => {
   const latest = {

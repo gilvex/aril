@@ -1,16 +1,16 @@
-import { test } from 'node:test'
-import assert from 'node:assert/strict'
-import { mkdtempSync, rmSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { get } from 'node:http'
-import { createApp } from './app.ts'
-import { openStore } from './store.ts'
 import {
   workspaceSchema,
   type Envelope,
   type Workspace,
 } from '@pomegranate/domain/workspace'
+import assert from 'node:assert/strict'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { get } from 'node:http'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { test } from 'node:test'
+import { createApp } from './app.ts'
+import { openStore } from './store.ts'
 
 test('workspace persistence, stale-write protection, history and invalid graph rejection', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'pomegranate-test-'))

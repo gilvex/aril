@@ -1,9 +1,15 @@
-import { test } from 'node:test'
+import {
+  diffWorkspace,
+  presenceSchema,
+} from '@pomegranate/domain/collaboration'
+import {
+  cameraFromViewport,
+  viewportFromCamera,
+} from '@pomegranate/domain/follow'
+import { createSeed } from '@pomegranate/domain/seed'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
-import { cameraFromViewport, viewportFromCamera } from '@pomegranate/domain/follow'
-import { presenceSchema, diffWorkspace } from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
+import { test } from 'node:test'
 
 test('following preserves the world center and zoom across desktop and phone sizes', () => {
   const camera = cameraFromViewport(

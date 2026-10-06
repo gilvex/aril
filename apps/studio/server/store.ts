@@ -1,17 +1,17 @@
-import { agentCredentials, agentTable } from './agent-credentials.ts'
-import { DatabaseSync } from 'node:sqlite'
-import { randomUUID } from 'node:crypto'
-import { mkdirSync } from 'node:fs'
-import { dirname } from 'node:path'
+import type { Activity } from '@pomegranate/domain/collaboration'
 import { createSeed } from '@pomegranate/domain/seed'
 import { blankStudio, type StudioSummary } from '@pomegranate/domain/studios'
-import { identityStore } from './identity.ts'
-import type { Activity } from '@pomegranate/domain/collaboration'
 import {
   workspaceSchema,
   type Envelope,
   type Workspace,
 } from '@pomegranate/domain/workspace'
+import { randomUUID } from 'node:crypto'
+import { mkdirSync } from 'node:fs'
+import { dirname } from 'node:path'
+import { DatabaseSync } from 'node:sqlite'
+import { agentCredentials, agentTable } from './agentCredentials.ts'
+import { identityStore } from './identity.ts'
 
 export function openStore(path: string) {
   mkdirSync(dirname(path), { recursive: true })

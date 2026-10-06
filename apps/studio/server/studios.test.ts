@@ -1,12 +1,12 @@
-import { test } from 'node:test'
+import { createSeed } from '@pomegranate/domain/seed'
 import assert from 'node:assert/strict'
-import { DatabaseSync } from 'node:sqlite'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { DatabaseSync } from 'node:sqlite'
+import { test } from 'node:test'
 import { createApp } from './app.ts'
 import { openStore } from './store.ts'
-import { createSeed } from '@pomegranate/domain/seed'
 
 test('legacy migration keeps documents, history and existing invited memberships', () => {
   const directory = mkdtempSync(join(tmpdir(), 'pomegranate-migrate-'))
