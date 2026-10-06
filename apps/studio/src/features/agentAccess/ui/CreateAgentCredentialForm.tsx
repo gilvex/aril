@@ -1,3 +1,4 @@
+import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCreateAgentCredentialFormHandlers } from '../model/useCreateAgentCredentialFormHandlers.tsx'
 
@@ -67,6 +68,7 @@ export function CreateAgentCredentialForm({
         className="button primary"
         disabled={busy || loading || !name.trim()}
       >
+        {busy && <Spinner />}
         {t('Create credential')}
       </button>
     </form>

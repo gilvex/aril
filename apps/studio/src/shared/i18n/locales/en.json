@@ -644,5 +644,8 @@
   "Reset filters": "Reset filters",
   "Actions for {{id}}": "Actions for {{id}}",
   "{{count}} hidden by filters": "{{count}} hidden by filters",
-  "Add": "Add"
+  "Add": "Add",
+  "Opening your shared workspace…": "Opening your shared workspace…",
+  "Loading Google sign-in…": "Loading Google sign-in…",
+  "Verifying your Google account…": "Verifying your Google account…"
 }

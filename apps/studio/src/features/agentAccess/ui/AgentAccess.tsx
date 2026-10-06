@@ -1,3 +1,4 @@
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { createAgentAccessState } from '@/features/agentAccess/model/createAgentAccessState.ts'
 import { useAgentAccessModel } from '@/features/agentAccess/model/useAgentAccessModel.ts'
 import type { AgentAccessProps } from '@/features/agentAccess/types/agentAccessProps.ts'
@@ -87,7 +88,7 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
       <AgentSetupInstructions t={t} />
       <h3>{t('Your connections')}</h3>
       {loading ? (
-        <p>{t('Loading…')}</p>
+        <LoadingStatus label={t('Loading…')} />
       ) : !credentials.length ? (
         <p>{t('No agent connections yet.')}</p>
       ) : (

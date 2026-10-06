@@ -1,3 +1,4 @@
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioCanvasHandlers } from '../model/useStudioCanvasHandlers.tsx'
 
@@ -45,9 +46,7 @@ export function StudioCanvas({
     })
   return (
     <Suspense
-      fallback={
-        <div className="empty-message">{t('Opening your canvas…')}</div>
-      }
+      fallback={<LoadingStatus centered label={t('Opening your canvas…')} />}
     >
       <BoardCanvas
         full={full}

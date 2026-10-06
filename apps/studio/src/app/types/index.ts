@@ -1,4 +1,5 @@
 export * from './appState.ts'
+export type { InitialLoadingScreenProps } from './initialLoadingScreenProps.ts'
 export * from './joinStudioFormProps.ts'
 export * from './joinStudioScreenProps.ts'
 export * from './staleDraftScreenProps.ts'

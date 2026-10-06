@@ -1,3 +1,4 @@
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AlertCircle, X } from 'lucide-react'
 import { Suspense } from 'react'
@@ -80,7 +81,7 @@ export function StudioContent(props: StudioContentProps) {
           <StudioCanvas {...props} followed={followed} />
         </>
       )}
-      <Suspense fallback={<div className="empty-message">{t('Loading…')}</div>}>
+      <Suspense fallback={<LoadingStatus centered label={t('Loading…')} />}>
         {view === 'requirements' && (
           <Requirements
             workspaceId={props.studio.id}

@@ -1,3 +1,4 @@
+import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useJoinStudioFormHandlers } from '../model/useJoinStudioFormHandlers.tsx'
 
@@ -56,6 +57,7 @@ export function JoinStudioForm({
         className="button primary"
         disabled={busy || (!profile && !name.trim()) || !token.trim()}
       >
+        {busy && <Spinner />}
         {busy
           ? t('Joining…')
           : profile

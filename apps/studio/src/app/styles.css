@@ -1929,7 +1929,7 @@ code {
   max-height: 330px;
   overflow-y: auto;
 }
-.snapshot-list > div {
+.snapshot-list > div:not(.loading-status) {
   display: flex;
   align-items: center;
   justify-content: space-between;

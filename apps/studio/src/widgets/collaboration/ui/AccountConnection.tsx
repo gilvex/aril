@@ -1,3 +1,4 @@
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useAccountConnectionHandlers } from '../model/useAccountConnectionHandlers.tsx'
 
@@ -41,9 +42,9 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
         </p>
       ) : account ? (
         <GoogleSignIn link onSuccess={handleSuccess} />
-      ) : (
-        <p>{t('Loading account…')}</p>
-      )}
+      ) : !error ? (
+        <LoadingStatus label={t('Loading account…')} />
+      ) : null}
     </section>
   )
 }

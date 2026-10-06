@@ -1,4 +1,5 @@
 import { LanguagePicker } from '@/features/appearance/index.ts'
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useJoinStudioScreenHandlers } from '../model/useJoinStudioScreenHandlers.tsx'
 
@@ -50,9 +51,9 @@ export function JoinStudioScreen({
           setName={setName}
           busy={busy}
         />
-      ) : (
-        <p>{error || 'Opening your shared workspace…'}</p>
-      )}
+      ) : !error ? (
+        <LoadingStatus label={t('Opening your shared workspace…')} />
+      ) : null}
       {error && (
         <p className="form-error" role="alert">
           {error}

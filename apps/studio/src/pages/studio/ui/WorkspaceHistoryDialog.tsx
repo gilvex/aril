@@ -1,3 +1,4 @@
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { History } from 'lucide-react'
 import { RevisionHistoryItem } from './RevisionHistoryItem.tsx'
@@ -27,7 +28,7 @@ export function WorkspaceHistoryDialog({
       </p>
       <div className="snapshot-list">
         {historyLoading ? (
-          <p>{t('Loading saved revisions…')}</p>
+          <LoadingStatus label={t('Loading saved revisions…')} />
         ) : !snapshots.length ? (
           <p>{t('No previous saves yet. Make your first change to begin.')}</p>
         ) : (

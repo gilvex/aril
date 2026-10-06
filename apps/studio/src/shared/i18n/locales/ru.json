@@ -644,5 +644,8 @@
   "Reset filters": "Сбросить фильтры",
   "Actions for {{id}}": "Действия для {{id}}",
   "{{count}} hidden by filters": "Скрыто фильтрами: {{count}}",
-  "Add": "Добавить"
+  "Add": "Добавить",
+  "Opening your shared workspace…": "Открываем ваше рабочее пространство…",
+  "Loading Google sign-in…": "Загрузка входа через Google…",
+  "Verifying your Google account…": "Проверка аккаунта Google…"
 }

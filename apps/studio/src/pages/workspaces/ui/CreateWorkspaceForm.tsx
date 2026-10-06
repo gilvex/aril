@@ -1,3 +1,4 @@
+import { Spinner } from '@/shared/ui/index.tsx'
 import type { CreateWorkspaceFormProps } from '../types/createWorkspaceFormProps.ts'
 export function CreateWorkspaceForm({
   handleSubmit,
@@ -35,6 +36,7 @@ export function CreateWorkspaceForm({
           {t('Cancel')}
         </button>
         <button className="button primary" disabled={busy || !name.trim()}>
+          {busy && <Spinner />}
           {busy ? t('Creating…') : t('Create workspace')}
         </button>
       </div>

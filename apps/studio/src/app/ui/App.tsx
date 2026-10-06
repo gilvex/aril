@@ -5,6 +5,7 @@ import { useAppHandlers } from '../model/useAppHandlers.tsx'
 
 import { JoinStudioScreen } from './JoinStudioScreen.tsx'
 import { StaleDraftScreen } from './StaleDraftScreen.tsx'
+import { InitialLoadingScreen } from './InitialLoadingScreen.tsx'
 export function App() {
   const {
     legacy,
@@ -42,8 +43,15 @@ export function App() {
     setStudio,
     setProfile,
   })
+  const loading =
+    !legacy &&
+    !error &&
+    !inviteRequired &&
+    !token &&
+    (!profile || restoringRoute || !!(studio && !initial))
+  let content
   if (legacy)
-    return (
+    content = (
       <StaleDraftScreen
         legacy={legacy}
         staleDraftKey={staleDraftKey}
@@ -55,8 +63,8 @@ export function App() {
         setError={setError}
       />
     )
-  if (!profile || token || restoringRoute || (studio && !initial))
-    return (
+  else if (!profile || token || restoringRoute || (studio && !initial))
+    content = (
       <JoinStudioScreen
         inviteRequired={inviteRequired}
         token={token}
@@ -72,22 +80,31 @@ export function App() {
         error={error}
       />
     )
-  if (!studio || !initial)
-    return (
+  else if (!studio || !initial)
+    content = (
       <WorkspaceHome
         profile={profile}
         notice={routeNotice}
         onOpen={openWorkspace}
       />
     )
+  else
+    content = (
+      <Studio
+        key={studio.id}
+        studio={studio}
+        initial={initial}
+        recovery={recovery}
+        initialProfile={profile}
+        onWorkspaces={returnToWorkspaces}
+      />
+    )
   return (
-    <Studio
-      key={studio.id}
-      studio={studio}
-      initial={initial}
-      recovery={recovery}
-      initialProfile={profile}
-      onWorkspaces={returnToWorkspaces}
-    />
+    <>
+      <div className="app-content" inert={loading}>
+        {content}
+      </div>
+      <InitialLoadingScreen loading={loading} />
+    </>
   )
 }

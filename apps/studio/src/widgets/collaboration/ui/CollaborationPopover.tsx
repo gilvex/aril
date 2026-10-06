@@ -1,3 +1,4 @@
+import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AccountConnection } from '@/widgets/collaboration/ui/AccountConnection.tsx'
 import { Check, Link, X } from 'lucide-react'
@@ -89,7 +90,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
             disabled={busy}
             onClick={createInvite}
           >
-            <Link size={14} />
+            {busy ? <Spinner /> : <Link size={14} />}
             {t('Create invite link')}
           </button>
           {invite && (

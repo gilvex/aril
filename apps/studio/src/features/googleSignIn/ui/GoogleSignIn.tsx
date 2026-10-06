@@ -1,3 +1,4 @@
+import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useGoogleSignInHandlers } from '../model/useGoogleSignInHandlers.tsx'
 
@@ -23,6 +24,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
 
   useEffect(() => {
     let active = true
+    setStatus('Loading Google sign-in…')
     const mount = async () => {
       const config = await request<{ googleClientId: string | null }>(
         '/api/auth/config',
@@ -110,7 +112,12 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
   const { handleClick } = useGoogleSignInHandlers({ setError, setRetry })
   return (
     <div className="google-signin">
-      <p>{status}</p>
+      <p role="status">
+        {!error &&
+          (status === 'Loading Google sign-in…' ||
+            status === 'Verifying your Google account…') && <Spinner />}{' '}
+        {t(status)}
+      </p>
       <div ref={root} />
       {error && (
         <>

@@ -1,3 +1,4 @@
+import { Spinner } from '@/shared/ui/index.tsx'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useProfileFormHandlers } from '../model/useProfileFormHandlers.tsx'
@@ -67,6 +68,7 @@ export function ProfileForm({
         {t('Your name and picture appear beside your cursor and in the team.')}
       </p>
       <button className="button primary" disabled={busy || !name.trim()}>
+        {busy && <Spinner />}
         {busy ? t('Saving…') : t('Save profile')}
       </button>
     </form>

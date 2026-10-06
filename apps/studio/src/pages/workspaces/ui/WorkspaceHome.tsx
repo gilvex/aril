@@ -1,3 +1,4 @@
+import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceHomeHandlers } from '../model/useWorkspaceHomeHandlers.tsx'
@@ -90,7 +91,9 @@ export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
           {error}
         </p>
       )}
-      {!studios && !error && <p>{t('Loading your workspaces…')}</p>}
+      {!studios && !error && (
+        <LoadingStatus label={t('Loading your workspaces…')} />
+      )}
       <div className="workspace-grid">
         {studios?.map((studio) => (
           <button
