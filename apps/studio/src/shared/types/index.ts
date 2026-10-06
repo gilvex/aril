@@ -2,3 +2,8 @@ export * from './studioRoute.ts'
 export * from './studioView.ts'
 export * from './themePreference.ts'
 export type { LoadingStatusProps } from './loadingStatusProps.ts'
+
+export type { SelectChange } from './selectChange.ts'
+export type { SelectOption } from './selectOption.ts'
+export type { StudioSelectProps } from './studioSelectProps.ts'
+export type { StudioSelectMenuProps } from './studioSelectMenuProps.ts'

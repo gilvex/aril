@@ -70,6 +70,8 @@ export function commitDemoChange(
         owned: planner.owned,
         protectedIds: planner.protectedIds,
         recent: planner.recent,
+        arrangedIds: planner.arrangedIds,
+        recentTopics: planner.recentTopics,
       },
     }),
   )

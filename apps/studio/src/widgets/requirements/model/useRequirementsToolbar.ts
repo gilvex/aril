@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useId, type ChangeEvent } from 'react'
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { useCallback, useEffect, useRef, useId } from 'react'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
 export function useRequirementsToolbar({ model }: RequirementsViewProps) {
   const { panel, setViewState, add } = model
@@ -19,12 +20,16 @@ export function useRequirementsToolbar({ model }: RequirementsViewProps) {
   )
   useEffect(() => {
     if (!panel) return
-    popup.current?.querySelector<HTMLInputElement>('input, select')?.focus()
+    popup.current
+      ?.querySelector<HTMLInputElement>('input, select, [role=combobox]')
+      ?.focus()
     const outside = (event: PointerEvent) => {
+      if ((event.target as Element).closest('[data-studio-select-menu]')) return
       if (!root.current?.contains(event.target as Node))
         setViewState({ panel: null })
     }
     const keys = (event: KeyboardEvent) => {
+      if (document.querySelector('[data-studio-select-menu]')) return
       if (event.key === 'Escape') {
         event.preventDefault()
         event.stopPropagation()
@@ -39,7 +44,7 @@ export function useRequirementsToolbar({ model }: RequirementsViewProps) {
     }
   }, [panel, close, setViewState])
   const changeView = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       const value = event.target.value
       setViewState({
         view: value === 'list' ? 'list' : 'board',

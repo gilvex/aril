@@ -1,4 +1,6 @@
-import { useCallback, type ChangeEvent } from 'react'
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { StudioSelect } from '@/shared/ui/index.tsx'
+import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { Requirement } from '@pomegranate/domain/workspace'
 import { requirementOptions } from '../config/requirementOptions.ts'
@@ -11,7 +13,7 @@ export function RequirementProperties({
 }: RequirementDetailsProps) {
   const { t } = useTranslation()
   const change = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       update({
         [event.target.name]: event.target.value,
       } as Partial<Requirement>)
@@ -31,7 +33,7 @@ export function RequirementProperties({
                   : 'Area',
             )}
           </span>
-          <select
+          <StudioSelect
             name={field}
             aria-label={t(
               field === 'status'
@@ -49,7 +51,7 @@ export function RequirementProperties({
                 {t(value)}
               </option>
             ))}
-          </select>
+          </StudioSelect>
           {fieldHint(field)}
         </label>
       ))}

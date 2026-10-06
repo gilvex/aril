@@ -101,6 +101,7 @@ export function WireframeFlow(props: WireframeFlowProps) {
       />
       <Controls showInteractive={false} />
       <MiniMap
+        style={{ width: 160, height: 104 }}
         pannable
         zoomable
         nodeColor={getNodeColor}

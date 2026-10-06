@@ -1,5 +1,6 @@
 import type { Idea } from '@pomegranate/domain/workspace'
 import { isDemoPlacementClear } from './isDemoPlacementClear.ts'
+import { demoNodeBounds } from './demoNodeBounds.ts'
 
 export function findDemoPlacement(
   nodes: Idea[],
@@ -7,14 +8,26 @@ export function findDemoPlacement(
   random: () => number,
   moving = false,
 ) {
+  const originals = nodes.filter((item) => !item.id.startsWith('demo-maya-'))
+  if (!originals.length) return null
+  const left = Math.min(...originals.map((item) => item.position.x))
+  const top =
+    Math.max(
+      ...originals.map((item) => item.position.y + demoNodeBounds(item).height),
+    ) + 100
   const candidates: Idea['position'][] = []
-  for (let i = 0; i < 160; i++) {
-    const angle = random() * Math.PI * 2
-    const radius = moving ? 75 + random() * 200 : 320 + random() * 1100
-    const point = {
-      x: Math.round((node.position.x + Math.cos(angle) * radius) / 20) * 20,
-      y: Math.round((node.position.y + Math.sin(angle) * radius) / 20) * 20,
+  // A bounded working row keeps the demo readable instead of wandering with the cursor.
+  for (let column = 0; column < 4; column++) {
+    const point = { x: left + column * 320, y: top }
+    if (!moving) {
+      point.x += 32 + Math.round(random() * 24)
+      point.y += 28 + Math.round(random() * 28)
     }
+    const distance = Math.hypot(
+      point.x - node.position.x,
+      point.y - node.position.y,
+    )
+    if (moving && (distance < 20 || distance > 140)) continue
     if (isDemoPlacementClear(nodes, node, point, moving)) candidates.push(point)
   }
   candidates.sort(
@@ -23,6 +36,8 @@ export function findDemoPlacement(
       Math.hypot(b.x - node.position.x, b.y - node.position.y),
   )
   return candidates.length
-    ? candidates[Math.floor(random() * Math.min(5, candidates.length))]
+    ? candidates[
+        Math.floor(random() * Math.min(moving ? 1 : 2, candidates.length))
+      ]
     : null
 }

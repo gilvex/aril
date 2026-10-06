@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { Workflow, MoreHorizontal } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { requirementOptions } from '../config/requirementOptions.ts'
@@ -76,7 +77,7 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
       {model.menuId === item.id && (
         <label className="req-card-move">
           {t('Move to')}
-          <select
+          <StudioSelect
             ref={handlers.menu}
             aria-label={t('Move {{id}} to', { id: item.id })}
             value={item[model.groupBy]}
@@ -87,7 +88,7 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
                 {t(value)}
               </option>
             ))}
-          </select>
+          </StudioSelect>
         </label>
       )}
     </article>

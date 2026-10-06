@@ -55,6 +55,7 @@ export function useRequirementResize({ model }: RequirementsViewProps) {
     const previous = document.activeElement as HTMLElement | null
     if (window.matchMedia('(max-width: 760px)').matches) panel.current?.focus()
     const escape = (event: globalThis.KeyboardEvent) => {
+      if (document.querySelector('[data-studio-select-menu]')) return
       if (event.key === 'Escape') selectRequirement(null)
     }
     window.addEventListener('keydown', escape)

@@ -1,4 +1,6 @@
-import { useCallback, useMemo, type ChangeEvent } from 'react'
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { StudioSelect } from '@/shared/ui/index.tsx'
+import { useCallback, useMemo } from 'react'
 import { ArrowUpRight, Workflow } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementDetailsProps } from '../types/requirementDetailsProps.ts'
@@ -17,7 +19,7 @@ export function RequirementLinks({
     [workspace.boards, current.id],
   )
   const link = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       const [boardId, nodeId] = JSON.parse(event.target.value) as [
         string,
         string,
@@ -72,7 +74,7 @@ export function RequirementLinks({
       {!linked.length && <p>{t('No linked boards yet')}</p>}
       <label className="req-link-picker">
         <span>{t('Link to a blueprint node')}</span>
-        <select
+        <StudioSelect
           aria-label={t('Link to a blueprint node')}
           value=""
           onChange={link}
@@ -94,7 +96,7 @@ export function RequirementLinks({
                 ))}
             </optgroup>
           ))}
-        </select>
+        </StudioSelect>
       </label>
     </section>
   )

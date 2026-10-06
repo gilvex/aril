@@ -1,4 +1,6 @@
-import { useCallback, type ChangeEvent } from 'react'
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { StudioSelect } from '@/shared/ui/index.tsx'
+import { useCallback } from 'react'
 import { X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { requirementOptions } from '../config/requirementOptions.ts'
@@ -6,7 +8,7 @@ import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
 export function RequirementsBulkActions({ model }: RequirementsViewProps) {
   const { t } = useTranslation()
   const change = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       const field = event.target.name as 'status' | 'priority' | 'category'
       model.move(model.checkedIds, field, event.target.value)
     },
@@ -30,7 +32,7 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
         )}
       </strong>
       {(['status', 'priority', 'category'] as const).map((field) => (
-        <select
+        <StudioSelect
           key={field}
           name={field}
           value=""
@@ -59,7 +61,7 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
               {t(value)}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       ))}
       <button
         className="icon-button"

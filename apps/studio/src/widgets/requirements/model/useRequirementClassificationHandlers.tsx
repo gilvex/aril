@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import type { Requirement } from '@pomegranate/domain/workspace'
 import { useCallback } from 'react'
 
@@ -6,9 +7,7 @@ export function useRequirementClassificationHandlers({
   update,
 }: RequirementClassificationHandlersProps) {
   const handleRequirementPriorityChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
+    (e: SelectChange) => void
   >(
     (e) =>
       update({
@@ -16,11 +15,7 @@ export function useRequirementClassificationHandlers({
       }),
     [update],
   )
-  const handleRequirementStatusChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleRequirementStatusChange = useCallback<(e: SelectChange) => void>(
     (e) =>
       update({
         status: e.target.value as Requirement['status'],

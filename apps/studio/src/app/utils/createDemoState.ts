@@ -36,6 +36,8 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
       owned: {},
       protectedIds: [],
       recent: [],
+      arrangedIds: [],
+      recentTopics: [],
       nextAt: 3500,
       lastTick: 0,
       action: null,
@@ -107,6 +109,16 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
         const nodes =
           state.envelope.workspace.boards.find((board) => board.id === 'layers')
             ?.nodes || []
+        state.planner.arrangedIds = Array.isArray(saved.planner.arrangedIds)
+          ? saved.planner.arrangedIds.filter(
+              (id: unknown) => typeof id === 'string',
+            )
+          : []
+        state.planner.recentTopics = Array.isArray(saved.planner.recentTopics)
+          ? saved.planner.recentTopics
+              .filter((title: unknown) => typeof title === 'string')
+              .slice(-8)
+          : []
         for (const node of nodes) {
           if (
             node.id.startsWith('demo-maya-idea-') &&

@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCallback } from 'react'
 import { requirementOptions } from '../config/requirementOptions.ts'
@@ -13,7 +14,7 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
     <div className="requirements-filters">
       <label>
         {t('Area')}
-        <select
+        <StudioSelect
           aria-label={t('Filter requirements by area')}
           value={model.category}
           onChange={(event) => model.setCategory(event.target.value)}
@@ -24,11 +25,11 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
               {t(value)}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
       <label>
         {t('Priority')}
-        <select
+        <StudioSelect
           aria-label={t('Filter requirements by priority')}
           value={model.priority}
           onChange={(event) =>
@@ -43,11 +44,11 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
               {t(value)}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
       <label>
         {t('Status')}
-        <select
+        <StudioSelect
           aria-label={t('Filter requirements by status')}
           value={model.status}
           onChange={(event) =>
@@ -62,7 +63,7 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
               {t(value)}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
       <button
         className="req-reset-filters"

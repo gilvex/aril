@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import type { Requirement } from '@pomegranate/domain/workspace'
 import { useCallback } from 'react'
 
@@ -8,11 +9,7 @@ export function useRequirementDetailsHandlers({
   current,
   selectRequirement,
 }: RequirementDetailsHandlersProps) {
-  const handleRequirementAreaChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleRequirementAreaChange = useCallback<(e: SelectChange) => void>(
     (e) =>
       update({
         category: e.target.value as Requirement['category'],

@@ -1,3 +1,4 @@
+import { demoTopics } from '../config/demoTopics.ts'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import type { Idea } from '@pomegranate/domain/workspace'
 import type { DemoAction } from '../types/demoAction.ts'
@@ -38,7 +39,6 @@ export function planDemoAction(
         (edge) => edge.target === node.id || edge.source === node.id,
       ),
   )
-  const unrefined = owned.filter((node) => node.data.status === 'Exploring')
   const disposable = owned.filter(
     (node) =>
       node.data.status === 'Decided' &&
@@ -46,31 +46,42 @@ export function planDemoAction(
         .filter((edge) => edge.target === node.id || edge.source === node.id)
         .every((edge) => edge.id.startsWith('demo-maya-edge-')),
   )
-  const options = [
-    ...(Object.keys(planner.owned).length + planner.protectedIds.length < 7
-      ? Array(owned.length < 3 ? 5 : 2).fill('create')
-      : []),
-    ...(unlinked.length ? ['connect', 'connect', 'connect'] : []),
-    ...(owned.length ? ['move', 'move', 'move'] : []),
-    ...(unrefined.length ? ['refine', 'refine'] : []),
-    ...(owned.length >= 4 && disposable.length ? ['remove', 'remove'] : []),
-  ] as string[]
-  const varied = options.filter((option) => option !== planner.recent.at(-1))
-  const choices = varied.length ? varied : options
-  if (!choices.length) return null
-  const intent = choices[Math.floor(random() * choices.length)]
-  const pool =
-    intent === 'connect'
-      ? unlinked
-      : intent === 'refine'
-        ? unrefined
-        : intent === 'remove'
-          ? disposable
-          : owned
+  const unfinished = owned.filter(
+    (node) => node.data.status === 'Exploring' || unlinked.includes(node),
+  )
+  const active =
+    unfinished.find((node) => planner.selected.includes(node.id)) ||
+    unfinished[0]
+  const movement =
+    active && !planner.arrangedIds.includes(active.id)
+      ? findDemoPlacement(board.nodes, active, random, true)
+      : null
+  // Finish a useful task before adding more. The board state chooses the next step.
+  const options = active
+    ? [
+        ...(unlinked.includes(active) ? ['connect', 'connect'] : []),
+        ...(movement ? ['move'] : []),
+        ...(!unlinked.includes(active) && (!movement || random() < 0.35)
+          ? ['refine']
+          : []),
+      ]
+    : Object.keys(planner.owned).length +
+          planner.protectedIds.filter((id) =>
+            board.nodes.some((node) => node.id === id),
+          ).length <
+        3
+      ? ['create']
+      : disposable.length
+        ? ['remove']
+        : []
+  if (!options.length) return null
+  const intent = options[Math.floor(random() * options.length)]
   const target =
-    intent !== 'create' && pool.length
-      ? pool[Math.floor(random() * pool.length)]
-      : undefined
+    intent === 'create'
+      ? undefined
+      : intent === 'remove'
+        ? disposable[0]
+        : active
   const changed = structuredClone(state.envelope.workspace)
   const nextBoard = changed.boards.find((item) => item.id === board.id)!
   let next: Idea | undefined
@@ -79,40 +90,31 @@ export function planDemoAction(
   let message = ''
   let targetId = target?.id || ''
   if (intent === 'create') {
-    const topics = [
-      'Readiness probe',
-      'Backup schedule',
-      'Metrics collector',
-      'Log archive',
-      'Release gate',
-      'Secret store',
-      'Resource monitor',
-      'Update policy',
-      'Recovery plan',
-      'Network policy',
-      'Build cache',
-      'Audit trail',
-    ]
-    const available = topics.filter(
-      (title) => !board.nodes.some((node) => node.data.title === title),
+    const available = demoTopics.filter(
+      (topic) =>
+        !board.nodes.some((node) => node.data.title === topic.title) &&
+        !planner.recentTopics.includes(topic.title) &&
+        board.nodes.some((node) => node.id === topic.anchor),
     )
     if (!available.length) return null
     targetId = `demo-maya-idea-${++planner.sequence}`
     while (board.nodes.some((node) => node.id === targetId))
       targetId = `demo-maya-idea-${++planner.sequence}`
-    const title = available[Math.floor(random() * available.length)]
+    const topic = available[Math.floor(random() * available.length)]
+    const title = topic.title
+    const anchor = board.nodes.find((node) => node.id === topic.anchor)!
     next = {
       id: targetId,
       type: 'idea',
-      position: { x: planner.cursor.x - 70, y: planner.cursor.y - 25 },
+      position: { ...anchor.position },
       data: {
         title,
-        description: `Define ${title.toLowerCase()} for independently configured servers.`,
+        description: topic.description,
         kind: 'service',
         status: 'Exploring',
         notes:
           'An idea explored by Maya in the demo. Edit or connect it to keep it.',
-        requirements: [],
+        requirements: [topic.requirement],
       },
     }
     const position = findDemoPlacement(board.nodes, next, random)
@@ -124,34 +126,24 @@ export function planDemoAction(
   } else if (target) {
     next = nextBoard.nodes.find((node) => node.id === target.id)!
     if (intent === 'move') {
-      const position = findDemoPlacement(board.nodes, target, random, true)
+      const position = movement
       if (!position) return null
       next.position = position
       drag = { from: target.position, to: position }
-      message = `Made room around ${target.data.title.toLowerCase()}`
+      message = `Aligned ${target.data.title.toLowerCase()} with the planning row`
     } else if (intent === 'connect') {
-      const anchors = board.nodes.filter(
-        (node) => node.id !== target.id && !busy.has(node.id),
+      const topic = demoTopics.find((item) => item.title === target.data.title)
+      const anchor = board.nodes.find(
+        (node) =>
+          node.id === (topic?.anchor || 'template') && !busy.has(node.id),
       )
-      anchors.sort(
-        (a, b) =>
-          Math.hypot(
-            a.position.x - target.position.x,
-            a.position.y - target.position.y,
-          ) -
-          Math.hypot(
-            b.position.x - target.position.x,
-            b.position.y - target.position.y,
-          ),
-      )
-      const anchor = anchors[Math.floor(random() * Math.min(3, anchors.length))]
       if (!anchor) return null
       nextBoard.edges.push({
         id: `demo-maya-edge-${++planner.sequence}`,
         source: anchor.id,
         target: target.id,
         type: 'smoothstep',
-        label: 'supports',
+        label: 'plan',
       })
       message = `Connected ${anchor.data.title.toLowerCase()} to ${target.data.title.toLowerCase()}`
     } else if (intent === 'refine') {
@@ -212,7 +204,7 @@ export function planDemoAction(
       origin: { ...planner.cursor },
       camera: { ...planner.camera },
       destinationCamera: recenter
-        ? { x: end.x + 107, y: end.y + 100, zoom: 0.78 + random() * 0.1 }
+        ? { x: end.x + 107, y: end.y + 100, zoom: 0.72 }
         : { ...planner.camera },
       approach,
       work,

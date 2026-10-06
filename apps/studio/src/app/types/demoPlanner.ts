@@ -8,6 +8,8 @@ export type DemoPlanner = {
   owned: Record<string, Idea>
   protectedIds: string[]
   recent: string[]
+  arrangedIds: string[]
+  recentTopics: string[]
   nextAt: number
   lastTick: number
   action: DemoAction | null

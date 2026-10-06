@@ -99,6 +99,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       />
       <Controls showInteractive={false} />
       <MiniMap
+        style={{ width: 160, height: 104 }}
         pannable
         zoomable
         nodeColor="var(--minimap-node, #c5bbd5)"

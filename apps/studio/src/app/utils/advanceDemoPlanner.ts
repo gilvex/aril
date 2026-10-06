@@ -93,11 +93,25 @@ export function advanceDemoPlanner(
       throw error
     }
     planner.recent = [...planner.recent, action.intent!].slice(-8)
+    if (action.intent === 'move') planner.arrangedIds.push(action.targetId)
+    if (action.intent === 'remove')
+      planner.arrangedIds = planner.arrangedIds.filter(
+        (id) => id !== action.targetId,
+      )
+    if (action.intent === 'create' && nextNode)
+      planner.recentTopics = [
+        ...planner.recentTopics,
+        nextNode.data.title,
+      ].slice(-8)
     planner.selected = nextNode ? [nextNode.id] : []
   } catch {
     planner.selected = []
   }
   // Keep the last cursor/camera pose; never snap back to an unrelated orbit.
   planner.action = null
-  planner.nextAt = elapsed + 2200 + nextDemoRandom(planner) * 3600
+  const reviewing = action.intent === 'refine'
+  planner.nextAt =
+    elapsed +
+    (reviewing ? 7000 : 1800) +
+    nextDemoRandom(planner) * (reviewing ? 6000 : 2200)
 }

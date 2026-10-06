@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { Columns3, List, Plus } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
@@ -13,7 +14,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
       <h1 className="visually-hidden">{t('Requirements')}</h1>
       <div className="requirements-view-picker">
         {model.view === 'list' ? <List size={16} /> : <Columns3 size={16} />}
-        <select
+        <StudioSelect
           aria-label={t('Requirements view')}
           value={value}
           onChange={controls.changeView}
@@ -21,7 +22,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
           <option value="list">{t('List')}</option>
           <option value="status">{t('Status board')}</option>
           <option value="priority">{t('Priority board')}</option>
-        </select>
+        </StudioSelect>
         <span
           className="requirements-view-count"
           role="status"

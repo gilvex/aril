@@ -11,3 +11,5 @@ export { readWorkspaceVisits } from './readWorkspaceVisits.ts'
 export { rememberWorkspaceVisit } from './rememberWorkspaceVisit.ts'
 
 export { isDemoMode } from './isDemoMode.ts'
+
+export { readSelectOptions } from './readSelectOptions.ts'

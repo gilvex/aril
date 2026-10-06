@@ -1,20 +1,24 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import {
   useCallback,
   useEffect,
   useRef,
   type DragEvent,
   type MouseEvent,
-  type ChangeEvent,
   type KeyboardEvent,
 } from 'react'
 import type { RequirementItemProps } from '../types/requirementItemProps.ts'
 export function useRequirementCard({ item, model }: RequirementItemProps) {
   const { setViewState, selectRequirement, move, menuId, groupBy } = model
-  const menu = useRef<HTMLSelectElement>(null)
+  const menu = useRef<HTMLButtonElement>(null)
   const menuButton = useRef<HTMLButtonElement>(null)
   const startDrag = useCallback(
     (event: DragEvent<HTMLElement>) => {
-      if ((event.target as HTMLElement).closest('input, select')) {
+      if (
+        (event.target as HTMLElement).closest(
+          'button, input, select, [data-studio-select-menu]',
+        )
+      ) {
         event.preventDefault()
         return
       }
@@ -34,7 +38,9 @@ export function useRequirementCard({ item, model }: RequirementItemProps) {
   const open = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       if (
-        (event.target as HTMLElement).closest('button, input, select, label, a')
+        (event.target as HTMLElement).closest(
+          'button, input, select, label, a, [data-studio-select-menu]',
+        )
       )
         return
       selectRequirement(item.id)
@@ -46,7 +52,7 @@ export function useRequirementCard({ item, model }: RequirementItemProps) {
     [item.id, menuId, setViewState],
   )
   const moveItem = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       move([item.id], groupBy, event.target.value)
       setViewState({ menuId: null })
       menuButton.current?.focus()
@@ -55,6 +61,7 @@ export function useRequirementCard({ item, model }: RequirementItemProps) {
   )
   const keys = useCallback(
     (event: KeyboardEvent<HTMLElement>) => {
+      if ((event.target as Element).closest('[data-studio-select-menu]')) return
       if (event.key === 'Escape' && menuId === item.id) {
         event.preventDefault()
         event.stopPropagation()

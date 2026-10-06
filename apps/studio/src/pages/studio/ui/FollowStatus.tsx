@@ -14,8 +14,7 @@ export function FollowStatus({ followed, setFollowId }: FollowStatusProps) {
     >
       <Avatar profile={followed.profile} />
       <span>
-        {t('Following')}
-        <strong>{followed.profile.name}</strong>
+        {t('Following')} <strong>{followed.profile.name}</strong>
       </span>
       <button onClick={() => setFollowId(null)}>{t('Stop following')}</button>
     </div>

@@ -1125,8 +1125,7 @@ code {
   fill: var(--text-secondary, #8b7c99);
 }
 .react-flow__minimap {
-  width: 110px !important;
-  height: 72px !important;
+  overflow: hidden;
   border: 1px solid var(--line, #e3dce9);
   border-radius: 8px;
   background: var(--surface, #fff) !important;
