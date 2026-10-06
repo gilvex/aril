@@ -8,10 +8,8 @@ export function renderResponsiveGoogleButton(
   let previousWidth = 0
   let frame = 0
   const render = () => {
-    const width = Math.min(
-      400,
-      Math.floor(element.getBoundingClientRect().width),
-    )
+    // Measure before the visual scale so repeated resizes cannot shrink the button.
+    const width = Math.min(400, element.clientWidth)
     if (width < 1 || width === previousWidth) return
     previousWidth = width
     element.replaceChildren()
@@ -21,6 +19,7 @@ export function renderResponsiveGoogleButton(
       size: 'large',
       text: 'continue_with',
       shape: 'rectangular',
+      logo_alignment: 'center',
       width: String(width),
       locale,
     })

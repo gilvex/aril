@@ -14,7 +14,7 @@ export function LoginInvitation(props: JoinStudioFormProps) {
     <details ref={disclosure} className="login-invitation">
       <summary>
         <KeyRound size={17} />
-        <span>{t('Have an invitation code?')}</span>
+        <span>{t('Join with an invitation')}</span>
         <ChevronDown size={16} />
       </summary>
       <JoinStudioForm {...props} />

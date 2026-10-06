@@ -29,14 +29,14 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
                 ? 'Join your team’s studio'
                 : switching
                   ? 'Choose another account'
-                  : 'Sign in to your studio',
+                  : 'Sign in to Aril',
             )}
           </h1>
           <p className="login-description">
             {t(
               profile && token
                 ? 'Accept your invitation to add this workspace to your account.'
-                : 'Use the Google account connected to your studio.',
+                : 'Continue with your linked Google account.',
             )}
           </p>
           {!profile && joining && <GoogleSignIn onSuccess={handleSuccess} />}
@@ -49,7 +49,7 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
               )}
               <LoginInvitation {...props} />
               <p className="login-help">
-                {t('New here? Ask a workspace member for an invite.')}
+                {t('Ask a workspace member for an invitation.')}
               </p>
             </>
           ) : !error ? (

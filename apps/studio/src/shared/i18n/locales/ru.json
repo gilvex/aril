@@ -698,5 +698,9 @@
   "Try another name or clear your search.": "Попробуйте другое название или очистите поиск.",
   "Your first workspace starts here": "Создайте первое пространство",
   "Create a workspace, then invite your team to plan together.": "Создайте пространство и пригласите команду для совместной работы.",
-  "Open {{name}}": "Открыть {{name}}"
+  "Open {{name}}": "Открыть {{name}}",
+  "Sign in to Aril": "Войти в Aril",
+  "Continue with your linked Google account.": "Продолжите со связанным аккаунтом Google.",
+  "Join with an invitation": "Войти по приглашению",
+  "Ask a workspace member for an invitation.": "Попросите участника пространства пригласить вас."
 }

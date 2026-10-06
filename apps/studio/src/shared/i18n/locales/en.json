@@ -698,5 +698,9 @@
   "Try another name or clear your search.": "Try another name or clear your search.",
   "Your first workspace starts here": "Your first workspace starts here",
   "Create a workspace, then invite your team to plan together.": "Create a workspace, then invite your team to plan together.",
-  "Open {{name}}": "Open {{name}}"
+  "Open {{name}}": "Open {{name}}",
+  "Sign in to Aril": "Sign in to Aril",
+  "Continue with your linked Google account.": "Continue with your linked Google account.",
+  "Join with an invitation": "Join with an invitation",
+  "Ask a workspace member for an invitation.": "Ask a workspace member for an invitation."
 }

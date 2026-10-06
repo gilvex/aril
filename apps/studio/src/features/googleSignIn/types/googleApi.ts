@@ -16,6 +16,7 @@ export type GoogleApi = {
           text: string
           type?: string
           shape?: string
+          logo_alignment?: 'left' | 'center'
           width?: string
           locale?: string
         },

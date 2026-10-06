@@ -1,4 +1,4 @@
-import { Spinner } from '@/shared/ui/index.tsx'
+import { GoogleSignInStatus } from './GoogleSignInStatus.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useGoogleSignInHandlers } from '../model/useGoogleSignInHandlers.tsx'
 
@@ -45,7 +45,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
         '/api/auth/google/challenge',
         { method: 'POST', headers: { 'x-pomegranate-auth': '1' } },
       )
-      await loadGoogle()
+      await loadGoogle(locale)
       if (!active || !root.current) return
       window.google!.accounts.id.initialize({
         client_id: config.googleClientId,
@@ -115,15 +115,10 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
   const { handleClick } = useGoogleSignInHandlers({ setError, setRetry })
   return (
     <div className="google-signin">
-      {status && (
-        <p role="status">
-          {!error &&
-            (status === 'Loading Google sign-in…' ||
-              status === 'Verifying your Google account…') && <Spinner />}{' '}
-          {t(status)}
-        </p>
-      )}
-      <div ref={root} className="google-signin-button" />
+      <GoogleSignInStatus status={status} error={error} />
+      <div className="google-signin-control">
+        <div ref={root} className="google-signin-button" />
+      </div>
       {error && (
         <>
           <p className="form-error" role="alert">

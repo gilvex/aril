@@ -25,10 +25,15 @@ test('Google button follows available width without repeated shrink renders and 
         requestAnimationFrame: { configurable: true, value: (callback) => { frame = callback; return 1; } },
         cancelAnimationFrame: { configurable: true, value: () => { frame = undefined; } },
     });
-    const element = { getBoundingClientRect: () => ({ width }), replaceChildren() { } };
+    const element = {
+        get clientWidth() { return Math.floor(width); },
+        getBoundingClientRect: () => ({ width: width * 1.2 }),
+        replaceChildren() { },
+    };
     const api = { accounts: { id: { renderButton: (_element, options) => {
                     widths.push(options.width);
                     assert.equal(options.locale, 'ru');
+                    assert.equal(options.logo_alignment, 'center');
                 } } } };
     const stop = renderResponsiveGoogleButton(element, api, 'ru');
     assert.deepEqual(widths, []);

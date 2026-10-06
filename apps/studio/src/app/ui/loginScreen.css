@@ -16,14 +16,16 @@
 .login-layout { flex: 1; display: grid; grid-template-columns: minmax(320px, 400px) minmax(420px, 650px); justify-content: space-between; align-items: center; gap: clamp(40px, 7vw, 100px); width: 100%; max-width: 1180px; margin: auto; padding: 48px 0; }
 .login-auth { min-width: 0; }
 .login-auth h1 { font-family: var(--heading); font-size: clamp(28px, 2.8vw, 36px); line-height: 1.22; letter-spacing: -1.1px; font-weight: 700; margin: 0 0 16px; }
-.login-description { color: var(--text-secondary, #746c7e); font-size: 14px; line-height: 1.7; max-width: 340px; margin-bottom: 28px; }
+.login-description { color: var(--text-secondary, #746c7e); font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
 .login-auth .google-signin { max-width: 400px; margin-top: 0; }
 .login-auth .google-signin p { margin: 0 0 12px; }
 .login-auth .google-signin p:empty { display: none; }
 .login-divider { display: flex; align-items: center; gap: 16px; color: var(--muted); font-size: 12px; margin: 22px 0; }
 .login-divider::before, .login-divider::after { content: ''; height: 1px; flex: 1; background: var(--line); }
-.login-invitation { border: 1px solid var(--line); border-radius: 9px; background: var(--surface, #fff); }
-.login-invitation summary { min-height: 50px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 14px 16px; font-size: 13px; list-style: none; }
+.login-invitation { border: 1px solid var(--line); border-radius: 8px; background: transparent; }
+.login-invitation summary { min-height: 48px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 12px 16px; font-size: 13px; list-style: none; }
+.login-invitation summary:hover { background: var(--surface-muted, #f5f1f7); border-radius: 8px; }
+.login-invitation summary:focus-visible { outline: 2px solid var(--accent-ink, #b34568); outline-offset: 3px; border-radius: 8px; }
 .login-invitation summary::-webkit-details-marker { display: none; }
 .login-invitation summary > span { flex: 1; }
 .login-invitation summary > svg { flex-shrink: 0; color: var(--text-muted, #898491); }

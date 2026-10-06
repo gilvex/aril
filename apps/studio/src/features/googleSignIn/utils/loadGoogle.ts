@@ -1,8 +1,8 @@
 import { scriptPromiseState } from '@/features/googleSignIn/config/scriptPromiseState.ts'
-export function loadGoogle() {
+export function loadGoogle(locale: string) {
   return (scriptPromiseState.value ??= new Promise<void>((resolve, reject) => {
     const script = document.createElement('script')
-    script.src = 'https://accounts.google.com/gsi/client'
+    script.src = `https://accounts.google.com/gsi/client?hl=${encodeURIComponent(locale)}`
     script.async = true
     script.onload = () => resolve()
     script.onerror = () => {
