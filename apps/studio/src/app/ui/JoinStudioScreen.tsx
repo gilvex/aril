@@ -1,3 +1,4 @@
+import { InstallApp } from '@/features/installApp/index.ts'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -33,6 +34,7 @@ export function JoinStudioScreen({
     <div className="boot-screen">
       <img src="/mark.svg" alt="" />
       <LanguagePicker />
+      <InstallApp />
       <h1>
         {inviteRequired || token
           ? t('Good ideas are better together.')

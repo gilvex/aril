@@ -4,10 +4,12 @@ import { dataDirectory } from './paths.ts'
 import { openPostgres } from './postgres.ts'
 const { app, store, collaboration } =
   process.env.POMEGRANATE_STORAGE === 'postgres'
-    ? createApplication(await openPostgres(), process.env.POMEGRANATE_ORIGIN)
+    ? createApplication(await openPostgres(), process.env.POMEGRANATE_ORIGIN,
+        (process.env.POMEGRANATE_ADDITIONAL_ORIGINS || '').split(',').filter(Boolean))
     : createApp(
         resolve(dataDirectory(), 'studio.sqlite'),
         process.env.POMEGRANATE_ORIGIN,
+        (process.env.POMEGRANATE_ADDITIONAL_ORIGINS || '').split(',').filter(Boolean),
       )
 const port = Number(process.env.PORT || 4317)
 const host = process.env.HOST || '127.0.0.1'

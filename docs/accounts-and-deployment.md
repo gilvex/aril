@@ -19,7 +19,15 @@ If an old guest session has expired before Google was connected, a new invitatio
 
 ## Hosting and moving existing users online
 
-The studio supports native SQLite for a single self-hosted process and Postgres for shared/cloud deployments. Set `POMEGRANATE_STORAGE=postgres` and `POSTGRES_URL` to use Postgres locally. Vercel's `api/index.js` loads the server bundle generated in `.server/` by `pnpm build` and always uses Postgres. The production origin is `https://pomegrenate.vercel.app`; the GitHub repository is private at `gilvex/pomegranate`.
+The studio supports native SQLite for a single self-hosted process and Postgres for shared/cloud deployments. Set `POMEGRANATE_STORAGE=postgres` and `POSTGRES_URL` to use Postgres locally. Vercel's `api/index.js` loads the server bundle generated in `.server/` by `pnpm build` and always uses Postgres. Production supports `https://pomegranate.gilgil.co` and the original `https://pomegrenate.vercel.app`; the GitHub repository is private at `gilvex/pomegranate`.
+
+The API checks exact configured hosts and origins. Self-hosted installations set `POMEGRANATE_ORIGIN` and optionally a comma-separated `POMEGRANATE_ADDITIONAL_ORIGINS` list. Vercel includes both production domains explicitly; wildcards and untrusted request headers never add domains to the allowlist. Add every domain used for Google sign-in to the OAuth client's Authorized JavaScript origins. Sessions and browser preferences are origin-scoped: changing domains does not copy browser-local guest access. Use an existing Google link or a new invitation on the new domain.
+
+## Installable app
+
+The manifest uses standalone display, a stable root identity/start URL, 192/512-pixel icons, a maskable Android icon and an Apple touch icon. On mobile, use the browser's **Install app / Add to Home Screen** option; on iPhone/iPad use **Share → Add to Home Screen**. The same instructions are available in the workspace menu and before signing in. Installation opens the same authenticated studio; native install availability depends on the browser.
+
+The service worker is registered only for production builds. It caches only `/offline.html`, `/offline.js` and the public logo. Navigations use the network and show a reconnect screen on network failure. API requests, auth tokens, documents, live event streams and editor bundles are never cached or replayed by it. The normal browser HTTP cache can still cache static hashed assets. Updates use the browser's normal service-worker lifecycle without forcing reloads of open editors. No offline document editing is introduced.
 
 Supabase privileged credentials remain server-side. Live sessions receive a publishable key and a five-minute workspace-scoped token; the app does not use Supabase Auth; it retains the invited-profile and Google identity model. Tables live in a private `pomegranate` schema, without anonymous schema access. Supabase TLS connections verify certificates against the bundled public Supabase CA, downloaded from `https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt` (SHA256 `807025AD50D4ED219D2C9C7D299C004F824EB00CF7F65AFEF607D07B72E6CAFA`).
 

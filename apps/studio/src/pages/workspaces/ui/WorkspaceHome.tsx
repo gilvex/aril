@@ -1,3 +1,4 @@
+import { InstallApp } from '@/features/installApp/index.ts'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -75,6 +76,7 @@ export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
           {t('New workspace')}
         </button>
       </div>
+      <InstallApp />
       {notice && <p role="status">{notice}</p>}
       {creating && (
         <CreateWorkspaceForm

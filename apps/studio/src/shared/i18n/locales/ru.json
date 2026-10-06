@@ -647,5 +647,8 @@
   "Add": "Добавить",
   "Opening your shared workspace…": "Открываем ваше рабочее пространство…",
   "Loading Google sign-in…": "Загрузка входа через Google…",
-  "Verifying your Google account…": "Проверка аккаунта Google…"
+  "Verifying your Google account…": "Проверка аккаунта Google…",
+  "Install app": "Установить приложение",
+  "Use your browser’s Install app or Add to Home Screen option. On iPhone or iPad, open Share → Add to Home Screen.": "В меню браузера выберите «Установить приложение» или «Добавить на главный экран». На iPhone или iPad: «Поделиться» → «На экран Домой».",
+  "An internet connection is needed to open and sync your workspaces.": "Для открытия и синхронизации пространств нужно подключение к интернету."
 }

@@ -38,6 +38,7 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 - A design workbench with saved accent, typography, density, and direction controls; desktop/mobile and light/dark sample previews with server, activity, and access screens.
 - A searchable notebook with Markdown editing, split/reading views, heading outline, and links to boards and requirements. Existing project notes remain the first document. Autosave, undo/redo, JSON import/export, and restoration of the last 30 saved revisions cover every document.
 - Responsive navigation and canvas controls, labeled inputs, keyboard focus handling, and reduced-motion support.
+- Installable PWA with standalone mobile windows, home-screen icons and an offline reconnect screen. Use **Install app** in the workspace menu for browser-specific instructions. Opening and syncing workspaces requires a connection; shared documents and authenticated requests are never cached by the service worker.
 - Invite-only multiplayer: editable names and pictures, live cursors and selections, shared edits, and a durable team activity feed.
 - Create and switch between private workspaces; accept invitations into an existing profile. Documents, history and live presence are isolated per workspace.
 - Optional Google account linking retains invited users' workspace access across devices once the host configures a Google client ID.

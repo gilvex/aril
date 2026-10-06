@@ -8,33 +8,22 @@ import { installAgentApi, installAgentManagement } from './agentApi.ts'
 import { installCollaboration } from './collaboration.ts'
 import { frontendDirectory } from './paths.ts'
 import type { Store } from './storeContract.ts'
+import { normalizeStudioOrigins } from './utils/normalizeStudioOrigins.ts'
 
 export { createApp } from './utils/appCreateApp.ts'
 export function createApplication<T extends Store>(
   store: T,
   publicOrigin?: string,
+  additionalOrigins: string[] = [],
 ) {
-  if (publicOrigin) {
-    const url = new URL(publicOrigin)
-    if (
-      !['https:', 'http:'].includes(url.protocol) ||
-      url.username ||
-      url.password
-    )
-      throw new Error('POMEGRANATE_ORIGIN must be an HTTP or HTTPS origin.')
-    publicOrigin = url.origin
-  }
+  const origins = normalizeStudioOrigins([publicOrigin || '', ...additionalOrigins])
+  if (publicOrigin) publicOrigin = new URL(publicOrigin).origin
+  const loopback = ['localhost', '127.0.0.1', '[::1]']
+  const hosts = new Set([...loopback, ...origins.map((origin) => new URL(origin).hostname)])
   const app = express()
   app.disable('x-powered-by')
   app.use('/api', (req, res, next) => {
-    if (
-      ![
-        'localhost',
-        '127.0.0.1',
-        '[::1]',
-        ...(publicOrigin ? [new URL(publicOrigin).hostname] : []),
-      ].includes(req.hostname)
-    ) {
+    if (!hosts.has(req.hostname)) {
       res.status(403).json({ error: 'This studio host is not allowed.' })
       return
     }
@@ -46,8 +35,8 @@ export function createApplication<T extends Store>(
       ![
         'http://127.0.0.1:5173',
         'http://localhost:5173',
-        `http://${req.get('host')}`,
-        ...(publicOrigin ? [publicOrigin] : []),
+        ...(loopback.includes(req.hostname) ? [`http://${req.get('host')}`] : []),
+        ...origins,
       ].includes(origin)
     ) {
       res.status(403).json({ error: 'This origin is not allowed.' })
@@ -128,7 +117,12 @@ export function createApplication<T extends Store>(
     res.json(workspace)
   })
   if (existsSync(resolve(frontendDirectory, 'index.html'))) {
-    app.use(express.static(frontendDirectory))
+    app.use(express.static(frontendDirectory, {
+      setHeaders(res, file) {
+        if (['sw.js', 'manifest.webmanifest', 'offline.html'].some((name) => file.endsWith('/' + name) || file.endsWith('\\' + name)))
+          res.setHeader('Cache-Control', 'no-cache')
+      },
+    }))
     app.get('/{*path}', async (req, res) => {
       if (req.path.startsWith('/api/'))
         res.status(404).json({ error: 'Endpoint not found.' })

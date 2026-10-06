@@ -1,3 +1,4 @@
+import { InstallApp } from '@/features/installApp/index.ts'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioMobileMenuHandlers } from '../model/useStudioMobileMenuHandlers.tsx'
@@ -87,6 +88,7 @@ export function StudioMobileMenu({
       </button>
       <ThemePicker />
       <LanguagePicker />
+      <InstallApp />
       <div className="mobile-workspace-tools">
         <button onClick={handleClick}>
           <ActivityIcon size={18} />

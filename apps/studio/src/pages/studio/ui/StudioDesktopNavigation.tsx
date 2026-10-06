@@ -1,3 +1,4 @@
+import { InstallApp } from '@/features/installApp/index.ts'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioDesktopNavigationHandlers } from '../model/useStudioDesktopNavigationHandlers.tsx'
@@ -86,6 +87,7 @@ export function StudioDesktopNavigation({
           </button>
           <ThemePicker />
           <LanguagePicker />
+          <InstallApp />
           <span className="overflow-group-label">{t('Tools')}</span>
           <button onClick={() => void loadHistory()}>
             <History size={16} />
