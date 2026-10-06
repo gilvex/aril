@@ -4,6 +4,7 @@ import { createDemoTransport } from '../src/app/utils/createDemoTransport.ts'
 import { createDemoWorkspace } from '../src/app/utils/createDemoWorkspace.ts'
 import { createDemoPeers } from '../src/app/utils/createDemoPeers.ts'
 import { sampleDemoCursor } from '../src/app/utils/sampleDemoCursor.ts'
+import { sampleDemoCurve } from '../src/app/utils/sampleDemoCurve.ts'
 import { createDemoState } from '../src/app/utils/createDemoState.ts'
 import { apiTransport } from '../src/shared/api/apiTransport.ts'
 import { request } from '../src/shared/api/request.ts'
@@ -37,7 +38,45 @@ test('demo gestures pause to read, move continuously, and arrive without an orbi
     previous=current
   }
   assert.ok(moved>0)
-  assert.deepEqual(sampleDemoCursor([],100),{cursor:null,selected:[]})
+  assert.deepEqual(sampleDemoCursor([],100),{cursor:null,camera:null,selected:[]})
+})
+
+test('demo Bézier gestures curve in either axis and settle exactly at their endpoints', () => {
+  for (const end of [{x:400,y:0},{x:0,y:400},{x:300,y:200}]) {
+    const start={x:0,y:0}
+    assert.deepEqual(sampleDemoCurve(start,end,0),start)
+    assert.deepEqual(sampleDemoCurve(start,end,1),end)
+    const middle=sampleDemoCurve(start,end,0.5)
+    assert.ok(Math.abs(middle.x*end.y-middle.y*end.x)>1000,'path must bend away from the straight line')
+    const early=sampleDemoCurve(start,end,0.001)
+    assert.ok(Math.hypot(early.x,early.y)<0.001,'depart with near-zero velocity')
+  }
+  const target={id:'only',x:20,y:30,pause:2000,camera:{x:50,y:80,zoom:0.8}}
+  assert.deepEqual(sampleDemoCursor([target],0),sampleDemoCursor([target],99999))
+})
+
+test('demo cameras pan and zoom continuously, rest between gestures, and stay independent', () => {
+  const state=createDemoState({getItem:()=>null})
+  const start=Date.parse(state.studio.createdAt)
+  const initial=createDemoPeers(state,start).slice(0,2)
+  assert.deepEqual(createDemoPeers(state,start+500)[0].camera,initial[0].camera)
+  let previous=initial
+  const moved=[false,false], zoomed=[false,false]
+  for(let elapsed=40;elapsed<70000;elapsed+=40) {
+    const peers=createDemoPeers(state,start+elapsed).slice(0,2)
+    peers.forEach((peer,index)=>{
+      const camera=peer.camera!, last=previous[index].camera!
+      const distance=Math.hypot(camera.x-last.x,camera.y-last.y)
+      assert.ok(distance<100,`camera jumped at ${elapsed}`)
+      assert.ok(Math.abs(camera.zoom-last.zoom)<0.035,'zoom must change gradually')
+      assert.ok(camera.zoom>=0.7 && camera.zoom<=1.05)
+      moved[index] ||= distance>0.1
+      zoomed[index] ||= Math.abs(camera.zoom-last.zoom)>0.001
+    })
+    previous=peers
+  }
+  assert.deepEqual(moved,[true,true])
+  assert.deepEqual(zoomed,[true,true])
 })
 
 test('demo contains valid editable project data, connected recipe screens and varied requirements', () => {

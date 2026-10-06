@@ -20,6 +20,11 @@ export function createDemoPeers(
               x: node.position.x + 60 + (index % 2) * 65,
               y: node.position.y + 65,
               pause: [3100, 4600, 2400, 5200, 3300][index],
+              camera: {
+                x: node.position.x + 130,
+                y: node.position.y + 100,
+                zoom: [0.8, 1.05, 0.85, 0.95, 0.7][index],
+              },
             },
           ]
         : []
@@ -43,6 +48,11 @@ export function createDemoPeers(
             x: node.position.x + (parent?.position.x || 0) + 70,
             y: node.position.y + (parent?.position.y || 0) + 25,
             pause: [4200, 6000, 1800, 5100, 2900][index],
+            camera: {
+              x: (parent?.position.x || 0) + 220,
+              y: (parent?.position.y || 0) + 260,
+              zoom: [0.8, 1, 0.85, 0.75, 0.95][index],
+            },
           },
         ]
       : []
@@ -69,7 +79,6 @@ export function createDemoPeers(
       ...maya,
       selectedEdges: [],
       seenAt: now,
-      camera: board ? { x: 600, y: 300, zoom: 0.8 } : null,
     },
     {
       clientId: 'demo-noah',
@@ -84,7 +93,6 @@ export function createDemoPeers(
       ...noah,
       selectedEdges: [],
       seenAt: now,
-      camera: board ? { x: 1060, y: 270, zoom: 0.85 } : null,
     },
     {
       clientId: 'demo-iris',

@@ -15,3 +15,4 @@ export { createDemoTransport } from './createDemoTransport.ts'
 
 export { initializeDemo } from './initializeDemo.ts'
 export { sampleDemoCursor } from './sampleDemoCursor.ts'
+export { sampleDemoCurve } from './sampleDemoCurve.ts'
