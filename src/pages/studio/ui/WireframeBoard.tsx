@@ -646,7 +646,7 @@ export function WireframeBoard({
                   .filter((p) => p.selectedEdges?.includes(e.id))
                   .map((p) => p.profile),
               ]
-              const color = selectors[0]?.color || '#a34d6c'
+              const color = selectors[0]?.color || 'var(--wire-edge, #a34d6c)'
               return {
                 ...e,
                 sourceHandle: sides.sourceSide,
@@ -758,7 +758,7 @@ export function WireframeBoard({
             snapToGrid
             snapGrid={[8, 8]}
           >
-            <Background color="#d7d2dd" gap={24} size={1} />
+            <Background color="var(--canvas-dot, #d7d2dd)" gap={24} size={1} />
             <LiveCursors
               peers={peers}
               nodes={liveNodes.map((n) => ({
@@ -773,9 +773,11 @@ export function WireframeBoard({
               pannable
               zoomable
               nodeColor={(n) =>
-                n.data.kind === 'screen' ? '#ede8ef' : '#b9a7b8'
+                n.data.kind === 'screen'
+                  ? 'var(--surface-raised, #ede8ef)'
+                  : 'var(--minimap-node, #b9a7b8)'
               }
-              maskColor="rgba(246,245,249,.65)"
+              maskColor="var(--minimap-mask, rgba(246,245,249,.65))"
             />
           </ReactFlow>
           {insertPoint && !preview && (

@@ -1,0 +1,160 @@
+/* Studio appearance is personal. Light colors remain the existing fallbacks. */
+:root {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #19161f;
+  --surface: #25212d;
+  --surface-muted: #2b2634;
+  --surface-raised: #393141;
+  --text-strong: #f1ebf5;
+  --text-secondary: #cbc2d3;
+  --text-muted: #aaa0b6;
+  --muted: #aaa0b6;
+  --line: #443b50;
+  --line-strong: #74617f;
+  --accent-ink: #f0a1be;
+  --accent-light: #442b3b;
+  --success-ink: #92cbb0;
+  --success-soft: #233b32;
+  --info-ink: #9abde8;
+  --info-soft: #28384c;
+  --warning-ink: #dfbd83;
+  --warning-soft: #413624;
+  --diagram-edge: #a38bb2;
+  --wire-edge: #cc819f;
+  --canvas-dot: #3e354b;
+  --minimap-node: #786387;
+  --minimap-mask: #19161fbb;
+  --xy-background-color: var(--canvas);
+  --xy-node-background-color: var(--surface);
+  --xy-node-color: var(--text-strong);
+  --xy-edge-stroke: #a38bb2;
+  --xy-edge-label-color: var(--text-secondary);
+  --xy-edge-label-background-color: var(--canvas);
+  --xy-controls-button-background-color: var(--surface);
+  --xy-controls-button-background-color-hover: var(--surface-raised);
+  --xy-controls-button-color: var(--text-secondary);
+  --xy-controls-button-color-hover: var(--text-strong);
+  --xy-controls-button-border-color: var(--line);
+  --xy-minimap-background-color: var(--surface);
+  --xy-attribution-background-color: var(--surface);
+}
+.theme-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+.theme-picker > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.theme-picker select {
+  width: auto;
+  min-width: 86px;
+  padding: 7px 9px;
+  font-size: 12px;
+}
+.workspace-actions-popover:has(.theme-picker) {
+  width: 260px;
+}
+.workspace-home-preferences {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Translucent overlays, SVG edges and semantic node colors need their own roles. */
+[data-theme='dark'] .canvas-caption,
+[data-theme='dark'] .canvas-tip {
+  background: #25212deb;
+}
+[data-theme='dark'] .react-flow__edge-textbg {
+  fill: var(--canvas);
+}
+[data-theme='dark'] .react-flow__edge-text {
+  fill: var(--text-secondary);
+}
+[data-theme='dark'] .react-flow__handle {
+  border-color: var(--line-strong);
+}
+[data-theme='dark'] .react-flow__attribution {
+  color: var(--text-muted);
+}
+[data-theme='dark'] .node-icon {
+  color: #c29cd6;
+  background: #3c2c46;
+}
+[data-theme='dark'] .kind-layer .node-icon {
+  color: #eda1c1;
+  background: #442b3b;
+}
+[data-theme='dark'] .kind-instance .node-icon {
+  color: #92cbb0;
+  background: #233b32;
+}
+[data-theme='dark'] .kind-database .node-icon {
+  color: #9abde8;
+  background: #28384c;
+}
+[data-theme='dark'] .kind-person .node-icon,
+[data-theme='dark'] .kind-note .node-icon {
+  color: #dfbd83;
+  background: #413624;
+}
+[data-theme='dark'] .wire-block.wire-tone-accent {
+  color: #fff;
+  background: #a34d6c;
+}
+[data-theme='dark'] .wire-edge-label {
+  border-color: #87556e;
+}
+[data-theme='dark'] .modal-backdrop {
+  background: #08060cb3;
+}
+[data-theme='dark'] .wire-window-dots i,
+[data-theme='dark'] .wire-skeleton i {
+  background: var(--line-strong);
+}
+[data-theme='dark'] .idea-node,
+[data-theme='dark'] .modal,
+[data-theme='dark'] .board-picker-popover,
+[data-theme='dark'] .workspace-actions-popover {
+  box-shadow: 0 8px 28px #0004;
+}
+@media (max-width: 760px) {
+  .workspace-home-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .workspace-home-preferences {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .workspace-home-preferences .theme-picker {
+    padding-inline: 0;
+  }
+  .theme-picker select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+
+[data-theme='dark'] .preview-tabs button.active,
+[data-theme='dark'] .preview-service-icon {
+  color: color-mix(in oklab, var(--preview-accent), white 45%);
+}
+[data-theme='dark'] .preview-tabs button.active {
+  border-color: color-mix(in oklab, var(--preview-accent), white 45%);
+}
+[data-theme='dark'] .preview-service-icon {
+  background: color-mix(in oklab, var(--preview-accent) 20%, var(--surface));
+}

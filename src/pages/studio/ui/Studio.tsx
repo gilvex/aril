@@ -1,3 +1,4 @@
+import { ThemePicker } from '../../../shared/ui/ThemePicker'
 import { useCanvasFullscreen } from '../model/use-canvas-fullscreen'
 import { CanvasNavigation } from './CanvasNavigation'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
@@ -393,6 +394,7 @@ export function Studio({
             </span>
             <ChevronDown size={14} />
           </button>
+          <ThemePicker />
           <div className="mobile-workspace-tools">
             <button
               onClick={() => {
@@ -520,6 +522,7 @@ export function Studio({
                     <ActivityIcon size={16} />
                     Team activity
                   </button>
+                  <ThemePicker />
                   <span className="overflow-group-label">Tools</span>
                   <button onClick={() => void loadHistory()}>
                     <History size={16} />

@@ -97,3 +97,7 @@ This update supersedes the deployment blockers recorded above.
 - Two independent browser origins showed the same resized block and both selection badges. Ctrl-click selected a card and button; dragging moved both by the same offset in both sessions. Undo restored the group. Fullscreen entered and exited successfully.
 - Verified the toolbar, palette and inspector in a 390 × 844 iframe viewport, with no document-level horizontal overflow. Newly added screens were centered automatically; the temporary addition was undone. This checks responsive layout, not a real-device touch matrix.
 - The deployment smoke script additionally exercises wireframe saves, shared wireframe presence and reconnects against a supplied hosted origin, using generated fixtures only.
+
+## Dark appearance (2026-10-06)
+
+Lint, the existing test suite (20 passed, optional Postgres test skipped), and production build pass. Browser checks use an isolated SQLite fixture: desktop blueprint, node inspector, requirements, design study and recipe wireframe preview; 390px mobile More sheet; Light/Dark/System selection; saved Dark survives reload. No production planning content is used as a test write target.

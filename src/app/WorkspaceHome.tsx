@@ -1,3 +1,4 @@
+import { ThemePicker } from '../shared/ui/ThemePicker'
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, Plus, Workflow } from 'lucide-react'
 import { request } from '../shared/api/workspace'
@@ -46,7 +47,10 @@ export function WorkspaceHome({
             pomegranate<small>Planning studio</small>
           </span>
         </a>
-        <span className="muted">{profile.name}</span>
+        <div className="workspace-home-preferences">
+          <ThemePicker />
+          <span className="muted">{profile.name}</span>
+        </div>
       </header>
       {hostedOrigin && (
         <div className="workspace-hosted">

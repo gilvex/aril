@@ -36,7 +36,7 @@ export function WireframeEdge(props: EdgeProps<RoutedEdge>) {
       <path
         d={path}
         fill="none"
-        stroke="#f6f5f9"
+        stroke="var(--canvas, #f6f5f9)"
         strokeWidth={7}
         className="wire-edge-halo"
       />

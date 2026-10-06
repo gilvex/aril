@@ -598,7 +598,7 @@ export function CanvasBoard({
             connectionRadius={28}
           >
             <Background
-              color="#d9d6e2"
+              color="var(--canvas-dot, #d9d6e2)"
               gap={22}
               size={1.2}
               variant={BackgroundVariant.Dots}
@@ -613,8 +613,8 @@ export function CanvasBoard({
             <MiniMap
               pannable
               zoomable
-              nodeColor="#c5bbd5"
-              maskColor="rgba(246,245,249,.65)"
+              nodeColor="var(--minimap-node, #c5bbd5)"
+              maskColor="var(--minimap-mask, rgba(246,245,249,.65))"
             />
           </ReactFlow>
           {insertPoint && (

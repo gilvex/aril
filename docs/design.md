@@ -27,3 +27,9 @@ Desktop uses a bottom-center Select/Pan/Connect/Add dock and top-right Details/f
 ## Direct page navigation
 
 Canvas, Requirements, Design, and Notes are one-click buttons beside the workspace name. Active-page styling and compact participant indicators preserve orientation and live presence. The single overflow menu beside Notes contains Team activity, revision history, import, and export. People, profile, save status, and Undo/Redo remain on the right. At narrower desktop widths, profile/save text condenses while all four page buttons remain visible. Mobile retains the bottom navigation and uses a white More sheet for secondary actions. Board switching and Blueprint/Wireframes stay in the floating board picker.
+
+## Appearance
+
+Light, Dark and System are personal appearance options in the desktop workspace actions menu, mobile More sheet and workspace chooser. The setting is stored in this browser, synchronized across its tabs, and applied before React loads. System follows operating-system changes. Appearance never changes the shared document or design-study accent.
+
+Dark mode keeps berry actions and Manrope/DM Sans typography. Its palette uses aubergine canvas `#19161f`, surface `#25212d`, raised fill `#393141`, strong text `#f1ebf5`, muted text `#aaa0b6`, borders `#443b50`, and accent text `#f0a1be`. Semantic tokens cover forms, floating canvas controls, wireframe blocks, requirement rows, collaboration panels and dialogs. Node kinds retain distinct green, blue, pink and purple accents; collaborator colors remain unchanged.

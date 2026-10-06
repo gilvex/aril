@@ -43,6 +43,8 @@ Choose **Wireframes** below the board tabs to sketch its interface. Start with a
 
 Wireframe arrows route around surrounding blocks and screens, with separate arrival points for flows sharing a destination screen. Zoomed-out arrows use numbered badges matching the **Flows** list; select a badge or list entry to read the interaction and dim unrelated connections. Routing follows live movement without changing the saved layout.
 
+Use **Appearance** in the desktop workspace actions menu (…), mobile **More** sheet, or workspace chooser to select **Light**, **Dark** or **System**. Your choice stays in this browser, including across refreshes and tabs; System follows your device appearance.
+
 ## Storage and recovery
 
 The authoritative workspace lives in **`data/studio.sqlite`**, created on first start. It survives browser and server restarts. Each browser tab retains a recovery draft for edits awaiting a successful save. Independent changes merge by field; competing edits to the same field stop with an export/reload recovery prompt instead of silently overwriting work. Cameras and undo history are personal to each tab.
