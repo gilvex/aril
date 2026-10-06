@@ -1,72 +1,72 @@
+import { useCallback } from 'react'
 import { InstallApp } from '@/features/installApp/index.ts'
-import { LanguagePicker } from '@/features/appearance/index.ts'
+import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useJoinStudioScreenHandlers } from '../model/useJoinStudioScreenHandlers.tsx'
-
-import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
-
-import { JoinStudioForm } from './JoinStudioForm.tsx'
-
 import type { JoinStudioScreenProps } from '../types/joinStudioScreenProps.ts'
-export function JoinStudioScreen({
-  inviteRequired,
-  token,
-  setBusy,
-  setError,
-  profile,
-  name,
-  setProfile,
-  setInviteRequired,
-  setToken,
-  setName,
-  busy,
-  error,
-}: JoinStudioScreenProps) {
-  const { t } = useTranslation()
+import { LoginHeader } from './LoginHeader.tsx'
+import { LoginBlueprint } from './LoginBlueprint.tsx'
+import { LoginInvitation } from './LoginInvitation.tsx'
+import './loginScreen.css'
 
-  const { handleSuccess } = useJoinStudioScreenHandlers({
-    setProfile,
-    setInviteRequired,
-    setError,
-  })
+export function JoinStudioScreen(props: JoinStudioScreenProps) {
+  const { t } = useTranslation()
+  const { inviteRequired, token, profile, error } = props
+  const { handleSuccess } = useJoinStudioScreenHandlers(props)
+  const retry = useCallback(() => location.reload(), [])
+  const joining = inviteRequired || !!token
   return (
-    <div className="boot-screen">
-      <img src="/mark.svg" alt="" />
-      <LanguagePicker />
-      <InstallApp />
-      <h1>
-        {inviteRequired || token
-          ? t('Good ideas are better together.')
-          : t('A little space for big ideas.')}
-      </h1>
-      {inviteRequired || token ? (
-        <JoinStudioForm
-          setBusy={setBusy}
-          setError={setError}
-          token={token}
-          profile={profile}
-          name={name}
-          setProfile={setProfile}
-          setInviteRequired={setInviteRequired}
-          setToken={setToken}
-          setName={setName}
-          busy={busy}
-        />
-      ) : !error ? (
-        <LoadingStatus label={t('Opening your shared workspace…')} />
-      ) : null}
-      {error && (
-        <p className="form-error" role="alert">
-          {error}
-        </p>
-      )}
-      {!profile && inviteRequired && <GoogleSignIn onSuccess={handleSuccess} />}
-      {error && !inviteRequired && (
-        <button className="button" onClick={() => location.reload()}>
-          {t('Try again')}
-        </button>
-      )}
+    <div className="login-screen">
+      <LoginHeader />
+      <main className="login-layout">
+        <section className="login-auth" aria-labelledby="login-title">
+          <h1 id="login-title">
+            {t(
+              profile && token
+                ? 'Join your team’s studio'
+                : 'Sign in to your studio',
+            )}
+          </h1>
+          <p className="login-description">
+            {t(
+              profile && token
+                ? 'Accept your invitation to add this workspace to your account.'
+                : 'Use the Google account connected to your studio.',
+            )}
+          </p>
+          {!profile && joining && <GoogleSignIn onSuccess={handleSuccess} />}
+          {joining ? (
+            <>
+              {!profile && (
+                <div className="login-divider">
+                  <span>{t('or')}</span>
+                </div>
+              )}
+              <LoginInvitation {...props} />
+              <p className="login-help">
+                {t('New here? Ask a workspace member for an invite.')}
+              </p>
+            </>
+          ) : !error ? (
+            <LoadingStatus label={t('Opening your shared workspace…')} />
+          ) : null}
+          {error && (
+            <p className="form-error" role="alert">
+              {error}
+            </p>
+          )}
+          {error && !joining && (
+            <button className="button" onClick={retry}>
+              {t('Try again')}
+            </button>
+          )}
+        </section>
+        <LoginBlueprint />
+      </main>
+      <footer className="login-footer">
+        <InstallApp />
+      </footer>
     </div>
   )
 }

@@ -650,5 +650,22 @@
   "Verifying your Google account…": "Проверка аккаунта Google…",
   "Install app": "Установить приложение",
   "Use your browser’s Install app or Add to Home Screen option. On iPhone or iPad, open Share → Add to Home Screen.": "В меню браузера выберите «Установить приложение» или «Добавить на главный экран». На iPhone или iPad: «Поделиться» → «На экран Домой».",
-  "An internet connection is needed to open and sync your workspaces.": "Для открытия и синхронизации пространств нужно подключение к интернету."
+  "An internet connection is needed to open and sync your workspaces.": "Для открытия и синхронизации пространств нужно подключение к интернету.",
+  "Sign in to your studio": "Войдите в свою студию",
+  "Join your team’s studio": "Присоединитесь к студии команды",
+  "Use the Google account connected to your studio.": "Используйте аккаунт Google, связанный с вашей студией.",
+  "Accept your invitation to add this workspace to your account.": "Примите приглашение, чтобы добавить пространство в свой аккаунт.",
+  "Have an invitation code?": "Есть код приглашения?",
+  "New here? Ask a workspace member for an invite.": "Впервые здесь? Попросите участника пространства пригласить вас.",
+  "Example board": "Пример доски",
+  "Base image": "Базовый образ",
+  "Versioned content": "Версионный контент",
+  "Ready to configure": "Готов к настройке",
+  "Game layer": "Игровой слой",
+  "or": "или",
+  "Runtime image": "Образ среды",
+  "A pinned base image and its dependencies.": "Закреплённый базовый образ и его зависимости.",
+  "Install the game once. Version the result.": "Установите игру один раз. Сохраните версию результата.",
+  "Server blueprint": "Шаблон сервера",
+  "Startup, mounts, resources, and an environment schema.": "Запуск, тома, ресурсы и схема переменных окружения."
 }

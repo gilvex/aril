@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "node --env-file-if-exists=../../.env scripts/dev.mjs",
     "build": "tsc -b && vite build && node scripts/build-server.mjs",
-    "test": "node --import ./scripts/registerAliases.mjs --test server/*.test.ts",
+    "test": "node --import ./scripts/registerAliases.mjs --test server/*.test.ts server/*.test.mjs",
     "start": "node --env-file-if-exists=../../.env server/index.ts"
   },
   "dependencies": {

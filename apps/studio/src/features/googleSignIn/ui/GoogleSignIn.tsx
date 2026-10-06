@@ -10,9 +10,11 @@ import { request } from '@/shared/api/request.ts'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import type { Profile } from '@pomegranate/domain/collaboration'
 import { useEffect, useRef } from 'react'
+import { renderResponsiveGoogleButton } from '../utils/renderResponsiveGoogleButton.ts'
 
 export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const locale = i18n.resolvedLanguage || 'en'
 
   const root = useRef<HTMLDivElement>(null)
   const callback = useRef(onSuccess)
@@ -24,6 +26,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
 
   useEffect(() => {
     let active = true
+    let stopResize: (() => void) | undefined
     setStatus('Loading Google sign-in…')
     const mount = async () => {
       const config = await request<{ googleClientId: string | null }>(
@@ -86,16 +89,15 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
           }
         },
       })
-      root.current.replaceChildren()
-      window.google!.accounts.id.renderButton(root.current, {
-        theme: 'outline',
-        size: 'large',
-        text: 'continue_with',
-      })
+      stopResize = renderResponsiveGoogleButton(
+        root.current,
+        window.google!,
+        locale,
+      )
       setStatus(
         link
           ? 'Connect Google to keep access across browsers and devices.'
-          : 'Already connected your Google account? Sign in to your workspaces.',
+          : '',
       )
     }
     void mount().catch((err) => {
@@ -106,19 +108,22 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
     })
     return () => {
       active = false
+      stopResize?.()
     }
-  }, [link, retry, setError, setStatus, t])
+  }, [link, retry, setError, setStatus, t, locale])
 
   const { handleClick } = useGoogleSignInHandlers({ setError, setRetry })
   return (
     <div className="google-signin">
-      <p role="status">
-        {!error &&
-          (status === 'Loading Google sign-in…' ||
-            status === 'Verifying your Google account…') && <Spinner />}{' '}
-        {t(status)}
-      </p>
-      <div ref={root} />
+      {status && (
+        <p role="status">
+          {!error &&
+            (status === 'Loading Google sign-in…' ||
+              status === 'Verifying your Google account…') && <Spinner />}{' '}
+          {t(status)}
+        </p>
+      )}
+      <div ref={root} className="google-signin-button" />
       {error && (
         <>
           <p className="form-error" role="alert">

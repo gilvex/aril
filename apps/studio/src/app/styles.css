@@ -2827,7 +2827,9 @@ code {
 @media (max-width: 650px) { .workspace-home { padding: 24px 20px; } .workspace-home-header { margin-bottom: 40px; } .workspace-home-title { align-items: start; flex-direction: column; } }
 .account-connection { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 20px; }
 .account-connection p, .google-signin p { font-size: 12px; color: var(--text-secondary, #77717f); line-height: 1.6; overflow-wrap: anywhere; }
-.google-signin { margin-top: 16px; max-width: 360px; }
+.google-signin { margin-top: 16px; width: 100%; max-width: 360px; min-width: 0; flex-shrink: 0; }
+.boot-screen > .google-signin { width: 340px; max-width: calc(100vw - 36px); }
+.google-signin-button { width: 100%; min-height: 44px; flex-shrink: 0; }
 .workspace-home-header .brand { color: var(--text-strong, #34313d); }
 .workspace-home-header .brand small { color: var(--text-secondary, #77717f); }
 .workspace-hosted { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding: 18px 22px; margin: -36px 0 36px; border: 1px solid var(--line, #dfccd3); background: var(--accent-light); border-radius: 14px; font-size: 14px; }

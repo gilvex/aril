@@ -650,5 +650,22 @@
   "Verifying your Google account…": "Verifying your Google account…",
   "Install app": "Install app",
   "Use your browser’s Install app or Add to Home Screen option. On iPhone or iPad, open Share → Add to Home Screen.": "Use your browser’s Install app or Add to Home Screen option. On iPhone or iPad, open Share → Add to Home Screen.",
-  "An internet connection is needed to open and sync your workspaces.": "An internet connection is needed to open and sync your workspaces."
+  "An internet connection is needed to open and sync your workspaces.": "An internet connection is needed to open and sync your workspaces.",
+  "Sign in to your studio": "Sign in to your studio",
+  "Join your team’s studio": "Join your team’s studio",
+  "Use the Google account connected to your studio.": "Use the Google account connected to your studio.",
+  "Accept your invitation to add this workspace to your account.": "Accept your invitation to add this workspace to your account.",
+  "Have an invitation code?": "Have an invitation code?",
+  "New here? Ask a workspace member for an invite.": "New here? Ask a workspace member for an invite.",
+  "Example board": "Example board",
+  "Base image": "Base image",
+  "Versioned content": "Versioned content",
+  "Ready to configure": "Ready to configure",
+  "Game layer": "Game layer",
+  "or": "or",
+  "Runtime image": "Runtime image",
+  "A pinned base image and its dependencies.": "A pinned base image and its dependencies.",
+  "Install the game once. Version the result.": "Install the game once. Version the result.",
+  "Server blueprint": "Server blueprint",
+  "Startup, mounts, resources, and an environment schema.": "Startup, mounts, resources, and an environment schema."
 }

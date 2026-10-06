@@ -49,3 +49,9 @@ Design now opens directly onto a sample deployment screen, with a collapsible St
 Notes now provides a searchable document list, Markdown editor, Edit/Split/Read modes, and a collapsible heading outline. On phones the list opens as a drawer and Split stacks editing above reading. Formatting preserves the text selection; links to boards and requirements open in a new tab so unfinished edits remain in place. Raw HTML is not rendered. Existing project notes are preserved as the first document and cannot be deleted from the UI; additional notes can be renamed, deleted, and recovered with Undo. No sample documents are inserted into existing workspaces.
 
 Both layouts use the studio's berry accent, existing variable fonts, semantic light/dark colors, and compact toolbars. Their working surfaces replace the former marketing headings and static explanation cards.
+
+## Sign-in entry screen
+
+The entry screen puts returning users' Google sign-in first, with a native, keyboard-accessible invitation disclosure below it. Incoming invitation links expand that form; signed-in invitees keep the existing accept-as-profile flow. Google access still requires a previously linked studio account. Desktop pairs the form with a static, decorative runtime → game layer → server blueprint example; phones hide that example and keep a single scrollable column. Appearance, language and app installation remain available before signing in.
+
+The official Google Identity Services button uses the container's measured width (up to Google's 400px limit), observes responsive changes, ignores unchanged/hidden sizes and disconnects its observer on unmount. No custom imitation button, login popup or new authentication mechanism is introduced.

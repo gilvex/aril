@@ -9,7 +9,15 @@ export type GoogleApi = {
       }) => void
       renderButton: (
         element: HTMLElement,
-        options: { theme: string; size: string; text: string },
+        options: {
+          theme: string
+          size: string
+          text: string
+          type?: string
+          shape?: string
+          width?: string
+          locale?: string
+        },
       ) => void
     }
   }
