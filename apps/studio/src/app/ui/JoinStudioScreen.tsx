@@ -16,6 +16,8 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
   const { handleSuccess } = useJoinStudioScreenHandlers(props)
   const retry = useCallback(() => location.reload(), [])
   const joining = inviteRequired || !!token
+  const switching =
+    new URLSearchParams(location.search).get('account') === 'switch'
   return (
     <div className="login-screen">
       <LoginHeader />
@@ -25,7 +27,9 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
             {t(
               profile && token
                 ? 'Join your team’s studio'
-                : 'Sign in to your studio',
+                : switching
+                  ? 'Choose another account'
+                  : 'Sign in to your studio',
             )}
           </h1>
           <p className="login-description">

@@ -1,4 +1,5 @@
 export type CollaborationPopoverProps = {
+  beforeLeave: () => Promise<boolean>
   panel: 'profile' | 'people' | 'activity'
   setPanel: (panel: import('../types/collaborationBarPanel.ts').Panel) => void
   opener: import('react').RefObject<HTMLElement | null>

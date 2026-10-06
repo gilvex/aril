@@ -13,3 +13,4 @@ export type { UseCollaborationControllerProps } from './useCollaborationControll
 export type { CollaborationPopoverHandlersProps } from './useCollaborationPopoverHandlersProps.ts'
 export type { FollowPersonHandlersProps } from './useFollowPersonHandlersProps.ts'
 export type { ProfileFormHandlersProps } from './useProfileFormHandlersProps.ts'
+export type { WorkspaceAccountMenuProps } from './workspaceAccountMenuProps.ts'

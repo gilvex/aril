@@ -1,4 +1,5 @@
 import { InstallApp } from '@/features/installApp/index.ts'
+import { WorkspaceAccountMenu } from '@/widgets/collaboration/index.ts'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -11,7 +12,12 @@ import { useWorkspaceHomeModel } from '@/pages/workspaces/model/useWorkspaceHome
 import type { WorkspaceHomeProps } from '@/pages/workspaces/types/workspaceHomeProps.ts'
 import { ArrowUpRight, Plus, Workflow } from 'lucide-react'
 
-export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
+export function WorkspaceHome({
+  profile,
+  onProfile,
+  onOpen,
+  notice,
+}: WorkspaceHomeProps) {
   const { t } = useTranslation()
 
   const {
@@ -45,7 +51,7 @@ export function WorkspaceHome({ profile, onOpen, notice }: WorkspaceHomeProps) {
         <div className="workspace-home-preferences">
           <ThemePicker />
           <LanguagePicker />
-          <span className="muted">{profile.name}</span>
+          <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
         </div>
       </header>
       {hostedOrigin && (

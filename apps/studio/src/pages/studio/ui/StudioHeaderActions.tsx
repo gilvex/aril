@@ -76,6 +76,7 @@ export function StudioHeaderActions({
         <Redo2 size={17} />
       </button>
       <CollaborationBar
+        beforeLeave={state.flush}
         panel={collaborationPanel}
         setPanel={setCollaborationPanel}
         workspaceId={studio.id}

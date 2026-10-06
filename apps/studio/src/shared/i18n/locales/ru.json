@@ -667,5 +667,19 @@
   "A pinned base image and its dependencies.": "Закреплённый базовый образ и его зависимости.",
   "Install the game once. Version the result.": "Установите игру один раз. Сохраните версию результата.",
   "Server blueprint": "Шаблон сервера",
-  "Startup, mounts, resources, and an environment schema.": "Запуск, тома, ресурсы и схема переменных окружения."
+  "Startup, mounts, resources, and an environment schema.": "Запуск, тома, ресурсы и схема переменных окружения.",
+  "Account actions": "Действия с аккаунтом",
+  "Your account": "Ваш аккаунт",
+  "Switch account": "Сменить аккаунт",
+  "Log out": "Выйти",
+  "Choose another account": "Выберите другой аккаунт",
+  "Saving and signing out…": "Сохранение и выход…",
+  "This profile is not connected to Google. You will need a new invitation to return. Connect Google above first to keep access to this profile.": "Этот профиль не связан с Google. Чтобы вернуться, потребуется новое приглашение. Сначала подключите Google выше, чтобы сохранить доступ к этому профилю.",
+  "Stay signed in": "Остаться в аккаунте",
+  "Sign out anyway": "Всё равно выйти",
+  "Save your pending changes before leaving this account.": "Сохраните изменения перед выходом из аккаунта.",
+  "Could not sign out. Please try again.": "Не удалось выйти. Попробуйте снова.",
+  "Your account changed in another tab.": "Аккаунт изменён в другой вкладке.",
+  "Reload to continue with the current account.": "Перезагрузите страницу, чтобы продолжить с текущим аккаунтом.",
+  "Reload": "Перезагрузить"
 }

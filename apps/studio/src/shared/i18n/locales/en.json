@@ -667,5 +667,19 @@
   "A pinned base image and its dependencies.": "A pinned base image and its dependencies.",
   "Install the game once. Version the result.": "Install the game once. Version the result.",
   "Server blueprint": "Server blueprint",
-  "Startup, mounts, resources, and an environment schema.": "Startup, mounts, resources, and an environment schema."
+  "Startup, mounts, resources, and an environment schema.": "Startup, mounts, resources, and an environment schema.",
+  "Account actions": "Account actions",
+  "Your account": "Your account",
+  "Switch account": "Switch account",
+  "Log out": "Log out",
+  "Choose another account": "Choose another account",
+  "Saving and signing out…": "Saving and signing out…",
+  "This profile is not connected to Google. You will need a new invitation to return. Connect Google above first to keep access to this profile.": "This profile is not connected to Google. You will need a new invitation to return. Connect Google above first to keep access to this profile.",
+  "Stay signed in": "Stay signed in",
+  "Sign out anyway": "Sign out anyway",
+  "Save your pending changes before leaving this account.": "Save your pending changes before leaving this account.",
+  "Could not sign out. Please try again.": "Could not sign out. Please try again.",
+  "Your account changed in another tab.": "Your account changed in another tab.",
+  "Reload to continue with the current account.": "Reload to continue with the current account.",
+  "Reload": "Reload"
 }

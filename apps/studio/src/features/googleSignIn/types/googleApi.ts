@@ -1,6 +1,7 @@
 export type GoogleApi = {
   accounts: {
     id: {
+      disableAutoSelect?: () => void
       initialize: (options: {
         client_id: string
         nonce: string

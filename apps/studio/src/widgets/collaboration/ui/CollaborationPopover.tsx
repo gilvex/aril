@@ -1,4 +1,5 @@
 import { Spinner } from '@/shared/ui/index.tsx'
+import { AccountActions } from '@/features/accountActions/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AccountConnection } from '@/widgets/collaboration/ui/AccountConnection.tsx'
 import { Check, Link, X } from 'lucide-react'
@@ -77,6 +78,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
             profile={profile}
           />
           <AccountConnection onProfile={onProfile} />
+          <AccountActions beforeLeave={props.beforeLeave} />
         </>
       ) : panel === 'people' ? (
         <>

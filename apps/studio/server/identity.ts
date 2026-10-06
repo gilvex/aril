@@ -128,6 +128,9 @@ export function identityStore(db: DatabaseSync) {
         .get(hash(token), Date.now())
       return row ? profile(String(row.user_id)) : undefined
     },
+    revokeSession: (token: string) => {
+      db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(hash(token))
+    },
     update: (id: string, name: string, avatar: string) => {
       db.prepare('UPDATE profiles SET name = ?, avatar = ? WHERE id = ?').run(
         name,

@@ -34,8 +34,7 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
       {error && <p className="form-error">{error}</p>}
       {account?.google ? (
         <p>
-          {t('Connected to Google as')}
-          <b>{account.google.email}</b>
+          {t('Connected to Google as')} <b>{account.google.email}</b>
           {t(
             '. Sign in with this account to open your workspaces on another device.',
           )}

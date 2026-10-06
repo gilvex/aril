@@ -308,6 +308,9 @@ ${agentTable}
     identity: {
       count,
       profile,
+      revokeSession: async (token: string) => {
+        await query('DELETE FROM studio.sessions WHERE token_hash=$1', [hash(token)])
+      },
       account: async (id: string) =>
         (
           await query<{ email: string }>(

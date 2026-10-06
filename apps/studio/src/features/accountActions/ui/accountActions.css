@@ -1,0 +1,10 @@
+.account-actions { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+.account-actions-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.account-actions-buttons .button { min-height: 40px; }
+.account-actions p { font-size: 12px; line-height: 1.6; margin: 12px 0; }
+.account-actions-confirmation { margin-top: 12px; }
+.workspace-account { position: relative; }
+.workspace-account > summary { cursor: pointer; display: flex; align-items: center; gap: 8px; list-style: none; }
+.workspace-account > summary::-webkit-details-marker { display: none; }
+.workspace-account-panel { position: absolute; z-index: 20; right: 0; top: calc(100% + 12px); width: min(360px, calc(100vw - 40px)); padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface, #fff); box-shadow: 0 12px 40px #17102125; }
+.workspace-account-panel .account-connection { border-top: 0; padding-top: 0; margin-top: 0; }

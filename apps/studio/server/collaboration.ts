@@ -75,6 +75,24 @@ export function installCollaboration(
       hostedOrigin: process.env.POMEGRANATE_CLOUD_ORIGIN || null,
     }),
   )
+  app.post('/api/auth/logout', async (req, res) => {
+    if (req.get('x-pomegranate-auth') !== '1') {
+      res.status(400).json({ error: 'Invalid authentication request.' })
+      return
+    }
+    const bearer = req.get('authorization')?.match(/^Bearer ([\w-]{43})$/)?.[1]
+    const cookie = req.headers.cookie?.split(';').map((part) => part.trim())
+      .find((part) => part.startsWith('pomegranate_session='))
+      ?.slice('pomegranate_session='.length)
+    for (const token of new Set([bearer, cookie].filter((value): value is string => !!value))) {
+      await store.identity.revokeSession(token)
+    }
+    res.clearCookie('pomegranate_session', {
+      httpOnly: true, sameSite: 'strict', path: '/',
+      secure: publicOrigin?.startsWith('https:') || false,
+    })
+    res.status(204).end()
+  })
   app.post('/api/auth/transfer', async (req, res) => {
     const input = z
       .object({ token: z.string().regex(/^[\w-]{43}$/) })

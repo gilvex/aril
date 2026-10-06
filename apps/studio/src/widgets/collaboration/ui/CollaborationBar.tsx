@@ -5,6 +5,7 @@ import { Users } from 'lucide-react'
 import { useCollaborationController } from '../model/useCollaborationController.ts'
 import { CollaborationPopover } from './CollaborationPopover.tsx'
 export function CollaborationBar({
+  beforeLeave,
   panel,
   setPanel,
   workspaceId,
@@ -69,6 +70,7 @@ export function CollaborationBar({
       </button>
       {panel && (
         <CollaborationPopover
+          beforeLeave={beforeLeave}
           panel={panel}
           setPanel={setPanel}
           opener={opener}

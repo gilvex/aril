@@ -1,4 +1,6 @@
 import { Studio } from '@/pages/studio/index.ts'
+import { useSessionChange } from '../model/useSessionChange.ts'
+import { SessionChangedScreen } from './SessionChangedScreen.tsx'
 import { WorkspaceHome } from '@/pages/workspaces/index.ts'
 import { useAppController } from '../model/useAppController.ts'
 import { useAppHandlers } from '../model/useAppHandlers.tsx'
@@ -7,6 +9,7 @@ import { JoinStudioScreen } from './JoinStudioScreen.tsx'
 import { StaleDraftScreen } from './StaleDraftScreen.tsx'
 import { InitialLoadingScreen } from './InitialLoadingScreen.tsx'
 export function App() {
+  const sessionChanged = useSessionChange()
   const {
     legacy,
     staleDraftKey,
@@ -83,6 +86,7 @@ export function App() {
   else if (!studio || !initial)
     content = (
       <WorkspaceHome
+        onProfile={setProfile}
         profile={profile}
         notice={routeNotice}
         onOpen={openWorkspace}
@@ -101,10 +105,10 @@ export function App() {
     )
   return (
     <>
-      <div className="app-content" inert={loading}>
-        {content}
+      <div className="app-content" inert={loading && !sessionChanged}>
+        {sessionChanged ? <SessionChangedScreen /> : content}
       </div>
-      <InitialLoadingScreen loading={loading} />
+      <InitialLoadingScreen loading={loading && !sessionChanged} />
     </>
   )
 }
