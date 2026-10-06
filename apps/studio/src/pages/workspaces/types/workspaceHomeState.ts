@@ -1,7 +1,9 @@
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@pomegranate/domain/studios'
 
 export type WorkspaceHomeState = {
-  studios: StudioSummary[] | null
+  search: string
+  sort: import('./workspaceSort.ts').WorkspaceSort
+  studios: StudioOverview[] | null
   name: string
   creating: boolean
   busy: boolean

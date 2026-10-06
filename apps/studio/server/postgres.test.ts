@@ -105,6 +105,22 @@ test(
         owner.profile.id,
         'Private workspace',
       )
+      const overviews = await b.studioOverviews(peer.profile.id)
+      assert.deepEqual(
+        overviews.map((studio) => studio.id),
+        ['default'],
+      )
+      assert.ok(
+        overviews[0].nodes.length > 0 && overviews[0].nodes.length <= 16,
+      )
+      assert.ok(overviews[0].edges.length <= 32)
+      assert.equal(overviews[0].memberCount, 2)
+      const ownerOverviews = await a.studioOverviews(owner.profile.id)
+      assert.equal(
+        ownerOverviews.find((studio) => studio.id === privateStudio.id)?.nodes
+          .length,
+        0,
+      )
       assert.equal(
         (
           await call(

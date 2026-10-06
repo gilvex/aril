@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { AccountActions } from '@/features/accountActions/index.ts'
+import { LanguagePicker, ThemePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AccountConnection } from './AccountConnection.tsx'
 import type { WorkspaceAccountMenuProps } from '../types/workspaceAccountMenuProps.ts'
@@ -18,6 +19,8 @@ export function WorkspaceAccountMenu({
         <ChevronDown size={15} />
       </summary>
       <div className="workspace-account-panel">
+        <ThemePicker />
+        <LanguagePicker />
         <AccountConnection onProfile={onProfile} />
         <AccountActions />
       </div>

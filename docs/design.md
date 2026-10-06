@@ -55,3 +55,9 @@ Both layouts use the studio's berry accent, existing variable fonts, semantic li
 The entry screen puts returning users' Google sign-in first, with a native, keyboard-accessible invitation disclosure below it. Incoming invitation links expand that form; signed-in invitees keep the existing accept-as-profile flow. Google access still requires a previously linked studio account. Desktop pairs the form with a static, decorative runtime → game layer → server blueprint example; phones hide that example and keep a single scrollable column. Appearance, language and app installation remain available before signing in.
 
 The official Google Identity Services button uses the container's measured width (up to Google's 400px limit), observes responsive changes, ignores unchanged/hidden sizes and disconnects its observer on unmount. No custom imitation button, login popup or new authentication mechanism is introduced.
+
+## Workspace library
+
+The signed-in home uses a compact brand/account header and one toolbar with search, last-opened/name sorting and workspace creation. Desktop cards show miniature previews of the first blueprint, membership roles and member initials. Phones use horizontal cards and a sticky New workspace action. Appearance, language, account switching and logout live in the account menu. Creation opens an accessible native dialog; existing workspaces are never seeded or changed by previews.
+
+Last-opened times are personal, stored per profile on this device after a successful workspace load. The membership-scoped overview endpoint returns only the first 16 blueprint nodes, 32 connections and three member identities per workspace; it omits full documents, account details and avatar images. Empty blueprints show a blank-board placeholder. Previews are navigation aids, not a full rendering of wireframes or every board.

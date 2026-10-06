@@ -16,6 +16,16 @@ export function createWorkspaceHomeModel(initial: WorkspaceHomeState) {
   })
   const getSnapshot = () => selectWorkspaceHome(store.getState())
   const actions = {
+    setSearch: (value: string) =>
+      store.dispatch(workspaceHomeSlice.actions.setSearch(value)),
+    setSort: (value: WorkspaceHomeState['sort']) =>
+      store.dispatch(workspaceHomeSlice.actions.setSort(value)),
+    retry: () => {
+      void runSaga(
+        { dispatch: store.dispatch, getState: store.getState },
+        workspaceHomeSaga,
+      ).toPromise()
+    },
     createWorkspace: (name: string) =>
       runSaga(
         { dispatch: store.dispatch, getState: store.getState },

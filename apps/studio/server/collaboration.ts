@@ -283,6 +283,9 @@ export function installCollaboration(
   app.get('/api/studios', async (_req, res) =>
     res.json(await store.studios((res.locals.profile as Profile).id)),
   )
+  app.get('/api/studios/overview', async (_req, res) =>
+    res.json(await store.studioOverviews((res.locals.profile as Profile).id)),
+  )
   app.post('/api/hosted-access', async (req, res) => {
     const origin = process.env.POMEGRANATE_CLOUD_ORIGIN
     if (

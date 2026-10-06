@@ -1,16 +1,14 @@
+import { ArrowUpRight, Plus } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { WorkspaceAccountMenu } from '@/widgets/collaboration/index.ts'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
-import { LanguagePicker } from '@/features/appearance/index.ts'
-import { useTranslation } from '@/shared/i18n/index.ts'
-import { useWorkspaceHomeHandlers } from '../model/useWorkspaceHomeHandlers.tsx'
-import { CreateWorkspaceForm } from './CreateWorkspaceForm.tsx'
-
-import { ThemePicker } from '@/features/appearance/index.ts'
-import { createWorkspaceHomeState } from '@/pages/workspaces/model/createWorkspaceHomeState.ts'
-import { useWorkspaceHomeModel } from '@/pages/workspaces/model/useWorkspaceHomeModel.ts'
-import type { WorkspaceHomeProps } from '@/pages/workspaces/types/workspaceHomeProps.ts'
-import { ArrowUpRight, Plus, Workflow } from 'lucide-react'
+import type { WorkspaceHomeProps } from '../types/workspaceHomeProps.ts'
+import { WorkspaceCard } from './WorkspaceCard.tsx'
+import { WorkspaceToolbar } from './WorkspaceToolbar.tsx'
+import { WorkspaceCreateDialog } from './WorkspaceCreateDialog.tsx'
+import { useWorkspaceLibrary } from '../model/useWorkspaceLibrary.ts'
+import { WorkspaceEmptyState } from './WorkspaceEmptyState.tsx'
+import './workspaces.css'
 
 export function WorkspaceHome({
   profile,
@@ -18,119 +16,97 @@ export function WorkspaceHome({
   onOpen,
   notice,
 }: WorkspaceHomeProps) {
-  const { t } = useTranslation()
-
+  const { t, state, visits, visible, handleSubmit, create, openHosted } =
+    useWorkspaceLibrary({ profile, onProfile, onOpen, notice })
   const {
     studios,
-    name,
-    setName,
+    search,
+    sort,
     creating,
-    setCreating,
     busy,
     error,
-    hostedOrigin,
-    createWorkspace,
-    openHostedWorkspace,
-  } = useWorkspaceHomeModel(() => createWorkspaceHomeState())
-
-  const { handleSubmit } = useWorkspaceHomeHandlers({
-    createWorkspace,
     name,
-    onOpen,
-  })
+    setName,
+    setCreating,
+    hostedOrigin,
+  } = state
   return (
-    <main className="workspace-home">
-      <header className="workspace-home-header">
+    <main className="workspace-home workspace-library">
+      <header className="workspace-library-header">
         <a className="brand" href="/">
           <img src="/mark.svg" alt="" />
-          <span>
-            {t('pomegranate')}
-            <small>{t('Planning studio')}</small>
-          </span>
+          <span>pomegranate</span>
         </a>
-        <div className="workspace-home-preferences">
-          <ThemePicker />
-          <LanguagePicker />
-          <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
-        </div>
+        <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
       </header>
-      {hostedOrigin && (
-        <div className="workspace-hosted">
-          <span>{t('Your shared studio is ready online.')}</span>
-          <button
-            className="button"
-            disabled={busy}
-            onClick={() => openHostedWorkspace()}
-          >
-            {t('Open hosted studio')}
-            <ArrowUpRight size={15} />
-          </button>
-        </div>
-      )}
-      <div className="workspace-home-title">
-        <div>
-          <span className="eyebrow">{t('ROOM TO GROW')}</span>
-          <h1>{t('Your workspaces.')}</h1>
-          <p>
-            {t(
-              'A little space for every big idea. Only workspaces you belong to appear here.',
-            )}
+      <div className="workspace-library-content">
+        <WorkspaceToolbar
+          count={studios?.length}
+          search={search}
+          sort={sort}
+          onSearch={state.setSearch}
+          onSort={state.setSort}
+          onCreate={create}
+        />
+        {notice && (
+          <p className="workspace-notice" role="status">
+            {notice}
           </p>
+        )}
+        {hostedOrigin && (
+          <div className="workspace-hosted">
+            <span>{t('Your shared studio is ready online.')}</span>
+            <button className="button" disabled={busy} onClick={openHosted}>
+              {t('Open hosted studio')}
+              <ArrowUpRight size={15} />
+            </button>
+          </div>
+        )}
+        {error && !creating && (
+          <div className="workspace-list-error" role="alert">
+            <p>{error}</p>
+            <button className="button" onClick={state.retry}>
+              {t('Try again')}
+            </button>
+          </div>
+        )}
+        {!studios && !error && (
+          <LoadingStatus label={t('Loading your workspaces…')} />
+        )}
+        <div className="workspace-grid">
+          {visible.map((studio) => (
+            <WorkspaceCard
+              key={studio.id}
+              studio={studio}
+              visited={visits[studio.id]}
+              onOpen={onOpen}
+            />
+          ))}
         </div>
-        <button className="button primary" onClick={() => setCreating(true)}>
-          <Plus size={16} />
+        {studios && !visible.length && (
+          <WorkspaceEmptyState searching={!!search.trim()} />
+        )}
+      </div>
+      <footer className="workspace-library-footer">
+        <InstallApp />
+        <button
+          className="button primary workspace-create-mobile"
+          onClick={create}
+        >
+          <Plus size={18} />
           {t('New workspace')}
         </button>
-      </div>
-      <InstallApp />
-      {notice && <p role="status">{notice}</p>}
+      </footer>
       {creating && (
-        <CreateWorkspaceForm
+        <WorkspaceCreateDialog
           handleSubmit={handleSubmit}
           t={t}
           name={name}
           setName={setName}
           setCreating={setCreating}
           busy={busy}
+          error={error}
         />
-      )}
-      {error && (
-        <p className="form-error" role="alert">
-          {error}
-        </p>
-      )}
-      {!studios && !error && (
-        <LoadingStatus label={t('Loading your workspaces…')} />
-      )}
-      <div className="workspace-grid">
-        {studios?.map((studio) => (
-          <button
-            key={studio.id}
-            className="workspace-card"
-            onClick={() => onOpen(studio)}
-          >
-            <span className="workspace-card-icon">
-              <Workflow size={24} />
-            </span>
-            <span className="workspace-card-role">
-              {studio.role === 'owner'
-                ? t('Your workspace')
-                : t('Shared with you')}
-            </span>
-            <h2>{studio.name}</h2>
-            <span className="workspace-card-footer">
-              {t('Open planning studio')}
-              <ArrowUpRight size={18} />
-            </span>
-          </button>
-        ))}
-      </div>
-      {studios?.length === 0 && (
-        <p>
-          {t(
-            'No workspaces yet. Create one or open an invitation to join your team.',
-          )}
-        </p>
       )}
     </main>
   )

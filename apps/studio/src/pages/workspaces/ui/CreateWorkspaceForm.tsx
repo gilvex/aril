@@ -13,7 +13,6 @@ export function CreateWorkspaceForm({
       <label>
         {t('Workspace name')}
         <input
-          autoFocus
           value={name}
           onChange={(event) => setName(event.target.value)}
           placeholder={t('A new idea…')}

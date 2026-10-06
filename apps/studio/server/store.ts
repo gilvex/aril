@@ -12,6 +12,8 @@ import { dirname } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { agentCredentials, agentTable } from './agentCredentials.ts'
 import { identityStore } from './identity.ts'
+import type { StudioOverview } from '@pomegranate/domain/studios'
+import { sqliteStudioOverviews } from './utils/sqliteStudioOverviews.ts'
 
 export function openStore(path: string) {
   mkdirSync(dirname(path), { recursive: true })
@@ -173,6 +175,16 @@ export function openStore(path: string) {
           'SELECT s.id,s.name,s.created_at AS createdAt,m.role FROM studios s JOIN members m ON m.workspace_id=s.id WHERE m.user_id=? ORDER BY s.created_at,s.id',
         )
         .all(userId) as StudioSummary[],
+    studioOverviews: (userId: string): StudioOverview[] =>
+      db
+        .prepare(sqliteStudioOverviews)
+        .all(userId)
+        .map((row) => ({
+          ...row,
+          nodes: JSON.parse(String(row.nodes)),
+          edges: JSON.parse(String(row.edges)),
+          members: JSON.parse(String(row.members)),
+        })) as StudioOverview[],
     createStudio: (userId: string, name: string) => {
       const id = randomUUID(),
         createdAt = new Date().toISOString()

@@ -681,5 +681,22 @@
   "Could not sign out. Please try again.": "Could not sign out. Please try again.",
   "Your account changed in another tab.": "Your account changed in another tab.",
   "Reload to continue with the current account.": "Reload to continue with the current account.",
-  "Reload": "Reload"
+  "Reload": "Reload",
+  "Workspaces": "Workspaces",
+  "Find a workspace": "Find a workspace",
+  "Last opened": "Last opened",
+  "Name": "Name",
+  "Close": "Close",
+  "Sort workspaces": "Sort workspaces",
+  "Owner": "Owner",
+  "Member": "Member",
+  "Opened {{time}}": "Opened {{time}}",
+  "Not opened on this device": "Not opened on this device",
+  "{{count}} workspace members": "{{count}} workspace members",
+  "Ready for your first ideas": "Ready for your first ideas",
+  "No matching workspaces": "No matching workspaces",
+  "Try another name or clear your search.": "Try another name or clear your search.",
+  "Your first workspace starts here": "Your first workspace starts here",
+  "Create a workspace, then invite your team to plan together.": "Create a workspace, then invite your team to plan together.",
+  "Open {{name}}": "Open {{name}}"
 }

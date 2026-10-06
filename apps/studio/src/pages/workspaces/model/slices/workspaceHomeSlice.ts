@@ -5,6 +5,12 @@ export const workspaceHomeSlice = createSlice({
   name: 'workspaceHome',
   initialState: {} as WorkspaceHomeState,
   reducers: {
+    setSearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload
+    },
+    setSort: (state, action: PayloadAction<WorkspaceHomeState['sort']>) => {
+      state.sort = action.payload
+    },
     setStudios: (
       state,
       action: PayloadAction<WorkspaceHomeState['studios']>,

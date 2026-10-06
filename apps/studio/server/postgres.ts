@@ -13,6 +13,8 @@ import { agentCredentials, agentTable } from './agentCredentials.ts'
 import type { Store } from './storeContract.ts'
 import { hash } from './utils/postgresHash.ts'
 import { postgresUrl } from './utils/postgresPostgresUrl.ts'
+import type { StudioOverview } from '@pomegranate/domain/studios'
+import { postgresStudioOverviews } from './utils/postgresStudioOverviews.ts'
 
 const colors = [
   '#b34568',
@@ -247,6 +249,8 @@ ${agentTable}
         return { workspace: clean, revision: expected + 1, savedAt }
       }),
     member,
+    studioOverviews: async (userId: string) =>
+      (await query<StudioOverview>(postgresStudioOverviews, [userId])).rows,
     studios: async (id: string) =>
       (
         await query<StudioSummary>(
@@ -309,7 +313,9 @@ ${agentTable}
       count,
       profile,
       revokeSession: async (token: string) => {
-        await query('DELETE FROM studio.sessions WHERE token_hash=$1', [hash(token)])
+        await query('DELETE FROM studio.sessions WHERE token_hash=$1', [
+          hash(token),
+        ])
       },
       account: async (id: string) =>
         (

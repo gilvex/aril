@@ -1,2 +1,7 @@
 export { WorkspaceHome } from '@/pages/workspaces/ui/WorkspaceHome.tsx'
 export { CreateWorkspaceForm } from './CreateWorkspaceForm.tsx'
+export { WorkspaceCard } from './WorkspaceCard.tsx'
+export { WorkspacePreview } from './WorkspacePreview.tsx'
+export { WorkspaceToolbar } from './WorkspaceToolbar.tsx'
+export { WorkspaceCreateDialog } from './WorkspaceCreateDialog.tsx'
+export { WorkspaceEmptyState } from './WorkspaceEmptyState.tsx'

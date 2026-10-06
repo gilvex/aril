@@ -1,4 +1,5 @@
 import { sessionRequestState } from '@/app/config/sessionRequestState.ts'
+import { rememberWorkspaceVisit } from '@/shared/utils/rememberWorkspaceVisit.ts'
 import { createAppState } from '@/app/model/createAppState.ts'
 import { useAppModel } from '@/app/model/useAppModel.ts'
 import { startSession } from '@/app/utils/startSession.ts'
@@ -138,6 +139,7 @@ export function useAppController() {
           /* Malformed recovery data never replaces the server document. */
         }
         setInitial(result)
+        rememberWorkspaceVisit(profile.id, studio.id)
       })
       .catch((err) => {
         if (cancelled) return

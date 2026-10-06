@@ -681,5 +681,22 @@
   "Could not sign out. Please try again.": "Не удалось выйти. Попробуйте снова.",
   "Your account changed in another tab.": "Аккаунт изменён в другой вкладке.",
   "Reload to continue with the current account.": "Перезагрузите страницу, чтобы продолжить с текущим аккаунтом.",
-  "Reload": "Перезагрузить"
+  "Reload": "Перезагрузить",
+  "Workspaces": "Пространства",
+  "Find a workspace": "Найти пространство",
+  "Last opened": "Последние",
+  "Name": "Название",
+  "Close": "Закрыть",
+  "Sort workspaces": "Порядок пространств",
+  "Owner": "Владелец",
+  "Member": "Участник",
+  "Opened {{time}}": "Открыто {{time}}",
+  "Not opened on this device": "Ещё не открывалось здесь",
+  "{{count}} workspace members": "Участников: {{count}}",
+  "Ready for your first ideas": "Место для первых идей",
+  "No matching workspaces": "Пространства не найдены",
+  "Try another name or clear your search.": "Попробуйте другое название или очистите поиск.",
+  "Your first workspace starts here": "Создайте первое пространство",
+  "Create a workspace, then invite your team to plan together.": "Создайте пространство и пригласите команду для совместной работы.",
+  "Open {{name}}": "Открыть {{name}}"
 }
