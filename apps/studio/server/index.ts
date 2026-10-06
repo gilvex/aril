@@ -21,7 +21,7 @@ if (
     'Set POMEGRANATE_ORIGIN to the shared studio URL before enabling remote access.',
   )
 const server = app.listen(port, host, () =>
-  console.log(`Pomegranate studio API: http://${host}:${port}`),
+  console.log(`Aril studio API: http://${host}:${port}`),
 )
 const stop = () => {
   collaboration.close()

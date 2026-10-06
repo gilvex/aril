@@ -1,7 +1,7 @@
 // Cache only the public offline screen. Documents, sessions, streams and editor
 // bundles always use the network so a PWA cannot replay an outdated studio.
-const offlineCache = 'pomegranate-offline-v1'
-const offlineFiles = ['/offline.html', '/offline.js', '/mark.svg']
+const offlineCache = 'pomegranate-offline-v2'
+const offlineFiles = ['/offline.html', '/offline.js', '/mark.svg', '/aril.svg']
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(offlineCache).then((cache) => cache.addAll(offlineFiles)))
 })

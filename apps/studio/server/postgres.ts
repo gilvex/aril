@@ -110,7 +110,7 @@ ${agentTable}
       const now = new Date().toISOString()
       await query(
         'INSERT INTO studio.studios VALUES ($1,$2,$3) ON CONFLICT DO NOTHING',
-        ['default', 'Pomegranate', now],
+        ['default', 'Aril', now],
         client,
       )
       await query(

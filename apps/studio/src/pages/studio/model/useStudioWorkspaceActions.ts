@@ -41,7 +41,7 @@ export function useStudioWorkspaceActions({
     () =>
       downloadJson(
         workspace,
-        `pomegranate-workspace-${new Date().toISOString().slice(0, 10)}.json`,
+        `aril-workspace-${new Date().toISOString().slice(0, 10)}.json`,
       ),
     [workspace],
   )

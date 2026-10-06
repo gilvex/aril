@@ -103,7 +103,7 @@ export const boards: Board[] = [
       ),
       idea(
         'panel',
-        'Pomegranate web app',
+        'Aril web app',
         'Projects, batches, activity, and approachable diagnostics.',
         'service',
         290,

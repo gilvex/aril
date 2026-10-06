@@ -28,5 +28,5 @@ if (
 await mkdir(destination, { recursive: true })
 if (!exists) await copyFile(source, target)
 console.log(
-  `Pomegranate studio skill installed at ${destination}. Open a new chat to discover it.`,
+  `Aril studio skill installed at ${destination}. Open a new chat to discover it.`,
 )

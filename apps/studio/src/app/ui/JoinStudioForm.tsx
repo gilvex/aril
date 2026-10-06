@@ -29,9 +29,7 @@ export function JoinStudioForm({
   })
   return (
     <form className="join-form" onSubmit={handleSubmit}>
-      <p>
-        {t('Join Pomegranate with an invitation from someone in the studio.')}
-      </p>
+      <p>{t('Join Aril with an invitation from someone in the studio.')}</p>
       {!profile && (
         <label>
           {t('Your name')}

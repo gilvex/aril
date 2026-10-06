@@ -72,7 +72,7 @@ export function createSeed(): Workspace {
       req(
         'R10',
         'Documented, versioned API',
-        'Make automation a first-class way to operate Pomegranate.',
+        'Make automation a first-class way to operate Aril.',
         'Deployment',
         'Publish an OpenAPI contract with authentication, permissions, examples, errors, pagination, and versioning policy.',
       ),
@@ -113,7 +113,7 @@ export function createSeed(): Workspace {
       ),
     ],
     notes:
-      '# Pomegranate\n\nA comfy deployment platform: open-source and self-hostable, with a managed SaaS offering.\n\n## Product principles\n- Reuse the work, not the writable state.\n- Batch actions should feel safe and predictable.\n- An incident should leave a useful history, even when nobody is watching.\n- Permissions should explain both what you can do and why.\n\n## References\nPterodactyl Panel and the user’s reference to Yandex deployment tooling (Arcanum / Deploy). The exact Yandex product/reference needs clarification. Pterodactyl pain points are user-reported experience, not a verified current-version audit.\n\n## Open decisions\n- Which games and deployment target should the first end-to-end flow support?\n- Which database engines are essential on day one?\n- How should the SaaS control plane connect to customer-owned nodes?\n- What is the boundary between the open-source and hosted editions?\n- Which UI language should the product ship first?\n\n## First milestone\nOne versioned game blueprint, two isolated instances, validated ports, scoped access, and retained installation logs.\n',
+      '# Aril\n\nA comfy deployment platform: open-source and self-hostable, with a managed SaaS offering.\n\n## Product principles\n- Reuse the work, not the writable state.\n- Batch actions should feel safe and predictable.\n- An incident should leave a useful history, even when nobody is watching.\n- Permissions should explain both what you can do and why.\n\n## References\nPterodactyl Panel and the user’s reference to Yandex deployment tooling (Arcanum / Deploy). The exact Yandex product/reference needs clarification. Pterodactyl pain points are user-reported experience, not a verified current-version audit.\n\n## Open decisions\n- Which games and deployment target should the first end-to-end flow support?\n- Which database engines are essential on day one?\n- How should the SaaS control plane connect to customer-owned nodes?\n- What is the boundary between the open-source and hosted editions?\n- Which UI language should the product ship first?\n\n## First milestone\nOne versioned game blueprint, two isolated instances, validated ports, scoped access, and retained installation logs.\n',
     design: {
       accent: '#b34568',
       density: 'Comfortable',

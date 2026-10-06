@@ -1,9 +1,9 @@
 ---
 name: pomegranate-studio
-description: Read and edit live Pomegranate planning workspaces through the Pomegranate MCP tools. Use for architecture boards, requirements, wireframes, user flows, planning notes, or design direction stored in the studio. Does not deploy infrastructure or modify the studio application source.
+description: Read and edit live Aril planning workspaces through the Aril MCP tools. Use for architecture boards, requirements, wireframes, user flows, planning notes, or design direction stored in the studio. Does not deploy infrastructure or modify the studio application source.
 ---
 
-# Pomegranate planning studio
+# Aril planning studio
 
 Use the `pomegranate` MCP connection. It is scoped to one workspace; call `get_workspace` to discover its identity, permission, revision, boards, requirements, notes, and design direction. Do not assume the default workspace or reuse IDs from another chat. If the tools are unavailable, explain that the MCP connection must be enabled and the chat reopened. Never ask the user to paste credentials into chat or read credential files yourself.
 
@@ -67,7 +67,7 @@ Blueprint nodes describe architecture and dependencies; wireframe blocks describ
 
 Use specific action labels on flows, such as “Create blueprint” or “Back to servers.” Connect the interactive button/block to its actual destination. The studio selects connection sides and routes arrows automatically. Leave generous space between screens and consider a two-dimensional arrangement when a single row makes return flows hard to follow. Don't add source/target handle fields absent from the schema.
 
-Pomegranate's initial purpose is planning a self-hostable and SaaS deployment platform, not executing deployments. The reusable game-server model is **runtime image → versioned game layer → server blueprint → independent instances**. Mutable worlds and saves remain per-instance. Proposed architecture is exploratory unless the workspace or user says it is decided. Later user decisions override this background.
+Aril's initial purpose is planning a self-hostable and SaaS deployment platform, not executing deployments. The reusable game-server model is **runtime image → versioned game layer → server blueprint → independent instances**. Mutable worlds and saves remain per-instance. Proposed architecture is exploratory unless the workspace or user says it is decided. Later user decisions override this background.
 
 ## Connection boundaries
 

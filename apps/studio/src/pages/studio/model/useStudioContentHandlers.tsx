@@ -30,7 +30,7 @@ export function useStudioContentHandlers({
       } catch {
         setNotice(
           t(
-            'That file is not a valid Pomegranate workspace. Your existing work is unchanged.',
+            'That file is not a valid Aril workspace. Your existing work is unchanged.',
           ),
         )
       }

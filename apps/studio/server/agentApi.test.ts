@@ -150,7 +150,7 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
       arguments: {},
     })
     assert.ok(!overview.isError)
-    assert.match(JSON.stringify(overview), /Pomegranate/)
+    assert.match(JSON.stringify(overview), /Aril/)
     const board = await client.callTool({
       name: 'get_board',
       arguments: { boardId: state.workspace.boards[0].id },

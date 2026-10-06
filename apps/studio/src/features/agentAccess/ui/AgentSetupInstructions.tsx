@@ -4,7 +4,7 @@ export function AgentSetupInstructions({ t }: AgentSetupInstructionsProps) {
     <details className="agent-setup">
       <summary>{t('Connect your MCP client')}</summary>
       <p>
-        {t('From your local Pomegranate checkout, run')}
+        {t('From your local Aril checkout, run')}
         <code>{t('pnpm mcp:setup')}</code>
         {t(
           '. Paste this studio address and the credential into the terminal prompts. The setup stores it in your user configuration folder and prints the MCP registration command.',

@@ -61,3 +61,9 @@ The official Google Identity Services button uses the container's measured width
 The signed-in home uses a compact brand/account header and one toolbar with search, last-opened/name sorting and workspace creation. Desktop cards show miniature previews of the first blueprint, membership roles and member profile pictures (initials when unset). Phones use horizontal cards and a sticky New workspace action. Appearance, language, account switching and logout live in the account menu. Creation opens an accessible native dialog; existing workspaces are never seeded or changed by previews.
 
 Last-opened times are personal, stored per profile on this device after a successful workspace load. The membership-scoped overview endpoint returns only the first 16 blueprint nodes, 32 connections and three member identities per workspace, including their saved avatars; it omits full documents and account details. Empty blueprints show a blank-board placeholder. Previews are navigation aids, not a full rendering of wireframes or every board.
+
+## Aril identity
+
+The approved Aril identity replaces the product-facing Pomegranate name. The logo is a single asymmetric seed with an offset negative-space cutout, reconstructed as a small, scalable SVG from the approved concept. Berry (#b34568) and a lowercase Manrope wordmark retain the existing visual palette. The header, login, initial loader, design preview, favicon, offline screen, Apple icon and PWA manifest use the new identity. App icons reverse the seed to warm white on berry and keep it within the maskable safe zone.
+
+The manifest retains its root identity and the service-worker cache version advances without forcing editors to reload. Stable protocol, session, package and database identifiers keep their existing names; saved workspace titles and authored planning content are not rewritten. Newly initialized installations use Aril starter content.

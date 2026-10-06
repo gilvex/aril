@@ -6,7 +6,7 @@ export function SessionChangedScreen() {
   const reload = useCallback(() => location.replace('/'), [])
   return (
     <main className="boot-screen">
-      <img src="/mark.svg" alt="" />
+      <img src="/aril.svg" alt="" />
       <h1>{t('Your account changed in another tab.')}</h1>
       <p>{t('Reload to continue with the current account.')}</p>
       <button className="button primary" onClick={reload}>

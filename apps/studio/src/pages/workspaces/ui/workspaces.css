@@ -2,6 +2,7 @@
 .workspace-library-header { flex-shrink: 0; min-height: 80px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px max(32px, calc((100vw - 1180px) / 2)); border-bottom: 1px solid var(--line); background: var(--surface, #fff); }
 .workspace-library-header .brand { margin: 0; color: var(--text-strong, #34313d); font-size: 20px; }
 .workspace-library-header .brand img { width: 34px; height: 34px; }
+.workspace-library-header .brand > span { font-size: 26px; letter-spacing: -.9px; }
 .workspace-library-header .workspace-account > summary { min-height: 44px; }
 .workspace-library .workspace-account-panel { max-height: calc(100dvh - 110px); overflow: auto; }
 .workspace-library .workspace-account-panel .theme-picker { padding: 8px 0; }

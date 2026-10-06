@@ -26,7 +26,7 @@ export function StaleDraftScreen({
   })
   return (
     <div className="boot-screen">
-      <img src="/mark.svg" alt="" />
+      <img src="/aril.svg" alt="" />
       <h1>{t('This draft is out of date.')}</h1>
       <p>
         {t(

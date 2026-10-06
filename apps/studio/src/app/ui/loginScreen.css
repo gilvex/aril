@@ -7,7 +7,7 @@
   padding: 0 max(28px, calc((100vw - 1320px) / 2));
 }
 .login-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 30px 0; }
-.login-brand { display: flex; align-items: center; gap: 12px; font-family: var(--heading); font-size: 21px; font-weight: 750; letter-spacing: -.7px; }
+.login-brand { display: flex; align-items: center; gap: 12px; font-family: var(--heading); font-size: 26px; font-weight: 750; letter-spacing: -.9px; }
 .login-brand img { width: 35px; height: 35px; }
 .login-preferences { display: flex; gap: 8px; }
 .login-preferences .theme-picker { padding: 0; }
@@ -58,7 +58,7 @@
 @media (max-width: 760px) {
   .login-screen { padding: 0 max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left)); }
   .login-header { padding: max(24px, env(safe-area-inset-top)) 0 20px; flex-wrap: wrap; gap: 18px; }
-  .login-brand { font-size: 19px; gap: 9px; }
+  .login-brand { font-size: 24px; gap: 9px; }
   .login-brand img { width: 30px; height: 30px; }
   .login-preferences { gap: 6px; }
   .login-preferences select { min-width: 0; padding: 7px; max-width: 100px; }

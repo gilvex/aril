@@ -45,7 +45,7 @@ export function StudioHeader({
           title={t('Switch workspace')}
           onClick={handleSwitchWorkspaceClick}
         >
-          <img src="/mark.svg" alt="" />
+          <img src="/aril.svg" alt="" />
           <span>{studio.name}</span>
           <ChevronDown size={14} />
         </button>

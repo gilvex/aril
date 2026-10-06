@@ -34,8 +34,8 @@ export function WorkspaceHome({
     <main className="workspace-home workspace-library">
       <header className="workspace-library-header">
         <a className="brand" href="/">
-          <img src="/mark.svg" alt="" />
-          <span>pomegranate</span>
+          <img src="/aril.svg" alt="" />
+          <span>aril</span>
         </a>
         <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
       </header>

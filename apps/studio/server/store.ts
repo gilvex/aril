@@ -46,7 +46,7 @@ export function openStore(path: string) {
       const now = new Date().toISOString()
       db.prepare('INSERT OR IGNORE INTO studios VALUES (?, ?, ?)').run(
         'default',
-        'Pomegranate',
+        'Aril',
         now,
       )
       const table = (name: string) =>

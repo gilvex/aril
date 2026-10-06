@@ -1,6 +1,8 @@
-# Pomegranate Planning Studio
+# Aril Planning Studio
 
-A local, persistent planning space for Pomegranate: a future self-hostable, open-source deployment platform with a managed SaaS offering.
+A persistent, collaborative planning space for Aril: a future self-hostable, open-source deployment platform with a managed SaaS offering. Previously named Pomegranate.
+
+The product uses the Aril name and seed logo. Existing package names, environment variables, storage/session keys, database schema and MCP identifiers retain `pomegranate` for compatibility. Existing workspace names and user-authored documents are preserved. The current production URL remains https://pomegranate.gilgil.co until the new domain is configured.
 
 The pnpm monorepo contains:
 

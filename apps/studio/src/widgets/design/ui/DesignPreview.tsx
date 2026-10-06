@@ -31,8 +31,8 @@ export function DesignPreview(props: DesignPreviewProps) {
     >
       <header className="design-sample-brand">
         <span>
-          <img src="/mark.svg" alt="" />
-          pomegranate
+          <img src="/aril.svg" alt="" />
+          aril
         </span>
         <span className="design-sample-avatar">JD</span>
       </header>

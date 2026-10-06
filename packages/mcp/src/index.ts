@@ -5,11 +5,11 @@ import { createMcpServer } from './server/index.ts'
 try {
   const config = await loadConfig()
   serveStdio(() => createMcpServer(config), {
-    onerror: () => console.error('Pomegranate MCP transport error.'),
+    onerror: () => console.error('Aril MCP transport error.'),
   })
 } catch (error) {
   console.error(
-    error instanceof Error ? error.message : 'Pomegranate MCP could not start.',
+    error instanceof Error ? error.message : 'Aril MCP could not start.',
   )
   process.exitCode = 1
 }
