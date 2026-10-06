@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
-import { openStore } from '../server/store.ts'
-import { openPostgres } from '../server/postgres.ts'
+import { openStore } from '../apps/studio/server/store.ts'
+import { openPostgres } from '../apps/studio/server/postgres.ts'
 const path = resolve(
   process.env.POMEGRANATE_DATA_DIR || 'data',
   'studio.sqlite',

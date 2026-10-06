@@ -1,7 +1,14 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    {
+      "path": "./packages/domain"
+    },
+    {
+      "path": "./packages/mcp"
+    },
+    {
+      "path": "./apps/studio"
+    }
   ]
 }

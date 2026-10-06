@@ -108,3 +108,10 @@ Lint, the existing test suite (20 passed, optional Postgres test skipped), and p
 - A real MCP SDK client launched the stdio server and read/edited a temporary studio. Checks cover readonly and workspace isolation, expiration, revocation, credential ownership, blocked account routes, stale revisions, idempotent retries, invalid graphs, activity/history, and hashed credential storage.
 - Browser verification on a separate SQLite fixture: desktop Agent access opens, creates a read/write connection and revokes it. Mobile More exposes the same dialog and fits at 390px width. The companion skill passes the official quick validator.
 - Connection uses local stdio plus HTTPS API access; remote OAuth MCP clients are outside this implementation.
+
+## pnpm monorepo (2026-10-06)
+
+- Moved the studio to apps/studio and created packages/domain, packages/mcp, and packages/studio-skill with workspace dependencies and one lockfile. Frontend asset hashes are unchanged after the move.
+- Root lint, tests (22 passed, optional Postgres skipped), and all package builds pass. The Postgres suite also passed separately in an isolated schema.
+- Root pnpm dev was exercised with isolated SQLite storage: Vite and the API proxy responded successfully. Root pnpm start served the built frontend and healthy API; both processes wrote only to their specified repository-root artifacts directories. Both test servers were stopped. The Vercel API bundle imports successfully.
+- Both MCP source and built executable read the live workspace at revision 166 without changing it. Updated the existing Codex registration to packages/mcp/src/index.ts, preserved the private credential, and verified the relocated skill installer.

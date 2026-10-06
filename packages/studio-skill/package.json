@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "name": "@pomegranate/studio-skill",
+  "description": "Companion skill for working with the Pomegranate planning studio",
+  "files": [
+    "SKILL.md",
+    "scripts/install.mjs"
+  ],
+  "scripts": {
+    "install:skill": "node scripts/install.mjs"
+  }
+}

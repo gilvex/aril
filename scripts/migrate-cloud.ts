@@ -1,8 +1,8 @@
 import { DatabaseSync, backup } from 'node:sqlite'
 import { mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { openPostgres } from '../server/postgres.ts'
-import { workspaceSchema } from '../domain/workspace.ts'
+import { openPostgres } from '../apps/studio/server/postgres.ts'
+import { workspaceSchema } from '@pomegranate/domain/workspace'
 
 // Explicit administrator command. Never runs on deployment or application startup.
 // Refuses to merge into a populated cloud database and preserves local data.

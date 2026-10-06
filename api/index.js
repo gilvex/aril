@@ -1,1 +1,1 @@
-export { default } from '../.server/index.mjs'
+export { default } from '../apps/studio/.server/index.mjs'

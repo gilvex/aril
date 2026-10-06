@@ -1,17 +1,17 @@
 // Explicit deployment smoke test. Only generated fixture IDs are removed.
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
-import { openPostgres } from '../server/postgres.ts'
-import { diffWorkspace } from '../domain/collaboration.ts'
-import { makeWireNode } from '../domain/wireframe.ts'
-import type { Envelope } from '../domain/workspace.ts'
+import { openPostgres } from '../apps/studio/server/postgres.ts'
+import { diffWorkspace } from '@pomegranate/domain/collaboration'
+import { makeWireNode } from '@pomegranate/domain/wireframe'
+import type { Envelope } from '@pomegranate/domain/workspace'
 import { RealtimeClient } from '@supabase/realtime-js'
 import {
   encode64,
   publicKey,
   verifyCertificate,
   type LiveConfig,
-} from '../domain/live-session.ts'
+} from '@pomegranate/domain/live-session'
 
 const origin = process.env.SMOKE_ORIGIN
 if (!origin) throw new Error('Set SMOKE_ORIGIN to the deployment being tested.')

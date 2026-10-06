@@ -2,6 +2,15 @@
 
 A local, persistent planning space for Pomegranate: a future self-hostable, open-source deployment platform with a managed SaaS offering.
 
+The pnpm monorepo contains:
+
+- `apps/studio` — React frontend and HTTP API.
+- `packages/domain` — shared schemas and collaboration operations.
+- `packages/mcp` — MCP server and connection setup.
+- `packages/studio-skill` — companion skill and installer.
+
+See [Monorepo layout and commands](docs/monorepo.md) for package boundaries and deployment details.
+
 ## Run
 
 Requires Node.js 24+ and pnpm 11.

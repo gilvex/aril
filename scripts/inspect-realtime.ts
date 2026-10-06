@@ -1,4 +1,4 @@
-import { openPostgres } from '../server/postgres.ts'
+import { openPostgres } from '../apps/studio/server/postgres.ts'
 const store = await openPostgres()
 try {
   console.log(

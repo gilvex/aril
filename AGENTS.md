@@ -18,3 +18,7 @@ Skills are installed under `.agents/skills/`. Read only those relevant to the ta
 - Requested UI/accessibility reviews: `web-design-guidelines`.
 
 See `docs/skills.md` for provenance, scope, and explicit invocation examples. The frontend uses a small FSD structure; do not add empty layers or cross-slice imports without a concrete need. The studio supports invite-only collaboration, isolated workspaces and optional Google-linked accounts; read docs/collaboration.md and docs/accounts-and-deployment.md before changing access or concurrency. Vercel uses shared Postgres documents and presence. Deployment execution and granular roles remain future work. Preserve the additive SQLite migration and existing workspace memberships. The configured local studio now shares the production Postgres database; use isolated schemas or generated fixtures for tests, never reset live data.
+
+## Monorepo layout
+
+`apps/studio` owns the React frontend and HTTP server. `packages/domain` owns shared schemas and operations; import them through `@pomegranate/domain/*`. `packages/mcp` owns the stdio MCP bridge and setup CLI. `packages/studio-skill` owns the companion SKILL.md and installer. Use pnpm workspace dependencies rather than relative imports between packages. Root `scripts/` contains administrator utilities; root `api/` and `vercel.json` adapt the studio for the existing Vercel project. Root `.env` and `data/` retain their existing locations. Never run migration or live smoke utilities as routine package tests.

@@ -4,8 +4,8 @@ import tseslint from 'typescript-eslint'
 export default tseslint.config(
   {
     ignores: [
-      'dist',
-      '.server',
+      '**/dist/**',
+      '**/.server/**',
       'node_modules',
       '.pnpm-store',
       '.agents',
