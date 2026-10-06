@@ -125,8 +125,9 @@ export function Studio({
     const panel = sidebarRef.current
     const fields = () =>
       Array.from(
-        panel?.querySelectorAll<HTMLElement>('button:not(:disabled),a[href]') ||
-          [],
+        panel?.querySelectorAll<HTMLElement>(
+          'button:not(:disabled),select:not(:disabled),a[href]',
+        ) || [],
       ).filter((element) => element.getClientRects().length)
     fields()[0]?.focus()
     const trap = (event: KeyboardEvent) => {
@@ -507,6 +508,8 @@ export function Studio({
                 <div
                   className="workspace-actions-popover"
                   onClick={(e) => {
+                    // Settings remain open; only workspace actions dismiss the menu.
+                    if (!(e.target as Element).closest('button')) return
                     const menu = e.currentTarget.closest('details')
                     menu?.removeAttribute('open')
                     menu?.querySelector('summary')?.focus()
