@@ -10,8 +10,9 @@ export function GoogleSignInStatus({ status, error }: GoogleSignInStatusProps) {
     (status === 'Loading Google sign-in…' ||
       status === 'Verifying your Google account…')
   return (
-    <p role="status">
-      {pending && <Spinner />} {t(status)}
+    <p className={pending ? 'loading-inline' : undefined} role="status">
+      {pending && <Spinner />}
+      <span>{t(status)}</span>
     </p>
   )
 }

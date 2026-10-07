@@ -2,14 +2,25 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  flex: 0 0 auto;
+  flex: 0 0 16px;
+  align-self: center;
+  padding: 0;
+  line-height: 0;
   box-sizing: border-box;
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
   animation: loading-spin .8s linear infinite;
+  transform-origin: center;
   vertical-align: middle;
 }
+.loading-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.loading-inline > span:last-child,
+.loading-status > span:last-child { min-width: 0; }
 .loading-status {
   display: flex;
   align-items: center;

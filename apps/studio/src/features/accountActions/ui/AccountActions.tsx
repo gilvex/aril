@@ -36,8 +36,9 @@ export function AccountActions(props: AccountActionsProps) {
         </button>
       </div>
       {state.busy && (
-        <p role="status">
-          <Spinner /> {t('Saving and signing out…')}
+        <p className="loading-inline" role="status">
+          <Spinner />
+          <span>{t('Saving and signing out…')}</span>
         </p>
       )}
       {state.confirmation && (
