@@ -276,6 +276,10 @@
   font-size: 12px;
   line-height: 1.6;
 }
+.design-layers-tree {
+  width: max-content;
+  min-width: 100%;
+}
 .design-layer-row {
   display: flex;
   align-items: center;
@@ -293,8 +297,8 @@
   align-items: center;
   gap: 8px;
   padding: 10px 6px;
-  flex: 1;
-  min-width: 0;
+  flex: 1 0 auto;
+  min-width: max-content;
   text-align: left;
   border: 0;
   background: transparent;
@@ -306,8 +310,7 @@
   color: var(--muted);
 }
 .design-layer-select span {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex-shrink: 0;
   white-space: nowrap;
 }
 .design-layer-row.child .design-layer-select {
