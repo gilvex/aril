@@ -19,12 +19,18 @@ export function useStudioController({
   studio,
   initialProfile,
   recovery,
+  active = true,
 }: UseStudioControllerProps) {
   const { t } = useTranslation()
 
-  const full = useCanvasFullscreen()
+  const full = useCanvasFullscreen(active)
   const state = useWorkspace(initial, studio.id, initialProfile.id, recovery)
-  const multiplayer = useMultiplayer(initialProfile, state.receive, studio.id)
+  const multiplayer = useMultiplayer(
+    initialProfile,
+    state.receive,
+    studio.id,
+    active,
+  )
   const { workspace, change } = state
   const {
     view,
@@ -62,7 +68,11 @@ export function useStudioController({
   const compact = useCompactLayout()
 
   const { sidebarRef, actionsMenu, mobileMenuToggle } =
-    useStudioFocusManagement({ compact, sidebarOpen, modal })
+    useStudioFocusManagement({
+      compact,
+      sidebarOpen: active && sidebarOpen,
+      modal: active ? modal : null,
+    })
   const importRef = useRef<HTMLInputElement>(null)
   const board =
     workspace.boards.find((b) => b.id === boardId) || workspace.boards[0]
@@ -70,6 +80,7 @@ export function useStudioController({
     (item) => item.id === requirementId,
   )?.id
   useEffect(() => {
+    if (!active) return
     saveStudioRoute({
       workspaceId: studio.id,
       boardId: board.id,
@@ -77,7 +88,7 @@ export function useStudioController({
       canvasMode,
       requirementId: routedRequirementId,
     })
-  }, [studio.id, board.id, view, canvasMode, routedRequirementId])
+  }, [active, studio.id, board.id, view, canvasMode, routedRequirementId])
   const { sendPresence } = multiplayer
 
   const { followed } = useStudioFollowing({
@@ -147,6 +158,7 @@ export function useStudioController({
   )
   const { loadHistory, exportWorkspace, downloadWorkspace } =
     useStudioWorkspaceActions({
+      active,
       setModal,
       setSidebarOpen,
       state,

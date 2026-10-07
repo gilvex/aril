@@ -18,7 +18,8 @@ test('studio routes round-trip locations and preserve invitation hashes', () => 
     ),
     'https://example.test',
   )
-  assert.deepEqual(readStudioRoute(result.search), route)
+  assert.deepEqual(readStudioRoute(result.pathname + result.search), route)
+  assert.equal(result.pathname, '/w/team%2Fa%20%26%20b/requirements')
   assert.equal(result.hash, '#invite=secret')
   assert.equal(result.searchParams.get('source'), 'bookmark')
   assert.equal(
@@ -42,5 +43,16 @@ test('invalid views fall back to blueprint and leaving requirements clears selec
     'https://example.test/?requirement=old&canvas=wireframes',
     { workspaceId: 'other', view: 'notes', canvasMode: 'canvas' },
   )
-  assert.equal(href, '/?workspace=other&view=notes')
+  assert.equal(href, '/w/other/notes')
+})
+
+test('canvas paths preserve board, wireframe mode, demo mode and legacy bookmarks', () => {
+  const legacy = readStudioRoute(
+    '?demo=1&workspace=default&view=canvas&board=a%2Fb&canvas=wireframes',
+  )
+  const path = studioRouteUrl('https://example.test/?demo=1', legacy)
+  assert.equal(path, '/w/default/canvas/a%2Fb?demo=1&canvas=wireframes')
+  assert.deepEqual(readStudioRoute(path), legacy)
+  assert.equal(readStudioRoute('/w/default/design').view, 'design')
+  assert.equal(readStudioRoute('/w/%FF/design').workspaceId, '')
 })

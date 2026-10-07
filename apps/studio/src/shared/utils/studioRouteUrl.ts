@@ -3,10 +3,14 @@ import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 export function studioRouteUrl(href: string, route: StudioRoute | null) {
   const url = new URL(href)
   for (const key of routeKeys) url.searchParams.delete(key)
+  url.pathname = '/'
   if (route) {
-    url.searchParams.set('workspace', route.workspaceId)
-    if (route.boardId) url.searchParams.set('board', route.boardId)
-    url.searchParams.set('view', route.view)
+    url.pathname = `/w/${encodeURIComponent(route.workspaceId)}/${route.view}`
+    if (route.boardId) {
+      if (route.view === 'canvas')
+        url.pathname += `/${encodeURIComponent(route.boardId)}`
+      else url.searchParams.set('board', route.boardId)
+    }
     if (route.canvasMode === 'wireframes')
       url.searchParams.set('canvas', 'wireframes')
     if (route.view === 'requirements' && route.requirementId)

@@ -1,0 +1,39 @@
+/* Only the dock controls are icon-only; insertion menus keep their labels. */
+.studio-shell .canvas-tool-dock > .button,
+.studio-shell .canvas-tool-dock .add-node-wrap > .button,
+.studio-shell .design-tool-dock > button,
+.studio-shell .design-tool-dock > details > summary {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.studio-shell .canvas-tool-dock > .button > span {
+  display: none;
+}
+.studio-shell .canvas-tool-dock,
+.studio-shell .design-tool-dock {
+  background: var(--surface, #fff);
+  box-shadow: 0 8px 24px #0003;
+}
+@media (max-width: 1024px), (pointer: coarse) {
+  .studio-shell .canvas-tool-dock > .button,
+  .studio-shell .canvas-tool-dock .add-node-wrap > .button,
+  .studio-shell .design-tool-dock > button,
+  .studio-shell .design-tool-dock > details > summary {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+  .studio-shell .canvas-tool-dock {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 16px);
+  }
+}

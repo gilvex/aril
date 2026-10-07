@@ -6,7 +6,8 @@ import type { Profile } from '@pomegranate/domain/collaboration'
 import type { StudioSummary } from '@pomegranate/domain/studios'
 import type { Envelope, Workspace } from '@pomegranate/domain/workspace'
 export function createAppState() {
-  const startupRoute: StudioRoute = (() => readStudioRoute(location.search))()
+  const startupRoute: StudioRoute = (() =>
+    readStudioRoute(location.pathname + location.search))()
   const restoringRoute: boolean = !!startupRoute.workspaceId
   const routeNotice: string = ''
   const profile: Profile | null = null
@@ -26,6 +27,8 @@ export function createAppState() {
   const busy: boolean = false
   const error: string = ''
   return {
+    sessions:
+      [] as import('../types/openWorkspaceSession.ts').OpenWorkspaceSession[],
     startupRoute,
     restoringRoute,
     routeNotice,

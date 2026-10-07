@@ -1,7 +1,7 @@
 import { useCanvasFullscreenModel } from '@/features/canvasFullscreen/model/useCanvasFullscreenModel.ts'
 import { useEffect, useRef } from 'react'
 
-export function useCanvasFullscreen() {
+export function useCanvasFullscreen(active = true) {
   const element = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
   const { fullscreen, setFullscreen } = useCanvasFullscreenModel(() => {
@@ -9,6 +9,13 @@ export function useCanvasFullscreen() {
     return { fullscreen }
   })
   useEffect(() => {
+    if (active) return
+    if (document.fullscreenElement === element.current)
+      void document.exitFullscreen().catch(() => {})
+    setFullscreen(false)
+  }, [active, setFullscreen])
+  useEffect(() => {
+    if (!active) return
     const sync = () => {
       setFullscreen(document.fullscreenElement === element.current)
       if (!document.fullscreenElement) button.current?.focus()
@@ -25,7 +32,7 @@ export function useCanvasFullscreen() {
       document.removeEventListener('fullscreenchange', sync)
       document.removeEventListener('keydown', escape)
     }
-  }, [fullscreen, setFullscreen])
+  }, [active, fullscreen, setFullscreen])
   async function toggle() {
     if (fullscreen) {
       if (document.fullscreenElement === element.current)

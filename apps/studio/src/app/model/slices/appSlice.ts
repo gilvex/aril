@@ -5,6 +5,11 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: {} as AppState,
   reducers: {
+    closeWorkspace: (state, action: PayloadAction<string>) => {
+      state.sessions = state.sessions.filter(
+        (entry) => entry.studio.id !== action.payload,
+      )
+    },
     setGoogleLinked: (state, action: PayloadAction<boolean>) => {
       state.googleLinked = action.payload
     },
@@ -18,6 +23,7 @@ export const appSlice = createSlice({
       state.routeNotice = action.payload
     },
     setProfile: (state, action: PayloadAction<AppState['profile']>) => {
+      if (state.profile?.id !== action.payload?.id) state.sessions = []
       state.profile = action.payload
     },
     setStudio: (state, action: PayloadAction<AppState['studio']>) => {
@@ -25,6 +31,18 @@ export const appSlice = createSlice({
     },
     setInitial: (state, action: PayloadAction<AppState['initial']>) => {
       state.initial = action.payload
+      if (action.payload && state.studio && state.profile) {
+        const index = state.sessions.findIndex(
+          (entry) => entry.studio.id === state.studio!.id,
+        )
+        const entry = {
+          studio: state.studio,
+          initial: action.payload,
+          recovery: state.recovery,
+        }
+        if (index < 0) state.sessions.push(entry)
+        else state.sessions[index] = entry
+      }
     },
     setRecovery: (state, action: PayloadAction<AppState['recovery']>) => {
       state.recovery = action.payload

@@ -1,19 +1,23 @@
 /* Studio appearance is personal. Light colors remain the existing fallbacks. */
 :root {
   color-scheme: light;
+  --navigation-bar: #eceaf0;
+  --navigation-sidebar: #f5f3f7;
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --canvas: #19161f;
-  --surface: #25212d;
-  --surface-muted: #2b2634;
-  --surface-raised: #393141;
-  --text-strong: #f1ebf5;
-  --text-secondary: #cbc2d3;
-  --text-muted: #aaa0b6;
-  --muted: #aaa0b6;
-  --line: #443b50;
-  --line-strong: #74617f;
+  --navigation-bar: #171717;
+  --navigation-sidebar: #262626;
+  --canvas: #1e1e1e;
+  --surface: #2c2c2c;
+  --surface-muted: #333333;
+  --surface-raised: #414141;
+  --text-strong: #f5f5f5;
+  --text-secondary: #d0d0d0;
+  --text-muted: #a6a6a6;
+  --muted: #a6a6a6;
+  --line: #444444;
+  --line-strong: #757575;
   --accent-ink: #f0a1be;
   --accent-light: #442b3b;
   --success-ink: #92cbb0;
@@ -24,9 +28,9 @@
   --warning-soft: #413624;
   --diagram-edge: #a38bb2;
   --wire-edge: #cc819f;
-  --canvas-dot: #3e354b;
-  --minimap-node: #786387;
-  --minimap-mask: #19161fbb;
+  --canvas-dot: #363636;
+  --minimap-node: #8c858e;
+  --minimap-mask: #1e1e1ebb;
   --xy-background-color: var(--canvas);
   --xy-node-background-color: var(--surface);
   --xy-node-color: var(--text-strong);
@@ -74,7 +78,7 @@
 /* Translucent overlays, SVG edges and semantic node colors need their own roles. */
 [data-theme='dark'] .canvas-caption,
 [data-theme='dark'] .canvas-tip {
-  background: #25212deb;
+  background: #2c2c2ceb;
 }
 [data-theme='dark'] .react-flow__edge-textbg {
   fill: var(--canvas);

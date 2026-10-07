@@ -21,6 +21,7 @@ export function useMultiplayer(
   initialProfile: Profile,
   receive: (value: Envelope) => void,
   workspaceId: string,
+  active = true,
 ) {
   const {
     profile,
@@ -62,10 +63,15 @@ export function useMultiplayer(
   const pendingPresence = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   )
+  const enabled = useRef(active)
+  useEffect(() => {
+    enabled.current = active
+  }, [active])
   const sendPresence = useCallback(
     (changes: Partial<typeof latest.current>, force = false) => {
       latest.current = { ...latest.current, ...changes }
       clearTimeout(pendingPresence.current)
+      if (!enabled.current) return
       const send = () => {
         lastSent.current = Date.now()
         latest.current.sequence = (latest.current.sequence || 0) + 1
@@ -91,6 +97,11 @@ export function useMultiplayer(
     [workspaceId],
   )
   useEffect(() => {
+    if (!active) {
+      setConnected(false)
+      setPeers([])
+      return
+    }
     const task = runSaga({}, connectLiveSession, {
       workspaceId,
       clientId,
@@ -109,13 +120,14 @@ export function useMultiplayer(
       live.current = null
       transport.current = 'pending'
     }
-  }, [workspaceId, clientId, sendPresence, setPeers, setConnected])
+  }, [active, workspaceId, clientId, sendPresence, setPeers, setConnected])
   useEffect(() => {
     // Profile edits receive a fresh server-attested identity, never a claimed
     // name/avatar supplied in an ordinary cursor packet.
     if (profile !== initialProfile) void live.current?.refresh()
   }, [profile, initialProfile])
   useEffect(() => {
+    if (!active) return
     const controller = new AbortController()
     let retryTimer: ReturnType<typeof setTimeout> | undefined
     const handle = (event: string, raw: string) => {
@@ -195,6 +207,7 @@ export function useMultiplayer(
       document.removeEventListener('visibilitychange', hide)
     }
   }, [
+    active,
     clientId,
     initialProfile.id,
     receive,

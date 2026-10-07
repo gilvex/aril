@@ -29,6 +29,7 @@ export function useRequirementsToolbar({ model }: RequirementsViewProps) {
         setViewState({ panel: null })
     }
     const keys = (event: KeyboardEvent) => {
+      if (root.current?.closest('[hidden]')) return
       if (document.querySelector('[data-studio-select-menu]')) return
       if (event.key === 'Escape') {
         event.preventDefault()

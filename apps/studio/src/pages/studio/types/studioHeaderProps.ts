@@ -8,6 +8,8 @@ import { useStudioModel } from '../model/useStudioModel.ts'
 import type { StudioProps } from './studioProps.ts'
 
 export type StudioHeaderProps = {
+  active?: boolean
+  onCloseWorkspace?: (id: string) => void
   state: ReturnType<typeof useWorkspace>
   onWorkspaces: StudioProps['onWorkspaces']
   onOpenWorkspace: StudioProps['onOpenWorkspace']

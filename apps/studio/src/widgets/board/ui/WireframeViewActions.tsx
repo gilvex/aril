@@ -49,6 +49,11 @@ export function WireframeViewActions({
             ? t('Exit fullscreen')
             : t('Expand wireframes to fullscreen')
         }
+        title={
+          full.fullscreen
+            ? t('Exit fullscreen')
+            : t('Expand wireframes to fullscreen')
+        }
         aria-pressed={full.fullscreen}
         onClick={() => void full.toggle()}
       >

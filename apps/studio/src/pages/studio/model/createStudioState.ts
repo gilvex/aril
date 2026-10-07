@@ -7,7 +7,8 @@ export function createStudioState(
   workspace: Workspace,
   recovery: Recovery | undefined,
 ) {
-  const initialRoute: StudioRoute = (() => readStudioRoute(location.search))()
+  const initialRoute: StudioRoute = (() =>
+    readStudioRoute(location.pathname + location.search))()
   const view: View = initialRoute.view
   const canvasMode: 'canvas' | 'wireframes' = initialRoute.canvasMode
   const boardId: string = initialRoute.boardId || workspace.boards[0].id

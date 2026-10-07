@@ -1,4 +1,5 @@
 export type UseStudioControllerProps = {
+  active?: boolean
   initial: import('@pomegranate/domain/workspace').Envelope
   studio: import('@pomegranate/domain/studios').StudioSummary
   initialProfile: import('@pomegranate/domain/collaboration').Profile

@@ -15,3 +15,5 @@ export { DemoBanner } from './DemoBanner.tsx'
 export { DemoGuide } from './DemoGuide.tsx'
 
 export { GuestJoinScreen } from './GuestJoinScreen.tsx'
+export { WorkspaceSessions } from './WorkspaceSessions.tsx'
+export { AppEntryContent } from './AppEntryContent.tsx'

@@ -1,4 +1,5 @@
 export type AppHandlersProps = {
+  sessions: import('./openWorkspaceSession.ts').OpenWorkspaceSession[]
   setInitial: (
     value:
       | import('../types/appState.ts').AppState['initial']

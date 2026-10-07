@@ -1,3 +1,18 @@
+.workspace-session {
+  height: 100dvh;
+  min-height: 0;
+}
+.workspace-session[hidden] {
+  display: none !important;
+}
+.workspace-session > .studio-shell {
+  height: 100%;
+}
+.demo-mode > .workspace-session {
+  height: calc(100dvh - var(--demo-banner-height));
+  flex: 1;
+  min-height: 0;
+}
 .editor-shell.studio-shell {
   display: grid;
   grid-template-columns: 176px minmax(0, 1fr);
@@ -17,6 +32,8 @@
 }
 .editor-shell > .topbar {
   grid-area: tabs;
+  background: var(--navigation-bar);
+  border-bottom: 1px solid var(--line);
   height: 46px;
   min-height: 46px;
   gap: 8px;
@@ -103,7 +120,7 @@
   min-height: 0;
   min-width: 0;
   border-right: 1px solid var(--line);
-  background: var(--surface, #fff);
+  background: var(--navigation-sidebar);
   color: var(--text-strong, #423a4c);
   z-index: 20;
 }

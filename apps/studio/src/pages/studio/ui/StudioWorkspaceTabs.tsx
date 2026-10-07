@@ -10,6 +10,7 @@ export function StudioWorkspaceTabs(props: StudioHeaderProps) {
   const { tabs, close } = useWorkspaceTabs(
     props.studio,
     props.multiplayer.profile.id,
+    props.active,
   )
   const ready = useCallback(async () => {
     if (await props.state.flush()) return true
@@ -34,12 +35,14 @@ export function StudioWorkspaceTabs(props: StudioHeaderProps) {
     async (id: string) => {
       if (id !== props.studio.id) {
         close(id)
+        props.onCloseWorkspace?.(id)
         return
       }
       if (!(await ready())) return
       const index = tabs.findIndex((tab) => tab.id === id)
       const next = tabs[index - 1] || tabs[index + 1]
       close(id)
+      props.onCloseWorkspace?.(id)
       if (next) props.onOpenWorkspace(next)
       else props.onWorkspaces(props.multiplayer.profile)
     },

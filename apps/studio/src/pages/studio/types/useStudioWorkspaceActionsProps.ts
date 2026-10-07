@@ -1,4 +1,5 @@
 export type UseStudioWorkspaceActionsProps = {
+  active?: boolean
   setModal: (
     value:
       | import('../types/studioState.ts').StudioState['modal']

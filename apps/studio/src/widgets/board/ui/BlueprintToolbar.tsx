@@ -44,9 +44,14 @@ export function BlueprintToolbar({
       }
     >
       <div className="add-node-wrap">
-        <button className="button primary" onClick={() => setPalette(!palette)}>
+        <button
+          className="button primary"
+          title={t('Add node')}
+          aria-label={t('Add node')}
+          aria-expanded={palette}
+          onClick={() => setPalette(!palette)}
+        >
           <Plus size={16} />
-          {t('Add node')}
         </button>
         {palette && (
           <div className="node-palette">

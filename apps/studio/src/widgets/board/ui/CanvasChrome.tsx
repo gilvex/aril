@@ -41,31 +41,31 @@ export function CanvasChrome({
               aria-label={
                 compact ? t('Select multiple items') : t('Select tool')
               }
+              title={compact ? t('Select multiple items') : t('Select tool')}
               aria-pressed={compact ? multiSelect : tool === 'select'}
               onClick={handleClick}
             >
               <MousePointer2 size={17} />
-              <span>{compact && multiSelect ? t('Done') : t('Select')}</span>
             </button>
             {!compact && (
               <>
                 <button
                   className="button"
+                  title={t('Pan tool')}
                   aria-label={t('Pan tool')}
                   aria-pressed={tool === 'pan'}
                   onClick={() => onTool('pan')}
                 >
                   <Hand size={17} />
-                  <span>{t('Pan')}</span>
                 </button>
                 <button
                   className="button"
+                  title={t('Connect tool')}
                   aria-label={t('Connect tool')}
                   aria-pressed={tool === 'connect'}
                   onClick={() => onTool('connect')}
                 >
                   <Link2 size={17} />
-                  <span>{t('Connect')}</span>
                 </button>
               </>
             )}

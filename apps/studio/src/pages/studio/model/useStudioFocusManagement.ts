@@ -13,6 +13,7 @@ export function useStudioFocusManagement({
         actionsMenu.current?.removeAttribute('open')
     }
     const escape = (event: KeyboardEvent) => {
+      if (actionsMenu.current?.closest('[hidden]')) return
       if (event.key === 'Escape' && actionsMenu.current?.open) {
         actionsMenu.current.removeAttribute('open')
         actionsMenu.current.querySelector('summary')?.focus()

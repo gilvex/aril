@@ -19,6 +19,9 @@ import { useEffect } from 'react'
 export function useAppController() {
   const { t } = useTranslation()
   const {
+    sessions,
+    closeWorkspace,
+    getCachedWorkspace,
     startupRoute,
     restoringRoute,
     setRestoringRoute,
@@ -104,7 +107,8 @@ export function useAppController() {
     }
   }, [setError, setInviteRequired, setProfile, setGoogleLinked])
   useEffect(() => {
-    if (!profile || token || !startupRoute.workspaceId) return
+    if (!restoringRoute || !profile || token || !startupRoute.workspaceId)
+      return
     let cancelled = false
     request<StudioSummary[]>('/api/studios')
       .then((studios) => {
@@ -129,6 +133,7 @@ export function useAppController() {
     }
   }, [
     token,
+    restoringRoute,
     startupRoute.workspaceId,
     profile,
     setStudio,
@@ -144,6 +149,13 @@ export function useAppController() {
     })
       .then((result) => {
         if (cancelled) return
+        // Mounted editors own their draft and merge revisions through receive().
+        // Recovery from storage is only for an editor that has not been opened.
+        if (getCachedWorkspace(studio.id)) {
+          setInitial(result)
+          rememberWorkspaceVisit(profile.id, studio.id)
+          return
+        }
         try {
           const key = scopedDraftKey(studio.id, profile.id)
           const raw =
@@ -185,11 +197,17 @@ export function useAppController() {
       })
       .catch((err) => {
         if (cancelled) return
+        if (err instanceof ApiError && err.status === 401) {
+          setProfile(null)
+          setInviteRequired(true)
+          return
+        }
         if (
           err instanceof ApiError &&
           (err.status === 403 || err.status === 404)
         ) {
           saveStudioRoute(null)
+          closeWorkspace(studio.id)
           setStudio(null)
           setInitial(null)
           setRouteNotice(
@@ -201,6 +219,10 @@ export function useAppController() {
       cancelled = true
     }
   }, [
+    closeWorkspace,
+    getCachedWorkspace,
+    setProfile,
+    setInviteRequired,
     profile,
     setError,
     setInitial,
@@ -212,6 +234,8 @@ export function useAppController() {
     studio,
   ])
   return {
+    sessions,
+    closeWorkspace,
     legacy,
     staleDraftKey,
     setStaleDraftKey,

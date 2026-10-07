@@ -4,6 +4,7 @@ import { useCallback } from 'react'
 
 import type { AppHandlersProps } from '../types/useAppHandlersProps.ts'
 export function useAppHandlers({
+  sessions,
   setInitial,
   setRecovery,
   setError,
@@ -15,8 +16,11 @@ export function useAppHandlers({
     (value: import('@pomegranate/domain/studios').StudioSummary) => void
   >(
     (value) => {
-      setInitial(null)
+      setStudio(value)
       setRecovery(undefined)
+      setInitial(
+        sessions.find((entry) => entry.studio.id === value.id)?.initial || null,
+      )
       setError('')
       setRouteNotice('')
       let previous = null
@@ -36,9 +40,8 @@ export function useAppHandlers({
               canvasMode: 'canvas',
             },
       )
-      setStudio(value)
     },
-    [setInitial, setRecovery, setError, setRouteNotice, setStudio],
+    [sessions, setInitial, setRecovery, setError, setRouteNotice, setStudio],
   )
   const returnToWorkspaces = useCallback<
     (value: import('@pomegranate/domain/collaboration').Profile) => void

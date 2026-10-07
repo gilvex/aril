@@ -4,6 +4,7 @@ import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import { useCallback, useEffect } from 'react'
 import type { UseStudioWorkspaceActionsProps } from '../types/useStudioWorkspaceActionsProps.ts'
 export function useStudioWorkspaceActions({
+  active = true,
   setModal,
   setSidebarOpen,
   state,
@@ -16,6 +17,7 @@ export function useStudioWorkspaceActions({
   const { undo, redo, flush } = state
   const studioId = studio.id
   useEffect(() => {
+    if (!active) return
     const handle = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setModal(null)
@@ -35,7 +37,7 @@ export function useStudioWorkspaceActions({
     }
     window.addEventListener('keydown', handle)
     return () => window.removeEventListener('keydown', handle)
-  }, [undo, redo, flush, setModal, setSidebarOpen])
+  }, [active, undo, redo, flush, setModal, setSidebarOpen])
   const exportWorkspace = useCallback(() => setModal('export'), [setModal])
   const downloadWorkspace = useCallback(
     () =>

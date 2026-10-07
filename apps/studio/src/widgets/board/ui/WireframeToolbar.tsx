@@ -50,22 +50,24 @@ export function WireframeToolbar({
     >
       <button
         className={`button preview-toggle ${preview ? 'primary' : ''}`}
+        title={preview ? t('Edit') : t('Preview flow')}
+        aria-label={preview ? t('Edit') : t('Preview flow')}
         aria-pressed={preview}
         onClick={handleClick}
       >
         {preview ? <Pencil size={15} /> : <Play size={15} />}
-        <span>{preview ? t('Edit') : t('Preview flow')}</span>
       </button>
       {!preview && (
         <div className="add-node-wrap">
           <button
             className="button primary"
+            title={t('Add block')}
+            aria-label={t('Add block')}
             aria-expanded={palette}
             onClick={() => setPalette(!palette)}
             disabled={graph.nodes.length >= 500}
           >
             <Plus size={16} />
-            {t('Add block')}
           </button>
           {palette && (
             <WireframePalette t={t} setPalette={setPalette} add={add} />

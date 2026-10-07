@@ -154,6 +154,7 @@ export function useWireframeController({
   }, [moving, saveState, sendPresence])
   useEffect(() => {
     const escape = (event: KeyboardEvent) => {
+      if (surface.current?.closest('[hidden]')) return
       if (event.key === 'Escape') {
         setPreview(false)
         setPalette(false)

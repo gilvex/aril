@@ -86,25 +86,24 @@ export function DesignToolbar({
         <button
           className={model.tool === 'select' ? 'active' : ''}
           aria-pressed={model.tool === 'select'}
+          title={t('Select')}
           aria-label={t('Select')}
           onClick={() => model.patch({ tool: 'select' })}
         >
           <MousePointer2 size={18} />
-          <span>{t('Select')}</span>
         </button>
         <button
           className={model.tool === 'pan' ? 'active' : ''}
           aria-pressed={model.tool === 'pan'}
+          title={t('Pan')}
           aria-label={t('Pan')}
           onClick={() => model.patch({ tool: 'pan' })}
         >
           <Hand size={18} />
-          <span>{t('Pan')}</span>
         </button>
         <details ref={menu} className="design-insert-menu">
-          <summary>
+          <summary aria-label={t('Insert')} title={t('Insert')}>
             <Plus size={18} />
-            {t('Insert')}
           </summary>
           <div role="group" aria-label={t('Insert element')}>
             {designTools.map(({ kind, label, icon: Icon, ...rest }) => (

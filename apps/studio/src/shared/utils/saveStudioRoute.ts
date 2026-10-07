@@ -9,7 +9,7 @@ export function saveStudioRoute(route: StudioRoute | null) {
     try {
       sessionStorage.setItem(
         `aril:workspaceRoute:${route.workspaceId}`,
-        location.search,
+        location.pathname + location.search,
       )
     } catch {
       /* Optional tab preference. */
