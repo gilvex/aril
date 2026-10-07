@@ -1,0 +1,55 @@
+.editor-menu {
+  z-index: 500;
+  min-width: 210px;
+  max-height: min(
+    620px,
+    var(
+      --radix-context-menu-content-available-height,
+      var(--radix-dropdown-menu-content-available-height, 80dvh)
+    )
+  );
+  overflow: auto;
+  padding: 5px;
+  color: var(--text-strong, #423a4c);
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #ded8e5);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px #0003;
+  font-size: 12px;
+}
+.editor-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+.editor-menu-item[data-highlighted] {
+  background: var(--accent-light, #f8edf1);
+  color: var(--accent-ink, #963e5c);
+}
+.editor-menu-item[data-disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+.editor-menu-item.danger {
+  color: var(--danger, #bd4055);
+}
+.editor-menu-item.separated {
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+  padding-top: 11px;
+}
+.editor-menu-item kbd {
+  font: inherit;
+  color: var(--muted);
+  font-size: 10px;
+}
+@media (pointer: coarse), (max-width: 1024px) {
+  .editor-menu-item {
+    min-height: 42px;
+  }
+}

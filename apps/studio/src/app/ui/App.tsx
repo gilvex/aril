@@ -112,6 +112,7 @@ export function App() {
         recovery={recovery}
         initialProfile={profile}
         onWorkspaces={returnToWorkspaces}
+        onOpenWorkspace={openWorkspace}
       />
     )
   return (

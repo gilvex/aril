@@ -15,8 +15,8 @@ export function DesignNumberInput({
     [max, min, onChange],
   )
   return (
-    <label>
-      {label}
+    <label className="design-number-field" title={label}>
+      <span>{label}</span>
       <input
         type="number"
         aria-label={label}

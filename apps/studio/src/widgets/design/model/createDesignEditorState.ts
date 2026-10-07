@@ -10,5 +10,9 @@ export function createDesignEditorState(): DesignEditorState {
     styles: false,
     editingId: null,
     collapsed: [],
+    pagesHeight: 160,
+    renamingPageId: null,
+    renameDraft: '',
+    contextPoint: null,
   }
 }

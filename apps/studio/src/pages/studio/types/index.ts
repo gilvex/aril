@@ -33,3 +33,5 @@ export type { StudioHeaderHandlersProps } from './useStudioHeaderHandlersProps.t
 export type { StudioMobileMenuHandlersProps } from './useStudioMobileMenuHandlersProps.ts'
 export type { UseStudioWorkspaceActionsProps } from './useStudioWorkspaceActionsProps.ts'
 export * from './workspaceHistoryDialogProps.ts'
+
+export type { WorkspaceTabsState } from './workspaceTabsState.ts'

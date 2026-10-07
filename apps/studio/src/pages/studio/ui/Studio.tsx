@@ -5,6 +5,9 @@ import { useStudioHandlers } from '../model/useStudioHandlers.tsx'
 import { StudioContent } from './StudioContent.tsx'
 import { StudioDialogs } from './StudioDialogs.tsx'
 import { StudioMobileMenu } from './StudioMobileMenu.tsx'
+import { StudioSidebar } from './StudioSidebar.tsx'
+import { StudioHeader } from './StudioHeader.tsx'
+import './studioEditorShell.css'
 
 export function Studio(props: StudioProps) {
   const { t } = useTranslation()
@@ -24,7 +27,7 @@ export function Studio(props: StudioProps) {
   return (
     <div
       ref={full.element}
-      className={`studio-shell canvas-first top-navigation${full.fullscreen ? ' studio-fullscreen' : ''}${followed ? ' is-following' : ''}`}
+      className={`studio-shell canvas-first editor-shell${!compact && model.navigationCollapsed ? ' nav-collapsed' : ''}${full.fullscreen ? ' studio-fullscreen' : ''}${followed ? ' is-following' : ''}`}
       onPointerDownCapture={handlePointerDownCapture}
       onKeyDownCapture={handleKeyDownCapture}
       onWheelCapture={() => {
@@ -39,6 +42,8 @@ export function Studio(props: StudioProps) {
         />
       )}
       {compact && <StudioMobileMenu {...props} {...model} />}
+      <StudioHeader {...props} {...model} />
+      {!compact && <StudioSidebar {...props} {...model} />}
       <StudioContent {...props} {...model} />
       {model.modal && (
         <StudioDialogs {...props} {...model} modal={model.modal} />

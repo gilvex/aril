@@ -14,3 +14,10 @@ export * from './DesignNumberInput.tsx'
 export * from './DesignPaint.tsx'
 export * from './DesignToolbar.tsx'
 export * from './DesignTypography.tsx'
+
+export { DesignPageRow } from './DesignPageRow.tsx'
+
+export { DesignColorInput } from './DesignColorInput.tsx'
+
+export { DesignAlignment } from './DesignAlignment.tsx'
+export { DesignCanvasActions } from './DesignCanvasActions.tsx'

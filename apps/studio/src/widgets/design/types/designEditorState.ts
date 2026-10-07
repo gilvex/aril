@@ -9,4 +9,8 @@ export type DesignEditorState = {
   styles: boolean
   editingId: string | null
   collapsed: string[]
+  pagesHeight: number
+  renamingPageId: string | null
+  renameDraft: string
+  contextPoint: { x: number; y: number } | null
 }

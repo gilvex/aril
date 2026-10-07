@@ -5,6 +5,9 @@ export const studioSlice = createSlice({
   name: 'studio',
   initialState: {} as StudioState,
   reducers: {
+    setNavigationCollapsed: (state, action: PayloadAction<boolean>) => {
+      state.navigationCollapsed = action.payload
+    },
     setView: (state, action: PayloadAction<StudioState['view']>) => {
       state.view = action.payload
     },

@@ -1,8 +1,11 @@
 import type { StudioView as View } from '@/shared/types/studioView.ts'
 
 export type StudioContentProps = {
+  onOpenWorkspace: import('./studioProps.ts').StudioProps['onOpenWorkspace']
   compact: boolean
   sidebarOpen: boolean
+  navigationCollapsed: boolean
+  setNavigationCollapsed: (value: boolean) => void
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
   onWorkspaces: (
     profile: import('@pomegranate/domain/collaboration').Profile,

@@ -38,16 +38,18 @@ export function StudioDesktopNavigation({
   return (
     <div className="header-navigation">
       <nav className="desktop-page-nav" aria-label={t('Main navigation')}>
-        {navigation.map((item) => (
+        {navigation.map(({ icon: Icon, ...item }) => (
           <button
             key={item.id}
             aria-label={t(item.name)}
+            title={t(item.name)}
             aria-current={view === item.id ? 'page' : undefined}
             onClick={() => {
               setView(item.id)
               if (item.id === 'requirements') setRequirementId(null)
             }}
           >
+            <Icon size={18} />
             <span>
               {item.id === 'design'
                 ? t('Design')

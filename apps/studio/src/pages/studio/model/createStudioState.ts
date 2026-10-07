@@ -43,6 +43,7 @@ export function createStudioState(
     boardId,
     requirementId,
     sidebarOpen,
+    navigationCollapsed: false,
     collaborationPanel,
     notice,
     modal,

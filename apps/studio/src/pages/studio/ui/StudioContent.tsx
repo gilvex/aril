@@ -8,7 +8,6 @@ import { Requirements } from './Requirements.tsx'
 
 import { StudioBottomNavigation } from './StudioBottomNavigation.tsx'
 import { StudioCanvas } from './StudioCanvas.tsx'
-import { StudioHeader } from './StudioHeader.tsx'
 import { StudioNotes } from './StudioNotes.tsx'
 
 import type { StudioContentProps } from '../types/studioContentProps.ts'
@@ -44,7 +43,6 @@ export function StudioContent(props: StudioContentProps) {
   })
   return (
     <main className="main-area" inert={compact && sidebarOpen}>
-      <StudioHeader {...props} />
       {view !== 'canvas' && followStatus}
       <input
         className="visually-hidden"
@@ -120,19 +118,6 @@ export function StudioContent(props: StudioContentProps) {
           />
         )}
       </Suspense>
-      <footer className="statusbar">
-        <span>
-          <span className="small-dot" />
-          {t('Planning, not production')}
-        </span>
-        <span>
-          {t('boardCount', { count: workspace.boards.length })}
-          <span className="status-separator">·</span>
-          {t('requirementCount', { count: workspace.requirements.length })}
-          <span className="status-separator">·</span>
-          {t('Revision')} {state.revision}
-        </span>
-      </footer>
       <StudioBottomNavigation {...props} />
     </main>
   )

@@ -8,6 +8,7 @@ export type StudioState = {
   boardId: string
   requirementId: string | null
   sidebarOpen: boolean
+  navigationCollapsed: boolean
   collaborationPanel: 'profile' | 'people' | 'activity' | null
   notice: string
   modal:

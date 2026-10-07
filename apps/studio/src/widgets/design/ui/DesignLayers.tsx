@@ -1,10 +1,13 @@
 import { useMemo } from 'react'
-import { Plus, X, File, Trash2 } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignLayerRow } from './DesignLayerRow.tsx'
+import { DesignPageRow } from './DesignPageRow.tsx'
+import { useDesignPagesResize } from '../model/useDesignPagesResize.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignLayers({ model }: DesignEditorProps) {
   const { t } = useTranslation()
+  const resize = useDesignPagesResize(model)
   const nodes = useMemo(() => {
     const sorted = [...model.page.nodes].sort((a, b) => b.order - a.order)
     return sorted
@@ -18,57 +21,50 @@ export function DesignLayers({ model }: DesignEditorProps) {
   }, [model.page.nodes, model.collapsed])
   return (
     <aside className="design-layers" aria-label={t('Pages and layers')}>
-      <header>
-        <strong>{t('Pages')}</strong>
-        <button
-          className="icon-button"
-          aria-label={t('Add page')}
-          disabled={model.pages.length >= 30}
-          onClick={model.addPage}
-        >
-          <Plus size={16} />
-        </button>
-        <button
-          className="icon-button"
-          aria-label={t('Close layers')}
-          onClick={() => model.patch({ layers: false })}
-        >
-          <X size={16} />
-        </button>
-      </header>
-      <div className="design-pages-list">
-        {model.pages.map((page) => (
+      <div
+        className="design-pages-section"
+        style={{ height: model.pagesHeight }}
+      >
+        <header>
+          <strong>{t('Pages')}</strong>
           <button
-            key={page.id}
-            className={page.id === model.page.id ? 'active' : ''}
-            onClick={() => model.selectPage(page.id)}
-            aria-current={page.id === model.page.id ? 'page' : undefined}
+            className="icon-button"
+            aria-label={t('Add page')}
+            disabled={model.pages.length >= 30}
+            onClick={model.addPage}
           >
-            <File size={15} />
-            <span>{page.name}</span>
-            <small>
-              {page.nodes.filter((node) => node.kind === 'frame').length}
-            </small>
+            <Plus size={15} />
           </button>
-        ))}
+          <button
+            className="icon-button"
+            aria-label={t('Close layers')}
+            onClick={() => model.patch({ layers: false })}
+          >
+            <X size={15} />
+          </button>
+        </header>
+        <div className="design-pages-list">
+          {model.pages.map((page) => (
+            <DesignPageRow key={page.id} page={page} model={model} />
+          ))}
+        </div>
       </div>
-      <div className="design-page-name">
-        <input
-          aria-label={t('Page name')}
-          value={model.page.name}
-          maxLength={120}
-          onChange={(event) => model.renamePage(event.target.value)}
-        />
-        <button
-          className="icon-button"
-          aria-label={t('Delete page')}
-          title={t('Delete page')}
-          disabled={model.pages.length < 2}
-          onClick={model.deletePage}
-        >
-          <Trash2 size={14} />
-        </button>
-      </div>
+      <div
+        className="design-pages-splitter"
+        role="separator"
+        tabIndex={0}
+        aria-label={t('Resize pages and layers')}
+        aria-orientation="horizontal"
+        aria-valuemin={72}
+        aria-valuemax={800}
+        aria-valuenow={model.pagesHeight}
+        onPointerDown={resize.start}
+        onPointerMove={resize.move}
+        onPointerUp={resize.end}
+        onPointerCancel={resize.end}
+        onLostPointerCapture={resize.end}
+        onKeyDown={resize.key}
+      />
       <header className="design-layers-heading">
         <strong>{t('Layers')}</strong>
         <small>{model.page.nodes.length}/500</small>

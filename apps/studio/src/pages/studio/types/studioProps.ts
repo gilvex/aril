@@ -8,4 +8,5 @@ export type StudioProps = {
   initialProfile: Profile
   studio: StudioSummary
   onWorkspaces: (profile: Profile) => void
+  onOpenWorkspace: (studio: StudioSummary) => void
 }

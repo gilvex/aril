@@ -10,10 +10,12 @@ import type { StudioProps } from './studioProps.ts'
 export type StudioHeaderProps = {
   state: ReturnType<typeof useWorkspace>
   onWorkspaces: StudioProps['onWorkspaces']
+  onOpenWorkspace: StudioProps['onOpenWorkspace']
   multiplayer: ReturnType<typeof useMultiplayer>
   setNotice: ReturnType<typeof useStudioModel>['setNotice']
   studio: StudioProps['studio']
   compact: boolean
+  sidebarOpen: boolean
   view: View
   setView: ReturnType<typeof useStudioModel>['setView']
   setRequirementId: ReturnType<typeof useStudioModel>['setRequirementId']

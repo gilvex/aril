@@ -1,4 +1,5 @@
 import { saveStudioRoute } from '@/shared/utils/saveStudioRoute.ts'
+import { readStudioRoute } from '@/shared/utils/readStudioRoute.ts'
 import { useCallback } from 'react'
 
 import type { AppHandlersProps } from '../types/useAppHandlersProps.ts'
@@ -18,11 +19,23 @@ export function useAppHandlers({
       setRecovery(undefined)
       setError('')
       setRouteNotice('')
-      saveStudioRoute({
-        workspaceId: value.id,
-        view: 'canvas',
-        canvasMode: 'canvas',
-      })
+      let previous = null
+      try {
+        previous = readStudioRoute(
+          sessionStorage.getItem(`aril:workspaceRoute:${value.id}`) || '',
+        )
+      } catch {
+        /* Open the default view. */
+      }
+      saveStudioRoute(
+        previous?.workspaceId === value.id
+          ? previous
+          : {
+              workspaceId: value.id,
+              view: 'canvas',
+              canvasMode: 'canvas',
+            },
+      )
       setStudio(value)
     },
     [setInitial, setRecovery, setError, setRouteNotice, setStudio],

@@ -3,6 +3,8 @@ import { Background, Controls, ReactFlow } from '@xyflow/react'
 import { Plus, LayoutTemplate } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
+import { EditorContextMenu } from '@/shared/ui/index.tsx'
+import { useDesignContextMenu } from '../model/useDesignContextMenu.ts'
 import { useDesignDocument } from '../model/useDesignDocument.ts'
 import { useDesignCanvas } from '../model/useDesignCanvas.ts'
 import { useDesignCanvasLabels } from '../model/useDesignCanvasLabels.ts'
@@ -21,6 +23,7 @@ export function DesignCanvas(props: DesignBoardProps) {
   const compact = useCompactLayout()
   const model = useDesignDocument(props)
   const canvas = useDesignCanvas(model, props)
+  const context = useDesignContextMenu(model)
   const doubleClick = useCallback(
     (_event: MouseEvent, node: DesignFlowNode) => {
       model.patch({
@@ -58,34 +61,49 @@ export function DesignCanvas(props: DesignBoardProps) {
         onPointerMove={canvas.moveCursor}
         onPointerLeave={() => props.sendPresence({ cursor: null })}
       >
-        <ReactFlow<DesignFlowNode>
-          ariaLabelConfig={labels}
-          nodes={canvas.nodes}
-          edges={[]}
-          nodeTypes={nodeTypes}
-          onNodesChange={canvas.onNodesChange}
-          onNodeDoubleClick={doubleClick}
-          onNodeClick={showDetails}
-          onPaneClick={clear}
-          onMove={canvas.moveCamera}
-          nodesConnectable={false}
-          nodesDraggable={model.tool === 'select'}
-          panOnDrag={model.tool === 'pan' || compact ? true : [1, 2]}
-          selectionOnDrag={!compact && model.tool === 'select'}
-          selectionKeyCode="Shift"
-          multiSelectionKeyCode={['Control', 'Meta']}
-          deleteKeyCode={null}
-          zoomOnDoubleClick={false}
-          minZoom={0.1}
-          maxZoom={2}
-          fitView
-          fitViewOptions={{ padding: 0.15, maxZoom: 1 }}
-          elevateNodesOnSelect={false}
+        <EditorContextMenu
+          actions={context.actions}
+          label={t('Canvas actions')}
+          disabled={!!model.editingId}
         >
-          <Background gap={20} size={1} color="var(--canvas-dot, #e2dae9)" />
-          <Controls showInteractive={false} />
-          <DesignCursors peers={canvas.peers} />
-        </ReactFlow>
+          <div
+            className="design-flow-context"
+            onContextMenuCapture={context.prepare}
+          >
+            <ReactFlow<DesignFlowNode>
+              ariaLabelConfig={labels}
+              nodes={canvas.nodes}
+              edges={[]}
+              nodeTypes={nodeTypes}
+              onNodesChange={canvas.onNodesChange}
+              onNodeDoubleClick={doubleClick}
+              onNodeClick={showDetails}
+              onPaneClick={clear}
+              onMove={canvas.moveCamera}
+              nodesConnectable={false}
+              nodesDraggable={model.tool === 'select'}
+              panOnDrag={model.tool === 'pan' || compact ? true : [1, 2]}
+              selectionOnDrag={!compact && model.tool === 'select'}
+              selectionKeyCode="Shift"
+              multiSelectionKeyCode={['Control', 'Meta']}
+              deleteKeyCode={null}
+              zoomOnDoubleClick={false}
+              minZoom={0.1}
+              maxZoom={2}
+              fitView
+              fitViewOptions={{ padding: 0.15, maxZoom: 1 }}
+              elevateNodesOnSelect={false}
+            >
+              <Background
+                gap={20}
+                size={1}
+                color="var(--canvas-dot, #e2dae9)"
+              />
+              <Controls showInteractive={false} />
+              <DesignCursors peers={canvas.peers} />
+            </ReactFlow>
+          </div>
+        </EditorContextMenu>
         <DesignToolbar
           model={model}
           add={canvas.add}

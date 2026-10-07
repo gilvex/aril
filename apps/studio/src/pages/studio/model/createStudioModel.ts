@@ -12,6 +12,9 @@ export function createStudioModel(initial: StudioState) {
   })
   const getSnapshot = () => selectStudio(store.getState())
   const actions = {
+    setNavigationCollapsed: (value: boolean) => {
+      store.dispatch(studioSlice.actions.setNavigationCollapsed(value))
+    },
     setView: (
       value:
         | StudioState['view']

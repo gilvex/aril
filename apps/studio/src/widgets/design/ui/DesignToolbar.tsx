@@ -12,6 +12,7 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { designTools } from '../config/designTools.ts'
 import type { DesignElement } from '@pomegranate/domain/design'
 import type { DesignToolbarProps } from '../types/designToolbarProps.ts'
+import { DesignCanvasActions } from './DesignCanvasActions.tsx'
 
 export function DesignToolbar({
   model,
@@ -85,18 +86,20 @@ export function DesignToolbar({
         <button
           className={model.tool === 'select' ? 'active' : ''}
           aria-pressed={model.tool === 'select'}
+          aria-label={t('Select')}
           onClick={() => model.patch({ tool: 'select' })}
         >
           <MousePointer2 size={18} />
-          {t('Select')}
+          <span>{t('Select')}</span>
         </button>
         <button
           className={model.tool === 'pan' ? 'active' : ''}
           aria-pressed={model.tool === 'pan'}
+          aria-label={t('Pan')}
           onClick={() => model.patch({ tool: 'pan' })}
         >
           <Hand size={18} />
-          {t('Pan')}
+          <span>{t('Pan')}</span>
         </button>
         <details ref={menu} className="design-insert-menu">
           <summary>
@@ -123,6 +126,7 @@ export function DesignToolbar({
             </button>
           </div>
         </details>
+        <DesignCanvasActions model={model} />
       </div>
     </>
   )

@@ -5,16 +5,27 @@ import {
   Unlock,
   ChevronDown,
   ChevronRight,
+  MoreHorizontal,
 } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCallback } from 'react'
 import { useReactFlow } from '@xyflow/react'
+import { EditorContextMenu, EditorActionMenu } from '@/shared/ui/index.tsx'
+import { useDesignLayerActions } from '../model/useDesignLayerActions.ts'
 import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignLayerRowProps } from '../types/designLayerRowProps.ts'
 export function DesignLayerRow({ node, model }: DesignLayerRowProps) {
   const { t } = useTranslation()
   const Icon = designLayerIcons[node.kind]
   const flow = useReactFlow()
+  const actions = useDesignLayerActions(model, node.id)
+  const prepareMenu = useCallback(() => {
+    model.patch({
+      selection: model.selection.includes(node.id)
+        ? model.selection
+        : [node.id],
+    })
+  }, [model, node.id])
   const focusLayer = useCallback(() => {
     void flow.fitView({
       nodes: [{ id: node.id }],
@@ -33,58 +44,69 @@ export function DesignLayerRow({ node, model }: DesignLayerRowProps) {
     })
   }, [model, node.id])
   return (
-    <div
-      className={`design-layer-row${model.selection.includes(node.id) ? ' selected' : ''}${node.parentId ? ' child' : ''}${node.hidden ? ' hidden' : ''}`}
-    >
-      {node.kind === 'frame' && (
+    <EditorContextMenu actions={actions} label={t('Layer actions')}>
+      <div
+        onContextMenuCapture={prepareMenu}
+        className={`design-layer-row${model.selection.includes(node.id) ? ' selected' : ''}${node.parentId ? ' child' : ''}${node.hidden ? ' hidden' : ''}`}
+      >
+        {node.kind === 'frame' && (
+          <button
+            className="icon-button"
+            aria-label={t(
+              model.collapsed.includes(node.id)
+                ? 'Expand frame layers'
+                : 'Collapse frame layers',
+            )}
+            aria-expanded={!model.collapsed.includes(node.id)}
+            onClick={toggleFrame}
+          >
+            {model.collapsed.includes(node.id) ? (
+              <ChevronRight size={13} />
+            ) : (
+              <ChevronDown size={13} />
+            )}
+          </button>
+        )}
+        <button
+          className="design-layer-select"
+          onDoubleClick={focusLayer}
+          onClick={(event) =>
+            model.select(
+              node.id,
+              event.ctrlKey || event.metaKey || event.shiftKey,
+            )
+          }
+          aria-pressed={model.selection.includes(node.id)}
+          title={node.name}
+        >
+          <Icon size={15} />
+          <span>{node.name}</span>
+        </button>
         <button
           className="icon-button"
-          aria-label={t(
-            model.collapsed.includes(node.id)
-              ? 'Expand frame layers'
-              : 'Collapse frame layers',
-          )}
-          aria-expanded={!model.collapsed.includes(node.id)}
-          onClick={toggleFrame}
+          aria-label={t(node.hidden ? 'Show layer' : 'Hide layer')}
+          title={t(node.hidden ? 'Show layer' : 'Hide layer')}
+          onClick={() => model.edit({ hidden: !node.hidden }, [node.id])}
         >
-          {model.collapsed.includes(node.id) ? (
-            <ChevronRight size={13} />
-          ) : (
-            <ChevronDown size={13} />
-          )}
+          {node.hidden ? <EyeOff size={13} /> : <Eye size={13} />}
         </button>
-      )}
-      <button
-        className="design-layer-select"
-        onDoubleClick={focusLayer}
-        onClick={(event) =>
-          model.select(
-            node.id,
-            event.ctrlKey || event.metaKey || event.shiftKey,
-          )
-        }
-        aria-pressed={model.selection.includes(node.id)}
-        title={node.name}
-      >
-        <Icon size={15} />
-        <span>{node.name}</span>
-      </button>
-      <button
-        className="icon-button"
-        aria-label={t(node.hidden ? 'Show layer' : 'Hide layer')}
-        title={t(node.hidden ? 'Show layer' : 'Hide layer')}
-        onClick={() => model.edit({ hidden: !node.hidden }, [node.id])}
-      >
-        {node.hidden ? <EyeOff size={13} /> : <Eye size={13} />}
-      </button>
-      <button
-        className="icon-button"
-        aria-label={t(node.locked ? 'Unlock layer' : 'Lock layer')}
-        title={t(node.locked ? 'Unlock layer' : 'Lock layer')}
-        onClick={() => model.edit({ locked: !node.locked }, [node.id])}
-      >
-        {node.locked ? <Lock size={13} /> : <Unlock size={13} />}
-      </button>
-    </div>
+        <button
+          className="icon-button"
+          aria-label={t(node.locked ? 'Unlock layer' : 'Lock layer')}
+          title={t(node.locked ? 'Unlock layer' : 'Lock layer')}
+          onClick={() => model.edit({ locked: !node.locked }, [node.id])}
+        >
+          {node.locked ? <Lock size={13} /> : <Unlock size={13} />}
+        </button>
+        <EditorActionMenu actions={actions} label={t('Layer actions')}>
+          <button
+            className="icon-button layer-more"
+            aria-label={t('Layer actions')}
+          >
+            <MoreHorizontal size={13} />
+          </button>
+        </EditorActionMenu>
+      </div>
+    </EditorContextMenu>
   )
 }

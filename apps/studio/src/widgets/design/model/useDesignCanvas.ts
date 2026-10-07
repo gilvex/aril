@@ -270,7 +270,7 @@ export function useDesignCanvas(
       if (event.defaultPrevented) return
       if (
         (event.target as HTMLElement).closest(
-          'input, textarea, select, [contenteditable], [role="combobox"]',
+          'input, textarea, select, [contenteditable], [role="combobox"], [role="menu"], [role="separator"]',
         )
       )
         return

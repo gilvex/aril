@@ -20,3 +20,7 @@ export { StudioHeaderActions } from './StudioHeaderActions.tsx'
 export { StudioMobileMenu } from './StudioMobileMenu.tsx'
 export { StudioNotes } from './StudioNotes.tsx'
 export { WorkspaceHistoryDialog } from './WorkspaceHistoryDialog.tsx'
+
+export { StudioWorkspaceTabs } from './StudioWorkspaceTabs.tsx'
+
+export { StudioSidebar } from './StudioSidebar.tsx'

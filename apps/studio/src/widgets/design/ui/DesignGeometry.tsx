@@ -2,6 +2,7 @@ import { useMemo, useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { DesignNumberInput } from './DesignNumberInput.tsx'
+import { DesignAlignment } from './DesignAlignment.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignGeometry({ model }: DesignEditorProps) {
   const { t } = useTranslation()
@@ -25,6 +26,7 @@ export function DesignGeometry({ model }: DesignEditorProps) {
   return (
     <section>
       <h3>{t('Layout')}</h3>
+      <DesignAlignment model={model} />
       <div className="design-property-grid">
         <DesignNumberInput
           label="X"

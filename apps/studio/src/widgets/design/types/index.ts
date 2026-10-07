@@ -10,3 +10,7 @@ export * from './designFlowNode.ts'
 export * from './designLayerRowProps.ts'
 export * from './designNumberInputProps.ts'
 export * from './designToolbarProps.ts'
+
+export type { DesignPageRowProps } from './designPageRowProps.ts'
+
+export type { DesignColorInputProps } from './designColorInputProps.ts'

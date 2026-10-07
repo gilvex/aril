@@ -88,23 +88,28 @@ export function useDesignDocument({
     selectPage(next.id)
   }, [design, pages, selectPage, t, update])
   const renamePage = useCallback(
-    (name: string) => {
+    (name: string, id = page.id) => {
       if (name.trim())
         update({
           ...design,
           pages: pages.map((item) =>
-            item.id === page.id ? { ...item, name } : item,
+            item.id === id
+              ? { ...item, name: name.trim().slice(0, 120) }
+              : item,
           ),
         })
     },
     [design, page.id, pages, update],
   )
-  const deletePage = useCallback(() => {
-    if (pages.length < 2) return
-    const remaining = pages.filter((item) => item.id !== page.id)
-    update({ ...design, pages: remaining })
-    selectPage(remaining[0].id)
-  }, [design, page.id, pages, selectPage, update])
+  const deletePage = useCallback(
+    (id = page.id) => {
+      if (pages.length < 2) return
+      const remaining = pages.filter((item) => item.id !== id)
+      update({ ...design, pages: remaining })
+      if (id === page.id) selectPage(remaining[0].id)
+    },
+    [design, page.id, pages, selectPage, update],
+  )
   const edit = useCallback(
     (values: Partial<DesignElement>, ids = state.selection) => {
       save(
@@ -115,27 +120,36 @@ export function useDesignDocument({
     },
     [page.nodes, save, state.selection],
   )
-  const remove = useCallback(() => {
-    save(removeDesignElements(page.nodes, state.selection))
-    patch({ selection: [], editingId: null })
-  }, [page.nodes, patch, save, state.selection])
-  const duplicate = useCallback(() => {
-    const copies = duplicateDesignElements(page.nodes, state.selection, () =>
-      crypto.randomUUID(),
-    )
-    if (page.nodes.length + copies.length > 500) return
-    save([...page.nodes, ...copies])
-    patch({
-      selection: copies
-        .filter((node) => !copies.some((parent) => parent.id === node.parentId))
-        .map((node) => node.id),
-    })
-  }, [page.nodes, patch, save, state.selection])
+  const remove = useCallback(
+    (ids = state.selection) => {
+      save(removeDesignElements(page.nodes, ids))
+      patch({ selection: [], editingId: null })
+    },
+    [page.nodes, patch, save, state.selection],
+  )
+  const duplicate = useCallback(
+    (ids = state.selection) => {
+      const copies = duplicateDesignElements(page.nodes, ids, () =>
+        crypto.randomUUID(),
+      )
+      if (page.nodes.length + copies.length > 500) return
+      save([...page.nodes, ...copies])
+      patch({
+        selection: copies
+          .filter(
+            (node) => !copies.some((parent) => parent.id === node.parentId),
+          )
+          .map((node) => node.id),
+      })
+    },
+    [page.nodes, patch, save, state.selection],
+  )
   const add = useCallback(
     (
       kind: DesignElement['kind'],
       point: { x: number; y: number },
       mobile = false,
+      atPoint = false,
     ) => {
       if (page.nodes.length >= 500) return
       const target = selected[0]
@@ -163,8 +177,8 @@ export function useDesignDocument({
                     ? 'Ellipse'
                     : 'Image',
         ),
-        x: parent ? 32 : Math.round(point.x),
-        y: parent ? 32 : Math.round(point.y),
+        x: parent && !atPoint ? 32 : Math.round(point.x),
+        y: parent && !atPoint ? 32 : Math.round(point.y),
         parentId: parent?.id,
         order: Math.max(0, ...page.nodes.map((item) => item.order)) + 1,
         ...(kind === 'frame' && mobile ? { width: 390, height: 844 } : {}),
