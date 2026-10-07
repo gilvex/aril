@@ -5,6 +5,7 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useDesignPanelResize } from '../model/useDesignPanelResize.ts'
 import { designPanelLimit } from '../utils/designPanelLimit.ts'
 import type { DesignPanelProps } from '../types/designPanelProps.ts'
+import { DesignPanelCorner } from './DesignPanelCorner.tsx'
 export function DesignPanel({ model, side, children }: DesignPanelProps) {
   const { t } = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
@@ -100,6 +101,16 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
             'Drag to resize · Arrow keys to adjust · Double-click to reset',
           )}
           {...resizeHeight}
+        />
+      )}
+      {!docked && (
+        <DesignPanelCorner
+          model={model}
+          side={side}
+          width={width}
+          height={height}
+          widthLimit={limit}
+          heightLimit={heightLimit}
         />
       )}
     </div>

@@ -945,5 +945,8 @@
   "The bottom shape masks this group. Edit the shape to change its outline.": "Нижняя фигура задаёт маску группы. Измените фигуру, чтобы изменить контур.",
   "Move and resize these layers together. Ungroup keeps their positions.": "Перемещайте и масштабируйте слои вместе. При разгруппировке их положение сохраняется.",
   "Expand child layers": "Развернуть дочерние слои",
-  "Collapse child layers": "Свернуть дочерние слои"
+  "Collapse child layers": "Свернуть дочерние слои",
+  "Resize layers width and height": "Изменить ширину и высоту слоёв",
+  "Resize properties width and height": "Изменить ширину и высоту свойств",
+  "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset": "Потяните угол для изменения ширины и высоты · Стрелки для настройки · Двойной щелчок для сброса"
 }

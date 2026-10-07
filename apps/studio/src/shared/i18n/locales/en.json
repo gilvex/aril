@@ -945,5 +945,8 @@
   "The bottom shape masks this group. Edit the shape to change its outline.": "The bottom shape masks this group. Edit the shape to change its outline.",
   "Move and resize these layers together. Ungroup keeps their positions.": "Move and resize these layers together. Ungroup keeps their positions.",
   "Expand child layers": "Expand child layers",
-  "Collapse child layers": "Collapse child layers"
+  "Collapse child layers": "Collapse child layers",
+  "Resize layers width and height": "Resize layers width and height",
+  "Resize properties width and height": "Resize properties width and height",
+  "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset": "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset"
 }

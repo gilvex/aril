@@ -78,6 +78,35 @@
   cursor: ns-resize;
   touch-action: none;
 }
+.design-panel-corner-resize {
+  position: absolute;
+  z-index: 6;
+  bottom: -7px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  touch-action: none;
+  user-select: none;
+}
+.design-panel-left > .design-panel-corner-resize {
+  right: -7px;
+  cursor: nwse-resize;
+}
+.design-panel-right > .design-panel-corner-resize {
+  left: -7px;
+  cursor: nesw-resize;
+}
+.design-panel-corner-resize:hover,
+.design-panel-corner-resize:focus-visible {
+  color: var(--accent);
+  outline: 1px solid var(--accent);
+  background: var(--accent-light);
+}
 .design-panel[data-docked] {
   position: relative;
   inset: auto;
