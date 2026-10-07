@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import type { UseStudioFocusManagementProps } from '../types/useStudioFocusManagementProps.ts'
 export function useStudioFocusManagement({
   compact,
-  sidebarOpen,
   modal,
 }: UseStudioFocusManagementProps) {
   const sidebarRef = useRef<HTMLElement>(null)
@@ -28,36 +27,7 @@ export function useStudioFocusManagement({
   }, [])
   const mobileMenuToggle = useRef<HTMLButtonElement>(null)
   useEffect(() => {
-    if (!compact || !sidebarOpen) return
-    const toggle = mobileMenuToggle.current
-    const panel = sidebarRef.current
-    const fields = () =>
-      Array.from(
-        panel?.querySelectorAll<HTMLElement>(
-          'button:not(:disabled),select:not(:disabled),a[href]',
-        ) || [],
-      ).filter((element) => element.getClientRects().length)
-    fields()[0]?.focus()
-    const trap = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab') return
-      const items = fields()
-      if (event.shiftKey && document.activeElement === items[0]) {
-        event.preventDefault()
-        items.at(-1)?.focus()
-      } else if (!event.shiftKey && document.activeElement === items.at(-1)) {
-        event.preventDefault()
-        items[0]?.focus()
-      }
-    }
-    document.addEventListener('keydown', trap)
-    return () => {
-      document.removeEventListener('keydown', trap)
-      toggle?.focus()
-    }
-  }, [compact, sidebarOpen])
-
-  useEffect(() => {
-    if (!modal) return
+    if (!modal || compact) return
     const previous = document.activeElement as HTMLElement | null
     const dialog = document.querySelector<HTMLElement>('[role="dialog"]')
     const selector =
@@ -84,6 +54,6 @@ export function useStudioFocusManagement({
       document.removeEventListener('keydown', trap)
       previous?.focus()
     }
-  }, [modal])
+  }, [modal, compact])
   return { sidebarRef, actionsMenu, mobileMenuToggle }
 }

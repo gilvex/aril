@@ -7,3 +7,6 @@ minimumReleaseAgeExclude:
   - '@modelcontextprotocol/core@2.3.1'
   - '@modelcontextprotocol/server@2.3.1'
   - '@modelcontextprotocol/client@2.3.1'
+  - vagabond-ui@0.3.0
+patchedDependencies:
+  vagabond-ui@0.3.0: patches/vagabond-ui@0.3.0.patch

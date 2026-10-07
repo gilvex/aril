@@ -1,4 +1,4 @@
-import { DesignDrawerBackdrop } from './DesignDrawerBackdrop.tsx'
+import { DesignPanels } from './DesignPanels.tsx'
 import { DesignMobileBar } from './DesignMobileBar.tsx'
 import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -13,9 +13,6 @@ import { useDesignCanvas } from '../model/useDesignCanvas.ts'
 import { useDesignCanvasLabels } from '../model/useDesignCanvasLabels.ts'
 import { DesignElementNode } from './DesignElementNode.tsx'
 import { DesignToolbar } from './DesignToolbar.tsx'
-import { DesignLayers } from './DesignLayers.tsx'
-import { DesignInspector } from './DesignInspector.tsx'
-import { DesignSettings } from './DesignSettings.tsx'
 import { DesignCursors } from './DesignCursors.tsx'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'
 import type { DesignFlowNode } from '../types/designFlowNode.ts'
@@ -52,10 +49,6 @@ export function DesignCanvas(props: DesignBoardProps) {
         aria-label={t('Design canvas')}
         onKeyDown={canvas.keyboard}
       >
-        {compact && (model.layers || model.inspector) && (
-          <DesignDrawerBackdrop model={model} />
-        )}
-        {model.layers && <DesignLayers model={model} />}
         <div
           ref={canvas.surface}
           className="design-canvas-surface"
@@ -112,17 +105,12 @@ export function DesignCanvas(props: DesignBoardProps) {
             insertTemplate={canvas.insertTemplate}
           />
         </div>
-        {model.inspector &&
-          (model.styles ? (
-            <DesignSettings
-              design={props.design}
-              update={props.update}
-              colors={['#b34568', '#7955ad', '#386a92', '#307568', '#9c603a']}
-              close={() => model.patch({ inspector: false })}
-            />
-          ) : (
-            <DesignInspector model={model} />
-          ))}
+        <DesignPanels
+          model={model}
+          design={props.design}
+          update={props.update}
+          compact={compact}
+        />
       </section>
       {compact && <DesignMobileBar model={model} menu={props.mobileMenu} />}
     </>

@@ -1,3 +1,4 @@
+import { useCompactLayout } from '@/shared/model/index.ts'
 import { createCollaborationBarState } from '@/widgets/collaboration/model/createCollaborationBarState.ts'
 import { useCollaborationBarModel } from '@/widgets/collaboration/model/useCollaborationBarModel.ts'
 import { useCallback, useEffect, useRef } from 'react'
@@ -8,6 +9,7 @@ export function useCollaborationController({
   panel,
   setPanel,
 }: UseCollaborationControllerProps) {
+  const compact = useCompactLayout()
   const {
     name,
     setName,
@@ -34,7 +36,7 @@ export function useCollaborationController({
     ).values(),
   ]
   useEffect(() => {
-    if (!panel) return
+    if (!panel || compact) return
     opener.current = document.activeElement as HTMLElement
     const dialog = root.current?.querySelector<HTMLElement>('[role="dialog"]')
     dialog?.querySelector<HTMLElement>('input,button')?.focus()
@@ -72,7 +74,7 @@ export function useCollaborationController({
       document.removeEventListener('keydown', close)
       document.removeEventListener('pointerdown', outside)
     }
-  }, [panel, setPanel])
+  }, [panel, setPanel, compact])
   const open = useCallback(
     (next: typeof panel) => {
       opener.current = document.activeElement as HTMLElement

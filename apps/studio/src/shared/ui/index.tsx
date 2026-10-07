@@ -8,3 +8,5 @@ export { EditorContextMenu } from './EditorContextMenu.tsx'
 export { EditorActionMenu } from './EditorActionMenu.tsx'
 
 export { SurfaceGrip } from './SurfaceGrip.tsx'
+export { StudioDrawer } from './StudioDrawer.tsx'
+export { StudioModal } from './StudioModal.tsx'

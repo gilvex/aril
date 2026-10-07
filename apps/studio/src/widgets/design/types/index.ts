@@ -15,3 +15,4 @@ export type { DesignPageRowProps } from './designPageRowProps.ts'
 
 export type { DesignColorInputProps } from './designColorInputProps.ts'
 export type { DesignNavigationProps } from './designNavigationProps.ts'
+export type { DesignPanelsProps } from './designPanelsProps.ts'

@@ -38,6 +38,10 @@ Use filters for individual packages: `pnpm --filter @pomegranate/mcp build`, `pn
 
 ## Package boundaries
 
+The studio pins `vagabond-ui` to `0.3.0`. `shared/ui/StudioDrawer` applies Aril's scoped theme to the library's bottom Drawer and right-side Fridge; Vagabond owns drag gestures, motion, focus, scroll locking and dismissal. Mobile design tools, dialogs and collaboration panels use Drawer, and the workspace menu uses Fridge. Desktop windows retain their existing draggable behavior.
+
+`patches/vagabond-ui@0.3.0.patch` adds an optional `container` prop to `DrawerContent` (also inherited by Fridge) and forwards it to Radix Portal. This keeps overlays inside the current native fullscreen element. Remove the patch when upstream exposes the same API. No library interaction logic is copied into the application. The scoped CSS intentionally replaces the library's global stylesheet/reset to preserve the existing studio theme.
+
 Studio and MCP both depend on `@pomegranate/domain` via `workspace:*`. Import shared contracts with `@pomegranate/domain/workspace`, `@pomegranate/domain/collaboration`, etc. Domain imports neither app code nor MCP. The studio's MCP dependency is development-only, used by the real stdio integration test. The skill package is independently installable and contains no credentials or runtime dependencies.
 
 The shared domain exports TypeScript source intentionally: Node 24 executes workspace source through pnpm's local links, while Vite and esbuild bundle it into deployable output. Consumers never depend on a stale generated copy of the contract. All packages are private; pushing the repository does not publish them to npm.

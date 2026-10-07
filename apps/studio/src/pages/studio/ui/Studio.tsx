@@ -15,15 +15,7 @@ export function Studio(props: StudioProps) {
   const { t } = useTranslation()
 
   const model = useStudioController({ ...props, recovery: props.recovery })
-  const {
-    full,
-    followed,
-    followId,
-    setFollowId,
-    compact,
-    sidebarOpen,
-    setSidebarOpen,
-  } = model
+  const { full, followed, followId, setFollowId, compact } = model
   const { handlePointerDownCapture, handleKeyDownCapture } =
     useStudioHandlers(model)
   return (
@@ -37,13 +29,6 @@ export function Studio(props: StudioProps) {
           if (followId) setFollowId(null)
         }}
       >
-        {compact && sidebarOpen && (
-          <button
-            className="sidebar-backdrop"
-            aria-label={t('Close navigation')}
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
         {compact && <StudioMobileMenu {...props} {...model} />}
         <StudioHeader {...props} {...model} />
         {!compact && <StudioSidebar {...props} {...model} />}

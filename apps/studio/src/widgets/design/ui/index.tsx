@@ -30,8 +30,7 @@ export { DesignLayersButton } from './DesignLayersButton.tsx'
 
 export { DesignMobileBar } from './DesignMobileBar.tsx'
 
-export { DesignDrawerBackdrop } from './DesignDrawerBackdrop.tsx'
-
 export { DesignPagesList } from './DesignPagesList.tsx'
 
 export { DesignPagesDrawer } from './DesignPagesDrawer.tsx'
+export { DesignPanels } from './DesignPanels.tsx'

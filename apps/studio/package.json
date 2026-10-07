@@ -32,7 +32,7 @@
     "react-redux": "^9.3.0",
     "redux-saga": "^1.5.1",
     "remark-gfm": "^4.0.1",
-    "vagabond-ui": "0.2.0",
+    "vagabond-ui": "0.3.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

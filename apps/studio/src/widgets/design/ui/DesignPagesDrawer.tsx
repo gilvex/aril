@@ -1,4 +1,4 @@
-import { Dialog } from 'radix-ui'
+import { StudioDrawer } from '@/shared/ui/index.tsx'
 import { File, X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignPagesList } from './DesignPagesList.tsx'
@@ -9,33 +9,33 @@ export function DesignPagesDrawer({
 }: DesignEditorProps & { onOpenChange: (open: boolean) => void }) {
   const { t } = useTranslation()
   return (
-    <Dialog.Root open={model.pagesOpen} onOpenChange={onOpenChange}>
-      <Dialog.Trigger asChild>
+    <StudioDrawer
+      open={model.pagesOpen}
+      onOpenChange={onOpenChange}
+      title={t('Pages')}
+      trigger={
         <button
           className="design-page-picker-toggle"
           aria-label={t('Choose page: {{name}}', { name: model.page.name })}
         >
-          <File size={18} />
+          <File size={17} />
           <span>{t('Pages')}</span>
         </button>
-      </Dialog.Trigger>
-      <Dialog.Portal
-        container={(document.fullscreenElement as HTMLElement) || undefined}
-      >
-        <Dialog.Overlay className="design-pages-drawer-backdrop" />
-        <Dialog.Content
-          className="design-page-popover design-pages-drawer"
-          aria-describedby={undefined}
-        >
-          <header>
-            <Dialog.Title>{t('Pages')}</Dialog.Title>
-            <Dialog.Close className="icon-button" aria-label={t('Close panel')}>
-              <X size={18} />
-            </Dialog.Close>
-          </header>
-          <DesignPagesList model={model} />
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+      }
+    >
+      <div className="design-page-popover">
+        <header>
+          <h2>{t('Pages')}</h2>
+          <button
+            className="icon-button"
+            aria-label={t('Close panel')}
+            onClick={() => onOpenChange(false)}
+          >
+            <X size={18} />
+          </button>
+        </header>
+        <DesignPagesList model={model} />
+      </div>
+    </StudioDrawer>
   )
 }

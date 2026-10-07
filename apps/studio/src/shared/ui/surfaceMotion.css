@@ -34,16 +34,6 @@
   margin: -18px auto 4px;
   width: 64px;
 }
-@keyframes surfaceDrawerIn {
-  from {
-    transform: translateY(32px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 @media (max-width: 1024px), (max-width: 1366px) and (pointer: coarse) {
   [data-floating-surface] .surface-grip {
     display: none;
@@ -52,53 +42,5 @@
   [data-floating-surface] h2 {
     cursor: auto;
     touch-action: auto;
-  }
-  .modal-backdrop {
-    align-items: flex-end;
-    padding: 0;
-  }
-  .modal-backdrop > .modal[data-floating-surface],
-  dialog.workspace-create-dialog[data-floating-surface],
-  .collaboration-popover[data-floating-surface],
-  .activity-modal-backdrop .collaboration-popover[data-floating-surface] {
-    position: fixed;
-    inset: auto 0 0;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    max-height: 85dvh;
-    border-radius: 18px 18px 0 0;
-    padding: 24px 20px calc(20px + env(safe-area-inset-bottom, 0px));
-    overflow: auto;
-    overscroll-behavior: contain;
-    animation: surfaceDrawerIn 180ms ease-out;
-  }
-  .modal[data-floating-surface]::before,
-  dialog.workspace-create-dialog[data-floating-surface]::before,
-  .collaboration-popover[data-floating-surface]::before {
-    content: '';
-    display: block;
-    width: 36px;
-    height: 4px;
-    border-radius: 4px;
-    background: var(--muted);
-    opacity: 0.5;
-    margin: -12px auto 16px;
-  }
-  .activity-modal-backdrop {
-    align-items: end;
-    padding: 0;
-  }
-  .collaboration-popover-anchor {
-    position: fixed;
-    inset: 0;
-    background: #0005;
-    pointer-events: auto;
-    z-index: 250;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-floating-surface] {
-    animation: none !important;
   }
 }

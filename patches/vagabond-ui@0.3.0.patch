@@ -1,0 +1,61 @@
+diff --git a/dist/components/ui/drawer.d.ts b/dist/components/ui/drawer.d.ts
+index a32c45d2336bbe92464791a69dc229e7ea879051..16f0e714c21dee39abe2752f3f16962cb57fb3c4 100644
+--- a/dist/components/ui/drawer.d.ts
++++ b/dist/components/ui/drawer.d.ts
+@@ -12,9 +12,10 @@ export type DrawerContentProps = Omit<ComponentProps<typeof Primitive.Content>,
+     showHandle?: boolean;
+     showCloseButton?: boolean;
+     closeLabel?: string;
++    container?: ComponentProps<typeof Primitive.Portal>['container'];
+     overlayClassName?: string;
+ };
+-export declare function DrawerContent({ overlayClassName, ...props }: DrawerContentProps): import("react").JSX.Element;
++export declare function DrawerContent({ container, overlayClassName, ...props }: DrawerContentProps): import("react").JSX.Element;
+ export declare function DrawerHandle({ className, onPointerDown, ...props }: ComponentProps<'div'>): import("react").JSX.Element;
+ export declare function DrawerHeader({ className, ...props }: ComponentProps<'div'>): import("react").JSX.Element;
+ export declare function DrawerBody({ className, ...props }: ComponentProps<'div'>): import("react").JSX.Element;
+diff --git a/dist/components/ui/drawer.js b/dist/components/ui/drawer.js
+index 27a016aa6357fe9aea358f5cb078d1b8ca60f80e..44107f516fca02109f7853bc58fe70099f46052b 100644
+--- a/dist/components/ui/drawer.js
++++ b/dist/components/ui/drawer.js
+@@ -30,10 +30,10 @@ function DrawerSurface({ draggable = true, showHandle = draggable, showCloseButt
+     const dragContext = useMemo(() => ({ enabled: draggable, start: gesture.start }), [draggable, gesture.start]);
+     return (_jsx(Primitive.Content, { forceMount: true, asChild: true, ...focus, ...props, children: _jsx(motion.div, { ref: gesture.panelRef, "data-slot": "drawer-content", "data-drawer-panel": "", "data-direction": drawer.direction, "data-handle": showHandle || undefined, "data-dragging": gesture.dragging || undefined, className: cn('ui-drawer-panel fixed z-50 flex flex-col border border-border bg-surface text-foreground shadow-2xl outline-none', className), initial: gesture.initial, animate: gesture.controls, exit: gesture.exit, transition: gesture.transition, drag: draggable ? gesture.axis : false, dragControls: gesture.dragControls, dragListener: false, dragMomentum: false, dragConstraints: drawer.direction === 'bottom' ? { top: 0, bottom: 0 } : { left: 0, right: 0 }, dragElastic: drawer.direction === 'bottom' ? { top: 0, bottom: 1 } : { left: 0, right: 1 }, onDragStart: gesture.onDragStart, onDragEnd: gesture.onDragEnd, children: _jsxs(DrawerDragContext.Provider, { value: dragContext, children: [showHandle && _jsx(DrawerHandle, {}), showCloseButton && (_jsx(DrawerClose, { asChild: true, children: _jsx(Button, { variant: "ghost", size: "icon", className: "ui-drawer-close absolute right-4 top-4 z-10", "aria-label": closeLabel, children: _jsx(X, { size: 18 }) }) })), children] }) }) }));
+ }
+-export function DrawerContent({ overlayClassName, ...props }) {
++export function DrawerContent({ container, overlayClassName, ...props }) {
+     const { open } = useDrawer();
+     const reduced = useReducedMotion();
+-    return (_jsx(AnimatePresence, { children: open && (_jsxs(Primitive.Portal, { forceMount: true, children: [_jsx(Primitive.Overlay, { forceMount: true, asChild: true, children: _jsx(motion.div, { "data-slot": "drawer-overlay", className: cn('fixed inset-0 z-50 bg-black/60', overlayClassName), initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: reduced ? 0 : 0.2 } }) }), _jsx(DrawerSurface, { ...props })] }, "drawer")) }));
++    return (_jsx(AnimatePresence, { children: open && (_jsxs(Primitive.Portal, { container, forceMount: true, children: [_jsx(Primitive.Overlay, { forceMount: true, asChild: true, children: _jsx(motion.div, { "data-slot": "drawer-overlay", className: cn('fixed inset-0 z-50 bg-black/60', overlayClassName), initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: reduced ? 0 : 0.2 } }) }), _jsx(DrawerSurface, { ...props })] }, "drawer")) }));
+ }
+ export function DrawerHandle({ className, onPointerDown, ...props }) {
+     const { direction } = useDrawer();
+diff --git a/src/components/ui/drawer.tsx b/src/components/ui/drawer.tsx
+index f01d0abba74c75b2ab8c564afaa5877428463ea0..d180378f3fb34c311ace834cee098fea148b9e6a 100644
+--- a/src/components/ui/drawer.tsx
++++ b/src/components/ui/drawer.tsx
+@@ -64,6 +64,7 @@ export type DrawerContentProps = Omit<
+   showHandle?: boolean
+   showCloseButton?: boolean
+   closeLabel?: string
++  container?: ComponentProps<typeof Primitive.Portal>['container']
+   overlayClassName?: string
+ }
+ 
+@@ -136,13 +137,13 @@ function DrawerSurface({
+   )
+ }
+ 
+-export function DrawerContent({ overlayClassName, ...props }: DrawerContentProps) {
++export function DrawerContent({ container, overlayClassName, ...props }: DrawerContentProps) {
+   const { open } = useDrawer()
+   const reduced = useReducedMotion()
+   return (
+     <AnimatePresence>
+       {open && (
+-        <Primitive.Portal key="drawer" forceMount>
++        <Primitive.Portal key="drawer" forceMount container={container}>
+           <Primitive.Overlay forceMount asChild>
+             <motion.div
+               data-slot="drawer-overlay"
