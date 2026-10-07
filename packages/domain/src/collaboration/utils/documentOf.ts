@@ -29,7 +29,19 @@ export function documentOf(workspace: Workspace): Json {
       notes: workspace.notes,
       notesTitle: workspace.notesTitle,
       documents: indexed(workspace.documents || []),
-      design: workspace.design,
+      design: {
+        ...workspace.design,
+        ...(workspace.design.pages
+          ? {
+              pages: Object.fromEntries(
+                workspace.design.pages.map((page) => [
+                  page.id,
+                  { ...page, nodes: indexed(page.nodes) },
+                ]),
+              ),
+            }
+          : {}),
+      },
     }),
   ) as Json
 }

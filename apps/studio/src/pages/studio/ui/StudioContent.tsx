@@ -97,8 +97,14 @@ export function StudioContent(props: StudioContentProps) {
         )}
         {view === 'design' && (
           <DesignBoard
+            key={props.studio.id}
+            workspaceId={props.studio.id}
+            saveState={state.saveState}
             design={workspace.design}
             update={(design) => change((w) => ({ ...w, design }))}
+            peers={multiplayer.peers}
+            following={followed}
+            sendPresence={sendPresence}
           />
         )}
         {view === 'notes' && (

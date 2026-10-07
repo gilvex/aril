@@ -12,7 +12,7 @@ export function DesignSettings({
   return (
     <aside className="design-style-panel">
       <header>
-        <h2>{t('Styles')}</h2>
+        <h2>{t('Design defaults')}</h2>
         <button
           className="icon-button"
           aria-label={t('Close styles')}
@@ -21,6 +21,9 @@ export function DesignSettings({
           <X size={17} />
         </button>
       </header>
+      <p className="design-defaults-hint">
+        {t('Used for new elements and templates.')}
+      </p>
       <section>
         <h3>{t('Accent')}</h3>
         <div className="design-color-options">

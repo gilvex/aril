@@ -4,7 +4,7 @@ The studio pairs a light, dotted working canvas with white floating controls and
 
 Manrope provides compact, distinctive headings; DM Sans handles controls and longer copy. Muted borders separate regions, and colors distinguish node kinds without serving as their only label. Diagram handles, focused selection, and a dedicated inspector make the canvas editable rather than a static illustration.
 
-The design-board page is a study for the future deployment interface. It has explicit sample-data labeling, selectable sample services, activity/access tabs, and saved accent/density/direction choices. It does not send commands to containers. The chosen accent affects the sample interface; it does not retheme every studio control.
+The Design page is a freeform interface editor. Its optional dashboard template illustrates the future deployment interface using editable layers; it does not send commands to containers. Saved defaults affect new elements/templates, while each layer has its own appearance.
 
 Juxtopposed is a user-supplied influence, interpreted through the installed unofficial project skill. This work uses original layouts and assets. See `docs/skills.md` for the researched sources and limitations; no claim is made to have installed her own skill or reproduced a specific video design.
 
@@ -44,7 +44,9 @@ View, grouping and editor width are local preferences scoped to profile and work
 
 ## Design workbench and notebook (October 2026)
 
-Design now opens directly onto a sample deployment screen, with a collapsible Styles panel. Accent, heading/body fonts, density, and direction notes are shared document settings. Sample screen, device, preview appearance, search, and server selection stay local to the mounted preview. Preview actions never call deployment services. The sample theme is independent of the studio appearance. Mobile Styles opens as an overlay panel.
+Design opens onto a pan/zoom canvas with floating navigation and an Insert dock. The collapsible left panel owns pages and frame/layer trees; the right inspector owns position, size, fill, border, typography and layer order. Frames contain layers and carry them when moved or duplicated. Text and button labels can be edited directly on double-click. Templates are inserted only on request and become ordinary layers. Mobile panels start closed and open as overlay sheets. The existing palette and typography remain unchanged for studio controls; designed frames retain their own colors in both studio themes.
+
+Design pages and layers are indexed by ID for independent collaborative edits and participate in existing conflict protection, import/export, history and undo. Cursors, selection, transient drag positions and viewport following are scoped to the active design page. Drag frames use the live presence transport and commit one final document edit. Page choice stays in tab storage; pan/zoom and selection remain private UI state. Existing accent, fonts, density and direction notes are preserved as defaults. A workspace with no design pages starts blank without modifying its saved document. The first release supports up to 30 pages and 500 layers per page, a single frame-parent level, and HTTPS image references.
 
 Notes now provides a searchable document list, Markdown editor, Edit/Split/Read modes, and a collapsible heading outline. On phones the list opens as a drawer and Split stacks editing above reading. Formatting preserves the text selection; links to boards and requirements open in a new tab so unfinished edits remain in place. Raw HTML is not rendered. Existing project notes are preserved as the first document and cannot be deleted from the UI; additional notes can be renamed, deleted, and recovered with Undo. No sample documents are inserted into existing workspaces.
 

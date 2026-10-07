@@ -6,6 +6,7 @@ export type Presence = {
   clientId: string
   profile: Profile
   boardId: string | null
+  designPageId?: string | null
   view: string
   cursor: { x: number; y: number } | null
   selected: string[]

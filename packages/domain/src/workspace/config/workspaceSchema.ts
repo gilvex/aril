@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { designPageSchema } from '../../design/index.ts'
 import { wireframeSchema } from '../../wireframe/index.ts'
 import { edge } from './edge.ts'
 import { node } from './node.ts'
@@ -74,6 +75,15 @@ export const workspaceSchema = z
       .max(50)
       .optional(),
     design: z.object({
+      pages: z
+        .array(designPageSchema)
+        .max(30)
+        .refine(
+          (pages) =>
+            new Set(pages.map((page) => page.id)).size === pages.length,
+          'Duplicate design page IDs',
+        )
+        .optional(),
       accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),
       density: z.enum(['Comfortable', 'Compact']),
       direction: z.string().max(12000),

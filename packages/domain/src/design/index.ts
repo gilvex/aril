@@ -1,0 +1,6 @@
+export { designElementSchema } from './config/designElementSchema.ts'
+export { designPageSchema } from './config/designPageSchema.ts'
+export type { DesignElement, DesignPage } from './types/index.ts'
+export { makeDesignElement } from './utils/makeDesignElement.ts'
+export { removeDesignElements } from './utils/removeDesignElements.ts'
+export { duplicateDesignElements } from './utils/duplicateDesignElements.ts'
