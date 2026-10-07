@@ -55,7 +55,11 @@ export function App() {
           />
         )}
       </div>
-      <InitialLoadingScreen loading={loading && !sessionChanged} />
+      <InitialLoadingScreen
+        loading={loading && !sessionChanged}
+        completed={!profile ? 0 : restoringRoute ? 1 : initial ? 3 : 2}
+        total={model.startupRoute.workspaceId || studio ? 3 : 1}
+      />
     </>
   )
 }

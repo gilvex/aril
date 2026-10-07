@@ -34,3 +34,4 @@ export { StudioSettings } from './StudioSettings.tsx'
 export { BoardDesignCanvas } from './BoardDesignCanvas.tsx'
 
 export { WorkspacePickerDialog } from './WorkspacePickerDialog.tsx'
+export { BoardTypeChoices } from './BoardTypeChoices.tsx'

@@ -1,0 +1,88 @@
+.board-type-choices {
+  border: 0;
+  padding: 0;
+  margin: 20px 0 0;
+  min-width: 0;
+}
+.board-type-choices legend {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.board-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.modal .board-type-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--canvas);
+  cursor: pointer;
+}
+.board-type-card input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.board-type-card:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.board-type-card:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.board-type-card:hover {
+  border-color: var(--accent);
+}
+.board-type-visual {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  color: var(--muted);
+}
+.board-type-card:has(input:checked) .board-type-visual {
+  color: var(--accent);
+}
+.board-type-check {
+  visibility: hidden;
+}
+.board-type-card:has(input:checked) .board-type-check {
+  visibility: visible;
+}
+.board-type-card strong {
+  font-size: 12px;
+  color: var(--text-strong);
+}
+.board-type-card small {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  font-weight: 400;
+}
+@media (max-width: 420px) {
+  .board-type-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal .board-type-card {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 2px 10px;
+    padding: 10px 12px;
+  }
+  .board-type-visual {
+    grid-row: span 2;
+  }
+  .board-type-check {
+    display: none;
+  }
+}

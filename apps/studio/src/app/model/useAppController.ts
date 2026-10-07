@@ -234,6 +234,7 @@ export function useAppController() {
     studio,
   ])
   return {
+    startupRoute,
     sessions,
     closeWorkspace,
     legacy,

@@ -1,5 +1,5 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { LoadingStatus, Spinner, StudioSelect } from '@/shared/ui/index.tsx'
+import { LoadingSkeleton, Spinner, StudioSelect } from '@/shared/ui/index.tsx'
 import { useGuestLinks } from '../model/useGuestLinks.ts'
 import type { GuestLinksProps } from '../types/guestLinksProps.ts'
 import './guestLinks.css'
@@ -70,7 +70,7 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
           </button>
         </label>
       )}
-      {model.loading && <LoadingStatus label={t('Loading…')} />}
+      {model.loading && <LoadingSkeleton label={t('Loading…')} />}
       <ul className="guest-link-list">
         {model.links.map((link) => (
           <li key={link.id}>

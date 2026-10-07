@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { LoadingStatus } from '@/shared/ui/index.tsx'
+import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import { SettingsInvitations } from '@/widgets/collaboration/index.ts'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 import { SettingsMember } from './SettingsMember.tsx'
@@ -42,7 +42,7 @@ export function SettingsFile({
           </div>
         )}
         {settings.loading ? (
-          <LoadingStatus label={t('Loading members…')} />
+          <LoadingSkeleton label={t('Loading members…')} />
         ) : (
           <ul className="settings-member-list">
             {settings.members.map((member) => (

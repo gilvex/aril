@@ -904,5 +904,11 @@
   "Cursor chat (/)": "Cursor chat (/)",
   "Temporary message": "Temporary message",
   "Say something...": "Say something...",
-  "Enter to send. Disappears in 6 seconds.": "Enter to send. Disappears in 6 seconds."
+  "Enter to send. Disappears in 6 seconds.": "Enter to send. Disappears in 6 seconds.",
+  "Checking your session…": "Checking your session…",
+  "Finding your workspace…": "Finding your workspace…",
+  "Loading your workspace…": "Loading your workspace…",
+  "Map systems and flows": "Map systems and flows",
+  "Sketch screens and journeys": "Sketch screens and journeys",
+  "Build detailed interfaces": "Build detailed interfaces"
 }

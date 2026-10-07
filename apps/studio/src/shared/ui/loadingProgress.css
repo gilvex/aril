@@ -1,34 +1,103 @@
 .loading-status {
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  gap: 10px;
+}
+.loading-steps {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 13px;
 }
 .loading-progress {
-  width: min(220px, 70vw);
-  height: 3px;
+  appearance: none;
+  display: block;
+  width: min(240px, 70vw);
+  height: 4px;
   overflow: hidden;
+  border: 0;
   border-radius: 9px;
   background: var(--line);
+  accent-color: var(--accent);
 }
-.loading-progress > span {
-  display: block;
-  width: 40%;
-  height: 100%;
+.loading-progress::-webkit-progress-bar {
+  background: var(--line);
   border-radius: inherit;
-  background: var(--accent);
-  animation: loading-progress 1.4s ease-in-out infinite;
 }
-@keyframes loading-progress {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(350%);
+.loading-progress::-webkit-progress-value {
+  background: var(--accent);
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+.loading-progress::-moz-progress-bar {
+  background: var(--accent);
+  border-radius: inherit;
+}
+.loading-skeleton {
+  display: grid;
+  gap: 12px;
+  padding-block: 12px;
+}
+.loading-skeleton-item {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 0;
+}
+.loading-skeleton-thumbnail,
+.loading-skeleton-lines i {
+  display: block;
+  border-radius: 5px;
+  background: var(--line);
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
+}
+.loading-skeleton-thumbnail {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.loading-skeleton-lines {
+  display: grid;
+  gap: 10px;
+  width: min(70%, 300px);
+}
+.loading-skeleton-lines i {
+  height: 10px;
+}
+.loading-skeleton-lines i:last-child {
+  width: 62%;
+}
+.loading-skeleton-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+}
+.loading-skeleton-cards .loading-skeleton-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  min-height: 168px;
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+.loading-skeleton-cards .loading-skeleton-thumbnail {
+  width: 100%;
+  height: 48px;
+  border-radius: 6px;
+}
+.loading-skeleton-cards .loading-skeleton-lines {
+  width: 80%;
+}
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.45;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .loading-progress > span {
+  .loading-skeleton-thumbnail,
+  .loading-skeleton-lines i {
     animation: none;
-    width: 100%;
-    opacity: 0.6;
+  }
+  .loading-progress::-webkit-progress-value {
+    transition: none;
   }
 }

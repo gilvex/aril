@@ -1,7 +1,7 @@
 import { ArrowUpRight, Plus } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { WorkspaceAccountMenu } from '@/widgets/collaboration/index.ts'
-import { LoadingStatus } from '@/shared/ui/index.tsx'
+import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import type { WorkspaceHomeProps } from '../types/workspaceHomeProps.ts'
 import { WorkspaceCard } from './WorkspaceCard.tsx'
 import { WorkspaceToolbar } from './WorkspaceToolbar.tsx'
@@ -72,7 +72,10 @@ export function WorkspaceHome({
           </div>
         )}
         {!studios && !error && (
-          <LoadingStatus label={t('Loading your workspaces…')} />
+          <LoadingSkeleton
+            variant="cards"
+            label={t('Loading your workspaces…')}
+          />
         )}
         <div className="workspace-grid">
           {visible.map((studio) => (

@@ -31,3 +31,11 @@
   max-height: 80dvh;
   overflow: auto;
 }
+.collaboration-popover-anchor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.collaboration-popover-anchor > .collaboration-popover {
+  pointer-events: auto;
+}

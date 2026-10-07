@@ -18,79 +18,82 @@ export function StudioSettings(props: StudioContentProps) {
   const app = useCallback(() => set({ section: 'app' }), [set])
   return (
     <section className="studio-settings">
-      <header className="settings-heading">
-        <h1>{t('Settings')}</h1>
-        <p>{t('Your file, your profile, your preferences.')}</p>
-      </header>
       <div className="settings-layout">
-        <nav
-          className="settings-navigation"
-          aria-label={t('Settings sections')}
-        >
-          <button
-            aria-current={settings.section === 'file' ? 'page' : undefined}
-            onClick={file}
+        <aside className="settings-sidebar">
+          <header className="settings-heading">
+            <h1>{t('Settings')}</h1>
+          </header>
+          <nav
+            className="settings-navigation"
+            aria-label={t('Settings sections')}
           >
-            <File size={18} />
-            {t('File')}
-          </button>
-          <button
-            aria-current={settings.section === 'user' ? 'page' : undefined}
-            onClick={user}
-          >
-            <User size={18} />
-            {t('User')}
-          </button>
-          <button
-            aria-current={settings.section === 'app' ? 'page' : undefined}
-            onClick={app}
-          >
-            <SlidersHorizontal size={18} />
-            {t('App')}
-          </button>
-          <button
-            aria-current={settings.section === 'agents' ? 'page' : undefined}
-            onClick={agents}
-          >
-            <Bot size={18} />
-            {t('Agent access')}
-          </button>
-        </nav>
+            <button
+              aria-current={settings.section === 'file' ? 'page' : undefined}
+              onClick={file}
+            >
+              <File size={18} />
+              {t('File')}
+            </button>
+            <button
+              aria-current={settings.section === 'user' ? 'page' : undefined}
+              onClick={user}
+            >
+              <User size={18} />
+              {t('User')}
+            </button>
+            <button
+              aria-current={settings.section === 'app' ? 'page' : undefined}
+              onClick={app}
+            >
+              <SlidersHorizontal size={18} />
+              {t('App')}
+            </button>
+            <button
+              aria-current={settings.section === 'agents' ? 'page' : undefined}
+              onClick={agents}
+            >
+              <Bot size={18} />
+              {t('Agent access')}
+            </button>
+          </nav>
+        </aside>
         <div className="settings-content">
-          {settings.section === 'agents' && (
-            <section className="settings-card">
-              <AgentAccess workspaceId={props.studio.id} />
-            </section>
-          )}
-          {settings.section === 'file' && <SettingsFile {...props} />}
-          {settings.section === 'user' && (
-            <>
-              <header className="settings-section-heading">
-                <h2>{t('Your profile')}</h2>
-                <p>{t('This profile is shared across your workspaces.')}</p>
-              </header>
+          <div className="settings-content-inner">
+            {settings.section === 'agents' && (
               <section className="settings-card">
-                <SettingsProfile
-                  profile={multiplayer.profile}
-                  onProfile={multiplayer.setProfile}
-                  beforeLeave={state.flush}
-                />
+                <AgentAccess workspaceId={props.studio.id} />
               </section>
-            </>
-          )}
-          {settings.section === 'app' && (
-            <>
-              <header className="settings-section-heading">
-                <h2>{t('App preferences')}</h2>
-                <p>{t('Saved on this device.')}</p>
-              </header>
-              <section className="settings-card settings-preferences">
-                <ThemePicker />
-                <LanguagePicker />
-                <InstallApp />
-              </section>
-            </>
-          )}
+            )}
+            {settings.section === 'file' && <SettingsFile {...props} />}
+            {settings.section === 'user' && (
+              <>
+                <header className="settings-section-heading">
+                  <h2>{t('Your profile')}</h2>
+                  <p>{t('This profile is shared across your workspaces.')}</p>
+                </header>
+                <section className="settings-card">
+                  <SettingsProfile
+                    profile={multiplayer.profile}
+                    onProfile={multiplayer.setProfile}
+                    beforeLeave={state.flush}
+                  />
+                </section>
+              </>
+            )}
+            {settings.section === 'app' && (
+              <>
+                <header className="settings-section-heading">
+                  <h2>{t('App preferences')}</h2>
+                  <p>{t('Saved on this device.')}</p>
+                </header>
+                <section className="settings-card settings-preferences">
+                  <ThemePicker />
+                  <LanguagePicker />
+                  <InstallApp />
+                </section>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </section>

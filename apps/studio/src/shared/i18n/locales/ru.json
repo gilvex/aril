@@ -904,5 +904,11 @@
   "Cursor chat (/)": "Сообщение у курсора (/)",
   "Temporary message": "Временное сообщение",
   "Say something...": "Напишите что-нибудь…",
-  "Enter to send. Disappears in 6 seconds.": "Enter — отправить. Исчезнет через 6 секунд."
+  "Enter to send. Disappears in 6 seconds.": "Enter — отправить. Исчезнет через 6 секунд.",
+  "Checking your session…": "Проверяем сеанс…",
+  "Finding your workspace…": "Находим рабочее пространство…",
+  "Loading your workspace…": "Загружаем рабочее пространство…",
+  "Map systems and flows": "Системы и процессы",
+  "Sketch screens and journeys": "Экраны и сценарии",
+  "Build detailed interfaces": "Детальные интерфейсы"
 }

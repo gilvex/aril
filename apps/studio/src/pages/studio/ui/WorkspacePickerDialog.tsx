@@ -1,7 +1,7 @@
 import { useCallback, type MouseEvent } from 'react'
 import { Plus, ArrowUpRight } from 'lucide-react'
 import { request } from '@/shared/api/request.ts'
-import { LoadingStatus } from '@/shared/ui/index.tsx'
+import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { StudioSummary } from '@pomegranate/domain/studios'
 import type { WorkspacePickerDialogProps } from '../types/workspacePickerDialogProps.ts'
@@ -60,7 +60,7 @@ export function WorkspacePickerDialog({
         onChange={(event) => model.patch({ query: event.target.value })}
       />
       {model.loading ? (
-        <LoadingStatus label={t('Loading...')} />
+        <LoadingSkeleton label={t('Loading...')} />
       ) : (
         <div className="workspace-picker-results">
           {items.map((item) => (

@@ -43,3 +43,4 @@ export type { SettingsState } from './settingsState.ts'
 export type { WorkspacePickerState } from './workspacePickerState.ts'
 
 export type { WorkspacePickerDialogProps } from './workspacePickerDialogProps.ts'
+export type { BoardTypeChoicesProps } from './boardTypeChoicesProps.ts'
