@@ -2,11 +2,11 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasNavigationHandlers } from '../model/useCanvasNavigationHandlers.tsx'
 import { BoardPickerPopover } from './BoardPickerPopover.tsx'
 
-import { PresenceAvatars } from '@/entities/collaboration/index.ts'
+import { BoardSections } from './BoardSections.tsx'
 import { createCanvasNavigationState } from '@/features/boardNavigation/model/createCanvasNavigationState.ts'
 import { useCanvasNavigationModel } from '@/features/boardNavigation/model/useCanvasNavigationModel.ts'
 import type { CanvasNavigationProps } from '@/features/boardNavigation/types/canvasNavigationProps.ts'
-import { ChevronDown, PanelsTopLeft, Workflow } from 'lucide-react'
+import { ChevronDown, Workflow } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
 export function CanvasNavigation({
@@ -15,6 +15,7 @@ export function CanvasNavigation({
   mode,
   onBoard,
   onMode,
+  onAdd,
   onNew,
   onDelete,
   onRename,
@@ -78,32 +79,13 @@ export function CanvasNavigation({
         <span>{board.name}</span>
         <ChevronDown size={14} />
       </button>
-      <div
-        className="floating-board-sections"
-        role="group"
-        aria-label={t('Board section')}
-      >
-        {(['canvas', 'wireframes'] as const).map((value) => (
-          <button
-            key={value}
-            aria-pressed={mode === value}
-            onClick={() => onMode(value)}
-          >
-            {value === 'canvas' ? (
-              <Workflow size={15} />
-            ) : (
-              <PanelsTopLeft size={15} />
-            )}
-            <span>{value === 'canvas' ? t('Blueprint') : t('Wireframes')}</span>
-            <PresenceAvatars
-              limit={1}
-              profiles={present
-                .filter((p) => p.view === value && p.boardId === board.id)
-                .map((p) => p.profile)}
-            />
-          </button>
-        ))}
-      </div>
+      <BoardSections
+        board={board}
+        mode={mode}
+        onMode={onMode}
+        onAdd={onAdd}
+        present={present}
+      />
       {open && (
         <BoardPickerPopover
           t={t}

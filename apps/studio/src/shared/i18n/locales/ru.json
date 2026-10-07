@@ -889,5 +889,20 @@
   "This workspace is view-only.": "Это рабочее пространство доступно только для просмотра.",
   "This workspace is view-only or no longer available.": "Это рабочее пространство доступно только для просмотра или доступ к нему закрыт.",
   "You no longer have permission to edit this workspace.": "У вас больше нет прав на редактирование этого рабочего пространства.",
-  "Account": "Аккаунт"
+  "Account": "Аккаунт",
+  "Start with": "Начать с",
+  "You can add other sections later.": "Другие разделы можно добавить позже.",
+  "Add section": "Добавить раздел",
+  "Edit profile": "Редактировать профиль",
+  "Manage access": "Управление доступом",
+  "Find or create a workspace": "Найти или создать пространство",
+  "No workspaces found.": "Пространства не найдены.",
+  "Could not load workspaces.": "Не удалось загрузить пространства.",
+  "Could not create workspace. Try again.": "Не удалось создать пространство. Попробуйте снова.",
+  "Finish saving before switching workspaces.": "Дождитесь сохранения перед переключением пространства.",
+  "Loading...": "Загрузка…",
+  "Cursor chat (/)": "Сообщение у курсора (/)",
+  "Temporary message": "Временное сообщение",
+  "Say something...": "Напишите что-нибудь…",
+  "Enter to send. Disappears in 6 seconds.": "Enter — отправить. Исчезнет через 6 секунд."
 }

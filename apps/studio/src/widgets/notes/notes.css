@@ -190,6 +190,7 @@
   box-shadow: none;
 }
 .notebook-reading {
+  text-align: start;
   flex: 1;
   min-width: 0;
   overflow: auto;
@@ -199,11 +200,12 @@
   overflow-wrap: anywhere;
 }
 .mode-split .notebook-reading {
+  text-align: start;
   border-left: 1px solid var(--line);
 }
 .notebook-reading > * {
   max-width: 75ch;
-  margin-inline: auto;
+  margin-inline: 0;
 }
 .notebook-reading h1,
 .notebook-reading h2,
@@ -355,6 +357,7 @@
   }
   .notebook-input,
   .notebook-reading {
+    text-align: start;
     padding: 18px;
     font-size: 14px;
   }
@@ -366,6 +369,7 @@
     min-height: 130px;
   }
   .mode-split .notebook-reading {
+    text-align: start;
     border-left: 0;
     border-top: 1px solid var(--line);
     min-height: 130px;

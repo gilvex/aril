@@ -1,31 +1,33 @@
+import { BoardDesignCanvas } from './BoardDesignCanvas.tsx'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioCanvasHandlers } from '../model/useStudioCanvasHandlers.tsx'
 
 import { CanvasNavigation } from '@/features/boardNavigation/index.ts'
-import { Suspense, useMemo } from 'react'
+import { Suspense, useMemo, useCallback } from 'react'
 
 import type { StudioCanvasProps } from '../types/studioCanvasProps.ts'
-export function StudioCanvas({
-  BoardCanvas,
-  full,
-  board,
-  canvasMode,
-  followed,
-  followStatus,
-  workspace,
-  setBoardId,
-  setCanvasMode,
-  present,
-  setBoardName,
-  setModal,
-  change,
-  multiplayer,
-  sendPresence,
-  state,
-  setRequirementId,
-  setView,
-}: StudioCanvasProps) {
+export function StudioCanvas(props: StudioCanvasProps) {
+  const {
+    BoardCanvas,
+    full,
+    board,
+    canvasMode,
+    followed,
+    followStatus,
+    workspace,
+    setBoardId,
+    setCanvasMode,
+    present,
+    setBoardName,
+    setModal,
+    change,
+    multiplayer,
+    sendPresence,
+    state,
+    setRequirementId,
+    setView,
+  } = props
   const { t } = useTranslation()
 
   const peers = useMemo(
@@ -44,6 +46,61 @@ export function StudioCanvas({
       setRequirementId,
       setView,
     })
+  const addSection = useCallback(
+    (section: StudioCanvasProps['canvasMode']) => {
+      change((current) => ({
+        ...current,
+        boards: current.boards.map((item) =>
+          item.id === board.id
+            ? {
+                ...item,
+                sections: [
+                  ...(item.sections || (['canvas', 'wireframes'] as const)),
+                  section,
+                ].filter((value, index, all) => all.indexOf(value) === index),
+              }
+            : item,
+        ),
+      }))
+      setCanvasMode(section)
+    },
+    [board.id, change, setCanvasMode],
+  )
+  const chooseBoard = useCallback(
+    (id: string) => {
+      setBoardId(id)
+      setCanvasMode(
+        workspace.boards.find((item) => item.id === id)?.sections?.[0] ||
+          'canvas',
+      )
+    },
+    [setBoardId, setCanvasMode, workspace.boards],
+  )
+  const navigation = (
+    <>
+      {followStatus}
+      <CanvasNavigation
+        board={board}
+        boards={workspace.boards}
+        mode={canvasMode}
+        onBoard={chooseBoard}
+        onMode={setCanvasMode}
+        onAdd={addSection}
+        present={present}
+        onNew={createBoard}
+        onDelete={() => setModal('delete')}
+        onRename={renameBoard}
+      />
+    </>
+  )
+  if (canvasMode === 'design')
+    return (
+      <Suspense
+        fallback={<LoadingStatus centered label={t('Opening your canvas…')} />}
+      >
+        <BoardDesignCanvas key={board.id} {...props} navigation={navigation} />
+      </Suspense>
+    )
   return (
     <Suspense
       fallback={<LoadingStatus centered label={t('Opening your canvas…')} />}
@@ -56,22 +113,7 @@ export function StudioCanvas({
             ? followed
             : null
         }
-        navigation={
-          <>
-            {followStatus}
-            <CanvasNavigation
-              board={board}
-              boards={workspace.boards}
-              mode={canvasMode}
-              onBoard={setBoardId}
-              onMode={setCanvasMode}
-              present={present}
-              onNew={createBoard}
-              onDelete={() => setModal('delete')}
-              onRename={renameBoard}
-            />
-          </>
-        }
+        navigation={navigation}
         board={board}
         requirements={workspace.requirements}
         peers={peers}

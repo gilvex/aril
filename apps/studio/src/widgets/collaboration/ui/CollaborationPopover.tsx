@@ -1,100 +1,87 @@
-import { PeopleInvites } from './PeopleInvites.tsx'
+import { useCallback } from 'react'
+import { X, Settings } from 'lucide-react'
 import { AccountActions } from '@/features/accountActions/index.ts'
+import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { AccountConnection } from '@/widgets/collaboration/ui/AccountConnection.tsx'
-import { X } from 'lucide-react'
-import { useCollaborationPopoverHandlers } from '../model/useCollaborationPopoverHandlers.tsx'
 import { TeamActivityList } from './TeamActivityList.tsx'
-
 import { CollaboratorList } from './CollaboratorList.tsx'
-import { ProfileForm } from './ProfileForm.tsx'
-
 import type { CollaborationPopoverProps } from '../types/collaborationPopoverProps.ts'
+import './collaborationCompact.css'
 export function CollaborationPopover(props: CollaborationPopoverProps) {
   const { t } = useTranslation()
-
-  const {
-    panel,
-    setPanel,
-    opener,
-    setBusy,
-    setError,
-    onProfile,
-    profile,
-    workspaceId,
-    setInvite,
-    setCopied,
-    invite,
-    activity,
-    error,
-  } = props
-
-  const { handleCloseCollaborationPanelClick } =
-    useCollaborationPopoverHandlers({
-      setPanel,
-      opener,
-      setBusy,
-      workspaceId,
-      setInvite,
-      setCopied,
-      setError,
-      invite,
-    })
+  const { panel, setPanel, opener, onSettings } = props
+  const close = useCallback(() => {
+    setPanel(null)
+    opener.current?.focus()
+  }, [setPanel, opener])
+  const settings = useCallback(
+    () => onSettings?.(panel === 'people' ? 'file' : 'user'),
+    [onSettings, panel],
+  )
+  const backdrop = useCallback(
+    (event: React.MouseEvent) => {
+      if (event.target === event.currentTarget) close()
+    },
+    [close],
+  )
+  const title =
+    panel === 'profile'
+      ? 'Your profile'
+      : panel === 'people'
+        ? 'People and invites'
+        : 'Team activity'
   return (
-    <section
-      className="collaboration-popover"
-      role="dialog"
-      aria-label={
-        panel === 'profile'
-          ? t('Your profile')
-          : panel === 'people'
-            ? t('People and invites')
-            : t('Team activity')
+    <div
+      className={
+        panel === 'activity'
+          ? 'activity-modal-backdrop'
+          : 'collaboration-popover-anchor'
       }
+      onClick={backdrop}
     >
-      <div className="collaboration-popover-heading">
-        <strong>
-          {panel === 'profile'
-            ? t('Make yourself at home.')
-            : panel === 'people'
-              ? t('Better together.')
-              : t('While we work.')}
-        </strong>
-        <button
-          className="icon-button"
-          aria-label={t('Close collaboration panel')}
-          onClick={handleCloseCollaborationPanelClick}
-        >
-          <X size={17} />
-        </button>
-      </div>
-      {panel === 'profile' ? (
-        <>
-          <ProfileForm
-            {...props}
-
-            profile={profile}
-          />
-          <AccountConnection onProfile={onProfile} />
-          <AccountActions beforeLeave={props.beforeLeave} />
-        </>
-      ) : panel === 'people' ? (
-        <>
-          <CollaboratorList
-            {...props}
-
-            profile={profile}
-          />
-          <PeopleInvites {...props} />
-        </>
-      ) : (
-        <TeamActivityList activity={activity} t={t} />
-      )}
-      {error && (
-        <p className="form-error" role="alert">
-          {error}
-        </p>
-      )}
-    </section>
+      <section
+        className={
+          'collaboration-popover compact-collaboration ' +
+          (panel === 'activity' ? 'activity-modal' : '')
+        }
+        role="dialog"
+        aria-modal={panel === 'activity' || undefined}
+        aria-label={t(title)}
+      >
+        <header className="collaboration-popover-heading">
+          <strong>{t(title)}</strong>
+          <button
+            className="icon-button"
+            aria-label={t('Close collaboration panel')}
+            onClick={close}
+          >
+            <X size={17} />
+          </button>
+        </header>
+        {panel === 'profile' ? (
+          <>
+            <div className="compact-profile">
+              <Avatar profile={props.profile} />
+              <strong>{props.profile.name}</strong>
+            </div>
+            <button className="button compact-settings-link" onClick={settings}>
+              <Settings size={16} />
+              {t('Edit profile')}
+            </button>
+            <AccountActions beforeLeave={props.beforeLeave} />
+          </>
+        ) : panel === 'people' ? (
+          <>
+            <CollaboratorList {...props} />
+            <button className="button compact-settings-link" onClick={settings}>
+              <Settings size={16} />
+              {t('Manage access')}
+            </button>
+          </>
+        ) : (
+          <TeamActivityList activity={props.activity} t={t} />
+        )}
+      </section>
+    </div>
   )
 }

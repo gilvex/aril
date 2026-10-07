@@ -107,8 +107,8 @@ export function StudioContent(props: StudioContentProps) {
             saveState={state.saveState}
             design={workspace.design}
             update={(design) => change((w) => ({ ...w, design }))}
-            peers={multiplayer.peers}
-            following={followed}
+            peers={multiplayer.peers.filter((peer) => !peer.boardId)}
+            following={followed?.boardId ? null : followed}
             sendPresence={sendPresence}
           />
         )}

@@ -92,4 +92,8 @@ Aril's initial purpose is planning a self-hostable and SaaS deployment platform,
 
 ## Connection boundaries
 
-The MCP server runs locally over stdio and calls the studio's authenticated HTTPS API. Read-only credentials cannot write. Expired or revoked credentials require renewal through **Workspace actions → Agent access**, followed by local `pnpm mcp:setup`; do not bypass access with database keys, browser sessions, or direct SQL. Revoking a credential stops subsequent calls. A cloud-only MCP client requires a separate remote transport integration; do not claim this local server is a remote OAuth endpoint.
+The MCP server runs locally over stdio and calls the studio's authenticated HTTPS API. Read-only credentials cannot write. Expired or revoked credentials require renewal through **Settings → Agent access**, followed by local `pnpm mcp:setup`; do not bypass access with database keys, browser sessions, or direct SQL. Revoking a credential stops subsequent calls. A cloud-only MCP client requires a separate remote transport integration; do not claim this local server is a remote OAuth endpoint.
+
+### Optional board sections and board designs
+New boards may set `sections` to an ordered subset of `canvas`, `wireframes`, `design`; the first is the primary section. Missing `sections` means legacy Blueprint + Wireframes. Never discard hidden content when changing sections. Add another section by appending its type, preserving the current order.
+Each board can now hold a separate `design` with the same schema as the workspace design. Existing `workspace.design` remains independent. Use `get_design_page` with `boardId` to read a board design. Canonical operation paths are `boards/<boardId>/design/pages/<pageId>/nodes/<layerId>`; pages and nodes are ID-keyed objects in operations. Initialize the board design before adding nested pages. Cursor chat is transient presence and must not be written to notes, history, or workspace data.

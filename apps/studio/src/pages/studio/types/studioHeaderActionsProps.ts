@@ -1,4 +1,5 @@
 export type StudioHeaderActionsProps = {
+  openSettings: (section: 'file' | 'user') => void
   full: {
     element: import('react').RefObject<HTMLDivElement | null>
     button: import('react').RefObject<HTMLButtonElement | null>

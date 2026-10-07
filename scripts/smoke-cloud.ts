@@ -34,7 +34,7 @@ async function call(
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json',
       'x-pomegranate-auth': '1',
-      'x-pomegranate-write-version': '2',
+      'x-pomegranate-write-version': '3',
       'x-workspace-id': workspace,
     },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),

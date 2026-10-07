@@ -1,3 +1,4 @@
+import { writeVersion } from '@pomegranate/domain/freshness'
 import { createSeed } from '@pomegranate/domain/seed'
 import assert from 'node:assert/strict'
 import { mkdtempSync, rmSync } from 'node:fs'
@@ -73,7 +74,7 @@ test('workspace APIs isolate membership, documents, history, invites and event s
         Authorization: `Bearer ${token}`,
         'x-workspace-id': workspaceId,
         'Content-Type': 'application/json',
-        'x-pomegranate-write-version': '2',
+        'x-pomegranate-write-version': writeVersion,
       },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     })

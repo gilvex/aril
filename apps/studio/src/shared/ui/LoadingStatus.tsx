@@ -1,5 +1,5 @@
 import type { LoadingStatusProps } from '../types/loadingStatusProps.ts'
-import { Spinner } from './Spinner.tsx'
+import './loadingProgress.css'
 
 export function LoadingStatus({ label, centered = false }: LoadingStatusProps) {
   return (
@@ -7,7 +7,9 @@ export function LoadingStatus({ label, centered = false }: LoadingStatusProps) {
       className={'loading-status' + (centered ? ' is-centered' : '')}
       role="status"
     >
-      <Spinner />
+      <div className="loading-progress" role="progressbar" aria-label={label}>
+        <span />
+      </div>
       <span>{label}</span>
     </div>
   )

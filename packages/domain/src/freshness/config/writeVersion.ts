@@ -1,1 +1,1 @@
-export const writeVersion = '2'
+export const writeVersion = '3'

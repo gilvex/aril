@@ -18,7 +18,13 @@ export type UseStudioFollowingProps = {
         following: string | null
         clientId: string
         boardId: string | null
-        view: 'canvas' | 'wireframes' | 'requirements' | 'design' | 'notes'
+        view:
+          | 'canvas'
+          | 'wireframes'
+          | 'design'
+          | 'requirements'
+          | 'design'
+          | 'notes'
         cursor: { x: number; y: number } | null
         selected: string[]
         selectedEdges: string[]
@@ -47,7 +53,8 @@ export type UseStudioFollowingProps = {
       following: string | null
       clientId: string
       boardId: string | null
-      view: 'canvas' | 'wireframes' | 'requirements' | 'design' | 'notes'
+      view:
+        'canvas' | 'wireframes' | 'design' | 'requirements' | 'design' | 'notes'
       cursor: { x: number; y: number } | null
       selected: string[]
       selectedEdges: string[]

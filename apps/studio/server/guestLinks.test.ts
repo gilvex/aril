@@ -1,3 +1,4 @@
+import { writeVersion } from '@pomegranate/domain/freshness'
 import assert from 'node:assert/strict'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -36,7 +37,7 @@ test('guest links grant scoped temporary editing without Google; revocation ends
         'Content-Type': 'application/json',
         'x-pomegranate-auth': '1',
         'x-workspace-id': workspaceId,
-        'x-pomegranate-write-version': '2',
+        'x-pomegranate-write-version': writeVersion,
       },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     })

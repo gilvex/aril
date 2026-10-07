@@ -22,7 +22,13 @@ export type StudioMobileMenuHandlersProps = {
         following: string | null
         clientId: string
         boardId: string | null
-        view: 'notes' | 'requirements' | 'design' | 'canvas' | 'wireframes'
+        view:
+          | 'notes'
+          | 'requirements'
+          | 'design'
+          | 'canvas'
+          | 'wireframes'
+          | 'design'
         cursor: { x: number; y: number } | null
         selected: string[]
         selectedEdges: string[]

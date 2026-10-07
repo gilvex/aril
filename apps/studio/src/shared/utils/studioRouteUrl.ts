@@ -11,8 +11,8 @@ export function studioRouteUrl(href: string, route: StudioRoute | null) {
         url.pathname += `/${encodeURIComponent(route.boardId)}`
       else url.searchParams.set('board', route.boardId)
     }
-    if (route.canvasMode === 'wireframes')
-      url.searchParams.set('canvas', 'wireframes')
+    if (route.canvasMode !== 'canvas')
+      url.searchParams.set('canvas', route.canvasMode)
     if (route.view === 'requirements' && route.requirementId)
       url.searchParams.set('requirement', route.requirementId)
   }

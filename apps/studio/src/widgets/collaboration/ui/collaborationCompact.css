@@ -1,0 +1,33 @@
+.compact-collaboration {
+  width: min(340px, calc(100vw - 24px));
+  padding: 18px;
+}
+.compact-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0 16px;
+}
+.compact-settings-link {
+  width: 100%;
+  justify-content: flex-start;
+}
+.compact-collaboration .account-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+}
+.activity-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: grid;
+  place-items: center;
+  background: #0008;
+  padding: 24px;
+}
+.activity-modal-backdrop .activity-modal {
+  position: static;
+  width: min(680px, 100%);
+  max-height: 80dvh;
+  overflow: auto;
+}

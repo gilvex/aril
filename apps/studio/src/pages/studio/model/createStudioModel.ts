@@ -12,6 +12,8 @@ export function createStudioModel(initial: StudioState) {
   })
   const getSnapshot = () => selectStudio(store.getState())
   const actions = {
+    setNewBoardType: (value: StudioState['newBoardType']) =>
+      store.dispatch(studioSlice.actions.setNewBoardType(value)),
     setNavigationCollapsed: (value: boolean) => {
       store.dispatch(studioSlice.actions.setNavigationCollapsed(value))
     },

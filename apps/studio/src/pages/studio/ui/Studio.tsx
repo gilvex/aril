@@ -1,3 +1,4 @@
+import { CursorChat } from '@/features/cursorChat/index.ts'
 import { WorkspaceRoleContext } from '@/entities/workspace/index.ts'
 import type { StudioProps } from '@/pages/studio/types/studioProps.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -60,6 +61,16 @@ export function Studio(props: StudioProps) {
             </button>
           </main>
         )}
+        <CursorChat
+          active={
+            props.active !== false &&
+            !!model.settings.role &&
+            !model.modal &&
+            (model.view === 'canvas' || model.view === 'design')
+          }
+          scope={model.view + ':' + model.board.id + ':' + model.canvasMode}
+          sendPresence={model.sendPresence}
+        />
         {model.modal && (
           <StudioDialogs {...props} {...model} modal={model.modal} />
         )}

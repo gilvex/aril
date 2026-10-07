@@ -889,5 +889,20 @@
   "This workspace is view-only.": "This workspace is view-only.",
   "This workspace is view-only or no longer available.": "This workspace is view-only or no longer available.",
   "You no longer have permission to edit this workspace.": "You no longer have permission to edit this workspace.",
-  "Account": "Account"
+  "Account": "Account",
+  "Start with": "Start with",
+  "You can add other sections later.": "You can add other sections later.",
+  "Add section": "Add section",
+  "Edit profile": "Edit profile",
+  "Manage access": "Manage access",
+  "Find or create a workspace": "Find or create a workspace",
+  "No workspaces found.": "No workspaces found.",
+  "Could not load workspaces.": "Could not load workspaces.",
+  "Could not create workspace. Try again.": "Could not create workspace. Try again.",
+  "Finish saving before switching workspaces.": "Finish saving before switching workspaces.",
+  "Loading...": "Loading...",
+  "Cursor chat (/)": "Cursor chat (/)",
+  "Temporary message": "Temporary message",
+  "Say something...": "Say something...",
+  "Enter to send. Disappears in 6 seconds.": "Enter to send. Disappears in 6 seconds."
 }

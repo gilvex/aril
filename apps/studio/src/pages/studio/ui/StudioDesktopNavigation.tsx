@@ -62,8 +62,11 @@ export function StudioDesktopNavigation({
               profiles={present
                 .filter(
                   (person) =>
-                    person.view === item.id ||
-                    (item.id === 'canvas' && person.view === 'wireframes'),
+                    (person.view === item.id &&
+                      !(item.id === 'design' && person.boardId)) ||
+                    (item.id === 'canvas' &&
+                      (person.view === 'wireframes' ||
+                        (person.view === 'design' && !!person.boardId))),
                 )
                 .map((person) => person.profile)}
             />

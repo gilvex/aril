@@ -1,3 +1,4 @@
+import { DesignPanelActions } from './DesignPanelActions.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, useRef, type MouseEvent } from 'react'
 import {
@@ -5,8 +6,6 @@ import {
   MousePointer2,
   Plus,
   PanelLeft,
-  PanelRight,
-  Palette,
   LayoutTemplate,
 } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -17,6 +16,7 @@ import { DesignCanvasActions } from './DesignCanvasActions.tsx'
 
 export function DesignToolbar({
   model,
+  navigation,
   add,
   insertTemplate,
 }: DesignToolbarProps) {
@@ -39,47 +39,28 @@ export function DesignToolbar({
   }, [insertTemplate])
   return (
     <>
-      <div className="design-canvas-navigation">
-        <button
-          className="icon-button"
-          title={t('Pages and layers')}
-          aria-label={t('Pages and layers')}
-          aria-expanded={model.layers}
-          onClick={() =>
-            model.patch({ layers: !model.layers, inspector: false })
-          }
-        >
-          <PanelLeft size={18} />
-        </button>
-        <span>{t('Design')}</span>
-        <span className="design-nav-divider">/</span>
-        <strong>{model.page.name}</strong>
-      </div>
-      <div className="design-canvas-actions">
-        <button
-          className="button"
-          aria-label={t('Styles')}
-          aria-expanded={model.inspector && model.styles}
-          onClick={() => model.patch({ inspector: true, styles: true })}
-        >
-          <Palette size={16} />
-          <span>{t('Styles')}</span>
-        </button>
-        <button
-          className="button"
-          aria-label={t('Properties')}
-          aria-expanded={model.inspector && !model.styles}
-          onClick={() =>
-            model.patch({
-              inspector: !model.inspector || model.styles,
-              styles: false,
-            })
-          }
-        >
-          <PanelRight size={16} />
-          <span>{t('Properties')}</span>
-        </button>
-      </div>
+      {navigation && (
+        <div className="board-design-navigation">{navigation}</div>
+      )}
+      {!navigation && (
+        <div className="design-canvas-navigation">
+          <button
+            className="icon-button"
+            title={t('Pages and layers')}
+            aria-label={t('Pages and layers')}
+            aria-expanded={model.layers}
+            onClick={() =>
+              model.patch({ layers: !model.layers, inspector: false })
+            }
+          >
+            <PanelLeft size={18} />
+          </button>
+          <span>{t('Design')}</span>
+          <span className="design-nav-divider">/</span>
+          <strong>{model.page.name}</strong>
+        </div>
+      )}
+      <DesignPanelActions model={model} boardDesign={!!navigation} />
       <div
         className="design-tool-dock"
         role="toolbar"

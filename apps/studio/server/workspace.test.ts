@@ -1,3 +1,4 @@
+import { writeVersion } from '@pomegranate/domain/freshness'
 import {
   workspaceSchema,
   type Envelope,
@@ -28,7 +29,7 @@ test('workspace persistence, stale-write protection, history and invalid graph r
       headers: {
         ...options?.headers,
         Cookie: cookie,
-        'x-pomegranate-write-version': '2',
+        'x-pomegranate-write-version': writeVersion,
       },
     })
   const put = (body: unknown) =>

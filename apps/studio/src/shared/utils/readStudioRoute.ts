@@ -26,7 +26,12 @@ export function readStudioRoute(location: string): StudioRoute {
       view === 'settings'
         ? view
         : 'canvas',
-    canvasMode: params.get('canvas') === 'wireframes' ? 'wireframes' : 'canvas',
+    canvasMode:
+      params.get('canvas') === 'design'
+        ? 'design'
+        : params.get('canvas') === 'wireframes'
+          ? 'wireframes'
+          : 'canvas',
     requirementId: params.get('requirement') || undefined,
   }
 }

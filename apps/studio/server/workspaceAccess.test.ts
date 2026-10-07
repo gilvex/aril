@@ -1,3 +1,4 @@
+import { writeVersion } from '@pomegranate/domain/freshness'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { mkdtempSync, rmSync } from 'node:fs'
@@ -37,7 +38,7 @@ test('only owners manage access; live role changes protect browser and agent wri
         Authorization: `Bearer ${token}`,
         'x-workspace-id': workspace,
         'Content-Type': 'application/json',
-        'x-pomegranate-write-version': '2',
+        'x-pomegranate-write-version': writeVersion,
       },
       body: body === undefined ? undefined : JSON.stringify(body),
     })

@@ -9,5 +9,6 @@ export type UseStudioFocusManagementProps = {
     | 'export'
     | 'reload'
     | 'agents'
+    | 'workspaces'
     | null
 }

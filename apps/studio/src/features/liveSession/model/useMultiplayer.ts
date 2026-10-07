@@ -56,6 +56,7 @@ export function useMultiplayer(
     sequence: 0,
     requirement: null as RequirementPresence | null,
   })
+  const lastCursor = useRef<{ x: number; y: number } | null>(null)
   const transport = useRef<'pending' | 'local' | 'websocket'>('pending')
   const streamConnected = useRef(false)
   const live = useRef<Awaited<ReturnType<typeof openLiveChannel>>>(null)
@@ -69,7 +70,16 @@ export function useMultiplayer(
   }, [active])
   const sendPresence = useCallback(
     (changes: Partial<typeof latest.current>, force = false) => {
+      if (changes.boardId !== undefined || changes.view !== undefined)
+        lastCursor.current = null
+      if (changes.cursor) lastCursor.current = changes.cursor
       latest.current = { ...latest.current, ...changes }
+      if (changes.chat && !latest.current.cursor) {
+        const camera = latest.current.camera
+        latest.current.cursor =
+          lastCursor.current ||
+          (camera ? { x: camera.x, y: camera.y } : { x: 0, y: 0 })
+      }
       clearTimeout(pendingPresence.current)
       if (!enabled.current) return
       const send = () => {

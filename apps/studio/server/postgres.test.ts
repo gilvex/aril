@@ -1,3 +1,4 @@
+import { writeVersion } from '@pomegranate/domain/freshness'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import type { Envelope } from '@pomegranate/domain/workspace'
 import assert from 'node:assert/strict'
@@ -45,7 +46,7 @@ test(
           'Content-Type': 'application/json',
           'x-workspace-id': workspaceId,
           'x-pomegranate-auth': '1',
-          'x-pomegranate-write-version': '2',
+          'x-pomegranate-write-version': writeVersion,
         },
         ...(body === undefined ? {} : { body: JSON.stringify(body) }),
       })

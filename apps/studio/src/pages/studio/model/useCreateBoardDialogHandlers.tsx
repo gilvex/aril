@@ -5,6 +5,8 @@ export function useCreateBoardDialogHandlers({
   state,
   change,
   boardName,
+  newBoardType,
+  setCanvasMode,
   setBoardId,
   setView,
   setModal,
@@ -25,6 +27,7 @@ export function useCreateBoardDialogHandlers({
               id,
               name: boardName.trim(),
               description: 'A new space to connect your ideas.',
+              sections: [newBoardType],
               nodes: [],
               edges: [],
             },
@@ -33,10 +36,20 @@ export function useCreateBoardDialogHandlers({
         false,
       )
       setBoardId(id)
+      setCanvasMode(newBoardType)
       setView('canvas')
       setModal(null)
     },
-    [state, change, boardName, setBoardId, setView, setModal],
+    [
+      state,
+      change,
+      boardName,
+      newBoardType,
+      setCanvasMode,
+      setBoardId,
+      setView,
+      setModal,
+    ],
   )
   return { handleSubmit }
 }

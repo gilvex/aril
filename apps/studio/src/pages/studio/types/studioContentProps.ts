@@ -154,7 +154,7 @@ export type StudioContentProps = {
     }: import('../../../widgets/board/types/canvasBoardProps.ts').CanvasBoardProps) => import('react').JSX.Element
   >
   board: import('@pomegranate/domain/workspace').Board
-  canvasMode: 'canvas' | 'wireframes'
+  canvasMode: 'canvas' | 'wireframes' | 'design'
   followed: import('@pomegranate/domain/collaboration').Presence | null
   workspace: import('@pomegranate/domain/workspace').Workspace
   setBoardId: (

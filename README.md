@@ -99,6 +99,12 @@ The project-local Juxtopposed-inspired skill is unofficial; it is not a skill au
 
 ## MCP and companion skill
 
-Other chats can read and edit boards, requirements, notes, and saved design pages/layers through the local MCP server and companion studio skill. `get_design_page` reads a complete design page; `apply_changes` makes targeted, revision-checked edits. Open **Workspace actions → Agent access** to create a scoped credential, then follow [Agent integration](docs/agent-integration.md). Agent edits use the same freshness checks, history, and live updates as browser edits.
+Other chats can read and edit boards, requirements, notes, and saved design pages/layers through the local MCP server and companion studio skill. `get_design_page` reads a complete design page; `apply_changes` makes targeted, revision-checked edits. Open **Settings → Agent access** to create a scoped credential, then follow [Agent integration](docs/agent-integration.md). Agent edits use the same freshness checks, history, and live updates as browser edits.
 
 Code structure and state conventions: [Code rules](docs/code-rules.md) · [Architecture](docs/architecture.md). `pnpm lint` enforces the FSD boundaries and file conventions through `pnpm check:architecture`.
+
+### Board sections and quick collaboration
+
+New boards start with Blueprint, Wireframes, or Design. Use the + beside their section tabs to add another type. Board designs have independent pages and layers; the existing workspace Design area is preserved. Navbar + opens a workspace picker without leaving the editor. Team Activity opens as a modal; Profile and People are compact shortcuts to Settings.
+
+Press `/` on a canvas to type a temporary cursor message (or use the message icon on touch devices). Enter sends it, Escape cancels it, and it disappears after six seconds. Messages travel in presence and are not saved in history. Loading screens use indeterminate progress bars; Notes uses a left-aligned reading column.

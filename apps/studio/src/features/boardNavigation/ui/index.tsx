@@ -2,3 +2,5 @@ export { CanvasNavigation } from '@/features/boardNavigation/ui/CanvasNavigation
 export { BoardPickerItem } from './BoardPickerItem.tsx'
 export { BoardPickerList } from './BoardPickerList.tsx'
 export { BoardPickerPopover } from './BoardPickerPopover.tsx'
+
+export { BoardSections } from './BoardSections.tsx'

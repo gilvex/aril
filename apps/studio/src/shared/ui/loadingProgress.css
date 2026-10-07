@@ -1,0 +1,34 @@
+.loading-status {
+  flex-direction: column;
+  gap: 12px;
+}
+.loading-progress {
+  width: min(220px, 70vw);
+  height: 3px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--line);
+}
+.loading-progress > span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: loading-progress 1.4s ease-in-out infinite;
+}
+@keyframes loading-progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(350%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-progress > span {
+    animation: none;
+    width: 100%;
+    opacity: 0.6;
+  }
+}

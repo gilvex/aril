@@ -1,3 +1,4 @@
+import { WorkspacePickerDialog } from './WorkspacePickerDialog.tsx'
 import { AgentAccess } from '@/features/agentAccess/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { X } from 'lucide-react'
@@ -13,6 +14,7 @@ export function StudioDialogs({
   setModal,
   modal,
   studio,
+  onOpenWorkspace,
   exportWorkspace,
   state,
   workspace,
@@ -20,6 +22,9 @@ export function StudioDialogs({
   downloadWorkspace,
   change,
   boardName,
+  newBoardType,
+  setNewBoardType,
+  setCanvasMode,
   setBoardId,
   setView,
   setBoardName,
@@ -50,6 +55,14 @@ export function StudioDialogs({
         >
           <X size={18} />
         </button>
+        {modal === 'workspaces' && (
+          <WorkspacePickerDialog
+            current={studio}
+            beforeLeave={state.flush}
+            onOpen={onOpenWorkspace}
+            close={() => setModal(null)}
+          />
+        )}
         {modal === 'agents' && <AgentAccess workspaceId={studio.id} />}
         {modal === 'reload' && (
           <ReloadWorkspaceDialog
@@ -71,6 +84,9 @@ export function StudioDialogs({
             state={state}
             change={change}
             boardName={boardName}
+            newBoardType={newBoardType}
+            setNewBoardType={setNewBoardType}
+            setCanvasMode={setCanvasMode}
             setBoardId={setBoardId}
             setView={setView}
             setModal={setModal}

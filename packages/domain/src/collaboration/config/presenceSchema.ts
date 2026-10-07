@@ -2,6 +2,13 @@ import { z } from 'zod'
 import { cameraSchema } from './cameraSchema.ts'
 import { requirementFieldSchema } from './requirementFieldSchema.ts'
 export const presenceSchema = z.object({
+  chat: z
+    .object({
+      text: z.string().min(1).max(160),
+      expiresAt: z.number().int().nonnegative().safe(),
+    })
+    .nullable()
+    .optional(),
   camera: cameraSchema.nullable().default(null),
   following: z.string().uuid().nullable().default(null),
   clientId: z.string().uuid(),

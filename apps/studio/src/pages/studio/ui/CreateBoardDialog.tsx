@@ -1,6 +1,7 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCreateBoardDialogHandlers } from '../model/useCreateBoardDialogHandlers.tsx'
 
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { Workflow } from 'lucide-react'
 
 import type { CreateBoardDialogProps } from '../types/createBoardDialogProps.ts'
@@ -8,6 +9,9 @@ export function CreateBoardDialog({
   state,
   change,
   boardName,
+  newBoardType,
+  setNewBoardType,
+  setCanvasMode,
   setBoardId,
   setView,
   setModal,
@@ -20,6 +24,9 @@ export function CreateBoardDialog({
     state,
     change,
     boardName,
+    newBoardType,
+    setNewBoardType,
+    setCanvasMode,
     setBoardId,
     setView,
     setModal,
@@ -46,6 +53,20 @@ export function CreateBoardDialog({
           onChange={(e) => setBoardName(e.target.value)}
         />
       </label>
+      <label>
+        {t('Start with')}
+        <StudioSelect
+          value={newBoardType}
+          onChange={(event) =>
+            setNewBoardType(event.target.value as typeof newBoardType)
+          }
+        >
+          <option value="canvas">{t('Blueprint')}</option>
+          <option value="wireframes">{t('Wireframes')}</option>
+          <option value="design">{t('Design')}</option>
+        </StudioSelect>
+      </label>
+      <p>{t('You can add other sections later.')}</p>
       <div className="modal-actions">
         <button className="button" type="button" onClick={() => setModal(null)}>
           {t('Cancel')}

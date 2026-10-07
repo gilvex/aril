@@ -10,7 +10,7 @@ export function createStudioState(
   const initialRoute: StudioRoute = (() =>
     readStudioRoute(location.pathname + location.search))()
   const view: View = initialRoute.view
-  const canvasMode: 'canvas' | 'wireframes' = initialRoute.canvasMode
+  const canvasMode: 'canvas' | 'wireframes' | 'design' = initialRoute.canvasMode
   const boardId: string = initialRoute.boardId || workspace.boards[0].id
   const requirementId: string | null = (() =>
     workspace.requirements.some(
@@ -30,6 +30,7 @@ export function createStudioState(
     | 'import'
     | 'export'
     | 'reload'
+    | 'workspaces'
     | 'agents'
     | null = null
   const boardName: string = ''
@@ -48,6 +49,7 @@ export function createStudioState(
     collaborationPanel,
     notice,
     modal,
+    newBoardType: 'canvas' as const,
     boardName,
     pendingImport,
     snapshots,

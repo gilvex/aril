@@ -1,4 +1,12 @@
 export type CreateBoardDialogHandlersProps = {
+  newBoardType: import('./studioState.ts').StudioState['newBoardType']
+  setNewBoardType: (
+    value: import('./studioState.ts').StudioState['newBoardType'],
+  ) => void
+  setCanvasMode: (
+    value: import('./studioState.ts').StudioState['canvasMode'],
+  ) => void
+
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
   change: (
     update: (

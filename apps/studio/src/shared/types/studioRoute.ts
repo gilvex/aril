@@ -3,6 +3,6 @@ export type StudioRoute = {
   workspaceId: string
   boardId?: string
   view: StudioView
-  canvasMode: 'canvas' | 'wireframes'
+  canvasMode: 'canvas' | 'wireframes' | 'design'
   requirementId?: string
 }

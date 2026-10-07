@@ -5,6 +5,12 @@ export const studioSlice = createSlice({
   name: 'studio',
   initialState: {} as StudioState,
   reducers: {
+    setNewBoardType: (
+      state,
+      action: PayloadAction<StudioState['newBoardType']>,
+    ) => {
+      state.newBoardType = action.payload
+    },
     setNavigationCollapsed: (state, action: PayloadAction<boolean>) => {
       state.navigationCollapsed = action.payload
     },

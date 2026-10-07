@@ -6,6 +6,7 @@ import { useCollaborationController } from '../model/useCollaborationController.
 import { CollaborationPopover } from './CollaborationPopover.tsx'
 export function CollaborationBar({
   beforeLeave,
+  onSettings,
   panel,
   setPanel,
   workspaceId,
@@ -70,6 +71,7 @@ export function CollaborationBar({
       </button>
       {panel && (
         <CollaborationPopover
+          onSettings={onSettings}
           beforeLeave={beforeLeave}
           panel={panel}
           setPanel={setPanel}

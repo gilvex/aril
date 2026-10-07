@@ -70,6 +70,16 @@ test('old tabs and stale destructive writes cannot remove newer wireframes', asy
     }
     const fresh = store.save(withWireframe, before.revision)!
     const deletion = diffWorkspace(fresh.workspace, before.workspace)
+    assert.equal(
+      (
+        await call(
+          'PUT',
+          { revision: fresh.revision, workspace: before.workspace },
+          '2',
+        )
+      ).status,
+      428,
+    )
     // An old bundle cannot save even if it happens to know the current revision.
     assert.equal(
       (

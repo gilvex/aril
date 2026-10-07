@@ -219,6 +219,44 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
       pageId: 'dashboard',
     })
     assert.deepEqual(cleared.page.nodes, [])
+    const boardId = initial.workspace.boards[0].id
+    const current = instance.store.read()
+    await read('apply_changes', {
+      baseRevision: current.revision,
+      requestId: randomUUID(),
+      operations: [
+        { path: ['boards', boardId, 'sections'], after: ['design'] },
+        {
+          path: ['boards', boardId, 'design'],
+          after: {
+            ...initial.workspace.design,
+            pages: {
+              dashboard: {
+                id: 'dashboard',
+                name: 'Board dashboard',
+                nodes: { desktop: frame, heading },
+              },
+            },
+          },
+        },
+      ],
+    })
+    const boardPage = await read<{ page: DesignPage; url: string }>(
+      'get_design_page',
+      { boardId, pageId: 'dashboard' },
+    )
+    assert.equal(boardPage.page.name, 'Board dashboard')
+    assert.equal(boardPage.page.nodes.length, 2)
+    assert.equal(new URL(boardPage.url).searchParams.get('board'), boardId)
+    assert.equal(new URL(boardPage.url).searchParams.get('canvas'), 'design')
+    assert.deepEqual(
+      (
+        await read<{ page: DesignPage }>('get_design_page', {
+          pageId: 'dashboard',
+        })
+      ).page.nodes,
+      [],
+    )
   } finally {
     await client.close()
     instance.collaboration.close()

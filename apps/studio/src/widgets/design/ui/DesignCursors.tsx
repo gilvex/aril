@@ -1,3 +1,4 @@
+import { CursorMessage } from '@/entities/collaboration/index.ts'
 import { ViewportPortal, useViewport } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignCursorsProps } from '../types/designCursorsProps.ts'
@@ -38,6 +39,7 @@ export function DesignCursors({ peers }: DesignCursorsProps) {
                 )}
                 {peer.profile.name}
               </span>
+              <CursorMessage chat={peer.chat} />
             </div>
           ),
       )}

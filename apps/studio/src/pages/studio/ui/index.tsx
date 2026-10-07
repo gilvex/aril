@@ -30,3 +30,7 @@ export { SettingsFile } from './SettingsFile.tsx'
 export { SettingsMember } from './SettingsMember.tsx'
 
 export { StudioSettings } from './StudioSettings.tsx'
+
+export { BoardDesignCanvas } from './BoardDesignCanvas.tsx'
+
+export { WorkspacePickerDialog } from './WorkspacePickerDialog.tsx'

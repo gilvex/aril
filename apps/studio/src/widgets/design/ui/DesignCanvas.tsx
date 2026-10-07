@@ -97,6 +97,7 @@ export function DesignCanvas(props: DesignBoardProps) {
           </div>
         </EditorContextMenu>
         <DesignToolbar
+          navigation={props.navigation}
           model={model}
           add={canvas.add}
           insertTemplate={canvas.insertTemplate}

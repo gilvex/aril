@@ -5,6 +5,7 @@ import type {
   Profile,
 } from '@pomegranate/domain/collaboration'
 export type CollaborationBarProps = {
+  onSettings?: (section: 'file' | 'user') => void
   beforeLeave: () => Promise<boolean>
   panel: Panel
   setPanel: (panel: Panel) => void

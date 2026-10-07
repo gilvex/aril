@@ -1,3 +1,4 @@
+import { designWorkspaceOf } from './designWorkspaceOf.ts'
 import { workspaceSchema, type Workspace } from '../../workspace/index.ts'
 import type { Json } from '../types/json.ts'
 export function workspaceOf(document: Json): Workspace {
@@ -8,6 +9,9 @@ export function workspaceOf(document: Json): Workspace {
       const board = entry as Record<string, Json>
       return {
         ...board,
+        ...(board.design
+          ? { design: designWorkspaceOf(board.design as Record<string, Json>) }
+          : {}),
         nodes: Object.values(board.nodes as object),
         edges: Object.values(board.edges as object),
         wireframe: {
@@ -23,19 +27,7 @@ export function workspaceOf(document: Json): Workspace {
   )
   return workspaceSchema.parse({
     ...value,
-    design: {
-      ...design,
-      ...(design.pages
-        ? {
-            pages: Object.values(
-              design.pages as Record<string, Record<string, Json>>,
-            ).map((page) => ({
-              ...page,
-              nodes: Object.values(page.nodes as object),
-            })),
-          }
-        : {}),
-    },
+    design: designWorkspaceOf(design),
     boards,
     requirements: Object.values(value.requirements as object),
     documents: Object.values((value.documents || {}) as object),

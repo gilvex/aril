@@ -4,7 +4,7 @@ import type { Workspace } from '@pomegranate/domain/workspace'
 export type StudioState = {
   initialRoute: StudioRoute
   view: View
-  canvasMode: 'canvas' | 'wireframes'
+  canvasMode: 'canvas' | 'wireframes' | 'design'
   boardId: string
   requirementId: string | null
   sidebarOpen: boolean
@@ -18,8 +18,10 @@ export type StudioState = {
     | 'import'
     | 'export'
     | 'reload'
+    | 'workspaces'
     | 'agents'
     | null
+  newBoardType: 'canvas' | 'wireframes' | 'design'
   boardName: string
   pendingImport: Workspace | null
   snapshots: { revision: number; savedAt: string }[]

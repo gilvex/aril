@@ -74,6 +74,13 @@ export function createMcpServer(config: AgentConfig) {
                   id: b.id,
                   name: b.name,
                   description: b.description,
+                  sections: b.sections || ['canvas', 'wireframes'],
+                  designPages:
+                    b.design?.pages?.map((page) => ({
+                      id: page.id,
+                      name: page.name,
+                      layers: page.nodes.length,
+                    })) || [],
                   nodes: b.nodes.length,
                   connections: b.edges.length,
                   wireframeBlocks: b.wireframe?.nodes.length || 0,
@@ -110,14 +117,21 @@ export function createMcpServer(config: AgentConfig) {
     'get_design_page',
     {
       description:
-        'Read one saved design canvas page and all its layers, current revision, design defaults, and a link to the Design section. Discover page IDs with get_workspace. Layers use kind, x/y, width/height, order, and optional parentId pointing to a top-level frame. Child coordinates are relative to their frame. The browser link opens Design; select the returned page by name.',
-      inputSchema: z.object({ pageId: z.string().min(1).max(100) }),
+        'Read one saved design canvas page and all its layers, current revision, design defaults, and a link to the Design section. Discover page IDs with get_workspace. Supply boardId for a board-specific design; omit it for the workspace design. Layers use kind, x/y, width/height, order, and optional parentId pointing to a top-level frame. Child coordinates are relative to their frame. The browser link opens Design; select the returned page by name.',
+      inputSchema: z.object({
+        pageId: z.string().min(1).max(100),
+        boardId: z.string().min(1).max(100).optional(),
+      }),
       annotations: read,
     },
-    ({ pageId }) =>
+    ({ pageId, boardId }) =>
       result(async () => {
         const state = await api<AgentWorkspace>('workspace')
-        const { pages, ...settings } = state.workspace.design
+        const design = boardId
+          ? state.workspace.boards.find((board) => board.id === boardId)?.design
+          : state.workspace.design
+        if (!design) throw new Error('Board design not found.')
+        const { pages, ...settings } = design
         const page = pages?.find((item) => item.id === pageId)
         if (!page)
           throw new Error(
@@ -127,7 +141,7 @@ export function createMcpServer(config: AgentConfig) {
           revision: state.revision,
           page,
           settings,
-          url: `${config.origin}/?${new URLSearchParams({ workspace: state.studio.id, view: 'design' })}`,
+          url: `${config.origin}/?${new URLSearchParams({ workspace: state.studio.id, view: boardId ? 'canvas' : 'design', ...(boardId ? { board: boardId, canvas: 'design' } : {}) })}`,
         }
       }),
   )

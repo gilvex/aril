@@ -32,7 +32,11 @@ export function useStudioFollowing({
       )
       return
     }
-    if (followed.view === 'canvas' || followed.view === 'wireframes') {
+    if (
+      followed.view === 'canvas' ||
+      followed.view === 'wireframes' ||
+      (followed.view === 'design' && followed.boardId)
+    ) {
       if (!workspace.boards.some((b) => b.id === followed.boardId)) return
       setView('canvas')
       setCanvasMode(followed.view)

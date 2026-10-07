@@ -21,3 +21,5 @@ export { DesignColorInput } from './DesignColorInput.tsx'
 
 export { DesignAlignment } from './DesignAlignment.tsx'
 export { DesignCanvasActions } from './DesignCanvasActions.tsx'
+
+export { DesignPanelActions } from './DesignPanelActions.tsx'

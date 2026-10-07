@@ -1,3 +1,4 @@
+import { CursorMessage } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LiveCursorsProps } from '@/widgets/board/types/liveCursorsProps.ts'
 import { SelectionBadges } from '@/widgets/board/ui/SelectionBadges.tsx'
@@ -66,6 +67,7 @@ export function LiveCursors({
                 )}
                 {peer.profile.name}
               </span>
+              <CursorMessage chat={peer.chat} />
             </div>
           )}
         </div>

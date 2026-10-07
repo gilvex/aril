@@ -1,3 +1,4 @@
+import { designDocumentOf } from './designDocumentOf.ts'
 import { type Workspace } from '../../workspace/index.ts'
 import type { Json } from '../types/json.ts'
 import { indexed } from './indexed.ts'
@@ -15,6 +16,9 @@ export function documentOf(workspace: Workspace): Json {
             board.id,
             {
               ...board,
+              ...(board.design
+                ? { design: designDocumentOf(board.design) }
+                : {}),
               nodes: indexed(board.nodes),
               edges: indexed(board.edges),
               wireframe: {
@@ -29,19 +33,7 @@ export function documentOf(workspace: Workspace): Json {
       notes: workspace.notes,
       notesTitle: workspace.notesTitle,
       documents: indexed(workspace.documents || []),
-      design: {
-        ...workspace.design,
-        ...(workspace.design.pages
-          ? {
-              pages: Object.fromEntries(
-                workspace.design.pages.map((page) => [
-                  page.id,
-                  { ...page, nodes: indexed(page.nodes) },
-                ]),
-              ),
-            }
-          : {}),
-      },
+      design: designDocumentOf(workspace.design),
     }),
   ) as Json
 }

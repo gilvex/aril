@@ -60,6 +60,8 @@ export function useStudioController({
     setNotice,
     modal,
     setModal,
+    newBoardType,
+    setNewBoardType,
     boardName,
     setBoardName,
     pendingImport,
@@ -72,6 +74,22 @@ export function useStudioController({
     setFollowId,
   } = useStudioModel(() => createStudioState(workspace, recovery))
 
+  const setSettings = settings.set
+  const openSettings = useCallback(
+    (section: 'file' | 'user') => {
+      setSettings({ section })
+      setView('settings')
+      setCollaborationPanel(null)
+    },
+    [setSettings, setView, setCollaborationPanel],
+  )
+  useEffect(() => {
+    if (modal === 'agents') {
+      setSettings({ section: 'agents' })
+      setView('settings')
+      setModal(null)
+    }
+  }, [modal, setSettings, setView, setModal])
   const BoardCanvas = canvasMode === 'wireframes' ? WireframeBoard : CanvasBoard
 
   const compact = useCompactLayout()
@@ -85,6 +103,10 @@ export function useStudioController({
   const importRef = useRef<HTMLInputElement>(null)
   const board =
     workspace.boards.find((b) => b.id === boardId) || workspace.boards[0]
+  useEffect(() => {
+    if (board.sections && !board.sections.includes(canvasMode))
+      setCanvasMode(board.sections[0])
+  }, [board.sections, canvasMode, setCanvasMode])
   const routedRequirementId = workspace.requirements.find(
     (item) => item.id === requirementId,
   )?.id
@@ -179,6 +201,7 @@ export function useStudioController({
     })
   return {
     settings,
+    openSettings,
     full,
     followed,
     followId,
@@ -220,6 +243,8 @@ export function useStudioController({
     mobileMenuToggle,
     modal,
     downloadWorkspace,
+    newBoardType,
+    setNewBoardType,
     boardName,
     pendingImport,
     historyLoading,

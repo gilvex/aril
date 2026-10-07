@@ -1,3 +1,4 @@
+import { writeVersion } from '@pomegranate/domain/freshness'
 import {
   applyOperations,
   diffWorkspace,
@@ -79,7 +80,7 @@ test('invited users share edits, profiles, cursors and activity without stale ov
       headers: {
         Cookie: cookie,
         'Content-Type': 'application/json',
-        'x-pomegranate-write-version': '2',
+        'x-pomegranate-write-version': writeVersion,
       },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     })

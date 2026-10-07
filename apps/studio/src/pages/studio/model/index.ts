@@ -21,3 +21,5 @@ export { useStudioWorkspaceActions } from './useStudioWorkspaceActions.ts'
 export { createSettingsModel } from './createSettingsModel.ts'
 
 export { useSettings } from './useSettings.ts'
+
+export { useWorkspacePicker } from './useWorkspacePicker.ts'

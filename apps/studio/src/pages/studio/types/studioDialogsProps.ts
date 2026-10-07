@@ -3,9 +3,25 @@ import { useStudioModel } from '../model/useStudioModel.ts'
 import type { StudioProps } from './studioProps.ts'
 
 export type StudioDialogsProps = {
+  newBoardType: import('./studioState.ts').StudioState['newBoardType']
+  setNewBoardType: (
+    value: import('./studioState.ts').StudioState['newBoardType'],
+  ) => void
+  setCanvasMode: (
+    value: import('./studioState.ts').StudioState['canvasMode'],
+  ) => void
+
   setModal: ReturnType<typeof useStudioModel>['setModal']
   modal:
-    'delete' | 'new' | 'history' | 'import' | 'export' | 'reload' | 'agents'
+    | 'delete'
+    | 'new'
+    | 'history'
+    | 'import'
+    | 'export'
+    | 'reload'
+    | 'agents'
+    | 'workspaces'
+  onOpenWorkspace: StudioProps['onOpenWorkspace']
   studio: StudioProps['studio']
   exportWorkspace: () => void
   state: ReturnType<typeof useWorkspace>

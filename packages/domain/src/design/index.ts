@@ -5,3 +5,5 @@ export { makeDesignElement } from './utils/makeDesignElement.ts'
 export { removeDesignElements } from './utils/removeDesignElements.ts'
 export { duplicateDesignElements } from './utils/duplicateDesignElements.ts'
 export { createDesignTemplate } from './utils/createDesignTemplate.ts'
+
+export { designSchema } from './config/designSchema.ts'

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { designPageSchema } from '../../design/index.ts'
+import { designSchema } from '../../design/index.ts'
 import { wireframeSchema } from '../../wireframe/index.ts'
 import { edge } from './edge.ts'
 import { node } from './node.ts'
@@ -16,6 +16,13 @@ export const workspaceSchema = z
             description: z.string().max(1000),
             nodes: z.array(node).max(500),
             edges: z.array(edge).max(1500),
+            sections: z
+              .array(z.enum(['canvas', 'wireframes', 'design']))
+              .min(1)
+              .max(3)
+              .refine((values) => new Set(values).size === values.length)
+              .optional(),
+            design: designSchema.optional(),
             wireframe: wireframeSchema.optional(),
             wireframeViewport: z
               .object({
@@ -74,24 +81,7 @@ export const workspaceSchema = z
       )
       .max(50)
       .optional(),
-    design: z.object({
-      pages: z
-        .array(designPageSchema)
-        .max(30)
-        .refine(
-          (pages) =>
-            new Set(pages.map((page) => page.id)).size === pages.length,
-          'Duplicate design page IDs',
-        )
-        .optional(),
-      accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),
-      density: z.enum(['Comfortable', 'Compact']),
-      direction: z.string().max(12000),
-      headingFont: z
-        .enum(['Manrope', 'DM Sans', 'System', 'Georgia'])
-        .optional(),
-      bodyFont: z.enum(['Manrope', 'DM Sans', 'System', 'Georgia']).optional(),
-    }),
+    design: designSchema,
   })
   .superRefine((workspace, context) => {
     if (

@@ -3,6 +3,7 @@ import type { DragPosition } from './dragPosition.ts'
 import type { Profile } from './profile.ts'
 import type { RequirementPresence } from './requirementPresence.ts'
 export type Presence = {
+  chat?: { text: string; expiresAt: number } | null
   clientId: string
   profile: Profile
   boardId: string | null

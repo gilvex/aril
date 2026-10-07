@@ -7,10 +7,11 @@ import { useStudioModel } from '../model/useStudioModel.ts'
 import { CanvasBoard } from '../ui/CanvasBoard.tsx'
 
 export type StudioCanvasProps = {
+  studio: import('./studioProps.ts').StudioProps['studio']
   BoardCanvas: typeof CanvasBoard
   full: ReturnType<typeof useCanvasFullscreen>
   board: ReturnType<typeof useWorkspace>['workspace']['boards'][number]
-  canvasMode: 'canvas' | 'wireframes'
+  canvasMode: 'canvas' | 'wireframes' | 'design'
   followed: Presence | null | undefined
   followStatus: React.ReactNode
   workspace: ReturnType<typeof useWorkspace>['workspace']

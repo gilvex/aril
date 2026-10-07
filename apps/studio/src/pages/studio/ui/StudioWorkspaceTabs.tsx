@@ -93,7 +93,7 @@ export function StudioWorkspaceTabs(props: StudioHeaderProps) {
         className="icon-button"
         title={t('Open workspace')}
         aria-label={t('Open workspace')}
-        onClick={home}
+        onClick={() => props.setModal('workspaces')}
       >
         <Plus size={17} />
       </button>

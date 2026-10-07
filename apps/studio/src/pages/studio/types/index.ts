@@ -39,3 +39,7 @@ export type { WorkspaceTabsState } from './workspaceTabsState.ts'
 export type { SettingsMemberProps } from './settingsMemberProps.ts'
 
 export type { SettingsState } from './settingsState.ts'
+
+export type { WorkspacePickerState } from './workspacePickerState.ts'
+
+export type { WorkspacePickerDialogProps } from './workspacePickerDialogProps.ts'

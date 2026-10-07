@@ -12,6 +12,7 @@ import {
 import type { StudioHeaderActionsProps } from '../types/studioHeaderActionsProps.ts'
 export function StudioHeaderActions({
   full,
+  openSettings,
   view,
   state,
   collaborationPanel,
@@ -76,6 +77,7 @@ export function StudioHeaderActions({
         <Redo2 size={17} />
       </button>
       <CollaborationBar
+        onSettings={openSettings}
         beforeLeave={state.flush}
         panel={collaborationPanel}
         setPanel={setCollaborationPanel}
