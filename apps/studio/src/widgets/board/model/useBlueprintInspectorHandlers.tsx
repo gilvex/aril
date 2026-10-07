@@ -7,7 +7,7 @@ export function useBlueprintInspectorHandlers({
 }: BlueprintInspectorHandlersProps) {
   const handleCloseBoardDetailsClick = useCallback<() => void>(() => {
     setInspectorOpen(false)
-    inspectorToggle.current?.focus()
+    requestAnimationFrame(() => inspectorToggle.current?.focus())
   }, [setInspectorOpen, inspectorToggle])
   return { handleCloseBoardDetailsClick }
 }

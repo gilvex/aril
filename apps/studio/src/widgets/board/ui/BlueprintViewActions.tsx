@@ -19,26 +19,28 @@ export function BlueprintViewActions({
 
   return (
     <>
-      <button
-        ref={inspectorToggle}
-        className="button"
-        aria-label={
-          inspectorOpen ? t('Hide board details') : t('Show board details')
-        }
-        title={
-          inspectorOpen ? t('Hide board details') : t('Show board details')
-        }
-        aria-expanded={inspectorOpen}
-        aria-controls="board-inspector"
-        onClick={() => setInspectorOpen(!inspectorOpen)}
-      >
-        {inspectorOpen ? (
-          <PanelRightClose size={16} />
-        ) : (
-          <PanelRightOpen size={16} />
-        )}
-        <span className="touch-tool-label">{t('Details')}</span>
-      </button>
+      {!inspectorOpen && (
+        <button
+          ref={inspectorToggle}
+          className="button"
+          aria-label={
+            inspectorOpen ? t('Hide board details') : t('Show board details')
+          }
+          title={
+            inspectorOpen ? t('Hide board details') : t('Show board details')
+          }
+          aria-expanded={inspectorOpen}
+          aria-controls="board-inspector"
+          onClick={() => setInspectorOpen(!inspectorOpen)}
+        >
+          {inspectorOpen ? (
+            <PanelRightClose size={16} />
+          ) : (
+            <PanelRightOpen size={16} />
+          )}
+          <span className="touch-tool-label">{t('Details')}</span>
+        </button>
+      )}
       <button
         ref={fullscreenButtonRef}
         className="button fullscreen-toggle"

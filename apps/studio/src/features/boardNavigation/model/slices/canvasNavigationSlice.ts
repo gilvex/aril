@@ -5,8 +5,12 @@ export const canvasNavigationSlice = createSlice({
   name: 'canvasNavigation',
   initialState: {} as CanvasNavigationState,
   reducers: {
+    setQuery: (state, action: PayloadAction<string>) => {
+      state.query = action.payload
+    },
     setOpen: (state, action: PayloadAction<CanvasNavigationState['open']>) => {
       state.open = action.payload
+      if (!action.payload) state.query = ''
     },
     setRenaming: (
       state,

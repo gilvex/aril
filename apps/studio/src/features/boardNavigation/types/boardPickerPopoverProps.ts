@@ -1,4 +1,6 @@
 export type BoardPickerPopoverProps = {
+  query: string
+  setQuery: (value: string) => void
   t: import('i18next').TFunction<'translation', undefined>
   boards: import('@pomegranate/domain/workspace').Board[]
   board: import('@pomegranate/domain/workspace').Board

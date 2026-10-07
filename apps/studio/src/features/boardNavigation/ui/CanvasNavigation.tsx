@@ -23,8 +23,16 @@ export function CanvasNavigation({
 }: CanvasNavigationProps) {
   const { t } = useTranslation()
 
-  const { open, setOpen, renaming, setRenaming, name, setName } =
-    useCanvasNavigationModel(() => createCanvasNavigationState(board))
+  const {
+    open,
+    setOpen,
+    renaming,
+    setRenaming,
+    name,
+    setName,
+    query,
+    setQuery,
+  } = useCanvasNavigationModel(() => createCanvasNavigationState(board))
 
   const root = useRef<HTMLDivElement>(null)
   const toggle = useRef<HTMLButtonElement>(null)
@@ -89,6 +97,8 @@ export function CanvasNavigation({
       {open && (
         <BoardPickerPopover
           t={t}
+          query={query}
+          setQuery={setQuery}
           boards={boards}
           board={board}
           onBoard={onBoard}

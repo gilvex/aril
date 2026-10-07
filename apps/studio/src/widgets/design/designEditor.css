@@ -400,23 +400,6 @@
 .design-inspector-empty {
   padding: 20px;
 }
-.design-empty {
-  position: absolute;
-  top: 44%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-  z-index: 5;
-  min-width: 220px;
-}
-.design-empty h2 {
-  margin: 0 0 8px;
-  font-size: 22px;
-  text-align: center;
-}
 .design-layer-editors {
   position: absolute;
   top: -26px;

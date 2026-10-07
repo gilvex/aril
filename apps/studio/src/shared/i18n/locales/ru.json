@@ -910,5 +910,7 @@
   "Loading your workspace…": "Загружаем рабочее пространство…",
   "Map systems and flows": "Системы и процессы",
   "Sketch screens and journeys": "Экраны и сценарии",
-  "Build detailed interfaces": "Детальные интерфейсы"
+  "Build detailed interfaces": "Детальные интерфейсы",
+  "Find a board": "Найти доску",
+  "No matching boards.": "Подходящих досок нет."
 }

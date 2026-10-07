@@ -1,9 +1,12 @@
-import { Check, PencilLine, Plus, Trash2 } from 'lucide-react'
+import { Check, PencilLine, Plus, Trash2, Search } from 'lucide-react'
+import './boardPicker.css'
 import { BoardPickerList } from './BoardPickerList.tsx'
 
 import type { BoardPickerPopoverProps } from '../types/boardPickerPopoverProps.ts'
 export function BoardPickerPopover({
   t,
+  query,
+  setQuery,
   boards,
   board,
   onBoard,
@@ -17,14 +20,37 @@ export function BoardPickerPopover({
   beginRenaming,
   deleteBoard,
 }: BoardPickerPopoverProps) {
+  const visibleBoards = boards.filter((item) =>
+    item.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()),
+  )
   return (
     <div
       id="board-picker"
-      className="board-picker-popover"
+      className={
+        'board-picker-popover' + (boards.length > 6 ? ' is-searchable' : '')
+      }
       aria-label={t('Boards')}
     >
+      {boards.length > 6 && (
+        <label className="board-picker-search">
+          <Search size={15} aria-hidden="true" />
+          <input
+            autoFocus
+            type="search"
+            aria-label={t('Find a board')}
+            placeholder={t('Find a board')}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+      )}
+      {!visibleBoards.length && (
+        <p className="board-picker-empty" role="status">
+          {t('No matching boards.')}
+        </p>
+      )}
       <BoardPickerList
-        boards={boards}
+        boards={visibleBoards}
         board={board}
         onBoard={onBoard}
         setOpen={setOpen}

@@ -315,8 +315,8 @@
 .board-design-navigation {
   position: absolute;
   z-index: 10;
-  top: 20px;
-  left: 20px;
+  top: 16px;
+  left: 18px;
 }
 .board-design-navigation .floating-board-navigation {
   position: static;
@@ -338,9 +338,9 @@
 }
 @media (max-width: 700px) {
   .board-design-navigation {
-    left: 8px;
-    top: 8px;
-    max-width: calc(100% - 16px);
+    left: 12px;
+    top: 12px;
+    max-width: calc(100% - 24px);
   }
   .board-design-navigation .floating-board-navigation {
     max-width: 100%;

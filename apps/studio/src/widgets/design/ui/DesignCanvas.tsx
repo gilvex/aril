@@ -2,7 +2,6 @@ import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, type MouseEvent } from 'react'
 import { Background, Controls, ReactFlow } from '@xyflow/react'
-import { Plus, LayoutTemplate } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import { EditorContextMenu } from '@/shared/ui/index.tsx'
@@ -102,22 +101,6 @@ export function DesignCanvas(props: DesignBoardProps) {
           add={canvas.add}
           insertTemplate={canvas.insertTemplate}
         />
-        {canEdit && !model.page.nodes.length && (
-          <div className="design-empty">
-            <h2>{t('Start a design')}</h2>
-            <button
-              className="button primary"
-              onClick={() => canvas.add('frame')}
-            >
-              <Plus size={16} />
-              {t('Add a frame')}
-            </button>
-            <button className="button" onClick={canvas.insertTemplate}>
-              <LayoutTemplate size={16} />
-              {t('Use editable template')}
-            </button>
-          </div>
-        )}
       </div>
       {model.inspector &&
         (model.styles ? (

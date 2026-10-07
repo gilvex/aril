@@ -7,7 +7,7 @@ export function useWireframeInspectorHandlers({
 }: WireframeInspectorHandlersProps) {
   const handleCloseWireframeDetailsClick = useCallback<() => void>(() => {
     setInspectorOpen(false)
-    inspectorToggle.current?.focus()
+    requestAnimationFrame(() => inspectorToggle.current?.focus())
   }, [setInspectorOpen, inspectorToggle])
   return { handleCloseWireframeDetailsClick }
 }

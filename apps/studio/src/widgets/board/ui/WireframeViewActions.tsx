@@ -17,30 +17,32 @@ export function WireframeViewActions({
 
   return (
     <>
-      <button
-        ref={inspectorToggle}
-        className="button"
-        aria-label={
-          inspectorOpen
-            ? t('Hide wireframe details')
-            : t('Show wireframe details')
-        }
-        title={
-          inspectorOpen
-            ? t('Hide wireframe details')
-            : t('Show wireframe details')
-        }
-        aria-expanded={inspectorOpen}
-        aria-controls="wireframe-inspector"
-        onClick={() => setInspectorOpen(!inspectorOpen)}
-      >
-        {inspectorOpen ? (
-          <PanelRightClose size={16} />
-        ) : (
-          <PanelRightOpen size={16} />
-        )}
-        <span className="touch-tool-label">{t('Details')}</span>
-      </button>
+      {!inspectorOpen && (
+        <button
+          ref={inspectorToggle}
+          className="button"
+          aria-label={
+            inspectorOpen
+              ? t('Hide wireframe details')
+              : t('Show wireframe details')
+          }
+          title={
+            inspectorOpen
+              ? t('Hide wireframe details')
+              : t('Show wireframe details')
+          }
+          aria-expanded={inspectorOpen}
+          aria-controls="wireframe-inspector"
+          onClick={() => setInspectorOpen(!inspectorOpen)}
+        >
+          {inspectorOpen ? (
+            <PanelRightClose size={16} />
+          ) : (
+            <PanelRightOpen size={16} />
+          )}
+          <span className="touch-tool-label">{t('Details')}</span>
+        </button>
+      )}
       <button
         ref={full.button}
         className="button fullscreen-toggle"

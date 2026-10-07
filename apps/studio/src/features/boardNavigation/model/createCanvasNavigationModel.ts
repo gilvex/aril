@@ -12,6 +12,8 @@ export function createCanvasNavigationModel(initial: CanvasNavigationState) {
   })
   const getSnapshot = () => selectCanvasNavigation(store.getState())
   const actions = {
+    setQuery: (value: string) =>
+      store.dispatch(canvasNavigationSlice.actions.setQuery(value)),
     setOpen: (
       value:
         | CanvasNavigationState['open']
