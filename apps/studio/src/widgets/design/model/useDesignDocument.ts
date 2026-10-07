@@ -2,6 +2,7 @@ import { useCallback, useMemo, useEffect } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import {
+  createDesignTemplate,
   duplicateDesignElements,
   makeDesignElement,
   removeDesignElements,
@@ -9,7 +10,6 @@ import {
   type DesignPage,
 } from '@pomegranate/domain/design'
 import { useDesignEditorState } from './useDesignEditorState.ts'
-import { createDesignTemplate } from '../utils/createDesignTemplate.ts'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'
 
 export function useDesignDocument({

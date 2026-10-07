@@ -1,13 +1,12 @@
-import {
-  makeDesignElement,
-  type DesignElement,
-} from '@pomegranate/domain/design'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import { makeDesignElement } from './makeDesignElement.ts'
+import type { DesignElement } from '../types/designElement.ts'
+import type { Workspace } from '../../workspace/types/workspace.ts'
 
 export function createDesignTemplate(
   design: Workspace['design'],
   t: (key: string) => string,
   x = 0,
+  makeId: () => string = () => crypto.randomUUID(),
 ) {
   const nodes: DesignElement[] = []
   const add = (
@@ -15,7 +14,7 @@ export function createDesignTemplate(
     name: string,
     props: Partial<DesignElement>,
   ) => {
-    const node = makeDesignElement(kind, crypto.randomUUID(), {
+    const node = makeDesignElement(kind, makeId(), {
       name: t(name),
       order: nodes.length,
       fontFamily: design.bodyFont || 'DM Sans',

@@ -1,6 +1,7 @@
 import { createSeed } from '@pomegranate/domain/seed'
 import { workspaceSchema } from '@pomegranate/domain/workspace'
 import { createDemoWireframe } from './createDemoWireframe.ts'
+import { withDemoDesign } from './withDemoDesign.ts'
 
 export function createDemoWorkspace() {
   const workspace = createSeed()
@@ -22,7 +23,7 @@ export function createDemoWorkspace() {
   }
   workspace.notesTitle = 'Start here'
   workspace.notes =
-    '# Welcome to the Aril demo\n\nThis is your private, editable sandbox. Changes stay in this tab; no account or live workspace is involved. Use **Reset demo** to start again.\n\n## Explore the project\n- **Blueprint:** select or double-click a node, edit its details, drag multiple nodes, connect handles, or open the linked requirements.\n- **Wireframes:** follow the six-screen recipe flow. Switch to Preview flow and click the buttons.\n- **Requirements:** try status and priority boards, filters, bulk edits, and acceptance criteria.\n- **Design direction:** change the accent, fonts, density, device and sample screen.\n- **Notes:** add a document, edit Markdown, and use the outline or split view.\n\n## Collaboration preview\nMaya reviews the blueprint, Noah works on wireframes, Iris reviews requirements, and Leo writes notes. These are simulated teammates with independent tasks. Their cursors, selections and cameras demonstrate presence and following. They perform a short sequence of real edits in this sandbox: dragging blocks, refining labels, advancing requirements, and updating notes. They skip items you select or change. Maya finishes small planning tasks: a related idea, its connection, a single alignment, and a decision. She works in a bounded row, keeps three ideas visible at most, varies topics and gesture order, and retires older completed ideas. She pauses between deliberate gestures and avoids occupied space. Edit or connect one of her ideas to keep it. Open People and follow one, or inspect Team activity.\n\n## Make it yours\nRename an idea, move a requirement, then try Undo, Redo, history and JSON export. Your saved demo changes survive refresh in this tab. Closing the tab ends this sandbox.\n'
+    '# Welcome to the Aril demo\n\nThis is your private, editable sandbox. Changes stay in this tab; no account or live workspace is involved. Use **Reset demo** to start again.\n\n## Explore the project\n- **Blueprint:** select or double-click a node, edit its details, drag multiple nodes, connect handles, or open the linked requirements.\n- **Wireframes:** follow the six-screen recipe flow. Switch to Preview flow and click the buttons.\n- **Requirements:** try status and priority boards, filters, bulk edits, and acceptance criteria.\n- **Design:** explore the editable desktop and mobile server dashboard. Double-click text to edit, drag or resize layers, inspect frame children, and try colors, typography, duplicate, hide, lock and undo.\n- **Notes:** add a document, edit Markdown, and use the outline or split view.\n\n## Collaboration preview\nMaya reviews the blueprint, Noah works on wireframes, Iris reviews requirements, and Leo writes notes. These are simulated teammates with independent tasks. Their cursors, selections and cameras demonstrate presence and following. They perform a short sequence of real edits in this sandbox: dragging blocks, refining labels, advancing requirements, and updating notes. They skip items you select or change. Maya finishes small planning tasks: a related idea, its connection, a single alignment, and a decision. She works in a bounded row, keeps three ideas visible at most, varies topics and gesture order, and retires older completed ideas. She pauses between deliberate gestures and avoids occupied space. Edit or connect one of her ideas to keep it. Open People and follow one, or inspect Team activity.\n\n## Make it yours\nRename an idea, move a requirement, then try Undo, Redo, history and JSON export. Your saved demo changes survive refresh in this tab. Closing the tab ends this sandbox.\n'
   workspace.documents = [
     {
       id: 'recipe-decisions',
@@ -37,5 +38,5 @@ export function createDemoWorkspace() {
   ]
   workspace.design.headingFont = 'Manrope'
   workspace.design.bodyFont = 'DM Sans'
-  return workspaceSchema.parse(workspace)
+  return workspaceSchema.parse(withDemoDesign(workspace))
 }

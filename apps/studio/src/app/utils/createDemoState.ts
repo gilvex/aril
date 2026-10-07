@@ -3,6 +3,7 @@ import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 import { createDemoWorkspace } from './createDemoWorkspace.ts'
 import { createDemoActions } from './createDemoActions.ts'
+import { withDemoDesign } from './withDemoDesign.ts'
 
 export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
   const now = new Date().toISOString()
@@ -78,13 +79,15 @@ export function createDemoState(storage: Pick<Storage, 'getItem'>): DemoState {
     ) {
       state.envelope = {
         ...saved.envelope,
-        workspace: workspaceSchema.parse(saved.envelope.workspace),
+        workspace: withDemoDesign(
+          workspaceSchema.parse(saved.envelope.workspace),
+        ),
       }
       state.history = (saved.history || [])
         .slice(0, 30)
         .map((item: DemoState['envelope']) => ({
           ...item,
-          workspace: workspaceSchema.parse(item.workspace),
+          workspace: withDemoDesign(workspaceSchema.parse(item.workspace)),
         }))
       state.completedActions = Array.isArray(saved.completedActions)
         ? saved.completedActions.filter((id: unknown) => typeof id === 'string')

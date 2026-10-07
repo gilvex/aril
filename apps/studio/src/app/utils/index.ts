@@ -4,6 +4,7 @@ export { registerServiceWorker } from './registerServiceWorker.ts'
 export { createDemoWireframe } from './createDemoWireframe.ts'
 
 export { createDemoWorkspace } from './createDemoWorkspace.ts'
+export { withDemoDesign } from './withDemoDesign.ts'
 
 export { createDemoState } from './createDemoState.ts'
 

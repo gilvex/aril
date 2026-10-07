@@ -33,7 +33,7 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 
 ## What works
 
-- **Try demo** on the sign-in page opens `/?demo=1`: an editable, account-free sample project with four boards, a six-screen recipe wireframe flow, varied requirements, design settings and Markdown documents. Demo edits/history stay in this tab's session storage; Reset demo restores the examples. Named simulated teammates demonstrate cursors, selections and following. Invitations, account linking and agent credentials require a real workspace.
+- **Try demo** on the sign-in page opens `/?demo=1`: an editable, account-free sample project with four boards, a six-screen recipe wireframe flow, varied requirements, desktop/mobile server dashboard designs and Markdown documents. Design opens with editable frames, text, shapes, cards and buttons. Existing demo tabs gain the example only if saved design pages are absent; custom or deliberately cleared pages are preserved. Demo edits/history stay in this tab's session storage; Reset demo restores the examples. Named simulated teammates demonstrate cursors, selections and following. Invitations, account linking and agent credentials require a real workspace.
 
 - Four editable starter diagrams: deployment blueprint, platform architecture, first deployment, and product structure.
 - Every board has a separate Wireframes section: resizable screen frames, text, buttons, inputs, cards, images and navigation blocks, labeled interaction arrows, and a click-through flow preview.
