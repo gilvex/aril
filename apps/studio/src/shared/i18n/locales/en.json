@@ -930,5 +930,7 @@
   "Resize properties panel": "Resize properties panel",
   "Dock panel left": "Dock panel left",
   "Dock panel right": "Dock panel right",
-  "Undock panel": "Undock panel"
+  "Undock panel": "Undock panel",
+  "Resize layers height": "Resize layers height",
+  "Resize properties height": "Resize properties height"
 }

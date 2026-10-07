@@ -7,13 +7,17 @@ import {
 export function useDesignPanelResize(
   width: number,
   limit: number,
-  side: 'left' | 'right',
+  side: 'left' | 'right' | 'bottom',
   change: (width: number) => void,
+  defaultSize = side === 'left' ? 280 : 300,
 ) {
+  const vertical = side === 'bottom'
+  const minimum = Math.min(limit, vertical ? 180 : 220)
   const gesture = useRef<{ id: number; x: number; width: number } | null>(null)
   const resize = useCallback(
-    (next: number) => change(Math.round(Math.max(220, Math.min(limit, next)))),
-    [change, limit],
+    (next: number) =>
+      change(Math.round(Math.max(minimum, Math.min(limit, next)))),
+    [change, limit, minimum],
   )
   const down = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
@@ -22,17 +26,25 @@ export function useDesignPanelResize(
       event.stopPropagation()
       event.currentTarget.focus()
       event.currentTarget.setPointerCapture(event.pointerId)
-      gesture.current = { id: event.pointerId, x: event.clientX, width }
+      gesture.current = {
+        id: event.pointerId,
+        x: vertical ? event.clientY : event.clientX,
+        width,
+      }
     },
-    [width],
+    [width, vertical],
   )
   const move = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
       const drag = gesture.current
       if (!drag || drag.id !== event.pointerId) return
-      resize(drag.width + (event.clientX - drag.x) * (side === 'left' ? 1 : -1))
+      resize(
+        drag.width +
+          ((vertical ? event.clientY : event.clientX) - drag.x) *
+            (side === 'right' ? -1 : 1),
+      )
     },
-    [resize, side],
+    [resize, side, vertical],
   )
   const end = useCallback((event: PointerEvent<HTMLDivElement>) => {
     gesture.current = null
@@ -41,14 +53,14 @@ export function useDesignPanelResize(
   }, [])
   const key = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
-      const step = (event.shiftKey ? 40 : 10) * (side === 'left' ? 1 : -1)
+      const step = (event.shiftKey ? 40 : 10) * (side === 'right' ? -1 : 1)
       const next =
-        event.key === 'ArrowRight'
+        event.key === (vertical ? 'ArrowDown' : 'ArrowRight')
           ? width + step
-          : event.key === 'ArrowLeft'
+          : event.key === (vertical ? 'ArrowUp' : 'ArrowLeft')
             ? width - step
             : event.key === 'Home'
-              ? 220
+              ? minimum
               : event.key === 'End'
                 ? limit
                 : null
@@ -57,12 +69,9 @@ export function useDesignPanelResize(
       event.stopPropagation()
       resize(next)
     },
-    [limit, resize, side, width],
+    [limit, resize, side, width, vertical, minimum],
   )
-  const reset = useCallback(
-    () => resize(side === 'left' ? 280 : 300),
-    [resize, side],
-  )
+  const reset = useCallback(() => resize(defaultSize), [resize, defaultSize])
   return {
     onPointerDown: down,
     onPointerMove: move,

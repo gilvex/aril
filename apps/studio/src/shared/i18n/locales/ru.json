@@ -148,7 +148,7 @@
   "Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side": "Перетаскивайте блоки · Меняйте размер за углы · Ctrl / ⌘ + щелчок для группы · Соединяйте с любой стороны",
   "Drag the screen’s title bar to move it with its blocks. Deleting a screen also deletes its contents; Undo restores them.": "Перетащите заголовок экрана, чтобы переместить его вместе с блоками. Удаление экрана удаляет и содержимое; отмена восстанавливает его.",
   "Drag to move": "Перетащите для перемещения",
-  "Drag to resize · Arrow keys to adjust · Double-click to reset": "Перетащите для изменения ширины · Стрелки для настройки · Двойной щелчок для сброса",
+  "Drag to resize · Arrow keys to adjust · Double-click to reset": "Перетащите для изменения размера · Стрелки для настройки · Двойной щелчок для сброса",
   "Duplicate": "Дублировать",
   "Duplicate selection": "Дублировать выбранное",
   "Edit": "Редактировать",
@@ -930,5 +930,7 @@
   "Resize properties panel": "Изменить ширину свойств",
   "Dock panel left": "Закрепить панель слева",
   "Dock panel right": "Закрепить панель справа",
-  "Undock panel": "Открепить панель"
+  "Undock panel": "Открепить панель",
+  "Resize layers height": "Изменить высоту слоёв",
+  "Resize properties height": "Изменить высоту свойств"
 }

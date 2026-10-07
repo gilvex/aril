@@ -2,6 +2,9 @@ import type { DesignElement } from '@pomegranate/domain/design'
 export type DesignEditorState = {
   compact: boolean
   panelSpace: number
+  panelVerticalSpace: number
+  layersHeight: number
+  inspectorHeight: number
   layersWidth: number
   inspectorWidth: number
   layersDocked: boolean

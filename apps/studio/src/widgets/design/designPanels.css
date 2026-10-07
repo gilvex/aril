@@ -1,7 +1,6 @@
 .design-panel {
   position: absolute;
   top: 66px;
-  bottom: 88px;
   z-index: 21;
   display: flex;
   min-height: 0;
@@ -13,7 +12,6 @@
 }
 .design-panel-left {
   left: 18px;
-  bottom: 160px;
 }
 .has-board-navigation > .design-panel-left {
   top: 124px;
@@ -64,9 +62,21 @@
   left: -4px;
 }
 .design-panel-resize:hover,
-.design-panel-resize:focus-visible {
+.design-panel-resize:focus-visible,
+.design-panel-height-resize:hover,
+.design-panel-height-resize:focus-visible {
   background: var(--accent-light);
   outline: 1px solid var(--accent);
+}
+.design-panel-height-resize {
+  position: absolute;
+  z-index: 5;
+  left: 8px;
+  right: 8px;
+  bottom: -4px;
+  height: 8px;
+  cursor: ns-resize;
+  touch-action: none;
 }
 .design-panel[data-docked] {
   position: relative;

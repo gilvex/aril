@@ -3,6 +3,9 @@ export function createDesignEditorState(): DesignEditorState {
   return {
     compact: false,
     panelSpace: 1000,
+    panelVerticalSpace: 800,
+    layersHeight: 520,
+    inspectorHeight: 600,
     layersWidth: 280,
     inspectorWidth: 300,
     layersDocked: false,

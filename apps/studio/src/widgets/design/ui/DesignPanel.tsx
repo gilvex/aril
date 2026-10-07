@@ -27,6 +27,23 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
   )
   const limit = designPanelLimit(model, docked)
   const width = Math.min(left ? model.layersWidth : model.inspectorWidth, limit)
+  const heightLimit = Math.max(96, model.panelVerticalSpace - 16)
+  const height = Math.min(
+    left ? model.layersHeight : model.inspectorHeight,
+    heightLimit,
+  )
+  const changeHeight = useCallback(
+    (value: number) =>
+      patch(left ? { layersHeight: value } : { inspectorHeight: value }),
+    [left, patch],
+  )
+  const resizeHeight = useDesignPanelResize(
+    height,
+    heightLimit,
+    'bottom',
+    changeHeight,
+    left ? 520 : 600,
+  )
   useDraggableSurface(ref, docked, {
     disabled: docked,
     dockSide: side,
@@ -42,7 +59,7 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
       ref={ref}
       className={`design-panel design-panel-${side}`}
       data-docked={docked || undefined}
-      style={{ width }}
+      style={{ width, height: docked ? undefined : height }}
     >
       {children}
       <button
@@ -67,6 +84,24 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
         )}
         {...resize}
       />
+      {!docked && (
+        <div
+          className="design-panel-height-resize"
+          role="separator"
+          tabIndex={0}
+          aria-label={t(
+            left ? 'Resize layers height' : 'Resize properties height',
+          )}
+          aria-orientation="horizontal"
+          aria-valuemin={Math.min(180, heightLimit)}
+          aria-valuemax={Math.floor(heightLimit)}
+          aria-valuenow={Math.round(height)}
+          title={t(
+            'Drag to resize · Arrow keys to adjust · Double-click to reset',
+          )}
+          {...resizeHeight}
+        />
+      )}
     </div>
   )
 }

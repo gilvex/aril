@@ -5,7 +5,10 @@ export function useDesignPanelBounds(patch: DesignEditorModel['patch']) {
   useEffect(() => {
     if (!ref.current) return
     const observer = new ResizeObserver(([entry]) =>
-      patch({ panelSpace: entry.contentRect.width }),
+      patch({
+        panelSpace: entry.contentRect.width,
+        panelVerticalSpace: entry.contentRect.height,
+      }),
     )
     observer.observe(ref.current)
     return () => observer.disconnect()
