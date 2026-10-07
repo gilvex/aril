@@ -9,6 +9,8 @@ import { designTools } from '../config/designTools.ts'
 import type { DesignElement } from '@pomegranate/domain/design'
 import type { DesignToolbarProps } from '../types/designToolbarProps.ts'
 import { DesignCanvasActions } from './DesignCanvasActions.tsx'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionBar } from '@/shared/ui/index.tsx'
 
 export function DesignToolbar({
   model,
@@ -40,12 +42,8 @@ export function DesignToolbar({
       {!compact && (
         <DesignPanelActions model={model} boardDesign={!!navigation} />
       )}
-      <div
-        className="design-tool-dock"
-        role="toolbar"
-        aria-label={t('Design tools')}
-      >
-        <button
+      <StudioActionBar className="design-tool-dock" label={t('Design tools')}>
+        <ActionBarButton
           className={model.tool === 'select' ? 'active' : ''}
           aria-pressed={model.tool === 'select'}
           title={t('Select')}
@@ -53,8 +51,8 @@ export function DesignToolbar({
           onClick={() => model.patch({ tool: 'select' })}
         >
           <MousePointer2 size={18} />
-        </button>
-        <button
+        </ActionBarButton>
+        <ActionBarButton
           className={model.tool === 'pan' ? 'active' : ''}
           aria-pressed={model.tool === 'pan'}
           title={t('Pan')}
@@ -62,12 +60,18 @@ export function DesignToolbar({
           onClick={() => model.patch({ tool: 'pan' })}
         >
           <Hand size={18} />
-        </button>
+        </ActionBarButton>
         {!readOnly && (
           <details ref={menu} className="design-insert-menu">
-            <summary aria-label={t('Insert')} title={t('Insert')}>
-              <Plus size={18} />
-            </summary>
+            <ActionBarButton asChild>
+              <summary
+                role="button"
+                aria-label={t('Insert')}
+                title={t('Insert')}
+              >
+                <Plus size={18} />
+              </summary>
+            </ActionBarButton>
             <div role="group" aria-label={t('Insert element')}>
               {designTools.map(({ kind, label, icon: Icon, ...rest }) => (
                 <button
@@ -95,7 +99,7 @@ export function DesignToolbar({
           </details>
         )}
         {!readOnly && <DesignCanvasActions model={model} />}
-      </div>
+      </StudioActionBar>
     </>
   )
 }

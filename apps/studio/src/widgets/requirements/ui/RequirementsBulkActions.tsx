@@ -1,5 +1,6 @@
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import { StudioSelect } from '@/shared/ui/index.tsx'
+import { StudioActionBar, StudioSelect } from '@/shared/ui/index.tsx'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
 import { useCallback } from 'react'
 import { X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -18,10 +19,9 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
     (id) => !model.results.some((item) => item.id === id),
   ).length
   return (
-    <div
+    <StudioActionBar
       className="requirements-bulk"
-      role="group"
-      aria-label={t('Bulk requirement actions')}
+      label={t('Bulk requirement actions')}
     >
       <strong>
         {t('{{count}} selected', { count: model.checkedIds.length })}
@@ -63,13 +63,13 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
           ))}
         </StudioSelect>
       ))}
-      <button
+      <ActionBarButton
         className="icon-button"
         aria-label={t('Clear selection')}
         onClick={() => model.setViewState({ checkedIds: [] })}
       >
         <X size={17} />
-      </button>
-    </div>
+      </ActionBarButton>
+    </StudioActionBar>
   )
 }

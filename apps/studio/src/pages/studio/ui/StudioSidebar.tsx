@@ -18,6 +18,7 @@ export function StudioSidebar(props: StudioContentProps) {
         className="sidebar-collapse-control"
         aria-current={props.view === 'settings' ? 'page' : undefined}
         title={t('Settings')}
+        aria-label={t('Settings')}
         onClick={() => props.setView('settings')}
       >
         <Settings size={18} />

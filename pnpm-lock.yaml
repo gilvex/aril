@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  vagabond-ui@0.3.0: f8863edfe30f3bdc2f83f7644445b85b7b0e6b27740ec7e489d5a71e4b738c29
+  vagabond-ui@0.4.0: f8863edfe30f3bdc2f83f7644445b85b7b0e6b27740ec7e489d5a71e4b738c29
 
 importers:
 
@@ -102,8 +102,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(supports-color@7.2.0)
       vagabond-ui:
-        specifier: 0.3.0
-        version: 0.3.0(patch_hash=f8863edfe30f3bdc2f83f7644445b85b7b0e6b27740ec7e489d5a71e4b738c29)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        specifier: 0.4.0
+        version: 0.4.0(patch_hash=f8863edfe30f3bdc2f83f7644445b85b7b0e6b27740ec7e489d5a71e4b738c29)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       zod:
         specifier: ^4.6.5
         version: 4.6.5
@@ -2906,8 +2906,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  vagabond-ui@0.3.0:
-    resolution: {integrity: sha512-BvBDq0ioaqHEACAJbyzO4PmC3kVxR3B7nVmMUuT1mCZTt5soGgM7nfP0ScFi4HIZcN66uspoTyIGr3nMOM4W5g==}
+  vagabond-ui@0.4.0:
+    resolution: {integrity: sha512-ybiG7BRaGlrnBZdCwFSSlYJK3GndwwX+Yj4Vp41c5PXlIU//1+WqfQOkHMR0RZlECfW3G3YXwHVe5op+TYyivQ==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -6094,7 +6094,7 @@ snapshots:
     dependencies:
       react: 19.3.0
 
-  vagabond-ui@0.3.0(patch_hash=f8863edfe30f3bdc2f83f7644445b85b7b0e6b27740ec7e489d5a71e4b738c29)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  vagabond-ui@0.4.0(patch_hash=f8863edfe30f3bdc2f83f7644445b85b7b0e6b27740ec7e489d5a71e4b738c29)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       class-variance-authority: 0.7.1
       clsx: 2.1.1

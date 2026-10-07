@@ -6,6 +6,7 @@ import { CanvasChrome } from '@/widgets/board/ui/CanvasChrome.tsx'
 import { nodeKinds } from '@pomegranate/domain/workspace'
 import { Plus, X } from 'lucide-react'
 import { BlueprintViewActions } from './BlueprintViewActions.tsx'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
 
 import type { BlueprintToolbarProps } from '../types/blueprintToolbarProps.ts'
 export function BlueprintToolbar({
@@ -46,7 +47,7 @@ export function BlueprintToolbar({
       }
     >
       <div className="add-node-wrap">
-        <button
+        <ActionBarButton
           className="button primary"
           disabled={readOnly}
           title={t('Add node')}
@@ -55,7 +56,7 @@ export function BlueprintToolbar({
           onClick={() => setPalette(!palette)}
         >
           <Plus size={16} />
-        </button>
+        </ActionBarButton>
         {palette && (
           <div className="node-palette">
             <div className="popover-heading">

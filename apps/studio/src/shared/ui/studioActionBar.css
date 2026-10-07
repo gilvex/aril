@@ -1,0 +1,44 @@
+.studio-action-bar-positioner {
+  position: absolute;
+  z-index: 12;
+  bottom: max(18px, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 24px);
+}
+.studio-shell .studio-action-bar-positioner > .studio-action-bar {
+  position: relative;
+  inset: auto;
+  transform: none;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px #0003;
+}
+.studio-action-bar.requirements-bulk {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.studio-action-bar [data-slot='button']:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.requirements-bulk-slot > .studio-action-bar-positioner {
+  position: relative;
+  inset: auto;
+  transform: none;
+  max-width: 100%;
+}
+@media (max-width: 1024px), (pointer: coarse) {
+  .studio-action-bar-positioner {
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    max-width: calc(100% - 16px);
+  }
+}

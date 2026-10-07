@@ -1,5 +1,6 @@
 import { useCallback, type MouseEvent } from 'react'
 import { MoreHorizontal } from 'lucide-react'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
 import { useReactFlow } from '@xyflow/react'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -27,13 +28,13 @@ export function DesignCanvasActions({ model }: { model: DesignEditorModel }) {
   )
   return (
     <EditorActionMenu actions={actions} label={t('Canvas actions')}>
-      <button
+      <ActionBarButton
         aria-label={t('Canvas actions')}
         title={t('Canvas actions')}
         onClick={prepare}
       >
         <MoreHorizontal size={18} />
-      </button>
+      </ActionBarButton>
     </EditorActionMenu>
   )
 }

@@ -5,6 +5,8 @@ import { useCanvasChromeHandlers } from '../model/useCanvasChromeHandlers.tsx'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import type { CanvasChromeProps } from '@/widgets/board/types/canvasChromeProps.ts'
 import { Hand, Link2, MousePointer2 } from 'lucide-react'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionBar } from '@/shared/ui/index.tsx'
 
 export function CanvasChrome({
   navigation,
@@ -31,14 +33,13 @@ export function CanvasChrome({
     <>
       {navigation}
       {!compact && <div className="canvas-top-actions">{actions}</div>}
-      <div
+      <StudioActionBar
         className="canvas-tool-dock"
-        role="group"
-        aria-label={t('Canvas tools')}
+        label={t('Canvas tools')}
       >
         {!preview && (
           <>
-            <button
+            <ActionBarButton
               className="button"
               aria-label={
                 compact ? t('Select multiple items') : t('Select tool')
@@ -48,10 +49,10 @@ export function CanvasChrome({
               onClick={handleClick}
             >
               <MousePointer2 size={17} />
-            </button>
+            </ActionBarButton>
             {!compact && (
               <>
-                <button
+                <ActionBarButton
                   className="button"
                   title={t('Pan tool')}
                   aria-label={t('Pan tool')}
@@ -59,8 +60,8 @@ export function CanvasChrome({
                   onClick={() => onTool('pan')}
                 >
                   <Hand size={17} />
-                </button>
-                <button
+                </ActionBarButton>
+                <ActionBarButton
                   className="button"
                   disabled={readOnly}
                   title={t('Connect tool')}
@@ -69,14 +70,14 @@ export function CanvasChrome({
                   onClick={() => onTool('connect')}
                 >
                   <Link2 size={17} />
-                </button>
+                </ActionBarButton>
               </>
             )}
           </>
         )}
         {compact && actions}
         {children}
-      </div>
+      </StudioActionBar>
     </>
   )
 }

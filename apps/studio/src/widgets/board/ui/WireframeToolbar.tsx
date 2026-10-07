@@ -6,6 +6,7 @@ import { WireframeViewActions } from './WireframeViewActions.tsx'
 
 import { CanvasChrome } from '@/widgets/board/ui/CanvasChrome.tsx'
 import { Pencil, Play, Plus } from 'lucide-react'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
 
 import type { WireframeToolbarProps } from '../types/wireframeToolbarProps.ts'
 export function WireframeToolbar({
@@ -50,7 +51,7 @@ export function WireframeToolbar({
         />
       }
     >
-      <button
+      <ActionBarButton
         className={`button preview-toggle ${preview ? 'primary' : ''}`}
         title={preview ? t('Edit') : t('Preview flow')}
         aria-label={preview ? t('Edit') : t('Preview flow')}
@@ -58,10 +59,10 @@ export function WireframeToolbar({
         onClick={handleClick}
       >
         {preview ? <Pencil size={15} /> : <Play size={15} />}
-      </button>
+      </ActionBarButton>
       {!preview && (
         <div className="add-node-wrap">
-          <button
+          <ActionBarButton
             className="button primary"
             title={t('Add block')}
             aria-label={t('Add block')}
@@ -70,7 +71,7 @@ export function WireframeToolbar({
             disabled={readOnly || graph.nodes.length >= 500}
           >
             <Plus size={16} />
-          </button>
+          </ActionBarButton>
           {palette && (
             <WireframePalette t={t} setPalette={setPalette} add={add} />
           )}
