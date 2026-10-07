@@ -1,3 +1,6 @@
+import { useRef } from 'react'
+import { useDraggableSurface } from '@/shared/model/index.ts'
+import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { WorkspacePickerDialog } from './WorkspacePickerDialog.tsx'
 import { AgentAccess } from '@/features/agentAccess/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -34,6 +37,8 @@ export function StudioDialogs({
   snapshots,
 }: StudioDialogsProps) {
   const { t } = useTranslation()
+  const surface = useRef<HTMLDivElement>(null)
+  useDraggableSurface(surface, modal)
 
   return (
     <div
@@ -43,11 +48,13 @@ export function StudioDialogs({
       }}
     >
       <div
+        ref={surface}
         className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
+        <SurfaceGrip />
         <button
           className="icon-button modal-close"
           aria-label={t('Close dialog')}

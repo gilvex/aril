@@ -1,3 +1,4 @@
+import { DesignDrawerBackdrop } from './DesignDrawerBackdrop.tsx'
 import { DesignMobileBar } from './DesignMobileBar.tsx'
 import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -43,6 +44,7 @@ export function DesignCanvas(props: DesignBoardProps) {
   return (
     <>
       <section
+        data-surface-bounds
         className={
           'design-editor design-floating-tools' +
           (props.navigation ? ' has-board-navigation' : '')
@@ -50,6 +52,9 @@ export function DesignCanvas(props: DesignBoardProps) {
         aria-label={t('Design canvas')}
         onKeyDown={canvas.keyboard}
       >
+        {compact && (model.layers || model.inspector) && (
+          <DesignDrawerBackdrop model={model} />
+        )}
         {model.layers && <DesignLayers model={model} />}
         <div
           ref={canvas.surface}

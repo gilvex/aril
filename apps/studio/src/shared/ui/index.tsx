@@ -6,3 +6,5 @@ export { LoadingProgress } from './LoadingProgress.tsx'
 export { StudioSelect } from './StudioSelect.tsx'
 export { EditorContextMenu } from './EditorContextMenu.tsx'
 export { EditorActionMenu } from './EditorActionMenu.tsx'
+
+export { SurfaceGrip } from './SurfaceGrip.tsx'

@@ -922,5 +922,8 @@
   "Link requirements from a node’s details.": "Свяжите требования в свойствах узла.",
   "Connections": "Связи",
   "Fit to view": "Показать всё",
-  "Menu": "Меню"
+  "Menu": "Меню",
+  "Move window": "Переместить окно",
+  "Drag to move. Arrow keys move; Home resets.": "Перетащите окно. Стрелки — перемещение, Home — сброс.",
+  "Close panel": "Закрыть панель"
 }

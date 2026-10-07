@@ -1,10 +1,14 @@
-import { useCallback, useMemo, type MouseEvent } from 'react'
+import { useRef, useCallback, useMemo, type MouseEvent } from 'react'
 import { X } from 'lucide-react'
+import { useDraggableSurface } from '@/shared/model/index.ts'
+import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignLayerRow } from './DesignLayerRow.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignLayers({ model }: DesignEditorProps) {
   const { t } = useTranslation()
+  const surface = useRef<HTMLElement>(null)
+  useDraggableSurface(surface)
   const { patch } = model
   const close = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -28,8 +32,9 @@ export function DesignLayers({ model }: DesignEditorProps) {
       ])
   }, [model.page.nodes, model.collapsed])
   return (
-    <aside className="design-layers" aria-label={t('Layers')}>
+    <aside className="design-layers" ref={surface} aria-label={t('Layers')}>
       <header className="design-layers-heading">
+        <SurfaceGrip />
         <strong>{t('Layers')}</strong>
         <small>{model.page.nodes.length}/500</small>
         <button

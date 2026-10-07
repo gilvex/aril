@@ -1,4 +1,6 @@
-import { useCallback } from 'react'
+import { useDraggableSurface } from '@/shared/model/index.ts'
+import { SurfaceGrip } from '@/shared/ui/index.tsx'
+import { useCallback, useRef } from 'react'
 import { X, Settings } from 'lucide-react'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { Avatar } from '@/entities/collaboration/index.ts'
@@ -10,6 +12,8 @@ import './collaborationCompact.css'
 export function CollaborationPopover(props: CollaborationPopoverProps) {
   const { t } = useTranslation()
   const { panel, setPanel, opener, onSettings } = props
+  const surface = useRef<HTMLElement>(null)
+  useDraggableSurface(surface, panel)
   const close = useCallback(() => {
     setPanel(null)
     opener.current?.focus()
@@ -40,6 +44,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
       onClick={backdrop}
     >
       <section
+        ref={surface}
         className={
           'collaboration-popover compact-collaboration ' +
           (panel === 'activity' ? 'activity-modal' : '')
@@ -49,6 +54,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
         aria-label={t(title)}
       >
         <header className="collaboration-popover-heading">
+          <SurfaceGrip />
           <strong>{t(title)}</strong>
           <button
             className="icon-button"

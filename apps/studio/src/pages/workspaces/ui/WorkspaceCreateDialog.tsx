@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, type SyntheticEvent } from 'react'
+import { useDraggableSurface } from '@/shared/model/index.ts'
+import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { X } from 'lucide-react'
 import type { CreateWorkspaceFormProps } from '../types/createWorkspaceFormProps.ts'
 import { CreateWorkspaceForm } from './CreateWorkspaceForm.tsx'
@@ -8,6 +10,7 @@ export function WorkspaceCreateDialog(
 ) {
   const { t, setCreating, busy } = props
   const dialog = useRef<HTMLDialogElement>(null)
+  useDraggableSurface(dialog)
   useEffect(() => {
     const element = dialog.current
     element?.showModal()
@@ -32,6 +35,7 @@ export function WorkspaceCreateDialog(
       onCancel={cancel}
     >
       <header>
+        <SurfaceGrip />
         <h2 id="workspace-create-title">{t('New workspace')}</h2>
         <button
           className="icon-button"

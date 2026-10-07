@@ -81,3 +81,7 @@ Blueprint Overview contains editable board name and description, node/connection
 ## Design tools on touch screens
 
 Desktop groups the Layers toggle beside Pages. On compact screens, Design replaces the main bottom navigation with Pages, Layers, Styles, Properties and Menu. The Menu contains the app section links; both standalone and board-specific Design use this layout. Pages opens upward without automatically summoning the phone keyboard. Opening a panel closes the previous panel, including selection-driven Properties. Layer lists scroll within bounded panels that leave the zoom controls and drawing dock reachable.
+
+## Movable dialogs and mobile drawers
+
+Desktop dialogs, collaboration windows and Design panels can be dragged from their header or grip. Arrow keys move a focused grip (Shift takes larger steps); Home resets its position. Movement stays inside the viewport or canvas bounds, and resize or reopening resets the offset. Offsets are transient UI state and never saved to workspace documents. Compact screens use bottom drawers with bounded scrolling, safe-area padding and reduced-motion support. Design drawers close from their close button or backdrop; Pages uses a modal drawer with focus trapping and Escape dismissal.

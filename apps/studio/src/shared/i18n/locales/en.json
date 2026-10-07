@@ -922,5 +922,8 @@
   "Link requirements from a node’s details.": "Link requirements from a node’s details.",
   "Connections": "Connections",
   "Fit to view": "Fit to view",
-  "Menu": "Menu"
+  "Menu": "Menu",
+  "Move window": "Move window",
+  "Drag to move. Arrow keys move; Home resets.": "Drag to move. Arrow keys move; Home resets.",
+  "Close panel": "Close panel"
 }

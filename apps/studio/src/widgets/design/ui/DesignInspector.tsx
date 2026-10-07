@@ -1,7 +1,9 @@
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
-import { useCallback, type FocusEvent } from 'react'
+import { useRef, useCallback, type FocusEvent } from 'react'
 import { MoreHorizontal, X } from 'lucide-react'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
+import { useDraggableSurface } from '@/shared/model/index.ts'
+import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignGeometry } from './DesignGeometry.tsx'
 import { DesignPaint } from './DesignPaint.tsx'
@@ -11,6 +13,8 @@ import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignInspector({ model }: DesignEditorProps) {
   const { t } = useTranslation()
+  const surface = useRef<HTMLElement>(null)
+  useDraggableSurface(surface)
   const readOnly = useWorkspaceRole() === 'viewer'
   const node = model.selected[0]
   const actions = useDesignLayerActions(model)
@@ -23,8 +27,13 @@ export function DesignInspector({ model }: DesignEditorProps) {
     [model],
   )
   return (
-    <aside className="design-inspector" aria-label={t('Design properties')}>
+    <aside
+      className="design-inspector"
+      ref={surface}
+      aria-label={t('Design properties')}
+    >
       <header>
+        <SurfaceGrip />
         <strong>{t('Design')}</strong>
         <button
           className="icon-button"
