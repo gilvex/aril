@@ -7,6 +7,16 @@ export const designEditorSlice = createSlice({
   reducers: {
     patch(state, action: PayloadAction<Partial<DesignEditorState>>) {
       Object.assign(state, action.payload)
+      if (action.payload.pagesOpen) {
+        state.layers = false
+        state.inspector = false
+      } else if (action.payload.layers) {
+        state.pagesOpen = false
+        state.inspector = false
+      } else if (action.payload.inspector) {
+        state.pagesOpen = false
+        state.layers = false
+      }
     },
   },
 })

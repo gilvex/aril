@@ -35,3 +35,7 @@ export { BoardDesignCanvas } from './BoardDesignCanvas.tsx'
 
 export { WorkspacePickerDialog } from './WorkspacePickerDialog.tsx'
 export { BoardTypeChoices } from './BoardTypeChoices.tsx'
+
+export { StudioMenuNavigation } from './StudioMenuNavigation.tsx'
+
+export { StudioMobileMenuButton } from './StudioMobileMenuButton.tsx'

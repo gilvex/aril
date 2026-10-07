@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useEffect } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import {
   createDesignTemplate,
   duplicateDesignElements,
@@ -18,7 +17,6 @@ export function useDesignDocument({
   workspaceId,
 }: DesignBoardProps) {
   const { t } = useTranslation()
-  const compact = useCompactLayout()
   const state = useDesignEditorState(workspaceId)
   const { patch } = state
   const pages = useMemo(
@@ -59,12 +57,13 @@ export function useDesignDocument({
             : [...state.selection, id]
           : [id],
         inspector: true,
-        ...(compact ? { layers: false } : {}),
+        layers: false,
+        pagesOpen: false,
         styles: false,
         editingId: null,
       })
     },
-    [compact, patch, state.selection],
+    [patch, state.selection],
   )
   const selectPage = useCallback(
     (pageId: string) =>
@@ -195,6 +194,8 @@ export function useDesignDocument({
       patch({
         selection: [node.id],
         inspector: true,
+        layers: false,
+        pagesOpen: false,
         styles: false,
         tool: 'select',
       })

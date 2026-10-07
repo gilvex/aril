@@ -1,3 +1,4 @@
+import { StudioMobileMenuButton } from './StudioMobileMenuButton.tsx'
 import { StudioSettings } from './StudioSettings.tsx'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -83,7 +84,11 @@ export function StudioContent(props: StudioContentProps) {
       )}
       {view === 'canvas' && (
         <>
-          <StudioCanvas {...props} followed={followed} />
+          <StudioCanvas
+            {...props}
+            followed={followed}
+            mobileMenu={<StudioMobileMenuButton {...props} />}
+          />
         </>
       )}
       <Suspense fallback={<LoadingStatus centered label={t('Loading…')} />}>
@@ -103,6 +108,7 @@ export function StudioContent(props: StudioContentProps) {
         {view === 'design' && (
           <DesignBoard
             key={props.studio.id}
+            mobileMenu={<StudioMobileMenuButton {...props} />}
             workspaceId={props.studio.id}
             saveState={state.saveState}
             design={workspace.design}
@@ -125,7 +131,10 @@ export function StudioContent(props: StudioContentProps) {
           />
         )}
       </Suspense>
-      <StudioBottomNavigation {...props} />
+      {!(
+        view === 'design' ||
+        (view === 'canvas' && props.canvasMode === 'design')
+      ) && <StudioBottomNavigation {...props} />}
     </main>
   )
 }

@@ -1,3 +1,4 @@
+import { StudioMenuNavigation } from './StudioMenuNavigation.tsx'
 import { useCallback } from 'react'
 import { Settings } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
@@ -97,6 +98,7 @@ export function StudioMobileMenu({
         <Settings size={18} />
         {t('Settings')}
       </button>
+      <StudioMenuNavigation setView={setView} setSidebarOpen={setSidebarOpen} />
       <ThemePicker />
       <LanguagePicker />
       <InstallApp />

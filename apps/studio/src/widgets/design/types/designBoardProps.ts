@@ -5,6 +5,7 @@ import type {
   DragPosition,
 } from '@pomegranate/domain/collaboration'
 export type DesignBoardProps = {
+  mobileMenu?: import('react').ReactNode
   navigation?: import('react').ReactNode
   workspaceId: string
   saveState: 'saved' | 'pending' | 'saving' | 'error'

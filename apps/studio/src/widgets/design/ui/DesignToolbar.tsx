@@ -1,3 +1,4 @@
+import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import { DesignNavigation } from './DesignNavigation.tsx'
 import { DesignPanelActions } from './DesignPanelActions.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -16,6 +17,7 @@ export function DesignToolbar({
   insertTemplate,
 }: DesignToolbarProps) {
   const { t } = useTranslation()
+  const compact = useCompactLayout()
   const readOnly = useWorkspaceRole() === 'viewer'
   const menu = useRef<HTMLDetailsElement>(null)
   const insert = useCallback(
@@ -35,7 +37,9 @@ export function DesignToolbar({
   return (
     <>
       <DesignNavigation model={model} navigation={navigation} />
-      <DesignPanelActions model={model} boardDesign={!!navigation} />
+      {!compact && (
+        <DesignPanelActions model={model} boardDesign={!!navigation} />
+      )}
       <div
         className="design-tool-dock"
         role="toolbar"

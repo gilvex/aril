@@ -25,3 +25,7 @@ export { DesignCanvasActions } from './DesignCanvasActions.tsx'
 export { DesignPanelActions } from './DesignPanelActions.tsx'
 export { DesignPagePicker } from './DesignPagePicker.tsx'
 export { DesignNavigation } from './DesignNavigation.tsx'
+
+export { DesignLayersButton } from './DesignLayersButton.tsx'
+
+export { DesignMobileBar } from './DesignMobileBar.tsx'

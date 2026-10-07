@@ -77,3 +77,7 @@ The manifest retains its root identity and the service-worker cache version adva
 ## Compact board overview
 
 Blueprint Overview contains editable board name and description, node/connection/decision counts, open questions and deduplicated linked requirements. Questions focus their node and open its details; requirements open the existing requirement editor. Add node and Board actions keep insertion and renaming close by. Viewer access remains read-only. The Details toggle is hidden while the inspector is open, with its close control inside the panel.
+
+## Design tools on touch screens
+
+Desktop groups the Layers toggle beside Pages. On compact screens, Design replaces the main bottom navigation with Pages, Layers, Styles, Properties and Menu. The Menu contains the app section links; both standalone and board-specific Design use this layout. Pages opens upward without automatically summoning the phone keyboard. Opening a panel closes the previous panel, including selection-driven Properties. Layer lists scroll within bounded panels that leave the zoom controls and drawing dock reachable.

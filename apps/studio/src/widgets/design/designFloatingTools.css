@@ -124,7 +124,7 @@
   position: absolute;
   left: 18px;
   top: 66px;
-  bottom: 88px;
+  bottom: 160px;
   width: min(280px, calc(100% - 36px));
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -152,45 +152,126 @@
 .design-floating-tools .design-canvas-actions .button span {
   display: none;
 }
-@media (max-width: 700px) {
+
+.design-page-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+}
+.design-page-tools .design-page-picker-toggle {
+  min-width: 0;
+}
+.design-page-tools .design-layers-toggle {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 8px;
+}
+.design-page-tools .design-layers-toggle span {
+  display: none;
+}
+.design-layers-toggle[aria-expanded='true'] {
+  background: var(--accent-light);
+  color: var(--accent-ink);
+}
+.design-layers > header {
+  flex-shrink: 0;
+}
+.design-layers-list {
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.design-mobile-bar {
+  display: none;
+}
+@media (max-width: 1024px), (max-width: 1366px) and (pointer: coarse) {
   .design-navigation-stack {
     top: 12px;
     left: 12px;
     max-width: calc(100% - 24px);
-    gap: 6px;
   }
-  .design-floating-tools:not(.has-board-navigation) .design-navigation-stack {
-    max-width: calc(100% - 148px);
+  .design-mobile-bar {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    flex-shrink: 0;
+    height: var(--bottom-nav-height);
+    padding: 5px 8px calc(5px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    z-index: 30;
   }
-  .design-floating-tools.has-board-navigation .design-navigation-stack {
-    width: calc(100% - 24px);
-    padding-bottom: 50px;
-    pointer-events: none;
+  .design-mobile-panel-actions {
+    display: contents;
   }
-  .design-navigation-stack > * {
-    pointer-events: auto;
+  .design-mobile-bar button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    min-height: 48px;
+    max-width: none;
+    margin: 0;
+    padding: 4px 2px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    box-shadow: none;
+    font-size: 11px;
   }
-  .design-floating-tools.has-board-navigation .design-page-picker-toggle {
-    max-width: calc(100% - 132px);
+  .design-mobile-bar button > span {
+    color: inherit;
   }
-  .design-floating-tools.has-board-navigation
-    .design-canvas-actions.board-design-actions {
-    top: 114px;
+  .design-mobile-bar button[aria-expanded='true'] {
+    background: var(--accent-light);
+    color: var(--accent-ink);
+  }
+  .design-floating-tools > .design-layers,
+  .design-floating-tools > .design-inspector,
+  .design-floating-tools > .design-style-panel,
+  .design-floating-tools.has-board-navigation > .design-layers {
+    top: 64px;
+    bottom: 88px;
+    left: 64px;
     right: 12px;
+    width: auto;
+    max-width: 360px;
+    margin-left: auto;
+    min-height: 0;
   }
   .design-floating-tools.has-board-navigation > .design-layers,
   .design-floating-tools.has-board-navigation > .design-inspector,
   .design-floating-tools.has-board-navigation > .design-style-panel {
-    top: 168px;
+    top: 76px;
   }
-  .design-floating-tools > .design-layers {
-    left: 12px;
+  .design-page-popover {
+    max-height: min(440px, var(--radix-popover-content-available-height));
   }
-  .design-floating-tools > .design-inspector,
-  .design-floating-tools > .design-style-panel {
-    right: 12px;
+  .design-page-popover .design-page-select {
+    min-height: 44px;
+    font-size: 13px;
   }
-  .design-page-picker-toggle > span {
-    display: none;
+  .design-page-popover .design-page-search input {
+    font-size: 16px;
+  }
+  .design-page-popover .design-page-row .icon-button {
+    width: 44px;
+    height: 44px;
+  }
+  .design-floating-tools .design-layer-select {
+    min-height: 40px;
+  }
+  .design-floating-tools .react-flow__controls {
+    bottom: 82px;
+  }
+}
+@media (max-width: 700px) {
+  .design-floating-tools.has-board-navigation > .design-layers,
+  .design-floating-tools.has-board-navigation > .design-inspector,
+  .design-floating-tools.has-board-navigation > .design-style-panel {
+    top: 118px;
   }
 }

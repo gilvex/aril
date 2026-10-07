@@ -12,6 +12,7 @@ export function BoardDesignCanvas({
   followed,
   sendPresence,
   navigation,
+  mobileMenu,
 }: StudioCanvasProps & { navigation: ReactNode }) {
   const design = useMemo(
     () => board.design || { ...workspace.design, pages: [] },
@@ -41,6 +42,7 @@ export function BoardDesignCanvas({
       following={followed?.boardId === board.id ? followed : null}
       sendPresence={sendPresence}
       navigation={navigation}
+      mobileMenu={mobileMenu}
     />
   )
 }

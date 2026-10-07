@@ -7,6 +7,7 @@ import { useStudioModel } from '../model/useStudioModel.ts'
 import { CanvasBoard } from '../ui/CanvasBoard.tsx'
 
 export type StudioCanvasProps = {
+  mobileMenu?: React.ReactNode
   studio: import('./studioProps.ts').StudioProps['studio']
   BoardCanvas: typeof CanvasBoard
   full: ReturnType<typeof useCanvasFullscreen>

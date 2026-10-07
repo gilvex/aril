@@ -9,7 +9,7 @@ export function DesignLayers({ model }: DesignEditorProps) {
   const close = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       event.currentTarget
-        .closest('.design-editor')
+        .closest('.main-area')
         ?.querySelector<HTMLButtonElement>('[data-design-tool="layers"]')
         ?.focus()
       patch({ layers: false })
