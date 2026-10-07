@@ -6,6 +6,7 @@ import {
   Smartphone,
   TextCursorInput,
   Type,
+  Group,
 } from 'lucide-react'
 export const designTools = [
   { kind: 'frame', label: 'Desktop frame', icon: RectangleHorizontal },
@@ -17,6 +18,7 @@ export const designTools = [
   { kind: 'image', label: 'Image', icon: Image },
 ] as const
 export const designLayerIcons = {
+  group: Group,
   frame: RectangleHorizontal,
   text: Type,
   rectangle: RectangleHorizontal,

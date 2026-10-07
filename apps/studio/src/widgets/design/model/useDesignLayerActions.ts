@@ -3,21 +3,22 @@ import { useReactFlow } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { EditorMenuAction } from '@/shared/types/index.ts'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
+import { useDesignGroupingMenu } from './useDesignGroupingMenu.ts'
+import { designDescendants } from '@pomegranate/domain/design'
 export function useDesignLayerActions(
   model: DesignEditorModel,
   targetId?: string,
 ) {
   const { t } = useTranslation()
   const flow = useReactFlow()
+  const grouping = useDesignGroupingMenu(model, targetId)
   return useMemo<EditorMenuAction[]>(() => {
     const ids =
       targetId && !model.selection.includes(targetId)
         ? [targetId]
         : model.selection
     const selected = model.page.nodes.filter((node) => ids.includes(node.id))
-    const copies = model.page.nodes.filter(
-      (node) => ids.includes(node.id) || ids.includes(node.parentId || ''),
-    )
+    const copies = designDescendants(model.page.nodes, ids)
     const arrange = (front: boolean) => {
       const sorted = [...model.page.nodes].sort((a, b) => a.order - b.order)
       const picked = sorted.filter((node) => ids.includes(node.id))
@@ -29,6 +30,7 @@ export function useDesignLayerActions(
       )
     }
     return [
+      ...grouping,
       {
         id: 'focus',
         label: t('Zoom to selection'),
@@ -53,7 +55,7 @@ export function useDesignLayerActions(
         label: t('Duplicate'),
         shortcut: 'Ctrl/⌘ D',
         disabled:
-          !selected.length || model.page.nodes.length + copies.length > 500,
+          !selected.length || model.page.nodes.length + copies.size > 500,
         run: () => model.duplicate(ids),
       },
       {
@@ -98,5 +100,5 @@ export function useDesignLayerActions(
         run: () => model.remove(ids),
       },
     ]
-  }, [flow, model, t, targetId])
+  }, [flow, model, t, targetId, grouping])
 }

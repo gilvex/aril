@@ -117,7 +117,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_design_page',
     {
       description:
-        'Read one saved design canvas page and all its layers, current revision, design defaults, and a link to the Design section. Discover page IDs with get_workspace. Supply boardId for a board-specific design; omit it for the workspace design. Layers use kind, x/y, width/height, order, and optional parentId pointing to a top-level frame. Child coordinates are relative to their frame. The browser link opens Design; select the returned page by name.',
+        'Read one saved design canvas page and all its layers, current revision, design defaults, and a link to the Design section. Discover page IDs with get_workspace. Supply boardId for a board-specific design; omit it for the workspace design. Layers use kind, x/y, width/height, order, and optional parentId pointing to a frame or group. Containers can nest without cycles; child coordinates are relative to their immediate parent. Groups can set maskId to a direct rectangle/ellipse child to clip their other descendants; frames can set clipContent. The browser link opens Design; select the returned page by name.',
       inputSchema: z.object({
         pageId: z.string().min(1).max(100),
         boardId: z.string().min(1).max(100).optional(),
@@ -169,7 +169,7 @@ export function createMcpServer(config: AgentConfig) {
     'apply_changes',
     {
       description:
-        'Atomically edit the connected workspace using its latest baseRevision and a caller-generated UUID requestId. Preserve requestId when retrying an uncertain network result. Paths use IDs, e.g. [boards, boardId, nodes, nodeId, data, title], [boards, boardId, wireframe, nodes, nodeId], or [design, pages, pageId, nodes, layerId, text]. before must match the current value; after is the proposed value. Collections are ID-keyed objects in operations, not arrays. Max 500 operations. Stale revisions return an error: read again and reassess before making a new edit. Graph validation rejects dangling edges and invalid parents; remove/reparent children in the same batch as deleting a frame. Successful edits are saved, attributed, and visible to users.',
+        'Atomically edit the connected workspace using its latest baseRevision and a caller-generated UUID requestId. Preserve requestId when retrying an uncertain network result. Paths use IDs, e.g. [boards, boardId, nodes, nodeId, data, title], [boards, boardId, wireframe, nodes, nodeId], or [design, pages, pageId, nodes, layerId, text]. before must match the current value; after is the proposed value. Collections are ID-keyed objects in operations, not arrays. Max 500 operations. Stale revisions return an error: read again and reassess before making a new edit. Graph validation rejects dangling edges and invalid parents; remove/reparent all descendants in the same batch as deleting a frame/group. Remap maskId when duplicating masks; clear it when deleting or moving the mask source out of its group. Successful edits are saved, attributed, and visible to users.',
       inputSchema: z.object({
         requestId: z.string().uuid(),
         baseRevision: z.number().int().positive().safe(),

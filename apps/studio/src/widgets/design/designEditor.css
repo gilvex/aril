@@ -29,6 +29,11 @@
   overflow: hidden;
   position: relative;
 }
+.design-clip-definitions { position: absolute; pointer-events: none; }
+.design-element.kind-group { pointer-events: none; }
+.react-flow__node:not(.selected) .design-group-title { visibility: hidden; }
+.design-clip-toggle { display: flex; align-items: center; gap: 8px; }
+.design-clip-toggle input { width: auto; }
 .design-element > span {
   display: block;
   width: 100%;

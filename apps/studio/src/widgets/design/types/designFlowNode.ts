@@ -4,6 +4,9 @@ import type { Node } from '@xyflow/react'
 export type DesignFlowNode = Node<
   {
     element: DesignElement
+    clips: DesignElement[]
+    clipId: string
+    maskSource: boolean
     editors: Profile[]
     editing: boolean
     editText: (id: string, text: string) => void

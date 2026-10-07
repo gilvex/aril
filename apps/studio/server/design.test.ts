@@ -107,7 +107,7 @@ test('design validation rejects broken frames, unsafe image schemes and duplicat
   const page = { id: 'page', name: 'Page', nodes: [frame, text] }
   for (const nodes of [
     [frame, { ...text, parentId: 'missing' }],
-    [frame, { ...frame, id: 'nested', parentId: frame.id }],
+    [{ ...frame, parentId: 'text' }, text],
     [frame, frame],
     [frame, { ...text, width: -1 }],
     [frame, { ...text, imageUrl: 'javascript:alert(1)' }],

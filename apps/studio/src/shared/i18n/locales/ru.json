@@ -932,5 +932,18 @@
   "Dock panel right": "Закрепить панель справа",
   "Undock panel": "Открепить панель",
   "Resize layers height": "Изменить высоту слоёв",
-  "Resize properties height": "Изменить высоту свойств"
+  "Resize properties height": "Изменить высоту свойств",
+  "Group": "Группа",
+  "Mask group": "Маска",
+  "Group selection": "Сгруппировать",
+  "Frame selection": "Создать фрейм из выделения",
+  "Use as mask": "Использовать как маску",
+  "Ungroup": "Разгруппировать",
+  "Release mask": "Убрать маску",
+  "Parent layer": "Родительский слой",
+  "Clip content": "Обрезать содержимое",
+  "The bottom shape masks this group. Edit the shape to change its outline.": "Нижняя фигура задаёт маску группы. Измените фигуру, чтобы изменить контур.",
+  "Move and resize these layers together. Ungroup keeps their positions.": "Перемещайте и масштабируйте слои вместе. При разгруппировке их положение сохраняется.",
+  "Expand child layers": "Развернуть дочерние слои",
+  "Collapse child layers": "Свернуть дочерние слои"
 }

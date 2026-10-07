@@ -9,6 +9,8 @@ import { NodeResizer, type NodeProps } from '@xyflow/react'
 import { Image } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignFlowNode } from '../types/designFlowNode.ts'
+import { isDesignContainer } from '@pomegranate/domain/design'
+import { DesignNodeClips } from './DesignNodeClips.tsx'
 
 export function DesignElementNode({
   data,
@@ -40,8 +42,10 @@ export function DesignElementNode({
     System: 'system-ui, sans-serif',
   }
   const style: CSSProperties = {
-    background: element.fill,
-    border: `${element.strokeWidth}px solid ${element.stroke}`,
+    background: data.maskSource ? 'transparent' : element.fill,
+    border: data.maskSource
+      ? 'none'
+      : `${element.strokeWidth}px solid ${element.stroke}`,
     borderRadius: element.kind === 'ellipse' ? '50%' : element.radius,
     color: element.color,
     fontSize: element.fontSize,
@@ -52,6 +56,7 @@ export function DesignElementNode({
   }
   return (
     <>
+      <DesignNodeClips data={data} />
       <NodeResizer
         isVisible={!readOnly && !!selected && !element.locked && !editing}
         minWidth={16}
@@ -59,8 +64,8 @@ export function DesignElementNode({
         maxWidth={6000}
         maxHeight={6000}
       />
-      {element.kind === 'frame' && (
-        <div className="design-frame-title">
+      {isDesignContainer(element) && (
+        <div className={`design-frame-title${element.kind === 'group' ? ' design-group-title' : ''}`}>
           {element.name}
           <span>
             {Math.round(element.width)} × {Math.round(element.height)}
@@ -91,7 +96,7 @@ export function DesignElementNode({
             onKeyDown={textKey}
           />
         ) : (
-          element.kind !== 'frame' &&
+          !isDesignContainer(element) &&
           element.kind !== 'image' && <span>{element.text}</span>
         )}
       </div>

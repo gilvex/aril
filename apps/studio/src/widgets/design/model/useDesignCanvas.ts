@@ -3,6 +3,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useId,
   type KeyboardEvent,
   type PointerEvent,
 } from 'react'
@@ -11,7 +12,14 @@ import {
   cameraFromViewport,
   viewportFromCamera,
 } from '@pomegranate/domain/follow'
-import type { DesignElement } from '@pomegranate/domain/design'
+import {
+  applyDesignChanges,
+  designAncestors,
+  isDesignContainer,
+  type DesignElement,
+} from '@pomegranate/domain/design'
+import { designTreeRows } from '../utils/designTreeRows.ts'
+import { designClipShapes } from '../utils/designClipShapes.ts'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 import type { DesignFlowNode } from '../types/designFlowNode.ts'
@@ -21,6 +29,7 @@ export function useDesignCanvas(
   props: DesignBoardProps,
 ) {
   const flow = useReactFlow<DesignFlowNode>()
+  const clipPrefix = useId().replace(/[^a-z0-9]/gi, '')
   const surface = useRef<HTMLDivElement>(null)
   const { sendPresence, following } = props
   const pendingDrag = useRef(false)
@@ -100,66 +109,81 @@ export function useDesignCanvas(
     [edit],
   )
   const finishEditing = useCallback(() => patch({ editingId: null }), [patch])
-  const nodes = useMemo<DesignFlowNode[]>(
-    () =>
-      [...page.nodes]
-        .sort(
-          (a, b) =>
-            Number(!!a.parentId) - Number(!!b.parentId) || a.order - b.order,
-        )
-        .map((stored) => {
-          const parent = page.nodes.find((item) => item.id === stored.parentId)
-          const remote = peers
-            .flatMap((peer) => peer.dragging || [])
-            .find((item) => item.id === stored.id)
-          const element = {
-            ...stored,
-            ...(remote ? { x: remote.position.x, y: remote.position.y } : {}),
-            ...drafts[stored.id],
-          }
-          return {
-            id: element.id,
-            type: 'designElement',
-            parentId: element.parentId,
-            position: { x: element.x, y: element.y },
+  const nodes = useMemo<DesignFlowNode[]>(() => {
+    const effective = applyDesignChanges(page.nodes, {
+      ...Object.fromEntries(
+        peers
+          .flatMap((peer) => peer.dragging || [])
+          .map((item) => [item.id, { x: item.position.x, y: item.position.y }]),
+      ),
+      ...drafts,
+    })
+    return designTreeRows(effective, [], false).map(
+      ({ node: element }, index) => {
+        const ancestors = designAncestors(effective, element.id)
+        const remote = peers
+          .flatMap((peer) => peer.dragging || [])
+          .find((item) => item.id === element.id)
+        const clips = designClipShapes(effective, element)
+        const clipId = `${clipPrefix}-design-${index}`
+        return {
+          id: element.id,
+          type: 'designElement',
+          parentId: element.parentId,
+          position: { x: element.x, y: element.y },
+          width: element.width,
+          height: element.height,
+          measured: { width: element.width, height: element.height },
+          ariaLabel: element.name,
+          style: {
             width: element.width,
             height: element.height,
-            measured: { width: element.width, height: element.height },
-            ariaLabel: element.name,
-            style: { width: element.width, height: element.height },
-            hidden: !!(element.hidden || parent?.hidden),
-            draggable: !element.locked && !parent?.locked,
-            selectable: !element.locked && !parent?.locked,
-            selected: selection.includes(element.id),
-            dragHandle:
-              element.kind === 'frame' ? '.design-frame-title' : undefined,
-            zIndex: element.kind === 'frame' ? 0 : element.order + 1,
-            className: remote && !drafts[stored.id] ? 'design-live-moving' : '',
-            data: {
-              element,
-              editors: [
-                ...new Map(
-                  peers
-                    .filter((peer) => peer.selected.includes(element.id))
-                    .map((peer) => [peer.profile.id, peer.profile]),
-                ).values(),
-              ],
-              editing: model.editingId === element.id,
-              editText,
-              finishEditing,
-            },
-          }
-        }),
-    [
-      page.nodes,
-      peers,
-      drafts,
-      selection,
-      model.editingId,
-      editText,
-      finishEditing,
-    ],
-  )
+            clipPath: clips.length
+              ? `url(#${clipId}-${clips.length - 1})`
+              : undefined,
+          },
+          hidden: !!(
+            element.hidden || ancestors.some((parent) => parent.hidden)
+          ),
+          draggable:
+            !element.locked && !ancestors.some((parent) => parent.locked),
+          selectable:
+            !element.locked && !ancestors.some((parent) => parent.locked),
+          selected: selection.includes(element.id),
+          dragHandle: isDesignContainer(element)
+            ? '.design-frame-title'
+            : undefined,
+          zIndex: index,
+          className: remote && !drafts[element.id] ? 'design-live-moving' : '',
+          data: {
+            element,
+            clips,
+            clipId,
+            maskSource: ancestors[0]?.maskId === element.id,
+            editors: [
+              ...new Map(
+                peers
+                  .filter((peer) => peer.selected.includes(element.id))
+                  .map((peer) => [peer.profile.id, peer.profile]),
+              ).values(),
+            ],
+            editing: model.editingId === element.id,
+            editText,
+            finishEditing,
+          },
+        }
+      },
+    )
+  }, [
+    page.nodes,
+    peers,
+    drafts,
+    selection,
+    model.editingId,
+    editText,
+    finishEditing,
+    clipPrefix,
+  ])
   const onNodesChange = useCallback(
     (changes: NodeChange<DesignFlowNode>[]) => {
       const next = { ...drafts }
@@ -211,8 +235,7 @@ export function useDesignCanvas(
           ),
         )
         pendingDrag.current = changed
-        if (changed)
-          save(page.nodes.map((node) => ({ ...node, ...next[node.id] })))
+        if (changed) save(applyDesignChanges(page.nodes, next))
         else sendPresence({ dragging: [] }, true)
       }
     },
@@ -274,7 +297,14 @@ export function useDesignCanvas(
         )
       )
         return
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'd') {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'g') {
+        event.preventDefault()
+        if (event.shiftKey) model.ungroup()
+        else model.group()
+      } else if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === 'd'
+      ) {
         event.preventDefault()
         duplicate()
       } else if (event.key === 'Delete' || event.key === 'Backspace') {
@@ -293,7 +323,9 @@ export function useDesignCanvas(
         save(
           page.nodes.map((node) =>
             selection.includes(node.id) &&
-            !selection.includes(node.parentId || '')
+            !designAncestors(page.nodes, node.id).some((parent) =>
+              selection.includes(parent.id),
+            )
               ? {
                   ...node,
                   x:
@@ -316,7 +348,7 @@ export function useDesignCanvas(
         )
       }
     },
-    [duplicate, page.nodes, patch, remove, save, selection],
+    [duplicate, page.nodes, patch, remove, save, selection, model],
   )
   return {
     flow,

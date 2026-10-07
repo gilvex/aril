@@ -4,24 +4,34 @@ import { StudioSelect } from '@/shared/ui/index.tsx'
 import { DesignNumberInput } from './DesignNumberInput.tsx'
 import { DesignAlignment } from './DesignAlignment.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
+import {
+  isDesignContainer,
+  designDescendants,
+  reparentDesignElement,
+} from '@pomegranate/domain/design'
 export function DesignGeometry({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const node = model.selected[0]
   const frames = useMemo(
-    () => model.page.nodes.filter((item) => item.kind === 'frame'),
-    [model.page.nodes],
+    () =>
+      model.page.nodes.filter(
+        (item) =>
+          isDesignContainer(item) &&
+          !designDescendants(model.page.nodes, [node.id]).has(item.id),
+      ),
+    [model.page.nodes, node.id],
   )
   const reparent = useCallback(
     (event: { target: { value: string } }) => {
-      const oldParent = frames.find((item) => item.id === node.parentId)
-      const newParent = frames.find((item) => item.id === event.target.value)
-      model.edit({
-        parentId: newParent?.id,
-        x: node.x + (oldParent?.x || 0) - (newParent?.x || 0),
-        y: node.y + (oldParent?.y || 0) - (newParent?.y || 0),
-      })
+      model.save(
+        reparentDesignElement(
+          model.page.nodes,
+          node.id,
+          event.target.value || undefined,
+        ),
+      )
     },
-    [frames, model, node],
+    [model, node.id],
   )
   return (
     <section>
@@ -53,11 +63,11 @@ export function DesignGeometry({ model }: DesignEditorProps) {
           onChange={(height) => model.edit({ height })}
         />
       </div>
-      {node.kind !== 'frame' && model.selected.length === 1 && (
+      {model.selected.length === 1 && (
         <label>
-          {t('Frame')}
+          {t('Parent layer')}
           <StudioSelect
-            aria-label={t('Frame')}
+            aria-label={t('Parent layer')}
             value={node.parentId || ''}
             onChange={reparent}
           >

@@ -7,7 +7,11 @@ import {
   removeDesignElements,
   type DesignElement,
   type DesignPage,
+  applyDesignChanges,
+  isDesignContainer,
+  normalizeDesignGroups,
 } from '@pomegranate/domain/design'
+import { useDesignStructureActions } from './useDesignStructureActions.ts'
 import { useDesignEditorState } from './useDesignEditorState.ts'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'
 
@@ -43,7 +47,9 @@ export function useDesignDocument({
       update({
         ...design,
         pages: pages.map((item) =>
-          item.id === page.id ? { ...item, nodes } : item,
+          item.id === page.id
+            ? { ...item, nodes: normalizeDesignGroups(nodes) }
+            : item,
         ),
       }),
     [design, page.id, pages, update],
@@ -113,8 +119,9 @@ export function useDesignDocument({
   const edit = useCallback(
     (values: Partial<DesignElement>, ids = state.selection) => {
       save(
-        page.nodes.map((node) =>
-          ids.includes(node.id) ? { ...node, ...values } : node,
+        applyDesignChanges(
+          page.nodes,
+          Object.fromEntries(ids.map((id) => [id, values])),
         ),
       )
     },
@@ -159,7 +166,7 @@ export function useDesignDocument({
           : page.nodes.find(
               (node) =>
                 node.id ===
-                (target?.kind === 'frame' ? target.id : target?.parentId),
+                (isDesignContainer(target) ? target?.id : target?.parentId),
             )
       const node = makeDesignElement(kind, crypto.randomUUID(), {
         name: t(
@@ -228,6 +235,16 @@ export function useDesignDocument({
     save([...page.nodes, ...nodes])
     patch({ selection: [], drafts: {} })
   }, [design, page.nodes, patch, save, t])
+  const selectStructure = useCallback(
+    (selection: string[]) => patch({ selection, editingId: null }),
+    [patch],
+  )
+  const structure = useDesignStructureActions(
+    page.nodes,
+    state.selection,
+    save,
+    selectStructure,
+  )
   return {
     ...state,
     pages,
@@ -244,5 +261,6 @@ export function useDesignDocument({
     duplicate,
     add,
     template,
+    ...structure,
   }
 }

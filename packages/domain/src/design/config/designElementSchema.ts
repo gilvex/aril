@@ -2,7 +2,17 @@ import { z } from 'zod'
 
 export const designElementSchema = z.object({
   id: z.string().min(1).max(100),
-  kind: z.enum(['frame', 'rectangle', 'ellipse', 'text', 'button', 'image']),
+  kind: z.enum([
+    'frame',
+    'group',
+    'rectangle',
+    'ellipse',
+    'text',
+    'button',
+    'image',
+  ]),
+  maskId: z.string().min(1).max(100).optional(),
+  clipContent: z.boolean().optional(),
   name: z.string().min(1).max(120),
   order: z.number().int().min(0).max(100000),
   parentId: z.string().min(1).max(100).optional(),

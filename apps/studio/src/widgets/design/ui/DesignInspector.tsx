@@ -10,6 +10,8 @@ import { DesignTypography } from './DesignTypography.tsx'
 import { useDesignLayerActions } from '../model/useDesignLayerActions.ts'
 import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
+import { isDesignContainer } from '@pomegranate/domain/design'
+import { DesignContainerSettings } from './DesignContainerSettings.tsx'
 export function DesignInspector({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
@@ -78,8 +80,9 @@ export function DesignInspector({ model }: DesignEditorProps) {
             </p>
           )}
           <DesignGeometry model={model} />
+          {isDesignContainer(node) && <DesignContainerSettings model={model} />}
           <DesignPaint model={model} />
-          {node.kind !== 'frame' && node.kind !== 'image' && (
+          {!isDesignContainer(node) && node.kind !== 'image' && (
             <DesignTypography model={model} />
           )}
           {node.kind === 'image' && (

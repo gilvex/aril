@@ -4,6 +4,7 @@ import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignLayerRow } from './DesignLayerRow.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
+import { designTreeRows } from '../utils/designTreeRows.ts'
 export function DesignLayers({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const { patch } = model
@@ -17,17 +18,10 @@ export function DesignLayers({ model }: DesignEditorProps) {
     },
     [patch],
   )
-  const nodes = useMemo(() => {
-    const sorted = [...model.page.nodes].sort((a, b) => b.order - a.order)
-    return sorted
-      .filter((node) => !node.parentId)
-      .flatMap((node) => [
-        node,
-        ...(model.collapsed.includes(node.id)
-          ? []
-          : sorted.filter((child) => child.parentId === node.id)),
-      ])
-  }, [model.page.nodes, model.collapsed])
+  const nodes = useMemo(
+    () => designTreeRows(model.page.nodes, model.collapsed),
+    [model.page.nodes, model.collapsed],
+  )
   return (
     <aside className="design-layers" aria-label={t('Layers')}>
       <header className="design-layers-heading">
@@ -43,8 +37,13 @@ export function DesignLayers({ model }: DesignEditorProps) {
         </button>
       </header>
       <div className="design-layers-list">
-        {nodes.map((node) => (
-          <DesignLayerRow key={node.id} node={node} model={model} />
+        {nodes.map(({ node, depth }) => (
+          <DesignLayerRow
+            key={node.id}
+            node={node}
+            depth={depth}
+            model={model}
+          />
         ))}
         {!nodes.length && <p>{t('Insert a frame to start designing.')}</p>}
       </div>

@@ -5,6 +5,11 @@ import { designTools } from '../config/designTools.ts'
 import { useDesignLayerActions } from './useDesignLayerActions.ts'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 import type { EditorMenuAction } from '@/shared/types/index.ts'
+import {
+  designPosition,
+  isDesignContainer,
+  designAncestors,
+} from '@pomegranate/domain/design'
 export function useDesignContextMenu(model: DesignEditorModel) {
   const { t } = useTranslation()
   const flow = useReactFlow()
@@ -49,9 +54,11 @@ export function useDesignContextMenu(model: DesignEditorModel) {
           const node = model.page.nodes.find(
             (item) => item.id === model.selection[0],
           )
-          const parentId =
-            node?.parentId || (node?.kind === 'frame' ? node.id : undefined)
+          const parentId = isDesignContainer(node) ? node?.id : node?.parentId
           const parent = model.page.nodes.find((item) => item.id === parentId)
+          const origin = parent
+            ? designPosition(model.page.nodes, parent)
+            : { x: 0, y: 0 }
           const point =
             model.contextPoint ||
             flow.screenToFlowPosition({
@@ -61,7 +68,7 @@ export function useDesignContextMenu(model: DesignEditorModel) {
           model.add(
             kind,
             parent && kind !== 'frame'
-              ? { x: point.x - parent.x, y: point.y - parent.y }
+              ? { x: point.x - origin.x, y: point.y - origin.y }
               : point,
             'mobile' in rest && !!rest.mobile,
             true,
@@ -76,7 +83,14 @@ export function useDesignContextMenu(model: DesignEditorModel) {
         run: () =>
           model.patch({
             selection: model.page.nodes
-              .filter((node) => !node.hidden && !node.locked)
+              .filter(
+                (node) =>
+                  !node.hidden &&
+                  !node.locked &&
+                  !designAncestors(model.page.nodes, node.id).some(
+                    (parent) => parent.hidden || parent.locked,
+                  ),
+              )
               .map((node) => node.id),
           }),
       },

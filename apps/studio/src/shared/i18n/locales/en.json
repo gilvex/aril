@@ -932,5 +932,18 @@
   "Dock panel right": "Dock panel right",
   "Undock panel": "Undock panel",
   "Resize layers height": "Resize layers height",
-  "Resize properties height": "Resize properties height"
+  "Resize properties height": "Resize properties height",
+  "Group": "Group",
+  "Mask group": "Mask group",
+  "Group selection": "Group selection",
+  "Frame selection": "Frame selection",
+  "Use as mask": "Use as mask",
+  "Ungroup": "Ungroup",
+  "Release mask": "Release mask",
+  "Parent layer": "Parent layer",
+  "Clip content": "Clip content",
+  "The bottom shape masks this group. Edit the shape to change its outline.": "The bottom shape masks this group. Edit the shape to change its outline.",
+  "Move and resize these layers together. Ungroup keeps their positions.": "Move and resize these layers together. Ungroup keeps their positions.",
+  "Expand child layers": "Expand child layers",
+  "Collapse child layers": "Collapse child layers"
 }

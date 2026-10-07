@@ -6,7 +6,9 @@ import {
   ChevronDown,
   ChevronRight,
   MoreHorizontal,
+  Scan,
 } from 'lucide-react'
+import { isDesignContainer } from '@pomegranate/domain/design'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCallback } from 'react'
 import { useReactFlow } from '@xyflow/react'
@@ -14,9 +16,9 @@ import { EditorContextMenu, EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useDesignLayerActions } from '../model/useDesignLayerActions.ts'
 import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignLayerRowProps } from '../types/designLayerRowProps.ts'
-export function DesignLayerRow({ node, model }: DesignLayerRowProps) {
+export function DesignLayerRow({ node, model, depth }: DesignLayerRowProps) {
   const { t } = useTranslation()
-  const Icon = designLayerIcons[node.kind]
+  const Icon = node.maskId ? Scan : designLayerIcons[node.kind]
   const flow = useReactFlow()
   const actions = useDesignLayerActions(model, node.id)
   const prepareMenu = useCallback(() => {
@@ -47,15 +49,16 @@ export function DesignLayerRow({ node, model }: DesignLayerRowProps) {
     <EditorContextMenu actions={actions} label={t('Layer actions')}>
       <div
         onContextMenuCapture={prepareMenu}
+        style={{ paddingLeft: 6 + depth * 14 }}
         className={`design-layer-row${model.selection.includes(node.id) ? ' selected' : ''}${node.parentId ? ' child' : ''}${node.hidden ? ' hidden' : ''}`}
       >
-        {node.kind === 'frame' && (
+        {isDesignContainer(node) && (
           <button
             className="icon-button"
             aria-label={t(
               model.collapsed.includes(node.id)
-                ? 'Expand frame layers'
-                : 'Collapse frame layers',
+                ? 'Expand child layers'
+                : 'Collapse child layers',
             )}
             aria-expanded={!model.collapsed.includes(node.id)}
             onClick={toggleFrame}

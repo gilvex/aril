@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { designElementSchema } from './designElementSchema.ts'
+import { isDesignContainer } from '../utils/isDesignContainer.ts'
 
 export const designPageSchema = z
   .object({
@@ -15,13 +16,41 @@ export const designPageSchema = z
         message: 'Duplicate design layer IDs',
       })
     for (const node of page.nodes) {
-      if (
-        node.parentId &&
-        (node.kind === 'frame' || nodes.get(node.parentId)?.kind !== 'frame')
-      )
+      if (node.parentId && !isDesignContainer(nodes.get(node.parentId)))
         context.addIssue({
           code: 'custom',
-          message: 'Design layers must belong to a top-level frame',
+          message: 'Design layers must belong to a frame or group',
+        })
+      const seen = new Set([node.id])
+      let parentId = node.parentId
+      while (parentId) {
+        if (seen.has(parentId)) {
+          context.addIssue({
+            code: 'custom',
+            message: 'Cyclic design hierarchy',
+          })
+          break
+        }
+        seen.add(parentId)
+        parentId = nodes.get(parentId)?.parentId
+      }
+      if (node.maskId) {
+        const mask = nodes.get(node.maskId)
+        if (
+          node.kind !== 'group' ||
+          mask?.parentId !== node.id ||
+          !['rectangle', 'ellipse'].includes(mask?.kind || '')
+        )
+          context.addIssue({
+            code: 'custom',
+            message:
+              'A mask must be a rectangle or ellipse directly inside its group',
+          })
+      }
+      if (node.clipContent && node.kind !== 'frame')
+        context.addIssue({
+          code: 'custom',
+          message: 'Only frames can clip content',
         })
     }
   })

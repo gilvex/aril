@@ -24,7 +24,7 @@ export function makeDesignElement(
     fill:
       kind === 'frame'
         ? '#ffffff'
-        : kind === 'text'
+        : kind === 'text' || kind === 'group'
           ? 'transparent'
           : kind === 'button'
             ? '#b34568'
