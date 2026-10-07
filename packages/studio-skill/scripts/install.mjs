@@ -21,9 +21,15 @@ if (
   exists &&
   (await readFile(target, 'utf8')) !== (await readFile(source, 'utf8'))
 ) {
-  throw new Error(
-    `An existing skill differs at ${target}. Review it before replacing it; no files changed.`,
-  )
+  if (!process.argv.includes('--update')) {
+    throw new Error(
+      `An existing skill differs at ${target}. Review it, then run pnpm skill:install --update to replace it with a backup; no files changed.`,
+    )
+  }
+  const backup = `${target}.${Date.now()}.bak`
+  await copyFile(target, backup)
+  await copyFile(source, target)
+  console.log(`Previous skill backed up at ${backup}.`)
 }
 await mkdir(destination, { recursive: true })
 if (!exists) await copyFile(source, target)

@@ -98,6 +98,6 @@ The project-local Juxtopposed-inspired skill is unofficial; it is not a skill au
 
 ## MCP and companion skill
 
-Other chats can read and edit a workspace through the local MCP server and Pomegranate studio skill. Open **Workspace actions → Agent access** to create a scoped credential, then follow [Agent integration](docs/agent-integration.md). Agent edits use the same freshness checks, history, and live updates as browser edits.
+Other chats can read and edit boards, requirements, notes, and saved design pages/layers through the local MCP server and companion studio skill. `get_design_page` reads a complete design page; `apply_changes` makes targeted, revision-checked edits. Open **Workspace actions → Agent access** to create a scoped credential, then follow [Agent integration](docs/agent-integration.md). Agent edits use the same freshness checks, history, and live updates as browser edits.
 
 Code structure and state conventions: [Code rules](docs/code-rules.md) · [Architecture](docs/architecture.md). `pnpm lint` enforces the FSD boundaries and file conventions through `pnpm check:architecture`.

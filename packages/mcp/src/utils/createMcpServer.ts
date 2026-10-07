@@ -42,7 +42,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_workspace',
     {
       description:
-        'Read the connected workspace, current revision, board IDs, requirements, original notes, notebook documents, and design settings. By default returns a compact overview; use full=true for all board nodes and edges.',
+        'Read the connected workspace, current revision, board IDs, requirements, notes, design settings, and design page IDs/names/layer counts. By default returns a compact overview; use full=true for all graphs and design layers, or get_design_page for one page.',
       inputSchema: z.object({ full: z.boolean().default(false) }),
       annotations: read,
     },
@@ -55,6 +55,21 @@ export function createMcpServer(config: AgentConfig) {
               ...state,
               workspace: {
                 ...state.workspace,
+                design: {
+                  ...state.workspace.design,
+                  ...(state.workspace.design.pages
+                    ? {
+                        pages: state.workspace.design.pages.map((page) => ({
+                          id: page.id,
+                          name: page.name,
+                          layers: page.nodes.length,
+                          frames: page.nodes.filter(
+                            (node) => node.kind === 'frame',
+                          ).length,
+                        })),
+                      }
+                    : {}),
+                },
                 boards: state.workspace.boards.map((b) => ({
                   id: b.id,
                   name: b.name,
@@ -92,10 +107,35 @@ export function createMcpServer(config: AgentConfig) {
       }),
   )
   server.registerTool(
+    'get_design_page',
+    {
+      description:
+        'Read one saved design canvas page and all its layers, current revision, design defaults, and a link to the Design section. Discover page IDs with get_workspace. Layers use kind, x/y, width/height, order, and optional parentId pointing to a top-level frame. Child coordinates are relative to their frame. The browser link opens Design; select the returned page by name.',
+      inputSchema: z.object({ pageId: z.string().min(1).max(100) }),
+      annotations: read,
+    },
+    ({ pageId }) =>
+      result(async () => {
+        const state = await api<AgentWorkspace>('workspace')
+        const { pages, ...settings } = state.workspace.design
+        const page = pages?.find((item) => item.id === pageId)
+        if (!page)
+          throw new Error(
+            'Design page not found. Call get_workspace for available IDs; older workspaces may have no saved design pages.',
+          )
+        return {
+          revision: state.revision,
+          page,
+          settings,
+          url: `${config.origin}/?${new URLSearchParams({ workspace: state.studio.id, view: 'design' })}`,
+        }
+      }),
+  )
+  server.registerTool(
     'get_schema',
     {
       description:
-        'Get the document JSON schema before creating new nodes, boards, wireframes, or requirements. Reads use arrays, but edit paths address collections by ID. A newly inserted board uses ID-keyed objects for nodes, edges, and wireframe.nodes/edges; an empty collection is {}. Omit before when creating; omit after when deleting. Updates require the exact current before value.',
+        'Get the document JSON schema before creating nodes, boards, wireframes, requirements, or design pages/layers. Reads use arrays, but edits address collections by ID. Inserted boards use ID-keyed nodes, edges, and wireframe.nodes/edges; design.pages and each design page’s nodes are also ID-keyed in operations. Empty collections are {}. Initialize design.pages if absent before adding nested pages. Omit before when creating; omit after when deleting. Updates require the exact current before value.',
       inputSchema: z.object({}),
       annotations: read,
     },
@@ -115,7 +155,7 @@ export function createMcpServer(config: AgentConfig) {
     'apply_changes',
     {
       description:
-        'Atomically edit the connected workspace using its latest baseRevision and a caller-generated UUID requestId. Preserve requestId when retrying an uncertain network result. Paths use IDs, e.g. [boards, boardId, nodes, nodeId, data, title] or [boards, boardId, wireframe, nodes, nodeId]. before must match the current value; after is the proposed value. Collections are ID-keyed objects in operations, not arrays. Max 500 operations. Stale revisions return an error: read again and reassess before making a new edit. Graph validation rejects dangling edges and invalid parents. Successful edits are saved, attributed, and visible to users.',
+        'Atomically edit the connected workspace using its latest baseRevision and a caller-generated UUID requestId. Preserve requestId when retrying an uncertain network result. Paths use IDs, e.g. [boards, boardId, nodes, nodeId, data, title], [boards, boardId, wireframe, nodes, nodeId], or [design, pages, pageId, nodes, layerId, text]. before must match the current value; after is the proposed value. Collections are ID-keyed objects in operations, not arrays. Max 500 operations. Stale revisions return an error: read again and reassess before making a new edit. Graph validation rejects dangling edges and invalid parents; remove/reparent children in the same batch as deleting a frame. Successful edits are saved, attributed, and visible to users.',
       inputSchema: z.object({
         requestId: z.string().uuid(),
         baseRevision: z.number().int().positive().safe(),
