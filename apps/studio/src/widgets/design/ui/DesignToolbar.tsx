@@ -1,13 +1,8 @@
+import { DesignNavigation } from './DesignNavigation.tsx'
 import { DesignPanelActions } from './DesignPanelActions.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, useRef, type MouseEvent } from 'react'
-import {
-  Hand,
-  MousePointer2,
-  Plus,
-  PanelLeft,
-  LayoutTemplate,
-} from 'lucide-react'
+import { Hand, MousePointer2, Plus, LayoutTemplate } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { designTools } from '../config/designTools.ts'
 import type { DesignElement } from '@pomegranate/domain/design'
@@ -39,27 +34,7 @@ export function DesignToolbar({
   }, [insertTemplate])
   return (
     <>
-      {navigation && (
-        <div className="board-design-navigation">{navigation}</div>
-      )}
-      {!navigation && (
-        <div className="design-canvas-navigation">
-          <button
-            className="icon-button"
-            title={t('Pages and layers')}
-            aria-label={t('Pages and layers')}
-            aria-expanded={model.layers}
-            onClick={() =>
-              model.patch({ layers: !model.layers, inspector: false })
-            }
-          >
-            <PanelLeft size={18} />
-          </button>
-          <span>{t('Design')}</span>
-          <span className="design-nav-divider">/</span>
-          <strong>{model.page.name}</strong>
-        </div>
-      )}
+      <DesignNavigation model={model} navigation={navigation} />
       <DesignPanelActions model={model} boardDesign={!!navigation} />
       <div
         className="design-tool-dock"

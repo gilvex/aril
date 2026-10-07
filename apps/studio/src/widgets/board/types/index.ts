@@ -79,3 +79,4 @@ export * from './wireRoutingPoint.ts'
 export * from './wireRoutingRect.ts'
 
 export type { BlueprintNodeClassificationProps } from './blueprintNodeClassificationProps.ts'
+export type { BoardOverviewActionsProps } from './boardOverviewActionsProps.ts'

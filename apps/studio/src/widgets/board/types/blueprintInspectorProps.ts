@@ -2,6 +2,9 @@ import type { Idea } from '@pomegranate/domain/workspace'
 import { type Node } from '@xyflow/react'
 
 export type BlueprintInspectorProps = {
+  focusNode: (id: string) => void
+  fitBoard: () => void
+  addNode: (kind: Idea['data']['kind']) => void
   selectedNodes: import('@pomegranate/domain/workspace').Idea[]
   node: import('@pomegranate/domain/workspace').Idea | undefined
   edge:

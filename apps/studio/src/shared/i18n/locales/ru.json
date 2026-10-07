@@ -912,5 +912,14 @@
   "Sketch screens and journeys": "Экраны и сценарии",
   "Build detailed interfaces": "Детальные интерфейсы",
   "Find a board": "Найти доску",
-  "No matching boards.": "Подходящих досок нет."
+  "No matching boards.": "Подходящих досок нет.",
+  "Choose page: {{name}}": "Выбрать страницу: {{name}}",
+  "Find a page": "Найти страницу",
+  "No matching pages.": "Подходящих страниц нет.",
+  "Nodes": "Узлы",
+  "Board actions": "Действия с доской",
+  "No open questions on this board.": "На этой доске нет открытых вопросов.",
+  "Link requirements from a node’s details.": "Свяжите требования в свойствах узла.",
+  "Connections": "Связи",
+  "Fit to view": "Показать всё"
 }

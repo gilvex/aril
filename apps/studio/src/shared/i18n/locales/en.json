@@ -912,5 +912,14 @@
   "Sketch screens and journeys": "Sketch screens and journeys",
   "Build detailed interfaces": "Build detailed interfaces",
   "Find a board": "Find a board",
-  "No matching boards.": "No matching boards."
+  "No matching boards.": "No matching boards.",
+  "Choose page: {{name}}": "Choose page: {{name}}",
+  "Find a page": "Find a page",
+  "No matching pages.": "No matching pages.",
+  "Nodes": "Nodes",
+  "Board actions": "Board actions",
+  "No open questions on this board.": "No open questions on this board.",
+  "Link requirements from a node’s details.": "Link requirements from a node’s details.",
+  "Connections": "Connections",
+  "Fit to view": "Fit to view"
 }

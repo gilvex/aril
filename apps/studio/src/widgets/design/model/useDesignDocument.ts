@@ -19,7 +19,7 @@ export function useDesignDocument({
 }: DesignBoardProps) {
   const { t } = useTranslation()
   const compact = useCompactLayout()
-  const state = useDesignEditorState(compact, workspaceId)
+  const state = useDesignEditorState(workspaceId)
   const { patch } = state
   const pages = useMemo(
     () =>
@@ -70,6 +70,8 @@ export function useDesignDocument({
     (pageId: string) =>
       patch({
         pageId,
+        pagesOpen: false,
+        pageQuery: '',
         selection: [],
         drafts: {},
         editingId: null,

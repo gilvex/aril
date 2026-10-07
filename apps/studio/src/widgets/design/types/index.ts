@@ -14,3 +14,4 @@ export * from './designToolbarProps.ts'
 export type { DesignPageRowProps } from './designPageRowProps.ts'
 
 export type { DesignColorInputProps } from './designColorInputProps.ts'
+export type { DesignNavigationProps } from './designNavigationProps.ts'

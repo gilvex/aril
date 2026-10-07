@@ -1,4 +1,5 @@
-import { Palette, PanelRight, PanelLeft } from 'lucide-react'
+import { useCallback } from 'react'
+import { Palette, PanelRight, Layers } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 export function DesignPanelActions({
@@ -9,25 +10,27 @@ export function DesignPanelActions({
   boardDesign?: boolean
 }) {
   const { t } = useTranslation()
+  const { patch, layers } = model
+  const toggleLayers = useCallback(
+    () => patch({ layers: !layers, inspector: false, pagesOpen: false }),
+    [patch, layers],
+  )
   return (
     <div
       className={
         'design-canvas-actions' + (boardDesign ? ' board-design-actions' : '')
       }
     >
-      {boardDesign && (
-        <button
-          className="button"
-          title={t('Pages and layers')}
-          aria-label={t('Pages and layers')}
-          aria-expanded={model.layers}
-          onClick={() =>
-            model.patch({ layers: !model.layers, inspector: false })
-          }
-        >
-          <PanelLeft size={16} />
-        </button>
-      )}
+      <button
+        className="button"
+        title={t('Layers')}
+        aria-label={t('Layers')}
+        data-design-tool="layers"
+        aria-expanded={model.layers}
+        onClick={toggleLayers}
+      >
+        <Layers size={16} />
+      </button>
       <button
         className="button"
         title={t('Styles')}

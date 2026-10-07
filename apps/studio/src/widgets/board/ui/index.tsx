@@ -40,3 +40,4 @@ export { WireframeToolbar } from './WireframeToolbar.tsx'
 export { WireframeViewActions } from './WireframeViewActions.tsx'
 
 export { BlueprintNodeClassification } from './BlueprintNodeClassification.tsx'
+export { BoardOverviewActions } from './BoardOverviewActions.tsx'

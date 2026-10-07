@@ -41,7 +41,10 @@ export function DesignCanvas(props: DesignBoardProps) {
   )
   return (
     <section
-      className="design-editor"
+      className={
+        'design-editor design-floating-tools' +
+        (props.navigation ? ' has-board-navigation' : '')
+      }
       aria-label={t('Design canvas')}
       onKeyDown={canvas.keyboard}
     >

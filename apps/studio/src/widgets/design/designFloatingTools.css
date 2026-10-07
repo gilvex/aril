@@ -1,0 +1,196 @@
+.design-navigation-stack {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: calc(100% - 176px);
+}
+.design-navigation-stack .board-design-navigation {
+  position: relative;
+  inset: auto;
+  width: auto;
+  max-width: 100%;
+}
+.design-navigation-stack .floating-board-navigation {
+  position: relative;
+  inset: auto;
+  max-width: 100%;
+}
+.design-page-picker-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--text-strong);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  box-shadow: 0 3px 12px #0001;
+}
+.design-page-picker-toggle svg {
+  flex-shrink: 0;
+}
+.design-page-picker-toggle strong {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: inherit;
+  font-weight: 500;
+}
+.design-page-picker-toggle > span {
+  color: var(--muted);
+}
+.design-page-popover {
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  max-height: min(440px, var(--radix-popover-content-available-height));
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-strong);
+  box-shadow: 0 12px 40px #0004;
+}
+.design-page-popover .design-page-search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--line);
+  background: var(--canvas);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.design-page-search svg {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.design-page-popover .design-page-search input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  padding: 10px 0;
+  background: transparent;
+  outline: 0;
+  box-shadow: none;
+}
+.design-page-search:focus-within {
+  outline: 1px solid var(--accent);
+}
+.design-page-picker-list {
+  overflow-y: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.design-page-picker-list > p {
+  font-size: 12px;
+  padding: 8px;
+  color: var(--muted);
+}
+.design-page-popover .design-page-row .icon-button {
+  opacity: 1;
+}
+.design-page-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  flex-shrink: 0;
+  margin-top: 8px;
+  padding: 10px 6px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-strong);
+  font-size: 12px;
+  text-align: left;
+}
+.design-page-add:disabled {
+  opacity: 0.4;
+}
+.design-floating-tools > .design-layers {
+  position: absolute;
+  left: 18px;
+  top: 66px;
+  bottom: 88px;
+  width: min(280px, calc(100% - 36px));
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px #0003;
+  z-index: 15;
+  overflow: hidden;
+}
+.design-floating-tools.has-board-navigation > .design-layers {
+  top: 124px;
+}
+.design-floating-tools > .design-inspector,
+.design-floating-tools > .design-style-panel {
+  position: absolute;
+  right: 18px;
+  top: 66px;
+  bottom: 88px;
+  z-index: 15;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px #0003;
+}
+.design-floating-tools .design-canvas-actions {
+  z-index: 20;
+}
+.design-floating-tools .design-canvas-actions .button span {
+  display: none;
+}
+@media (max-width: 700px) {
+  .design-navigation-stack {
+    top: 12px;
+    left: 12px;
+    max-width: calc(100% - 24px);
+    gap: 6px;
+  }
+  .design-floating-tools:not(.has-board-navigation) .design-navigation-stack {
+    max-width: calc(100% - 148px);
+  }
+  .design-floating-tools.has-board-navigation .design-navigation-stack {
+    width: calc(100% - 24px);
+    padding-bottom: 50px;
+    pointer-events: none;
+  }
+  .design-navigation-stack > * {
+    pointer-events: auto;
+  }
+  .design-floating-tools.has-board-navigation .design-page-picker-toggle {
+    max-width: calc(100% - 132px);
+  }
+  .design-floating-tools.has-board-navigation
+    .design-canvas-actions.board-design-actions {
+    top: 114px;
+    right: 12px;
+  }
+  .design-floating-tools.has-board-navigation > .design-layers,
+  .design-floating-tools.has-board-navigation > .design-inspector,
+  .design-floating-tools.has-board-navigation > .design-style-panel {
+    top: 168px;
+  }
+  .design-floating-tools > .design-layers {
+    left: 12px;
+  }
+  .design-floating-tools > .design-inspector,
+  .design-floating-tools > .design-style-panel {
+    right: 12px;
+  }
+  .design-page-picker-toggle > span {
+    display: none;
+  }
+}

@@ -5,6 +5,7 @@ import '@xyflow/react/dist/style.css'
 import '../design.css'
 import '../designEditor.css'
 import '../designCompact.css'
+import '../designFloatingTools.css'
 export function DesignBoard(props: DesignBoardProps) {
   return (
     <ReactFlowProvider>

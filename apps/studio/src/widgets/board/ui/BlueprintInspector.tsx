@@ -11,6 +11,9 @@ import { BlueprintOverview } from './BlueprintOverview.tsx'
 
 import type { BlueprintInspectorProps } from '../types/blueprintInspectorProps.ts'
 export function BlueprintInspector({
+  focusNode,
+  fitBoard,
+  addNode,
   selectedNodes,
   node,
   edge,
@@ -85,7 +88,15 @@ export function BlueprintInspector({
           setSelectedEdge={setSelectedEdge}
         />
       ) : (
-        <BlueprintOverview board={board} update={update} />
+        <BlueprintOverview
+          board={board}
+          update={update}
+          requirements={requirements}
+          openRequirement={openRequirement}
+          focusNode={focusNode}
+          fitBoard={fitBoard}
+          addNode={addNode}
+        />
       )}
     </ResizableInspector>
   )

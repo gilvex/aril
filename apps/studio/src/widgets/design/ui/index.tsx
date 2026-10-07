@@ -23,3 +23,5 @@ export { DesignAlignment } from './DesignAlignment.tsx'
 export { DesignCanvasActions } from './DesignCanvasActions.tsx'
 
 export { DesignPanelActions } from './DesignPanelActions.tsx'
+export { DesignPagePicker } from './DesignPagePicker.tsx'
+export { DesignNavigation } from './DesignNavigation.tsx'

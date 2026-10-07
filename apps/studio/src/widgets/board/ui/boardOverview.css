@@ -1,0 +1,130 @@
+.board-overview {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  text-align: left;
+}
+.board-overview > label {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.board-overview input,
+.board-overview textarea {
+  width: 100%;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-strong);
+}
+.board-overview textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+.board-overview-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px 0;
+  margin: 0;
+  border-block: 1px solid var(--line);
+}
+.board-overview-metrics > div {
+  min-width: 0;
+}
+.board-overview-metrics dd {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.board-overview-metrics dt {
+  font-size: 10px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.board-overview-section h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.board-overview-section h3 > span {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.board-overview-list {
+  max-height: 180px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.board-overview-list button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  text-align: left;
+  font-size: 11px;
+  color: var(--text-strong);
+}
+.board-overview-list button:hover {
+  background: var(--accent-light);
+}
+.board-overview-list button > span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+.board-overview-list button > small {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+.board-overview-list svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.board-overview-list .question-indicator {
+  color: #caa659;
+}
+.board-overview-list p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.board-overview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.board-overview-actions .button {
+  padding: 7px;
+  font-size: 11px;
+  min-height: 34px;
+  background: transparent;
+  border-color: transparent;
+}
+@media (max-width: 700px) {
+  .board-overview input,
+  .board-overview textarea {
+    font-size: 16px;
+  }
+}
