@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeEdgeDetailsHandlers } from '../model/useWireframeEdgeDetailsHandlers.tsx'
 
@@ -13,6 +14,7 @@ export function WireframeEdgeDetails({
   setEdgeId,
 }: WireframeEdgeDetailsProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   const {
     handleInteractionLabelChange,
@@ -33,6 +35,7 @@ export function WireframeEdgeDetails({
       <label>
         {t('Interaction label')}
         <input
+          disabled={readOnly}
           aria-label={t('Interaction label')}
           ref={editField}
           value={edge.label}
@@ -43,6 +46,7 @@ export function WireframeEdgeDetails({
       <label>
         {t('Destination')}
         <select
+          disabled={readOnly}
           aria-label={t('Interaction destination')}
           value={edge.target}
           onChange={handleInteractionDestinationChange}
@@ -56,11 +60,19 @@ export function WireframeEdgeDetails({
             ))}
         </select>
       </label>
-      <button className="button" onClick={() => focus(edge.target)}>
+      <button
+        disabled={readOnly}
+        className="button"
+        onClick={() => focus(edge.target)}
+      >
         <ArrowRight size={14} />
         {t('Show destination')}
       </button>
-      <button className="button danger" onClick={handleClick}>
+      <button
+        disabled={readOnly}
+        className="button danger"
+        onClick={handleClick}
+      >
         <Trash2 size={14} />
         {t('Remove flow')}
       </button>

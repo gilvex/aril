@@ -100,7 +100,7 @@ test('live credentials preserve membership, bind identity to a tab key, and reje
   const jwt = JSON.parse(Buffer.from(claims, 'base64url').toString())
   assert.equal(jwt.role, 'authenticated')
   assert.equal(jwt.pomegranate_topic, 'pomegranate:live:default')
-  assert.equal(jwt.exp - jwt.iat, 300)
+  assert.equal(jwt.exp - jwt.iat, 30)
   const verifier = await publicKey(config.verificationKey)
   const identity = await verifyCertificate(
     config.certificate,
@@ -109,6 +109,22 @@ test('live credentials preserve membership, bind identity to a tab key, and reje
   )
   assert.equal(identity?.profile.id, owner.profile.id)
   assert.equal(identity?.clientId, clientId)
+  await store.access.update(
+    owner.profile.id,
+    'default',
+    peer.profile.id,
+    'viewer',
+  )
+  const viewerConfig = (await (await call(peer.token)).json()) as ReturnType<
+    typeof createLiveSession
+  >
+  const viewerCertificate = await verifyCertificate(
+    viewerConfig.certificate,
+    verifier,
+    'default',
+  )
+  assert.equal(viewerCertificate?.canEdit, false)
+  assert.equal(viewerConfig.refreshAfterMs, 15000)
   const realNow = Date.now()
   const clock = t.mock.method(Date, 'now', () => realNow + 6 * 60 * 1000)
   assert.equal(

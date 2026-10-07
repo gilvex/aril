@@ -13,6 +13,7 @@ export function createLiveSession(
   profile: Profile,
   clientId: string,
   publicKey: string,
+  canEdit = true,
 ): LiveConfig {
   const secret = process.env.SUPABASE_JWT_SECRET
   const url =
@@ -25,7 +26,7 @@ export function createLiveSession(
   const topic = `pomegranate:live:${workspaceId}`
   const expiresAt = profile.guestExpiresAt
     ? Math.min(profile.guestExpiresAt, Date.now() + 30000)
-    : Date.now() + 5 * 60 * 1000
+    : Date.now() + 30000
   const encoded = (value: unknown) =>
     Buffer.from(JSON.stringify(value)).toString('base64url')
   const claims = encoded({
@@ -58,10 +59,11 @@ export function createLiveSession(
     clientId,
     publicKey,
     expiresAt,
+    canEdit,
   })
   return {
     transport: 'websocket',
-    refreshAfterMs: profile.guestExpiresAt ? 15000 : 240000,
+    refreshAfterMs: 15000,
     url,
     apiKey,
     token,

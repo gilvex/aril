@@ -1,3 +1,5 @@
+import { installWorkspaceAccess } from './utils/installWorkspaceAccess.ts'
+import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import {
   applyOperations,
   describeOperations,
@@ -159,12 +161,10 @@ export function installCollaboration(
     }
     const current = await cookieProfile(req)
     if (current?.guestExpiresAt) {
-      res
-        .status(403)
-        .json({
-          error:
-            'Guest access cannot be converted to a permanent account. Sign out to use Google.',
-        })
+      res.status(403).json({
+        error:
+          'Guest access cannot be converted to a permanent account. Sign out to use Google.',
+      })
       return
     }
     const nonce = await store.identity.consumeChallenge(
@@ -311,12 +311,10 @@ export function installCollaboration(
       ) ||
         (req.path === '/studios' && req.method === 'POST'))
     ) {
-      res
-        .status(403)
-        .json({
-          error:
-            'Temporary guests cannot invite others, create workspaces, or grant agent access.',
-        })
+      res.status(403).json({
+        error:
+          'Temporary guests cannot invite others, create workspaces, or grant agent access.',
+      })
       return
     }
     next()
@@ -328,6 +326,14 @@ export function installCollaboration(
         clients.delete(key)
         presenceChanged(client.workspaceId)
       }
+  })
+  installWorkspaceAccess(app, store, (workspaceId, userId) => {
+    for (const [key, client] of clients)
+      if (client.workspaceId === workspaceId && client.userId === userId) {
+        client.res.end()
+        clients.delete(key)
+      }
+    presenceChanged(workspaceId)
   })
   app.get('/api/studios', async (_req, res) =>
     res.json(await store.studios((res.locals.profile as Profile).id)),
@@ -403,16 +409,41 @@ export function installCollaboration(
       return
     }
     const workspaceId = req.get('x-workspace-id') || 'default'
-    if (
-      !(await store.member((res.locals.profile as Profile).id, workspaceId))
-    ) {
+    const role = await store.access.role(res.locals.profile.id, workspaceId)
+    if (!role) {
       res
         .status(403)
         .json({ error: 'You do not have access to this workspace.' })
       return
     }
+    if (
+      (req.path === '/invites' && role !== 'owner') ||
+      (req.path === '/workspace' && req.method !== 'GET' && role === 'viewer')
+    ) {
+      res.status(403).json({
+        error:
+          role === 'viewer'
+            ? 'This workspace is view-only.'
+            : 'Only the workspace owner can manage access.',
+      })
+      return
+    }
+    res.locals.workspaceRole = role
     res.locals.workspaceId = workspaceId
     next()
+  })
+  app.get('/api/workspace-access', async (req, res) => {
+    const role = await store.access.role(
+      res.locals.profile.id,
+      req.get('x-workspace-id') || 'default',
+    )
+    if (!role) {
+      res
+        .status(403)
+        .json({ error: 'You do not have access to this workspace.' })
+      return
+    }
+    res.json({ role })
   })
   app.post('/api/invites', async (_req, res) =>
     res.json(
@@ -499,6 +530,7 @@ export function installCollaboration(
           res.locals.profile,
           input.data.clientId,
           input.data.publicKey,
+          res.locals.workspaceRole !== 'viewer',
         ),
       )
     } catch {
@@ -552,7 +584,10 @@ export function installCollaboration(
     write(res, 'activity', await store.activity(workspaceId))
     presenceChanged(workspaceId)
     const heartbeat = setInterval(async () => {
-      if (!(await cookieProfile(req))) {
+      if (
+        !(await cookieProfile(req)) ||
+        !(await store.member(profile.id, workspaceId))
+      ) {
         res.end()
         return
       }
@@ -590,6 +625,14 @@ export function installCollaboration(
     ) {
       client.presence = {
         ...input.data,
+        ...(res.locals.workspaceRole === 'viewer'
+          ? {
+              dragging: [],
+              requirement: input.data.requirement
+                ? { ...input.data.requirement, typing: false }
+                : null,
+            }
+          : {}),
         profile: res.locals.profile as Profile,
         seenAt: Date.now(),
       }
@@ -646,6 +689,7 @@ export function installCollaboration(
             requestId: input.data.requestId,
           },
           workspaceId,
+          actor.id,
         )
         if (!saved) continue
         broadcast('workspace', saved, workspaceId)
@@ -658,6 +702,10 @@ export function installCollaboration(
           'This workspace is receiving simultaneous changes. Reload the shared version before retrying.',
       })
     } catch (err) {
+      if (err instanceof WorkspaceAccessError) {
+        res.status(403).json({ error: err.message })
+        return
+      }
       if (err instanceof MergeConflict || err instanceof z.ZodError) {
         res.status(409).json({
           error:

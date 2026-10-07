@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { Check, Link } from 'lucide-react'
 import { Spinner } from '@/shared/ui/index.tsx'
 import { GuestLinks } from '@/features/guestLinks/index.ts'
@@ -8,6 +9,7 @@ import type { CollaborationPopoverProps } from '../types/collaborationPopoverPro
 
 export function PeopleInvites(props: CollaborationPopoverProps) {
   const { t, i18n } = useTranslation()
+  const role = useWorkspaceRole()
   const { createInvite, copyInvite } = useCollaborationPopoverHandlers(props)
   if (props.profile.guestExpiresAt)
     return (
@@ -17,6 +19,12 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
             i18n.language,
           ),
         })}
+      </p>
+    )
+  if (role !== 'owner')
+    return (
+      <p className="collaboration-hint">
+        {t('Only the workspace owner can manage access.')}
       </p>
     )
   return (

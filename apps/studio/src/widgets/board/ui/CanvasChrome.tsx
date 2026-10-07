@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasChromeHandlers } from '../model/useCanvasChromeHandlers.tsx'
 
@@ -16,6 +17,7 @@ export function CanvasChrome({
   preview = false,
 }: CanvasChromeProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   const compact = useCompactLayout()
 
@@ -60,6 +62,7 @@ export function CanvasChrome({
                 </button>
                 <button
                   className="button"
+                  disabled={readOnly}
                   title={t('Connect tool')}
                   aria-label={t('Connect tool')}
                   aria-pressed={tool === 'connect'}

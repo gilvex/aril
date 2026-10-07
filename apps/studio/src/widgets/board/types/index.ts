@@ -77,3 +77,5 @@ export type { WireframeViewActionsProps } from './wireframeViewActionsProps.ts'
 export * from './wireRoute.ts'
 export * from './wireRoutingPoint.ts'
 export * from './wireRoutingRect.ts'
+
+export type { BlueprintNodeClassificationProps } from './blueprintNodeClassificationProps.ts'

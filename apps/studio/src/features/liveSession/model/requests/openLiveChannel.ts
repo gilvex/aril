@@ -166,6 +166,14 @@ export async function openLiveChannel(
     if (previous && (previous.sequence || 0) >= state.sequence) return
     peers.set(state.clientId, {
       ...state,
+      ...(!identity.certificate.canEdit
+        ? {
+            dragging: [],
+            requirement: state.requirement
+              ? { ...state.requirement, typing: false }
+              : null,
+          }
+        : {}),
       profile: identity.certificate.profile,
       seenAt: Date.now(),
     })

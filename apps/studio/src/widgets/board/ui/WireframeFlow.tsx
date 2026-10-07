@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { edgeTypes } from '@/widgets/board/config/wireframeBoardEdgeTypes.ts'
 import { nodeTypes } from '@/widgets/board/config/wireframeBoardNodeTypes.ts'
 import type { WireFlowNode } from '@/widgets/board/types/wireFlowNode.ts'
@@ -14,6 +15,8 @@ import { useCanvasLabels } from '../model/useCanvasLabels.ts'
 
 import type { WireframeFlowProps } from '../types/wireframeFlowProps.ts'
 export function WireframeFlow(props: WireframeFlowProps) {
+  const role = useWorkspaceRole()
+  const canEdit = role !== 'viewer' && role !== null
   const ariaLabelConfig = useCanvasLabels()
   const {
     selection,
@@ -62,13 +65,16 @@ export function WireframeFlow(props: WireframeFlowProps) {
       onMoveStart={() => setInsertPoint(null)}
       onNodesChange={onNodesChange}
       nodesDraggable={
-        !preview && tool === 'select' && (!compact || !touchSelection)
+        canEdit &&
+        !preview &&
+        tool === 'select' &&
+        (!compact || !touchSelection)
       }
       panOnDrag={tool === 'pan' || compact || preview ? true : [1, 2]}
       selectionOnDrag={!compact && !preview && tool === 'select'}
       zoomOnDoubleClick={false}
-      nodesConnectable={!preview && tool !== 'pan'}
-      deleteKeyCode={preview ? null : ['Backspace', 'Delete']}
+      nodesConnectable={canEdit && !preview && tool !== 'pan'}
+      deleteKeyCode={!canEdit || preview ? null : ['Backspace', 'Delete']}
       onNodeClick={handleNodeClick}
       onNodeDoubleClick={handleNodeDoubleClick}
       onEdgeDoubleClick={handleEdgeDoubleClick}

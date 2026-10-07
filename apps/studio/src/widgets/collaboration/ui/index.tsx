@@ -8,3 +8,6 @@ export { TeamActivityList } from './TeamActivityList.tsx'
 export { WorkspaceAccountMenu } from './WorkspaceAccountMenu.tsx'
 
 export { PeopleInvites } from './PeopleInvites.tsx'
+
+export { SettingsProfile } from './SettingsProfile.tsx'
+export { SettingsInvitations } from './SettingsInvitations.tsx'

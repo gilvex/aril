@@ -1,6 +1,7 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
-import { nodeKinds, statuses } from '@pomegranate/domain/workspace'
+import { BlueprintNodeClassification } from './BlueprintNodeClassification.tsx'
 import { Copy, Trash2 } from 'lucide-react'
 import { useBlueprintNodeDetailsHandlers } from '../model/useBlueprintNodeDetailsHandlers.tsx'
 import { LinkedRequirements } from './LinkedRequirements.tsx'
@@ -18,6 +19,7 @@ export function BlueprintNodeDetails({
   removeNode,
 }: BlueprintNodeDetailsProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   const {
     changeKind,
@@ -39,6 +41,7 @@ export function BlueprintNodeDetails({
       <label>
         {t('Title')}
         <input
+          disabled={readOnly}
           aria-label={t('Node title')}
           ref={editField}
           value={node.data.title}
@@ -49,6 +52,7 @@ export function BlueprintNodeDetails({
       <label>
         {t('Description')}
         <textarea
+          readOnly={readOnly}
           aria-label={t('Node description')}
           value={node.data.description}
           maxLength={2000}
@@ -56,31 +60,16 @@ export function BlueprintNodeDetails({
           onChange={(e) => updateNode({ description: e.target.value })}
         />
       </label>
-      <div className="field-row">
-        <label>
-          {t('Type')}
-          <select value={node.data.kind} onChange={changeKind}>
-            {nodeKinds.map((k) => (
-              <option key={k} value={k}>
-                {t(kindLabels[k])}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          {t('Decision')}
-          <select value={node.data.status} onChange={changeStatus}>
-            {statuses.map((s) => (
-              <option key={s} value={s}>
-                {t(s)}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      <BlueprintNodeClassification
+        node={node}
+        readOnly={readOnly}
+        changeKind={changeKind}
+        changeStatus={changeStatus}
+      />
       <label>
         {t('Notes')}
         <textarea
+          readOnly={readOnly}
           aria-label={t('Node notes')}
           placeholder={t('Constraints, decisions, open questions…')}
           rows={5}
@@ -100,6 +89,7 @@ export function BlueprintNodeDetails({
         updateNode={updateNode}
       />
       <select
+        disabled={readOnly}
         aria-label={t('Link a requirement')}
         value=""
         onChange={handleLinkARequirementChange}
@@ -114,11 +104,12 @@ export function BlueprintNodeDetails({
           ))}
       </select>
       <div className="inspector-actions">
-        <button className="button" onClick={duplicateNode}>
+        <button disabled={readOnly} className="button" onClick={duplicateNode}>
           <Copy size={14} />
           {t('Duplicate')}
         </button>
         <button
+          disabled={readOnly}
           className="icon-button danger"
           aria-label={t('Delete node')}
           onClick={removeNode}

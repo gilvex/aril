@@ -3,6 +3,7 @@ import { liveJoinSchema } from './liveJoinSchema.ts'
 export const certificateSchema = liveJoinSchema.extend({
   workspaceId: z.string().min(1).max(100),
   expiresAt: z.number().int(),
+  canEdit: z.boolean().default(true),
   profile: z.object({
     id: z.string().uuid(),
     name: z.string().max(60),

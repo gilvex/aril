@@ -35,3 +35,7 @@ export type { UseStudioWorkspaceActionsProps } from './useStudioWorkspaceActions
 export * from './workspaceHistoryDialogProps.ts'
 
 export type { WorkspaceTabsState } from './workspaceTabsState.ts'
+
+export type { SettingsMemberProps } from './settingsMemberProps.ts'
+
+export type { SettingsState } from './settingsState.ts'

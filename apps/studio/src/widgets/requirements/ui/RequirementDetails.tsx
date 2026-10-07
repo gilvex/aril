@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { ArrowLeft, Check, Trash2, X } from 'lucide-react'
 import { useCallback, type ChangeEvent } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -8,6 +9,7 @@ import { RequirementProperties } from './RequirementProperties.tsx'
 import { RequirementLinks } from './RequirementLinks.tsx'
 export function RequirementDetails(props: RequirementDetailsProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const {
     current,
     selectRequirement,
@@ -54,6 +56,7 @@ export function RequirementDetails(props: RequirementDetailsProps) {
       <label className="req-document-title">
         <span className="visually-hidden">{t('Requirement title')}</span>
         <textarea
+          readOnly={readOnly}
           name="title"
           aria-label={t('Requirement title')}
           {...fieldProps('title')}
@@ -69,6 +72,7 @@ export function RequirementDetails(props: RequirementDetailsProps) {
         <span>{t('Problem')}</span>
         {fieldHint('description')}
         <textarea
+          readOnly={readOnly}
           name="description"
           aria-label={t('Requirement description')}
           {...fieldProps('description')}
@@ -83,6 +87,7 @@ export function RequirementDetails(props: RequirementDetailsProps) {
         <span>{t('Acceptance criteria')}</span>
         {fieldHint('acceptance')}
         <textarea
+          readOnly={readOnly}
           name="acceptance"
           aria-label={t('Acceptance criteria')}
           {...fieldProps('acceptance')}
@@ -103,6 +108,7 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           className="icon-button"
           aria-label={t('Delete requirement')}
           title={t('Delete requirement')}
+          disabled={readOnly}
           onClick={remove}
         >
           <Trash2 size={15} />

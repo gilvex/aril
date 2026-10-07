@@ -20,7 +20,13 @@ export type StudioBottomNavigationProps = {
     | import('@pomegranate/domain/collaboration').Presence
     | {
         profile: import('@pomegranate/domain/collaboration').Profile
-        view: 'canvas' | 'requirements' | 'design' | 'notes' | 'wireframes'
+        view:
+          | 'canvas'
+          | 'requirements'
+          | 'design'
+          | 'notes'
+          | 'wireframes'
+          | 'settings'
         boardId: string | null
       }
   )[]

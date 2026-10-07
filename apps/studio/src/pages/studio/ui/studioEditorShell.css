@@ -30,7 +30,7 @@
   min-height: 0;
   overflow: hidden;
 }
-.editor-shell > .topbar {
+.editor-shell.studio-shell > .topbar {
   grid-area: tabs;
   background: var(--navigation-bar);
   border-bottom: 1px solid var(--line);
@@ -215,7 +215,7 @@
     grid-template-rows: 50px minmax(0, 1fr);
     grid-template-areas: 'tabs' 'content';
   }
-  .editor-shell > .topbar {
+  .editor-shell.studio-shell > .topbar {
     height: 50px;
     min-height: 50px;
     padding: 0 6px;
@@ -241,4 +241,50 @@
     background: var(--surface, #fff);
     color: var(--text-strong);
   }
+}
+
+.editor-shell.studio-shell > .topbar,
+.editor-shell .topbar-actions,
+.editor-shell .collaboration-bar {
+  align-items: center;
+}
+.workspace-tab-list {
+  height: 100%;
+}
+.workspace-tab {
+  position: relative;
+  border-bottom: 0;
+}
+.workspace-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+.workspace-tab-close {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  line-height: 1;
+}
+.workspace-tab > [role='tab'] {
+  line-height: 1.2;
+  align-self: stretch;
+}
+.editor-shell .topbar .icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding-block: 0;
+}
+.studio-navigation-sidebar .desktop-page-nav > button {
+  align-items: center;
+}
+.sidebar-collapse-control[aria-current] {
+  color: var(--accent);
+  background: var(--accent-light);
 }

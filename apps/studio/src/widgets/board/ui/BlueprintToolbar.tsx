@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '@/widgets/board/config/kindIcons.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
@@ -24,6 +25,7 @@ export function BlueprintToolbar({
   addNode,
 }: BlueprintToolbarProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   return (
     <CanvasChrome
@@ -46,6 +48,7 @@ export function BlueprintToolbar({
       <div className="add-node-wrap">
         <button
           className="button primary"
+          disabled={readOnly}
           title={t('Add node')}
           aria-label={t('Add node')}
           aria-expanded={palette}

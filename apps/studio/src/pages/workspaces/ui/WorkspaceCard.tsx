@@ -24,7 +24,15 @@ export const WorkspaceCard = memo(function WorkspaceCard({
         <div className="workspace-card-title">
           <h2>{studio.name}</h2>
           <span className={`workspace-role role-${studio.role}`}>
-            {t(studio.role === 'owner' ? 'Owner' : 'Member')}
+            {t(
+              studio.role === 'owner'
+                ? 'Owner'
+                : studio.role === 'viewer'
+                  ? 'Viewer'
+                  : studio.role === 'guest'
+                    ? 'Guest'
+                    : 'Editor',
+            )}
           </span>
           <ArrowUpRight size={16} className="workspace-open-icon" />
         </div>

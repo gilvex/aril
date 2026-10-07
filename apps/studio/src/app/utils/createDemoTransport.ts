@@ -27,6 +27,16 @@ export function createDemoTransport(
       const body = typeof init?.body === 'string' ? JSON.parse(init.body) : {}
       if (path === '/api/events')
         return createDemoStream(state, init?.signal, storage)
+      if (path === '/api/workspace-access')
+        return Response.json({ role: 'owner' })
+      if (path === '/api/members' && method === 'GET')
+        return Response.json([
+          { ...state.profile, role: 'owner' },
+          ...createDemoPeers(state).map((peer) => ({
+            ...peer.profile,
+            role: 'member',
+          })),
+        ])
       if (path === '/api/session')
         return Response.json({ profile: state.profile })
       if (path === '/api/studios' && method === 'GET')

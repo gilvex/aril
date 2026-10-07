@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeBlockHandlers } from '../model/useWireframeBlockHandlers.tsx'
 
@@ -17,6 +18,7 @@ export function WireframeBlock({
   data,
   selected,
 }: NodeProps<WireFlowNode>) {
+  const readOnly = useWorkspaceRole() === 'viewer'
   const { t } = useTranslation()
 
   const updateNodeInternals = useUpdateNodeInternals()
@@ -28,7 +30,7 @@ export function WireframeBlock({
   return (
     <>
       <NodeResizer
-        isVisible={selected && !data.preview}
+        isVisible={!readOnly && selected && !data.preview}
         minWidth={60}
         minHeight={32}
         maxWidth={2400}

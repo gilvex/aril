@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { Columns3, List, Plus } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -7,6 +8,7 @@ import { RequirementsCommands } from './RequirementsCommands.tsx'
 import { RequirementFilterChips } from './RequirementFilterChips.tsx'
 export function RequirementsToolbar({ model }: RequirementsViewProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const controls = useRequirementsToolbar({ model })
   const value = model.view === 'list' ? 'list' : model.groupBy
   return (
@@ -44,6 +46,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
         <button
           className="button primary req-add"
           aria-label={t('Add requirement')}
+          disabled={readOnly}
           onClick={controls.addRequirement}
         >
           <Plus size={16} />

@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, useRef, type MouseEvent } from 'react'
 import {
   Hand,
@@ -20,6 +21,7 @@ export function DesignToolbar({
   insertTemplate,
 }: DesignToolbarProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const menu = useRef<HTMLDetailsElement>(null)
   const insert = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -101,31 +103,38 @@ export function DesignToolbar({
         >
           <Hand size={18} />
         </button>
-        <details ref={menu} className="design-insert-menu">
-          <summary aria-label={t('Insert')} title={t('Insert')}>
-            <Plus size={18} />
-          </summary>
-          <div role="group" aria-label={t('Insert element')}>
-            {designTools.map(({ kind, label, icon: Icon, ...rest }) => (
+        {!readOnly && (
+          <details ref={menu} className="design-insert-menu">
+            <summary aria-label={t('Insert')} title={t('Insert')}>
+              <Plus size={18} />
+            </summary>
+            <div role="group" aria-label={t('Insert element')}>
+              {designTools.map(({ kind, label, icon: Icon, ...rest }) => (
+                <button
+                  key={label}
+                  data-kind={kind}
+                  data-mobile={
+                    'mobile' in rest && rest.mobile ? 'true' : 'false'
+                  }
+                  onClick={insert}
+                  disabled={model.page.nodes.length >= 500}
+                >
+                  <Icon size={16} />
+                  {t(label)}
+                </button>
+              ))}
+              <hr />
               <button
-                key={label}
-                data-kind={kind}
-                data-mobile={'mobile' in rest && rest.mobile ? 'true' : 'false'}
-                onClick={insert}
-                disabled={model.page.nodes.length >= 500}
+                onClick={template}
+                disabled={model.page.nodes.length > 440}
               >
-                <Icon size={16} />
-                {t(label)}
+                <LayoutTemplate size={16} />
+                {t('Server dashboard template')}
               </button>
-            ))}
-            <hr />
-            <button onClick={template} disabled={model.page.nodes.length > 440}>
-              <LayoutTemplate size={16} />
-              {t('Server dashboard template')}
-            </button>
-          </div>
-        </details>
-        <DesignCanvasActions model={model} />
+            </div>
+          </details>
+        )}
+        {!readOnly && <DesignCanvasActions model={model} />}
       </div>
     </>
   )

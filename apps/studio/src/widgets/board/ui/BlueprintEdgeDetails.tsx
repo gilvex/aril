@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useBlueprintEdgeDetailsHandlers } from '../model/useBlueprintEdgeDetailsHandlers.tsx'
 
@@ -12,6 +13,7 @@ export function BlueprintEdgeDetails({
   setSelectedEdge,
 }: BlueprintEdgeDetailsProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   const { handleConnectionLabelChange, handleClick } =
     useBlueprintEdgeDetailsHandlers({ update, board, edge, setSelectedEdge })
@@ -28,6 +30,7 @@ export function BlueprintEdgeDetails({
       <label>
         {t('Connection label')}
         <input
+          disabled={readOnly}
           aria-label={t('Connection label')}
           ref={editField}
           value={edge.label || ''}
@@ -35,7 +38,11 @@ export function BlueprintEdgeDetails({
           onChange={handleConnectionLabelChange}
         />
       </label>
-      <button className="button danger" onClick={handleClick}>
+      <button
+        disabled={readOnly}
+        className="button danger"
+        onClick={handleClick}
+      >
         <Unplug size={15} />
         {t('Remove connection')}
       </button>

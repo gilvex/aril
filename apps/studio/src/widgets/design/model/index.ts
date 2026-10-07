@@ -6,3 +6,5 @@ export * from './useDesignCanvas.ts'
 export * from './useDesignDocument.ts'
 export * from './useDesignEditorState.ts'
 export * from './useDesignCanvasLabels.ts'
+
+export { useDesignDoubleClick } from './useDesignDoubleClick.ts'

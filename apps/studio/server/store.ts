@@ -11,6 +11,8 @@ import { mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { agentCredentials, agentTable } from './agentCredentials.ts'
+import { workspaceAccess } from './workspaceAccess.ts'
+import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import { guestLinks } from './guestLinks.ts'
 import { identityStore } from './identity.ts'
 import type { StudioOverview } from '@pomegranate/domain/studios'
@@ -122,10 +124,20 @@ export function openStore(path: string) {
     expected: number,
     actor?: { id: string; name: string; message: string; requestId: string },
     workspaceId = 'default',
+    writerId?: string,
   ): Envelope | null {
     const clean = workspaceSchema.parse(workspace)
     db.exec('BEGIN IMMEDIATE')
     try {
+      if (
+        writerId &&
+        !db
+          .prepare(
+            "SELECT 1 FROM members WHERE user_id=? AND workspace_id=? AND role IN ('owner','member','guest')",
+          )
+          .get(writerId, workspaceId)
+      )
+        throw new WorkspaceAccessError()
       const current = read(workspaceId)
       if (current.revision !== expected) {
         db.exec('ROLLBACK')
@@ -175,9 +187,16 @@ export function openStore(path: string) {
     identity,
     agents,
     guests,
+    access: workspaceAccess(async (sql, values) =>
+      db
+        .prepare(sql.replaceAll('studio.', '').replace(/\$\d+/g, '?'))
+        .all(...values),
+    ),
     member: (userId: string, workspaceId: string) =>
       !!db
-        .prepare(`SELECT 1 FROM members m WHERE m.user_id=? AND m.workspace_id=? AND (m.role!='guest' OR EXISTS (SELECT 1 FROM guest_profiles gp JOIN guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>?))`)
+        .prepare(
+          `SELECT 1 FROM members m WHERE m.user_id=? AND m.workspace_id=? AND (m.role!='guest' OR EXISTS (SELECT 1 FROM guest_profiles gp JOIN guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>?))`,
+        )
         .get(userId, workspaceId, Date.now()),
     studios: (userId: string) =>
       db

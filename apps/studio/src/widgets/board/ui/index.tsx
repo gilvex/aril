@@ -38,3 +38,5 @@ export { WireframePreviewDetails } from './WireframePreviewDetails.tsx'
 export { WireframeSurface } from './WireframeSurface.tsx'
 export { WireframeToolbar } from './WireframeToolbar.tsx'
 export { WireframeViewActions } from './WireframeViewActions.tsx'
+
+export { BlueprintNodeClassification } from './BlueprintNodeClassification.tsx'

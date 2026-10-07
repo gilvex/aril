@@ -1,12 +1,14 @@
+import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import { createWorkspaceSession } from '@/entities/workspace/model/createWorkspaceSession.ts'
 import type { Recovery } from '@/entities/workspace/types/recovery.ts'
 import type { Envelope } from '@pomegranate/domain/workspace'
-import { useEffect, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react'
 export function useWorkspace(
   initial: Envelope,
   workspaceId: string,
   profileId: string,
   recovery?: Recovery,
+  canEdit = true,
 ) {
   const sessionRef = useRef<ReturnType<typeof createWorkspaceSession> | null>(
     null,
@@ -38,14 +40,31 @@ export function useWorkspace(
     }
   }, [session])
   useEffect(() => session.receive(initial), [session, initial])
+  const change = useCallback<typeof session.change>(
+    (update, record) => {
+      session.change((current) => {
+        const next = update(current)
+        return canEdit || !diffWorkspace(current, next).length ? next : current
+      }, record)
+    },
+    [canEdit, session],
+  )
+  const undo = useCallback(() => {
+    if (canEdit) session.undo()
+  }, [canEdit, session])
+  const redo = useCallback(() => {
+    if (canEdit) session.redo()
+  }, [canEdit, session])
   return {
     ...snapshot,
-    change: session.change,
+    canUndo: canEdit && snapshot.canUndo,
+    canRedo: canEdit && snapshot.canRedo,
+    change,
     checkpoint: session.checkpoint,
     flush: session.flush,
     receive: session.receive,
-    undo: session.undo,
-    redo: session.redo,
+    undo,
+    redo,
     reloadSaved: session.reloadSaved,
   }
 }

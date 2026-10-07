@@ -1,6 +1,7 @@
 import type { StudioView as View } from '@/shared/types/studioView.ts'
 
 export type StudioContentProps = {
+  settings: ReturnType<typeof import('../model/useSettings.ts').useSettings>
   onOpenWorkspace: import('./studioProps.ts').StudioProps['onOpenWorkspace']
   compact: boolean
   sidebarOpen: boolean
@@ -29,7 +30,13 @@ export type StudioContentProps = {
         following: string | null
         clientId: string
         boardId: string | null
-        view: 'canvas' | 'requirements' | 'design' | 'notes' | 'wireframes'
+        view:
+          | 'canvas'
+          | 'requirements'
+          | 'design'
+          | 'notes'
+          | 'wireframes'
+          | 'settings'
         cursor: { x: number; y: number } | null
         selected: string[]
         selectedEdges: string[]
@@ -78,7 +85,13 @@ export type StudioContentProps = {
     | import('@pomegranate/domain/collaboration').Presence
     | {
         profile: import('@pomegranate/domain/collaboration').Profile
-        view: 'canvas' | 'requirements' | 'design' | 'notes' | 'wireframes'
+        view:
+          | 'canvas'
+          | 'requirements'
+          | 'design'
+          | 'notes'
+          | 'wireframes'
+          | 'settings'
         boardId: string | null
       }
   )[]
@@ -177,7 +190,13 @@ export type StudioContentProps = {
       following: string | null
       clientId: string
       boardId: string | null
-      view: 'canvas' | 'requirements' | 'design' | 'notes' | 'wireframes'
+      view:
+        | 'canvas'
+        | 'requirements'
+        | 'design'
+        | 'notes'
+        | 'wireframes'
+        | 'settings'
       cursor: { x: number; y: number } | null
       selected: string[]
       selectedEdges: string[]

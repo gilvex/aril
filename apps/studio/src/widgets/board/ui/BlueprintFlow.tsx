@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useBlueprintFlowHandlers } from '../model/useBlueprintFlowHandlers.tsx'
 import { useCanvasLabels } from '../model/useCanvasLabels.ts'
 
@@ -14,6 +15,8 @@ import {
 
 import type { BlueprintFlowProps } from '../types/blueprintFlowProps.ts'
 export function BlueprintFlow(props: BlueprintFlowProps) {
+  const role = useWorkspaceRole()
+  const canEdit = role !== 'viewer' && role !== null
   const ariaLabelConfig = useCanvasLabels()
   const {
     board,
@@ -58,8 +61,10 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       onPaneContextMenu={handlePaneContextMenu}
       onMoveStart={() => setInsertPoint(null)}
       onNodesChange={onNodesChange}
-      nodesDraggable={tool === 'select' && (!compact || !touchSelection)}
-      nodesConnectable={tool !== 'pan'}
+      nodesDraggable={
+        canEdit && tool === 'select' && (!compact || !touchSelection)
+      }
+      nodesConnectable={canEdit && tool !== 'pan'}
       panOnDrag={tool === 'pan' || compact ? true : [1, 2]}
       selectionOnDrag={!compact && tool === 'select'}
       zoomOnDoubleClick={false}
@@ -81,7 +86,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       fitViewOptions={{ padding: 0.16, maxZoom: 1 }}
       minZoom={0.2}
       maxZoom={2}
-      deleteKeyCode={['Backspace', 'Delete']}
+      deleteKeyCode={canEdit ? ['Backspace', 'Delete'] : null}
       defaultEdgeOptions={{ type: 'smoothstep' }}
       connectionRadius={28}
     >

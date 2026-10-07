@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import {
   useCallback,
   type ChangeEvent,
@@ -13,6 +14,7 @@ export function DesignElementNode({
   data,
   selected,
 }: NodeProps<DesignFlowNode>) {
+  const readOnly = useWorkspaceRole() === 'viewer'
   const { t } = useTranslation()
   const { element, editors, editing, editText, finishEditing } = data
   const textChange = useCallback(
@@ -51,7 +53,7 @@ export function DesignElementNode({
   return (
     <>
       <NodeResizer
-        isVisible={!!selected && !element.locked && !editing}
+        isVisible={!readOnly && !!selected && !element.locked && !editing}
         minWidth={16}
         minHeight={16}
         maxWidth={6000}

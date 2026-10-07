@@ -1,3 +1,4 @@
+import { useSettings } from './useSettings.ts'
 import { useWorkspace } from '@/entities/workspace/index.ts'
 import { useCanvasFullscreen } from '@/features/canvasFullscreen/index.ts'
 import { useMultiplayer } from '@/features/liveSession/index.ts'
@@ -24,12 +25,20 @@ export function useStudioController({
   const { t } = useTranslation()
 
   const full = useCanvasFullscreen(active)
-  const state = useWorkspace(initial, studio.id, initialProfile.id, recovery)
+  const settings = useSettings(studio, active)
+  const canEdit = settings.role !== 'viewer' && settings.role !== null
+  const state = useWorkspace(
+    initial,
+    studio.id,
+    initialProfile.id,
+    recovery,
+    canEdit,
+  )
   const multiplayer = useMultiplayer(
     initialProfile,
     state.receive,
     studio.id,
-    active,
+    active && settings.role !== null,
   )
   const { workspace, change } = state
   const {
@@ -169,6 +178,7 @@ export function useStudioController({
       setNotice,
     })
   return {
+    settings,
     full,
     followed,
     followId,

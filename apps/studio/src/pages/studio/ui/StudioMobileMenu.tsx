@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+import { Settings } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -18,6 +20,7 @@ import {
 
 import type { StudioMobileMenuProps } from '../types/studioMobileMenuProps.ts'
 export function StudioMobileMenu({
+  setView,
   sidebarRef,
   sidebarOpen,
   setSidebarOpen,
@@ -33,6 +36,10 @@ export function StudioMobileMenu({
   exportWorkspace,
 }: StudioMobileMenuProps) {
   const { t } = useTranslation()
+  const openSettings = useCallback(() => {
+    setView('settings')
+    setSidebarOpen(false)
+  }, [setView, setSidebarOpen])
 
   const {
     handleSwitchWorkspaceClick,
@@ -85,6 +92,10 @@ export function StudioMobileMenu({
           <small>{t('Switch workspace')}</small>
         </span>
         <ChevronDown size={14} />
+      </button>
+      <button className="button" onClick={openSettings}>
+        <Settings size={18} />
+        {t('Settings')}
       </button>
       <ThemePicker />
       <LanguagePicker />

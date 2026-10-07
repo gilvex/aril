@@ -7,7 +7,14 @@ export const presenceSchema = z.object({
   clientId: z.string().uuid(),
   boardId: z.string().max(100).nullable(),
   designPageId: z.string().max(100).nullable().optional(),
-  view: z.enum(['canvas', 'wireframes', 'requirements', 'design', 'notes']),
+  view: z.enum([
+    'canvas',
+    'wireframes',
+    'requirements',
+    'design',
+    'notes',
+    'settings',
+  ]),
   cursor: z
     .object({
       x: z.number().finite().min(-1e7).max(1e7),

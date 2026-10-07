@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, type FocusEvent } from 'react'
 import { MoreHorizontal, X } from 'lucide-react'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
@@ -10,6 +11,7 @@ import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignInspector({ model }: DesignEditorProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const node = model.selected[0]
   const actions = useDesignLayerActions(model)
   const Icon = node ? designLayerIcons[node.kind] : null
@@ -33,7 +35,10 @@ export function DesignInspector({ model }: DesignEditorProps) {
         </button>
       </header>
       {node ? (
-        <div className="design-inspector-body">
+        <fieldset
+          disabled={readOnly}
+          className="design-inspector-body edit-fields"
+        >
           <div className="design-selection-heading">
             {Icon && <Icon size={16} />}
             {model.selected.length > 1 ? (
@@ -86,7 +91,7 @@ export function DesignInspector({ model }: DesignEditorProps) {
               />
             </section>
           )}
-        </div>
+        </fieldset>
       ) : (
         <p className="design-inspector-empty">
           {t('Select a layer to edit its layout and appearance.')}

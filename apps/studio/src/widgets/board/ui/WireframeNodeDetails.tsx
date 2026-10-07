@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Copy, Trash2 } from 'lucide-react'
 import { useWireframeNodeDetailsHandlers } from '../model/useWireframeNodeDetailsHandlers.tsx'
@@ -10,6 +11,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
   const { node, editField, editData, editNode, screens, duplicate } = props
 
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   const { handleBlockScreenChange, handleBlockAppearanceChange, handleClick } =
     useWireframeNodeDetailsHandlers(props)
@@ -18,6 +20,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
       <label>
         {t('Label')}
         <input
+          disabled={readOnly}
           aria-label={t('Block label')}
           ref={editField}
           value={node.data.title}
@@ -29,6 +32,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
         <label>
           {node.data.kind === 'input' ? t('Placeholder') : t('Content')}
           <textarea
+            readOnly={readOnly}
             aria-label={t('Block content')}
             rows={3}
             maxLength={2000}
@@ -41,12 +45,14 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
       {node.data.kind === 'screen' ? (
         <div className="wire-screen-presets">
           <button
+            disabled={readOnly}
             className="button"
             onClick={() => editNode({ width: 640, height: 460 })}
           >
             {t('Desktop')}
           </button>
           <button
+            disabled={readOnly}
             className="button"
             onClick={() => editNode({ width: 320, height: 640 })}
           >
@@ -57,6 +63,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
         <label>
           {t('On screen')}
           <select
+            disabled={readOnly}
             aria-label={t('Block screen')}
             value={node.parentId || ''}
             onChange={handleBlockScreenChange}
@@ -73,6 +80,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
       <label>
         {t('Appearance')}
         <select
+          disabled={readOnly}
           aria-label={t('Block appearance')}
           value={node.data.tone}
           onChange={handleBlockAppearanceChange}
@@ -88,11 +96,12 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
         node={node}
       />
       <div className="inspector-actions">
-        <button className="button" onClick={duplicate}>
+        <button disabled={readOnly} className="button" onClick={duplicate}>
           <Copy size={14} />
           {t('Duplicate')}
         </button>
         <button
+          disabled={readOnly}
           className="icon-button danger"
           aria-label={
             node.data.kind === 'screen'

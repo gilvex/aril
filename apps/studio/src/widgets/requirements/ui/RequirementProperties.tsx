@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useCallback } from 'react'
@@ -12,6 +13,7 @@ export function RequirementProperties({
   update,
 }: RequirementDetailsProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const change = useCallback(
     (event: SelectChange) => {
       update({
@@ -34,6 +36,7 @@ export function RequirementProperties({
             )}
           </span>
           <StudioSelect
+            disabled={readOnly}
             name={field}
             aria-label={t(
               field === 'status'

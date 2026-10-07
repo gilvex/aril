@@ -11,11 +11,11 @@ export function installGuestManagement(
     const workspaceId = req.get('x-workspace-id') || 'default'
     if (
       res.locals.profile.guestExpiresAt ||
-      !(await store.member(res.locals.profile.id, workspaceId))
+      (await store.access.role(res.locals.profile.id, workspaceId)) !== 'owner'
     ) {
       res
         .status(403)
-        .json({ error: 'Only workspace members can manage guest links.' })
+        .json({ error: 'Only the workspace owner can manage access.' })
       return
     }
     res.locals.workspaceId = workspaceId
@@ -32,23 +32,19 @@ export function installGuestManagement(
       })
       .safeParse(req.body)
     if (!input.success) {
-      res
-        .status(400)
-        .json({
-          error: 'Choose a name and a duration from 5 minutes to 30 days.',
-        })
+      res.status(400).json({
+        error: 'Choose a name and a duration from 5 minutes to 30 days.',
+      })
       return
     }
     const active = (await store.guests.list(res.locals.workspaceId)).filter(
       (link) => !link.revoked && link.expiresAt > Date.now(),
     )
     if (active.length >= 25) {
-      res
-        .status(400)
-        .json({
-          error:
-            'Revoke an active guest link before creating another (limit 25).',
-        })
+      res.status(400).json({
+        error:
+          'Revoke an active guest link before creating another (limit 25).',
+      })
       return
     }
     res

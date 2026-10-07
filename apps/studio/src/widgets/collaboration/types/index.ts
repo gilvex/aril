@@ -14,3 +14,7 @@ export type { CollaborationPopoverHandlersProps } from './useCollaborationPopove
 export type { FollowPersonHandlersProps } from './useFollowPersonHandlersProps.ts'
 export type { ProfileFormHandlersProps } from './useProfileFormHandlersProps.ts'
 export type { WorkspaceAccountMenuProps } from './workspaceAccountMenuProps.ts'
+
+export type { SettingsInvitationsProps } from './settingsInvitationsProps.ts'
+
+export type { SettingsProfileProps } from './settingsProfileProps.ts'

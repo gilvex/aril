@@ -1,4 +1,4 @@
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioDesktopNavigation } from './StudioDesktopNavigation.tsx'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
@@ -14,6 +14,15 @@ export function StudioSidebar(props: StudioContentProps) {
         <strong title={props.studio.name}>{props.studio.name}</strong>
       </header>
       <StudioDesktopNavigation {...props} />
+      <button
+        className="sidebar-collapse-control"
+        aria-current={props.view === 'settings' ? 'page' : undefined}
+        title={t('Settings')}
+        onClick={() => props.setView('settings')}
+      >
+        <Settings size={18} />
+        <span>{t('Settings')}</span>
+      </button>
       <button
         className="sidebar-collapse-control"
         title={t(

@@ -17,3 +17,7 @@ export { useStudioHandlers } from './useStudioHandlers.tsx'
 export { useStudioHeaderHandlers } from './useStudioHeaderHandlers.tsx'
 export { useStudioMobileMenuHandlers } from './useStudioMobileMenuHandlers.tsx'
 export { useStudioWorkspaceActions } from './useStudioWorkspaceActions.ts'
+
+export { createSettingsModel } from './createSettingsModel.ts'
+
+export { useSettings } from './useSettings.ts'

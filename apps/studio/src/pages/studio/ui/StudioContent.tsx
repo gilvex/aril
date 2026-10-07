@@ -1,3 +1,4 @@
+import { StudioSettings } from './StudioSettings.tsx'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AlertCircle, X } from 'lucide-react'
@@ -43,7 +44,13 @@ export function StudioContent(props: StudioContentProps) {
   })
   return (
     <main className="main-area" inert={compact && sidebarOpen}>
+      {props.settings.role === 'viewer' && (
+        <div className="workspace-readonly-notice">
+          {t('View only · You can browse and follow collaborators.')}
+        </div>
+      )}
       {view !== 'canvas' && followStatus}
+      {view === 'settings' && <StudioSettings {...props} />}
       <input
         className="visually-hidden"
         ref={importRef}

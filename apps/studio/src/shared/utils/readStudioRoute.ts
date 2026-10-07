@@ -20,7 +20,10 @@ export function readStudioRoute(location: string): StudioRoute {
     workspaceId,
     boardId,
     view:
-      view === 'requirements' || view === 'design' || view === 'notes'
+      view === 'requirements' ||
+      view === 'design' ||
+      view === 'notes' ||
+      view === 'settings'
         ? view
         : 'canvas',
     canvasMode: params.get('canvas') === 'wireframes' ? 'wireframes' : 'canvas',

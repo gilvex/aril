@@ -1,3 +1,4 @@
+import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import { type AgentCredential } from '@pomegranate/domain/agentAccess'
 import {
   applyOperations,
@@ -38,6 +39,17 @@ export function installAgentApi(
         .json({ error: 'This credential belongs to another workspace.' })
       return
     }
+    const role = await store.access.role(
+      credential.userId,
+      credential.workspaceId,
+    )
+    if (!role || (req.method !== 'GET' && role === 'viewer')) {
+      res
+        .status(403)
+        .json({ error: 'This workspace is view-only or no longer available.' })
+      return
+    }
+    res.locals.workspaceRole = role
     res.locals.agent = credential
     next()
   })
@@ -48,7 +60,7 @@ export function installAgentApi(
     )
     res.json({
       studio,
-      scope: agent.scope,
+      scope: res.locals.workspaceRole === 'viewer' ? 'read' : agent.scope,
       ...(await store.read(agent.workspaceId)),
     })
   })
@@ -128,6 +140,7 @@ export function installAgentApi(
           requestId,
         },
         agent.workspaceId,
+        agent.userId,
       )
       if (!saved) {
         res.status(409).json({
@@ -145,6 +158,10 @@ export function installAgentApi(
       )
       res.json({ revision: saved.revision, savedAt: saved.savedAt })
     } catch (error) {
+      if (error instanceof WorkspaceAccessError) {
+        res.status(403).json({ error: error.message })
+        return
+      }
       if (!(error instanceof MergeConflict || error instanceof z.ZodError))
         throw error
       res.status(409).json({

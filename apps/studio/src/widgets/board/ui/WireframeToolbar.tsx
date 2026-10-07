@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeToolbarHandlers } from '../model/useWireframeToolbarHandlers.tsx'
 import { WireframePalette } from './WireframePalette.tsx'
@@ -25,6 +26,7 @@ export function WireframeToolbar({
   add,
 }: WireframeToolbarProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
 
   const { handleClick } = useWireframeToolbarHandlers({
     setPreview,
@@ -65,7 +67,7 @@ export function WireframeToolbar({
             aria-label={t('Add block')}
             aria-expanded={palette}
             onClick={() => setPalette(!palette)}
-            disabled={graph.nodes.length >= 500}
+            disabled={readOnly || graph.nodes.length >= 500}
           >
             <Plus size={16} />
           </button>

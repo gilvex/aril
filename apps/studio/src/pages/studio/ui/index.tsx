@@ -24,3 +24,9 @@ export { WorkspaceHistoryDialog } from './WorkspaceHistoryDialog.tsx'
 export { StudioWorkspaceTabs } from './StudioWorkspaceTabs.tsx'
 
 export { StudioSidebar } from './StudioSidebar.tsx'
+
+export { SettingsFile } from './SettingsFile.tsx'
+
+export { SettingsMember } from './SettingsMember.tsx'
+
+export { StudioSettings } from './StudioSettings.tsx'

@@ -35,7 +35,13 @@ export type StudioHeaderActionsProps = {
         following: string | null
         clientId: string
         boardId: string | null
-        view: 'canvas' | 'requirements' | 'design' | 'notes' | 'wireframes'
+        view:
+          | 'canvas'
+          | 'requirements'
+          | 'design'
+          | 'notes'
+          | 'wireframes'
+          | 'settings'
         cursor: { x: number; y: number } | null
         selected: string[]
         selectedEdges: string[]

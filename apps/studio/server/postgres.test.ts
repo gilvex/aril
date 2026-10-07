@@ -146,7 +146,8 @@ test(
         overviews[0].nodes.length > 0 && overviews[0].nodes.length <= 16,
       )
       assert.ok(overviews[0].edges.length <= 32)
-      assert.equal(overviews[0].memberCount, 2)
+      // Owner, the Google-linked invitee, and the winner of the invite race.
+      assert.equal(overviews[0].memberCount, 3)
       const ownerOverviews = await a.studioOverviews(owner.profile.id)
       assert.equal(
         ownerOverviews.find((studio) => studio.id === privateStudio.id)?.nodes
@@ -329,6 +330,51 @@ test(
       )
       controller.abort()
       await reader.cancel().catch(() => {})
+      assert.equal(
+        await a.access.update(
+          owner.profile.id,
+          'default',
+          peer.profile.id,
+          'viewer',
+        ),
+        true,
+      )
+      assert.equal(await b.access.role(peer.profile.id, 'default'), 'viewer')
+      const readOnly = await b.read()
+      await assert.rejects(
+        b.save(
+          readOnly.workspace,
+          readOnly.revision,
+          undefined,
+          'default',
+          peer.profile.id,
+        ),
+        /permission/,
+      )
+      assert.equal(
+        (
+          await call(1, '/api/workspace', peer.token, 'PUT', {
+            baseRevision: readOnly.revision,
+            workspace: readOnly.workspace,
+          })
+        ).status,
+        403,
+      )
+      assert.equal(
+        (await b.access.list('default')).find(
+          (member) => member.id === peer.profile.id,
+        )?.role,
+        'viewer',
+      )
+      assert.equal(
+        await a.access.remove(owner.profile.id, 'default', owner.profile.id),
+        false,
+      )
+      assert.equal(
+        await a.access.remove(owner.profile.id, 'default', peer.profile.id),
+        true,
+      )
+      assert.equal(await b.member(peer.profile.id, 'default'), false)
       assert.equal(
         (
           await a.query('SELECT has_schema_privilege($1,$2,$3) allowed', [

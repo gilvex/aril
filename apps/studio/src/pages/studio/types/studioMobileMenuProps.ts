@@ -5,6 +5,7 @@ import { useStudioModel } from '../model/useStudioModel.ts'
 import type { StudioProps } from './studioProps.ts'
 
 export type StudioMobileMenuProps = {
+  setView: ReturnType<typeof useStudioModel>['setView']
   sidebarRef: React.RefObject<HTMLElement | null>
   sidebarOpen: boolean
   setSidebarOpen: ReturnType<typeof useStudioModel>['setSidebarOpen']

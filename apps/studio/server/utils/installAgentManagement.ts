@@ -25,6 +25,18 @@ export function installAgentManagement(app: Express, store: Store) {
     }
     const { name, scope, days } = parsed.data
     if (
+      scope === 'write' &&
+      (await store.access.role(
+        res.locals.profile.id,
+        res.locals.workspaceId,
+      )) === 'viewer'
+    ) {
+      res
+        .status(403)
+        .json({ error: 'Viewers can only create read-only agent credentials.' })
+      return
+    }
+    if (
       (await store.agents.list(res.locals.profile.id, res.locals.workspaceId))
         .length >= 25
     ) {

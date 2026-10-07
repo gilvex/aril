@@ -1,3 +1,5 @@
+import { workspaceAccess } from './workspaceAccess.ts'
+import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import type { Activity, Profile } from '@pomegranate/domain/collaboration'
 import { createSeed } from '@pomegranate/domain/seed'
 import { blankStudio, type StudioSummary } from '@pomegranate/domain/studios'
@@ -180,6 +182,9 @@ ${guestTables}
     }
   }
   const store = {
+    access: workspaceAccess(
+      async (sql, values) => (await query(sql, values)).rows,
+    ),
     guests: guestLinks(async (sql, values) => (await query(sql, values)).rows),
     agents: agentCredentials(
       async (text, values) => (await query(text, values)).rows,
@@ -190,8 +195,20 @@ ${guestTables}
       expected: number,
       actor?: { id: string; name: string; message: string; requestId: string },
       workspaceId = 'default',
+      writerId?: string,
     ) =>
       transaction(async (client) => {
+        if (
+          writerId &&
+          !(
+            await query(
+              "SELECT 1 FROM studio.members WHERE user_id=$1 AND workspace_id=$2 AND role IN ('owner','member','guest') FOR SHARE",
+              [writerId, workspaceId],
+              client,
+            )
+          ).rowCount
+        )
+          throw new WorkspaceAccessError()
         const clean = workspaceSchema.parse(workspace)
         const current = await read(workspaceId, client, true)
         if (current.revision !== expected) return null

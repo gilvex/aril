@@ -1,3 +1,5 @@
+import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, type MouseEvent } from 'react'
 import { Background, Controls, ReactFlow } from '@xyflow/react'
 import { Plus, LayoutTemplate } from 'lucide-react'
@@ -18,25 +20,15 @@ import type { DesignBoardProps } from '../types/designBoardProps.ts'
 import type { DesignFlowNode } from '../types/designFlowNode.ts'
 const nodeTypes = { designElement: DesignElementNode }
 export function DesignCanvas(props: DesignBoardProps) {
+  const role = useWorkspaceRole()
+  const canEdit = role !== 'viewer' && role !== null
   const { t } = useTranslation()
   const labels = useDesignCanvasLabels()
   const compact = useCompactLayout()
   const model = useDesignDocument(props)
   const canvas = useDesignCanvas(model, props)
   const context = useDesignContextMenu(model)
-  const doubleClick = useCallback(
-    (_event: MouseEvent, node: DesignFlowNode) => {
-      model.patch({
-        selection: [node.id],
-        inspector: true,
-        styles: false,
-        editingId: ['text', 'button'].includes(node.data.element.kind)
-          ? node.id
-          : null,
-      })
-    },
-    [model],
-  )
+  const doubleClick = useDesignDoubleClick(model, canEdit)
   const showDetails = useCallback(
     (_event: MouseEvent, node: DesignFlowNode) => {
       if (!compact) model.patch({ inspector: true, styles: false })
@@ -64,7 +56,7 @@ export function DesignCanvas(props: DesignBoardProps) {
         <EditorContextMenu
           actions={context.actions}
           label={t('Canvas actions')}
-          disabled={!!model.editingId}
+          disabled={!canEdit || !!model.editingId}
         >
           <div
             className="design-flow-context"
@@ -81,7 +73,7 @@ export function DesignCanvas(props: DesignBoardProps) {
               onPaneClick={clear}
               onMove={canvas.moveCamera}
               nodesConnectable={false}
-              nodesDraggable={model.tool === 'select'}
+              nodesDraggable={canEdit && model.tool === 'select'}
               panOnDrag={model.tool === 'pan' || compact ? true : [1, 2]}
               selectionOnDrag={!compact && model.tool === 'select'}
               selectionKeyCode="Shift"
@@ -109,7 +101,7 @@ export function DesignCanvas(props: DesignBoardProps) {
           add={canvas.add}
           insertTemplate={canvas.insertTemplate}
         />
-        {!model.page.nodes.length && (
+        {canEdit && !model.page.nodes.length && (
           <div className="design-empty">
             <h2>{t('Start a design')}</h2>
             <button

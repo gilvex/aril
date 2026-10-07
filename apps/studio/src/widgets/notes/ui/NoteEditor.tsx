@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Trash2 } from 'lucide-react'
 import type { NoteEditorProps } from '../types/noteEditorProps.ts'
@@ -7,6 +8,7 @@ import { NoteOutline } from './NoteOutline.tsx'
 import { NoteMarkdown } from './NoteMarkdown.tsx'
 export function NoteEditor(props: NoteEditorProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const { model, workspace, peers } = props
   const { note, state, patch, edit } = model
   const editor = useNoteEditor(props)
@@ -19,6 +21,7 @@ export function NoteEditor(props: NoteEditorProps) {
       <article className="notebook-sheet">
         <header className="notebook-title">
           <input
+            readOnly={readOnly}
             aria-label={t('Note title')}
             value={state.titleDraft ?? note.title}
             maxLength={120}
@@ -34,7 +37,7 @@ export function NoteEditor(props: NoteEditorProps) {
                 ? t('Original project notes are kept')
                 : t('Delete note')
             }
-            disabled={note.id === 'project-notes'}
+            disabled={readOnly || note.id === 'project-notes'}
             onClick={() => patch({ deleting: true })}
           >
             <Trash2 size={16} />
@@ -70,7 +73,7 @@ export function NoteEditor(props: NoteEditorProps) {
             </button>
           </div>
         )}
-        {state.mode !== 'Read' && (
+        {!readOnly && state.mode !== 'Read' && (
           <NoteFormatBar
             format={editor.format}
             insertLink={editor.insertLink}
@@ -78,7 +81,7 @@ export function NoteEditor(props: NoteEditorProps) {
           />
         )}
         <div className={'notebook-content mode-' + state.mode.toLowerCase()}>
-          {state.mode !== 'Read' && (
+          {!readOnly && state.mode !== 'Read' && (
             <textarea
               ref={editor.editor}
               className="notebook-input"
@@ -91,7 +94,7 @@ export function NoteEditor(props: NoteEditorProps) {
               onChange={(e) => edit({ body: e.target.value })}
             />
           )}
-          {state.mode !== 'Edit' && (
+          {(readOnly || state.mode !== 'Edit') && (
             <div ref={editor.reader} className="notebook-reading">
               <NoteMarkdown body={note.body} />
               {!note.body && <p className="empty-message">{t('Empty note')}</p>}
