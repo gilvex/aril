@@ -7,7 +7,11 @@ export const designEditorSlice = createSlice({
   reducers: {
     patch(state, action: PayloadAction<Partial<DesignEditorState>>) {
       Object.assign(state, action.payload)
-      if (action.payload.pagesOpen) {
+      if (!state.compact) return
+      if (
+        action.payload.pagesOpen ||
+        (action.payload.compact && state.pagesOpen)
+      ) {
         state.layers = false
         state.inspector = false
       } else if (action.payload.layers) {
@@ -17,6 +21,7 @@ export const designEditorSlice = createSlice({
         state.pagesOpen = false
         state.layers = false
       }
+      if (state.layers && state.inspector) state.inspector = false
     },
   },
 })

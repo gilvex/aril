@@ -1,5 +1,11 @@
 import type { DesignElement } from '@pomegranate/domain/design'
 export type DesignEditorState = {
+  compact: boolean
+  panelSpace: number
+  layersWidth: number
+  inspectorWidth: number
+  layersDocked: boolean
+  inspectorDocked: boolean
   pageId: string
   selection: string[]
   drafts: Record<string, Partial<DesignElement>>

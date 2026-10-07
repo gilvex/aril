@@ -23,9 +23,9 @@ export function DesignPagePicker({
         pagesOpen: open,
         pageQuery: '',
         renamingPageId: null,
-        ...(open ? { layers: false, inspector: false } : {}),
+        ...(open && mobile ? { layers: false, inspector: false } : {}),
       }),
-    [patch],
+    [patch, mobile],
   )
   if (mobile)
     return <DesignPagesDrawer model={model} onOpenChange={openChanged} />

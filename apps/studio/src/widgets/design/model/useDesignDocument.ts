@@ -56,14 +56,13 @@ export function useDesignDocument({
             ? state.selection.filter((item) => item !== id)
             : [...state.selection, id]
           : [id],
-        inspector: true,
-        layers: false,
+        inspector: !state.compact || !state.layers,
         pagesOpen: false,
         styles: false,
         editingId: null,
       })
     },
-    [patch, state.selection],
+    [patch, state.selection, state.compact, state.layers],
   )
   const selectPage = useCallback(
     (pageId: string) =>
@@ -193,15 +192,24 @@ export function useDesignDocument({
       save([...page.nodes, node])
       patch({
         selection: [node.id],
-        inspector: true,
-        layers: false,
+        inspector: !state.compact || !state.layers,
         pagesOpen: false,
         styles: false,
         tool: 'select',
       })
       return node.id
     },
-    [design.accent, design.bodyFont, page.nodes, patch, save, selected, t],
+    [
+      design.accent,
+      design.bodyFont,
+      page.nodes,
+      patch,
+      save,
+      selected,
+      t,
+      state.compact,
+      state.layers,
+    ],
   )
   const template = useCallback(() => {
     const x =

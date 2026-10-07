@@ -6,6 +6,7 @@ import '../design.css'
 import '../designEditor.css'
 import '../designCompact.css'
 import '../designFloatingTools.css'
+import '../designPanels.css'
 export function DesignBoard(props: DesignBoardProps) {
   return (
     <ReactFlowProvider>

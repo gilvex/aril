@@ -1,3 +1,4 @@
+import { DesignPanel } from './DesignPanel.tsx'
 import { useCallback } from 'react'
 import { StudioDrawer } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -23,23 +24,41 @@ export function DesignPanels({
     },
     [close],
   )
+  const closeInspector = useCallback(() => patch({ inspector: false }), [patch])
+  const layers = model.layers && <DesignLayers model={model} />
+  const inspector =
+    model.inspector &&
+    (model.styles ? (
+      <DesignSettings
+        design={design}
+        update={update}
+        colors={['#b34568', '#7955ad', '#386a92', '#307568', '#9c603a']}
+        close={closeInspector}
+      />
+    ) : (
+      <DesignInspector model={model} />
+    ))
   const content = (
     <>
-      {model.layers && <DesignLayers model={model} />}
-      {model.inspector &&
-        (model.styles ? (
-          <DesignSettings
-            design={design}
-            update={update}
-            colors={['#b34568', '#7955ad', '#386a92', '#307568', '#9c603a']}
-            close={close}
-          />
-        ) : (
-          <DesignInspector model={model} />
-        ))}
+      {layers}
+      {inspector}
     </>
   )
-  if (!compact) return content
+  if (!compact)
+    return (
+      <>
+        {layers && (
+          <DesignPanel model={model} side="left">
+            {layers}
+          </DesignPanel>
+        )}
+        {inspector && (
+          <DesignPanel model={model} side="right">
+            {inspector}
+          </DesignPanel>
+        )}
+      </>
+    )
   return (
     <StudioDrawer
       open={model.layers || model.inspector}

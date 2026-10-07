@@ -1,3 +1,4 @@
+import { useDesignPanelBounds } from '../model/useDesignPanelBounds.ts'
 import { DesignPanels } from './DesignPanels.tsx'
 import { DesignMobileBar } from './DesignMobileBar.tsx'
 import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
@@ -24,6 +25,7 @@ export function DesignCanvas(props: DesignBoardProps) {
   const labels = useDesignCanvasLabels()
   const compact = useCompactLayout()
   const model = useDesignDocument(props)
+  const panelBounds = useDesignPanelBounds(model.patch)
   const canvas = useDesignCanvas(model, props)
   const context = useDesignContextMenu(model)
   const doubleClick = useDesignDoubleClick(model, canEdit)
@@ -41,6 +43,7 @@ export function DesignCanvas(props: DesignBoardProps) {
   return (
     <>
       <section
+        ref={panelBounds}
         data-surface-bounds
         className={
           'design-editor design-floating-tools' +

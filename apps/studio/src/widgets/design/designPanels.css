@@ -1,0 +1,113 @@
+.design-panel {
+  position: absolute;
+  top: 66px;
+  bottom: 88px;
+  z-index: 21;
+  display: flex;
+  min-height: 0;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 8px 30px #0003;
+}
+.design-panel-left {
+  left: 18px;
+  bottom: 160px;
+}
+.has-board-navigation > .design-panel-left {
+  top: 124px;
+}
+.design-panel-right {
+  right: 18px;
+}
+.design-panel > aside {
+  z-index: 0;
+  position: static;
+  inset: auto;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  border: 0;
+  border-radius: inherit;
+  overflow: auto;
+}
+.design-panel > .design-layers,
+.design-panel > .design-inspector {
+  overflow: hidden;
+}
+.design-panel > aside > header {
+  min-height: 48px;
+  padding-right: 42px;
+}
+.design-panel-dock {
+  z-index: 2;
+  position: absolute;
+  top: 9px;
+  right: 10px;
+}
+.design-panel-resize {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.design-panel-left > .design-panel-resize {
+  right: -4px;
+}
+.design-panel-right > .design-panel-resize {
+  left: -4px;
+}
+.design-panel-resize:hover,
+.design-panel-resize:focus-visible {
+  background: var(--accent-light);
+  outline: 1px solid var(--accent);
+}
+.design-panel[data-docked] {
+  position: relative;
+  inset: auto;
+  align-self: stretch;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+.design-panel-left[data-docked] {
+  order: -1;
+  border-width: 0 1px 0 0;
+}
+.design-panel-right[data-docked] {
+  order: 1;
+  border-width: 0 0 0 1px;
+}
+.design-panel[data-docked] > aside > header {
+  cursor: default;
+  touch-action: auto;
+}
+.design-panel[data-docked] .surface-grip {
+  display: none;
+}
+.design-panel[data-dock-preview] {
+  outline: 2px solid var(--accent);
+}
+.design-editor:has(> .design-panel[data-dock-preview])::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  z-index: 30;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  pointer-events: none;
+}
+.design-editor:has(> [data-dock-preview='left'])::after {
+  left: 0;
+}
+.design-editor:has(> [data-dock-preview='right'])::after {
+  right: 0;
+}

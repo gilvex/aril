@@ -50,6 +50,8 @@ Then open http://127.0.0.1:4317. Run commands from this repository's root.
 
 Select a node to edit it. Drag from its right handle to another node's left handle to connect them. Use the canvas controls to zoom or fit the diagram. Ctrl/Cmd+Z undoes a change; Ctrl/Cmd+Shift+Z redoes it. Ctrl/Cmd+S saves immediately when focus is outside a text field.
 
+On the Design canvas, Layers and Properties can stay open together on desktop. Drag their inner edges to resize (arrow keys also work; double-click resets the width). Drag Layers against the left canvas edge or Properties against the right edge to dock them as sidebars, or use the dock buttons. The undock button returns a panel to a floating window. Widths and docking remain local to the mounted editor; selecting a layer keeps Layers open. Mobile uses one swipeable drawer at a time.
+
 Hold **Ctrl** (or **Cmd** on macOS) and click nodes to add/remove them from the selection. Drag any selected node to move the whole group. **Shift + drag** selects an area. The group inspector can change the selected nodes' type or decision together, or delete them and their attached connections. Each group operation can be undone.
 
 Use **Fullscreen** beside Add node to expand the canvas. **Exit fullscreen** or **Esc** returns to the workspace. Fullscreen stays active when switching boards, switching between Blueprint and Wireframes, or opening board dialogs. The editor keeps the same graph, selection, and zoom when entering or leaving fullscreen; browsers that disallow native fullscreen use an expanded viewport instead.

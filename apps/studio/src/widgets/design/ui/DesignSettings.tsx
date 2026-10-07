@@ -1,5 +1,3 @@
-import { useRef } from 'react'
-import { useDraggableSurface } from '@/shared/model/index.ts'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Check, X } from 'lucide-react'
@@ -12,10 +10,8 @@ export function DesignSettings({
   close,
 }: DesignSettingsProps) {
   const { t } = useTranslation()
-  const surface = useRef<HTMLElement>(null)
-  useDraggableSurface(surface)
   return (
-    <aside className="design-style-panel" ref={surface}>
+    <aside className="design-style-panel">
       <header>
         <SurfaceGrip />
         <h2>{t('Design defaults')}</h2>

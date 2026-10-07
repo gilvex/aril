@@ -925,5 +925,10 @@
   "Menu": "Меню",
   "Move window": "Переместить окно",
   "Drag to move. Arrow keys move; Home resets.": "Перетащите окно. Стрелки — перемещение, Home — сброс.",
-  "Close panel": "Закрыть панель"
+  "Close panel": "Закрыть панель",
+  "Resize layers panel": "Изменить ширину слоёв",
+  "Resize properties panel": "Изменить ширину свойств",
+  "Dock panel left": "Закрепить панель слева",
+  "Dock panel right": "Закрепить панель справа",
+  "Undock panel": "Открепить панель"
 }

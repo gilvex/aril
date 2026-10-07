@@ -1,15 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { useRef, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
+import { useCompactLayout } from '@/shared/model/index.ts'
 import { designEditorSlice } from './slices/designEditorSlice.ts'
 import type { DesignEditorState } from '../types/designEditorState.ts'
 import { createDesignEditorState } from './createDesignEditorState.ts'
 export function useDesignEditorState(workspaceId: string) {
+  const compact = useCompactLayout()
   const ref = useRef<{
     store: ReturnType<typeof initialize>
     patch: (value: Partial<DesignEditorState>) => void
   } | null>(null)
   function initialize() {
     const initial = createDesignEditorState()
+    initial.compact = compact
     try {
       initial.pageId =
         sessionStorage.getItem(`aril:designPage:${workspaceId}`) ||
@@ -34,6 +37,7 @@ export function useDesignEditorState(workspaceId: string) {
     }
   }
   const { store, patch } = ref.current
+  useEffect(() => patch({ compact }), [compact, patch])
   const state = useSyncExternalStore(store.subscribe, store.getState)
   return { ...state, patch }
 }

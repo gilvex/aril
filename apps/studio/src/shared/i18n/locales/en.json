@@ -925,5 +925,10 @@
   "Menu": "Menu",
   "Move window": "Move window",
   "Drag to move. Arrow keys move; Home resets.": "Drag to move. Arrow keys move; Home resets.",
-  "Close panel": "Close panel"
+  "Close panel": "Close panel",
+  "Resize layers panel": "Resize layers panel",
+  "Resize properties panel": "Resize properties panel",
+  "Dock panel left": "Dock panel left",
+  "Dock panel right": "Dock panel right",
+  "Undock panel": "Undock panel"
 }

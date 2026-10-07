@@ -18,20 +18,20 @@ export function DesignPanelActions({
       patch({
         inspector: !inspector || !styles,
         styles: true,
-        layers: false,
+        ...(mobile ? { layers: false } : {}),
         pagesOpen: false,
       }),
-    [patch, inspector, styles],
+    [patch, inspector, styles, mobile],
   )
   const toggleProperties = useCallback(
     () =>
       patch({
         inspector: !inspector || styles,
         styles: false,
-        layers: false,
+        ...(mobile ? { layers: false } : {}),
         pagesOpen: false,
       }),
-    [patch, inspector, styles],
+    [patch, inspector, styles, mobile],
   )
   return (
     <div

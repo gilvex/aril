@@ -34,3 +34,4 @@ export { DesignPagesList } from './DesignPagesList.tsx'
 
 export { DesignPagesDrawer } from './DesignPagesDrawer.tsx'
 export { DesignPanels } from './DesignPanels.tsx'
+export { DesignPanel } from './DesignPanel.tsx'

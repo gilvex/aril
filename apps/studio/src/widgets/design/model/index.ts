@@ -8,3 +8,5 @@ export * from './useDesignEditorState.ts'
 export * from './useDesignCanvasLabels.ts'
 
 export { useDesignDoubleClick } from './useDesignDoubleClick.ts'
+export { useDesignPanelBounds } from './useDesignPanelBounds.ts'
+export { useDesignPanelResize } from './useDesignPanelResize.ts'

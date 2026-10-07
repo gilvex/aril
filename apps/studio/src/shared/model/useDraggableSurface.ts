@@ -2,10 +2,13 @@ import { useEffect, useRef, type RefObject } from 'react'
 import { useCompactLayout } from './useCompactLayout.ts'
 import { createSurfaceMotionStore } from './createSurfaceMotionStore.ts'
 import { surfaceMotionSlice } from './slices/surfaceMotionSlice.ts'
+import type { DraggableSurfaceOptions } from '../types/draggableSurfaceOptions.ts'
 export function useDraggableSurface(
   ref: RefObject<HTMLElement | null>,
   resetKey?: unknown,
+  options?: DraggableSurfaceOptions,
 ) {
+  const { disabled, dockSide, onDock } = options || {}
   const compact = useCompactLayout()
   const storeRef = useRef<ReturnType<typeof createSurfaceMotionStore> | null>(
     null,
@@ -24,7 +27,7 @@ export function useDraggableSurface(
       store.dispatch(surfaceMotionSlice.actions.move({ x: 0, y: 0 }))
     const unsubscribe = store.subscribe(render)
     reset()
-    if (compact)
+    if (compact || disabled)
       return () => {
         unsubscribe()
         element.style.removeProperty('translate')
@@ -73,6 +76,17 @@ export function useDraggableSurface(
       if (!pointer || pointer.id !== event.pointerId) return
       move(event.clientX - pointer.x, event.clientY - pointer.y)
       pointer = { id: event.pointerId, x: event.clientX, y: event.clientY }
+      const bounds = element
+        .closest('[data-surface-bounds]')
+        ?.getBoundingClientRect()
+      const box = element.getBoundingClientRect()
+      const nearEdge =
+        bounds &&
+        (dockSide === 'left'
+          ? box.left - bounds.left < 12
+          : dockSide === 'right' && bounds.right - box.right < 12)
+      if (nearEdge && dockSide) element.dataset.dockPreview = dockSide
+      else delete element.dataset.dockPreview
     }
     const stop = () => {
       const captured = pointer
@@ -80,6 +94,12 @@ export function useDraggableSurface(
       if (captured && element.hasPointerCapture(captured.id))
         element.releasePointerCapture(captured.id)
       element.removeAttribute('data-dragging')
+      delete element.dataset.dockPreview
+    }
+    const drop = () => {
+      const dock = !!pointer && !!element.dataset.dockPreview
+      stop()
+      if (dock) onDock?.()
     }
     const key = (event: KeyboardEvent) => {
       if (!(event.target as HTMLElement).closest('.surface-grip')) return
@@ -105,22 +125,25 @@ export function useDraggableSurface(
     }
     element.addEventListener('pointerdown', down)
     element.addEventListener('pointermove', drag)
-    element.addEventListener('pointerup', stop)
+    element.addEventListener('pointerup', drop)
     element.addEventListener('pointercancel', stop)
     element.addEventListener('lostpointercapture', stop)
     element.addEventListener('keydown', key)
+    const observer = new ResizeObserver(() => move(0, 0))
+    observer.observe(element)
     window.addEventListener('resize', reset)
     return () => {
       stop()
+      observer.disconnect()
       unsubscribe()
       element.style.removeProperty('translate')
       element.removeEventListener('pointerdown', down)
       element.removeEventListener('pointermove', drag)
-      element.removeEventListener('pointerup', stop)
+      element.removeEventListener('pointerup', drop)
       element.removeEventListener('pointercancel', stop)
       element.removeEventListener('lostpointercapture', stop)
       element.removeEventListener('keydown', key)
       window.removeEventListener('resize', reset)
     }
-  }, [compact, ref, resetKey, store])
+  }, [compact, ref, resetKey, store, disabled, dockSide, onDock])
 }

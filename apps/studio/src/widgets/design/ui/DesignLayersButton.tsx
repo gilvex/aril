@@ -6,8 +6,13 @@ export function DesignLayersButton({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const { patch, layers } = model
   const toggle = useCallback(
-    () => patch({ layers: !layers, inspector: false, pagesOpen: false }),
-    [patch, layers],
+    () =>
+      patch({
+        layers: !layers,
+        ...(model.compact ? { inspector: false } : {}),
+        pagesOpen: false,
+      }),
+    [patch, layers, model.compact],
   )
   return (
     <button
