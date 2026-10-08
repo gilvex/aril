@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { wireLabels } from '@pomegranate/domain/wireframe'
 import { ArrowRight, Link2 } from 'lucide-react'
@@ -33,7 +34,7 @@ export function WireframeInteraction({
       </label>
       <label>
         {t('Destination')}
-        <select
+        <StudioSelect
           aria-label={t('Flow destination')}
           value={targetId}
           onChange={(e) => setTargetId(e.target.value)}
@@ -46,7 +47,7 @@ export function WireframeInteraction({
                 {t(wireLabels[n.data.kind])} · {n.data.title}
               </option>
             ))}
-        </select>
+        </StudioSelect>
       </label>
       <button
         className="button"

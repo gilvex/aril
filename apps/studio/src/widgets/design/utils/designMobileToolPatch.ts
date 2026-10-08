@@ -5,11 +5,13 @@ export function designMobileToolPatch(
 ): Partial<DesignEditorState> {
   return {
     mobileToolsTab: tab,
-    layers: tab !== 'properties',
+    layers: tab === 'layers' || tab === 'library',
     inspector: tab === 'properties',
-    ...(tab !== 'properties' ? { leftTab: tab } : {}),
+    ...(tab === 'layers' || tab === 'library' ? { leftTab: tab } : {}),
     styles: false,
-    pagesOpen: false,
+    pagesOpen: tab === 'pages',
+    pageQuery: '',
+    renamingPageId: null,
     layerActionsId: null,
   }
 }

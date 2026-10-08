@@ -111,14 +111,14 @@ body {
 button,
 input,
 textarea,
-select {
+:is(select, .studio-select) {
   font: inherit;
 }
 button,
 a,
 input,
 textarea,
-select {
+:is(select, .studio-select) {
   -webkit-tap-highlight-color: transparent;
 }
 button {
@@ -165,7 +165,7 @@ h2 {
 }
 input,
 textarea,
-select {
+:is(select, .studio-select) {
   min-width: 0;
   width: 100%;
   border: 1px solid var(--line, #ded9e5);
@@ -178,7 +178,7 @@ select {
 }
 input:focus,
 textarea:focus,
-select:focus {
+:is(select, .studio-select):focus {
   border-color: var(--line-strong, #aa7795);
   box-shadow: 0 0 0 3px #b3456810;
 }
@@ -915,7 +915,7 @@ code {
   min-width: 0;
   flex: 1;
 }
-.field-row select {
+.field-row :is(select, .studio-select) {
   font-size: 10px;
 }
 .field-label {
@@ -1286,7 +1286,7 @@ code {
   align-items: center;
   gap: 5px;
 }
-.filter-field select {
+.filter-field :is(select, .studio-select) {
   border: 0;
   background: transparent;
   font-size: 11px;
@@ -2315,7 +2315,7 @@ code {
   .filter-field {
     gap: 0;
   }
-  .filter-field select {
+  .filter-field :is(select, .studio-select) {
     font-size: 10px;
   }
   .search-field {
@@ -2866,7 +2866,7 @@ code {
   .mobile-bottom-nav {
     display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
     flex-shrink: 0; height: var(--bottom-nav-height); padding: 5px 8px calc(5px + env(safe-area-inset-bottom, 0px));
-    background: var(--surface, #fff); border-top: 1px solid var(--line); z-index: 30;
+    background: var(--surface, #fff); border-top: 1px solid var(--line); position: relative; z-index: 300;
   }
   .mobile-bottom-nav > button { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; min-height: 48px; border: 0; border-radius: 9px; background: transparent; color: var(--text-secondary, #796f82); font-size: 11px; }
   .mobile-bottom-nav > button[aria-current="page"] { background: var(--accent-light); color: var(--accent-ink, #a33d60); font-weight: 650; }
@@ -2923,7 +2923,7 @@ code {
   .inspector-heading { position: sticky; top: 0; z-index: 2; background: var(--surface, #fff); min-height: 54px; padding: 5px 14px; font-size: 12px; }
   .inspector-body { padding: 16px; }
   .inspector-body label { font-size: 13px; }
-  .inspector-body input, .inspector-body textarea, .inspector-body select { font-size: 16px; min-height: 44px; }
+  .inspector-body input, .inspector-body textarea, .inspector-body :is(select, .studio-select) { font-size: 16px; min-height: 44px; }
   .inspector .icon-button, .inspector .button { min-width: 44px; min-height: 44px; }
   .react-flow__controls button { width: 40px; height: 40px; }
   .react-flow__minimap { display: none; }
@@ -2931,17 +2931,17 @@ code {
   .canvas-tip { display: none; }
   .canvas-surface .touch-selection-hint { display: block; position: absolute; bottom: 12px; left: 62px; right: 12px; padding: 9px 12px; border: 1px solid var(--line, #d7bdc8); border-radius: 6px; background: var(--surface, #fff); color: var(--accent-ink, #773a52); font-size: 12px; z-index: 10; }
   .content-page { padding: 22px 16px; overscroll-behavior: contain; }
-  .content-page .button, .content-page .icon-button, .requirements-toolbar input, .requirements-toolbar select { min-height: 44px; }
+  .content-page .button, .content-page .icon-button, .requirements-toolbar input, .requirements-toolbar :is(select, .studio-select) { min-height: 44px; }
   .segmented > button, .preview-tabs > button { min-height: 44px; }
   .swatches > button { min-width: 44px; min-height: 44px; }
-  .content-page input, .content-page textarea, .content-page select { font-size: 16px; }
+  .content-page input, .content-page textarea, .content-page :is(select, .studio-select) { font-size: 16px; }
   .requirement-row { min-height: 68px; }
   .requirement-main strong { font-size: 13px; }
   .requirement-status { font-size: 10px; }
   .requirement-detail { position: fixed; right: 0; bottom: var(--bottom-nav-height); width: min(440px, 100%); max-height: 66dvh; overflow-y: auto; z-index: 35; box-shadow: 0 -8px 32px #38224520; border-radius: 16px 16px 0 0; }
   .modal-backdrop { padding: 12px; }
   .modal { width: min(460px, 100%); padding: 24px 20px; max-height: calc(100dvh - 24px); }
-  .modal input, .modal textarea, .modal select { font-size: 16px; }
+  .modal input, .modal textarea, .modal :is(select, .studio-select) { font-size: 16px; }
   .modal .button, .modal .icon-button { min-height: 44px; min-width: 44px; }
   .mobile-sheet-heading .icon-button, .sidebar .icon-button { width: 44px; height: 44px; }
   .workspace-home { padding: 24px 16px; }
@@ -3143,7 +3143,7 @@ code {
 .agent-access form, .agent-access label { display: grid; gap: 8px; }
 .agent-access form { gap: 16px; margin: 20px 0; }
 .agent-access label { font-size: 13px; }
-.agent-access input, .agent-access select { width: 100%; min-width: 0; }
+.agent-access input, .agent-access :is(select, .studio-select) { width: 100%; min-width: 0; }
 .agent-access-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .agent-secret { border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 16px 0; }
 .agent-secret .button { margin-top: 10px; }

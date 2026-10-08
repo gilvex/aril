@@ -162,3 +162,34 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* Workspace navigation stays exposed above the moving bottom sheet. */
+.studio-drawer.workspace-menu-drawer[data-direction='bottom'] {
+  bottom: var(--mobile-navigation-height, calc(60px + env(safe-area-inset-bottom, 0px)));
+  max-height: calc(100dvh - var(--mobile-navigation-height, 60px) - 64px);
+  padding-bottom: 0;
+}
+.workspace-menu-drawer .workspace-more-sheet {
+  padding: 0;
+}
+.workspace-menu-drawer .workspace-switch {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  white-space: normal;
+}
+.workspace-menu-drawer .mobile-workspace-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.workspace-menu-drawer .mobile-workspace-tools > span {
+  grid-column: 1 / -1;
+}
+.workspace-menu-drawer .mobile-workspace-tools button {
+  justify-content: flex-start;
+  white-space: normal;
+  min-height: 48px;
+  padding: 8px;
+}

@@ -1,3 +1,5 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { Plus, Search, X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -19,8 +21,7 @@ export function WorkspaceToolbar({
     [onSearch],
   )
   const changeSort = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) =>
-      onSort(event.target.value as WorkspaceSort),
+    (event: SelectChange) => onSort(event.target.value as WorkspaceSort),
     [onSort],
   )
   const clear = useCallback(() => onSearch(''), [onSearch])
@@ -47,7 +48,7 @@ export function WorkspaceToolbar({
           </button>
         )}
       </div>
-      <select
+      <StudioSelect
         className="workspace-sort"
         aria-label={t('Sort workspaces')}
         value={sort}
@@ -55,7 +56,7 @@ export function WorkspaceToolbar({
       >
         <option value="recent">{t('Last opened')}</option>
         <option value="name">{t('Name')}</option>
-      </select>
+      </StudioSelect>
       {canCreate && (
         <button
           className="button primary workspace-create-desktop"

@@ -1,4 +1,9 @@
 import { DropdownMenu } from 'radix-ui'
+import {
+  DropdownMenu as Menu,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from 'vagabond-ui/dropdown-menu'
 import { useCallback } from 'react'
 import type { EditorMenuProps } from '../types/editorMenuProps.ts'
 import './editorMenu.css'
@@ -18,8 +23,8 @@ export function EditorActionMenu({
     [focusAfterClose],
   )
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>{children}</DropdownMenu.Trigger>
+    <Menu>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenu.Portal
         container={(document.fullscreenElement as HTMLElement) || undefined}
       >
@@ -31,7 +36,7 @@ export function EditorActionMenu({
           onCloseAutoFocus={restoreFocus}
         >
           {actions.map((action) => (
-            <DropdownMenu.Item
+            <DropdownMenuItem
               key={action.id}
               className={`editor-menu-item${action.danger ? ' danger' : ''}${action.separator ? ' separated' : ''}`}
               disabled={action.disabled}
@@ -39,10 +44,10 @@ export function EditorActionMenu({
             >
               <span>{action.label}</span>
               {action.shortcut && <kbd>{action.shortcut}</kbd>}
-            </DropdownMenu.Item>
+            </DropdownMenuItem>
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+    </Menu>
   )
 }

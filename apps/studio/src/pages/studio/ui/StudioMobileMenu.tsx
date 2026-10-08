@@ -1,5 +1,5 @@
+import { Button } from 'vagabond-ui/button'
 import { StudioDrawer } from '@/shared/ui/index.tsx'
-import { StudioMenuNavigation } from './StudioMenuNavigation.tsx'
 import { useCallback } from 'react'
 import { Settings } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
@@ -8,17 +8,8 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioMobileMenuHandlers } from '../model/useStudioMobileMenuHandlers.tsx'
 
 import { ThemePicker } from '@/features/appearance/index.ts'
-import {
-  Activity as ActivityIcon,
-  ChevronDown,
-  Download,
-  History,
-  Redo2,
-  Undo2,
-  Upload,
-  Workflow,
-  X,
-} from 'lucide-react'
+import { ChevronDown, X } from 'lucide-react'
+import { StudioMobileTools } from './StudioMobileTools.tsx'
 
 import type { StudioMobileMenuProps } from '../types/studioMobileMenuProps.ts'
 export function StudioMobileMenu({
@@ -38,19 +29,13 @@ export function StudioMobileMenu({
   exportWorkspace,
 }: StudioMobileMenuProps) {
   const { t } = useTranslation()
+  const closeMenu = useCallback(() => setSidebarOpen(false), [setSidebarOpen])
   const openSettings = useCallback(() => {
     setView('settings')
     setSidebarOpen(false)
   }, [setView, setSidebarOpen])
 
-  const {
-    handleSwitchWorkspaceClick,
-    handleClick,
-    handleClick2,
-    handleClick3,
-    handleClick4,
-    handleClick5,
-  } = useStudioMobileMenuHandlers({
+  const handlers = useStudioMobileMenuHandlers({
     state,
     onWorkspaces,
     multiplayer,
@@ -67,7 +52,8 @@ export function StudioMobileMenu({
       open={sidebarOpen}
       onOpenChange={setSidebarOpen}
       title={t('Workspace menu')}
-      side
+      modal={false}
+      className="workspace-menu-drawer"
     >
       <aside
         ref={sidebarRef}
@@ -77,18 +63,20 @@ export function StudioMobileMenu({
       >
         <div className="mobile-sheet-heading">
           <strong>{t('Workspace')}</strong>
-          <button
+          <Button
+            variant="ghost"
             className="icon-button"
             aria-label={t('Close workspace menu')}
-            onClick={() => setSidebarOpen(false)}
+            onClick={closeMenu}
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
-        <button
+        <Button
+          variant="ghost"
           className="workspace-switch"
           aria-label={t('Switch workspace')}
-          onClick={handleSwitchWorkspaceClick}
+          onClick={handlers.handleSwitchWorkspaceClick}
         >
           <span className="workspace-letter">
             {studio.name.slice(0, 1).toUpperCase()}
@@ -98,49 +86,15 @@ export function StudioMobileMenu({
             <small>{t('Switch workspace')}</small>
           </span>
           <ChevronDown size={14} />
-        </button>
-        <button className="button" onClick={openSettings}>
+        </Button>
+        <Button variant="ghost" className="button" onClick={openSettings}>
           <Settings size={18} />
           {t('Settings')}
-        </button>
-        <StudioMenuNavigation
-          setView={setView}
-          setSidebarOpen={setSidebarOpen}
-        />
+        </Button>
         <ThemePicker />
         <LanguagePicker />
         <InstallApp />
-        <div className="mobile-workspace-tools">
-          <button onClick={handleClick}>
-            <ActivityIcon size={18} />
-            {t('Team activity')}
-          </button>
-          <button onClick={handleClick2}>
-            <Workflow size={18} />
-            {t('Agent access')}
-          </button>
-          <span>{t('Tools')}</span>
-          <button disabled={!state.canUndo} onClick={state.undo}>
-            <Undo2 size={18} />
-            {t('Undo')}
-          </button>
-          <button disabled={!state.canRedo} onClick={state.redo}>
-            <Redo2 size={18} />
-            {t('Redo')}
-          </button>
-          <button onClick={handleClick3}>
-            <History size={18} />
-            {t('Revision history')}
-          </button>
-          <button onClick={handleClick4}>
-            <Upload size={18} />
-            {t('Import workspace')}
-          </button>
-          <button onClick={handleClick5}>
-            <Download size={18} />
-            {t('Export workspace')}
-          </button>
-        </div>
+        <StudioMobileTools state={state} handlers={handlers} />
       </aside>
     </StudioDrawer>
   )

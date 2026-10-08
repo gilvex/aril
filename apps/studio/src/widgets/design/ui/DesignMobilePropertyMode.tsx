@@ -1,3 +1,4 @@
+import { Button } from 'vagabond-ui/button'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
@@ -13,12 +14,12 @@ export function DesignMobilePropertyMode({ model }: DesignEditorProps) {
       role="group"
       aria-label={t('Properties')}
     >
-      <button aria-pressed={!styles} onClick={properties}>
+      <Button variant="ghost" aria-pressed={!styles} onClick={properties}>
         {t('Properties')}
-      </button>
-      <button aria-pressed={styles} onClick={defaults}>
+      </Button>
+      <Button variant="ghost" aria-pressed={styles} onClick={defaults}>
         {t('Styles')}
-      </button>
+      </Button>
     </div>
   )
 }

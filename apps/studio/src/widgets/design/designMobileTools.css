@@ -1,6 +1,5 @@
 /* Nonmodal editor sheets leave the persistent app navigation usable. */
-.studio-drawer.design-tools-drawer[data-direction='bottom'],
-.studio-drawer.design-pages-drawer[data-direction='bottom'] {
+.studio-drawer.design-tools-drawer[data-direction='bottom'] {
   bottom: var(
     --mobile-navigation-height,
     calc(60px + env(safe-area-inset-bottom, 0px))
@@ -27,23 +26,60 @@
   flex-shrink: 0;
   border-bottom: 1px solid var(--line);
 }
-.design-tools-header > div {
-  display: flex;
+.design-tools-header strong {
   min-width: 0;
-}
-.design-tools-header button {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 8px 12px;
-  background: transparent;
-  color: var(--text-secondary);
-  border: 0;
-  border-bottom: 2px solid transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 13px;
 }
-.design-tools-header button[aria-pressed='true'] {
-  color: var(--text-strong);
-  border-bottom-color: var(--accent);
+.design-tools-header .icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.design-tools-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.design-tools-tab-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  animation: none;
+}
+.design-tools-tabs-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  flex-shrink: 0;
+  gap: 0;
+  padding: 4px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
+  overflow: hidden;
+}
+.design-tools-tabs-list button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.design-tools-tabs-list button[data-state='active'] {
+  color: var(--accent-ink);
+  background: var(--accent-light);
+}
+.design-tools-tabs-list [data-slot='tabs-indicator'] {
+  display: none;
+}
+.design-tools-drawer .design-page-popover {
+  height: 100%;
+  padding: 12px;
 }
 .design-tools-content {
   flex: 1;
@@ -90,9 +126,6 @@
   }
   .design-page-tools {
     max-width: min(300px, calc(100vw - 24px));
-  }
-  .design-tools-header button {
-    padding-inline: 10px;
   }
   .design-floating-tools .design-library-workspace,
   .design-floating-tools .design-machine-workspace {

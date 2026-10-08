@@ -18,7 +18,7 @@
   font-size: 20px;
   margin: 0 auto 0 0;
 }
-.design-workbench-toolbar select {
+.design-workbench-toolbar :is(select, .studio-select) {
   width: 130px;
 }
 .design-workbench-layout {
@@ -76,7 +76,7 @@
   gap: 9px;
   margin-bottom: 12px;
 }
-.design-style-panel select {
+.design-style-panel :is(select, .studio-select) {
   width: 100%;
 }
 .design-color-options {
@@ -432,7 +432,7 @@
   .design-workbench-toolbar h1 {
     font-size: 17px;
   }
-  .design-workbench-toolbar select {
+  .design-workbench-toolbar :is(select, .studio-select) {
     width: 105px;
   }
   .design-workbench-toolbar .segmented {

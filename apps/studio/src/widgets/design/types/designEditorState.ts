@@ -1,7 +1,7 @@
 import type { DesignElement } from '@pomegranate/domain/design'
 import type { DesignDockEdge } from './designDockEdge.ts'
 export type DesignEditorState = {
-  mobileToolsTab: 'layers' | 'library' | 'properties'
+  mobileToolsTab: 'pages' | 'layers' | 'library' | 'properties'
   leftTab: 'layers' | 'library'
   libraryView: 'canvas' | 'variables' | 'machine'
   libraryQuery: string

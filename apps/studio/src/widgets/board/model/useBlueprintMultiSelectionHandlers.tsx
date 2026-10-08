@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import type { Idea } from '@pomegranate/domain/workspace'
 import { useCallback } from 'react'
 
@@ -10,11 +11,7 @@ export function useBlueprintMultiSelectionHandlers({
   onDelete,
   selectedNodes,
 }: BlueprintMultiSelectionHandlersProps) {
-  const handleSelectedNodesTypeChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleSelectedNodesTypeChange = useCallback<(e: SelectChange) => void>(
     (e) => {
       checkpoint()
       update(
@@ -38,9 +35,7 @@ export function useBlueprintMultiSelectionHandlers({
     [checkpoint, update, board, selectedIds],
   )
   const handleSelectedNodesDecisionChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
+    (e: SelectChange) => void
   >(
     (e) => {
       checkpoint()

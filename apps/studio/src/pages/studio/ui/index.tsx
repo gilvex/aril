@@ -42,3 +42,5 @@ export { StudioMobileMenuButton } from './StudioMobileMenuButton.tsx'
 
 export { StudioNotebook } from './StudioNotebook.tsx'
 export { StudioScope } from './StudioScope.tsx'
+
+export { StudioMobileTools } from './StudioMobileTools.tsx'

@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Copy, Trash2 } from 'lucide-react'
@@ -62,7 +63,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
       ) : (
         <label>
           {t('On screen')}
-          <select
+          <StudioSelect
             disabled={readOnly}
             aria-label={t('Block screen')}
             value={node.parentId || ''}
@@ -74,12 +75,12 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
                 {screen.data.title}
               </option>
             ))}
-          </select>
+          </StudioSelect>
         </label>
       )}
       <label>
         {t('Appearance')}
-        <select
+        <StudioSelect
           disabled={readOnly}
           aria-label={t('Block appearance')}
           value={node.data.tone}
@@ -88,7 +89,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
           <option value="plain">{t('Plain')}</option>
           <option value="soft">{t('Soft')}</option>
           <option value="accent">{t('Accent')}</option>
-        </select>
+        </StudioSelect>
       </label>
       <WireframeInteraction
         {...props}

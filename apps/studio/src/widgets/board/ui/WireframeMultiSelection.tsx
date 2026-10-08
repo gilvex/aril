@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Copy, Trash2 } from 'lucide-react'
 import { useWireframeMultiSelectionHandlers } from '../model/useWireframeMultiSelectionHandlers.tsx'
@@ -28,14 +29,14 @@ export function WireframeMultiSelection({
       </p>
       <label>
         {t('Appearance')}
-        <select value="" onChange={handleChange}>
+        <StudioSelect value="" onChange={handleChange}>
           <option value="" disabled>
             {t('Change selected blocks…')}
           </option>
           <option value="plain">{t('Plain')}</option>
           <option value="soft">{t('Soft')}</option>
           <option value="accent">{t('Accent')}</option>
-        </select>
+        </StudioSelect>
       </label>
       <button className="button" onClick={duplicate}>
         <Copy size={14} />

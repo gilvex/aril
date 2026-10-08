@@ -160,37 +160,9 @@
   color: var(--accent-ink, #963e5c);
   background: var(--accent-light, #f8edf1);
 }
-.design-insert-menu summary {
+.design-tool-dock .design-insert-button {
   background: var(--accent, #b34568);
   color: #fff;
-  list-style: none;
-}
-.design-insert-menu summary::-webkit-details-marker {
-  display: none;
-}
-.design-insert-menu > div {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  right: 0;
-  width: 240px;
-  padding: 6px;
-  background: var(--surface, #fff);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 8px 30px #21162b22;
-}
-.design-insert-menu > div button {
-  justify-content: flex-start;
-  width: 100%;
-  text-align: left;
-}
-.design-insert-menu > div button:hover {
-  background: var(--canvas, #f6f5f9);
-}
-.design-insert-menu hr {
-  border: 0;
-  border-top: 1px solid var(--line);
-  margin: 6px 0;
 }
 .design-layers {
   width: 236px;

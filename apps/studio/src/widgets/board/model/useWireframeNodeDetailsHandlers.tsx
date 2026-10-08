@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import {
   removeWireNodes,
   wirePosition,
@@ -16,11 +17,7 @@ export function useWireframeNodeDetailsHandlers({
   selection,
   setSelection,
 }: WireframeNodeDetailsHandlersProps) {
-  const handleBlockScreenChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleBlockScreenChange = useCallback<(e: SelectChange) => void>(
     (e) => {
       const parent = screens.find((n) => n.id === e.target.value)
       const absolute = wirePosition(node, graph.nodes)
@@ -31,11 +28,7 @@ export function useWireframeNodeDetailsHandlers({
     },
     [screens, node, graph, editNode],
   )
-  const handleBlockAppearanceChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleBlockAppearanceChange = useCallback<(e: SelectChange) => void>(
     (e) =>
       editData({
         tone: e.target.value as WireNode['data']['tone'],

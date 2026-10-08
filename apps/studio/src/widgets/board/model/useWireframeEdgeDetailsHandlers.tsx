@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { useCallback } from 'react'
 
 import type { WireframeEdgeDetailsHandlersProps } from '../types/useWireframeEdgeDetailsHandlersProps.ts'
@@ -20,9 +21,7 @@ export function useWireframeEdgeDetailsHandlers({
     [save, graph, edge],
   )
   const handleInteractionDestinationChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
+    (e: SelectChange) => void
   >(
     (e) =>
       save({

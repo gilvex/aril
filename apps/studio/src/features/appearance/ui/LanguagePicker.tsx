@@ -1,10 +1,12 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { useCallback, type ChangeEvent } from 'react'
+import { useCallback } from 'react'
 
 export function LanguagePicker() {
   const { t, i18n } = useTranslation()
   const changeLanguage = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       void i18n.changeLanguage(event.target.value)
     },
     [i18n],
@@ -12,9 +14,9 @@ export function LanguagePicker() {
   return (
     <label className="theme-picker">
       <span>{t('Language')}</span>
-      <select
+      <StudioSelect
         aria-label={t('Language')}
-        value={i18n.resolvedLanguage}
+        value={i18n.resolvedLanguage || 'en'}
         onChange={changeLanguage}
       >
         <option value="en" lang="en">
@@ -23,7 +25,7 @@ export function LanguagePicker() {
         <option value="ru" lang="ru">
           Русский
         </option>
-      </select>
+      </StudioSelect>
     </label>
   )
 }

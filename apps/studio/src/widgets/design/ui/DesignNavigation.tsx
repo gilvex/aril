@@ -11,15 +11,17 @@ export function DesignNavigation({ model, navigation }: DesignNavigationProps) {
       {navigation && (
         <div className="board-design-navigation">{navigation}</div>
       )}
-      <div className="design-page-tools">
-        {model.component || model.libraryView !== 'canvas' ? (
-          <DesignAssetBreadcrumb model={model} />
-        ) : (
-          <DesignPagePicker model={model} mobile={compact} />
-        )}
-        {!compact && <DesignLayersButton model={model} />}
-        {!compact && <DesignLibraryButton model={model} />}
-      </div>
+      {(!compact || model.component || model.libraryView !== 'canvas') && (
+        <div className="design-page-tools">
+          {model.component || model.libraryView !== 'canvas' ? (
+            <DesignAssetBreadcrumb model={model} />
+          ) : (
+            <DesignPagePicker model={model} />
+          )}
+          {!compact && <DesignLayersButton model={model} />}
+          {!compact && <DesignLibraryButton model={model} />}
+        </div>
+      )}
     </div>
   )
 }

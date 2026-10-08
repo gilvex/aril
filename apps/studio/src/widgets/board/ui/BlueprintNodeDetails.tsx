@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
@@ -88,7 +89,7 @@ export function BlueprintNodeDetails({
         requirements={requirements}
         updateNode={updateNode}
       />
-      <select
+      <StudioSelect
         disabled={readOnly}
         aria-label={t('Link a requirement')}
         value=""
@@ -102,7 +103,7 @@ export function BlueprintNodeDetails({
               {r.id} · {r.title}
             </option>
           ))}
-      </select>
+      </StudioSelect>
       <div className="inspector-actions">
         <button disabled={readOnly} className="button" onClick={duplicateNode}>
           <Copy size={14} />

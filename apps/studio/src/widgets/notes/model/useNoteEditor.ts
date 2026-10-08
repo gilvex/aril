@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { useRef, useMemo, useCallback } from 'react'
 import type { ChangeEvent } from 'react'
 import type { NoteEditorProps } from '../types/noteEditorProps.ts'
@@ -28,7 +29,7 @@ export function useNoteEditor({ model, workspaceId }: NoteEditorProps) {
     [note.body, edit],
   )
   const insertLink = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
+    (event: SelectChange) => {
       const value = event.target.value
       if (!value || !editor.current) return
       const [kind, id, title] = JSON.parse(value) as string[]
@@ -45,7 +46,6 @@ export function useNoteEditor({ model, workspaceId }: NoteEditorProps) {
         text +
         note.body.slice(area.selectionEnd)
       if (body.length <= 50000) edit({ body })
-      event.target.value = ''
       requestAnimationFrame(() => area.focus())
     },
     [workspaceId, note.body, edit],

@@ -1,7 +1,8 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Bold, Italic, Heading2, List, ListChecks, Link } from 'lucide-react'
 import type { Workspace } from '@pomegranate/domain/workspace'
-import type { ChangeEvent } from 'react'
 const formats = [
   { name: 'Heading', Icon: Heading2 },
   { name: 'Bold', Icon: Bold },
@@ -16,7 +17,7 @@ export function NoteFormatBar({
   workspace,
 }: {
   format: (kind: string) => void
-  insertLink: (e: ChangeEvent<HTMLSelectElement>) => void
+  insertLink: (e: SelectChange) => void
   workspace: Workspace
 }) {
   const { t } = useTranslation()
@@ -38,9 +39,9 @@ export function NoteFormatBar({
           <Icon size={16} />
         </button>
       ))}
-      <select
+      <StudioSelect
         aria-label={t('Link to workspace')}
-        defaultValue=""
+        value=""
         onChange={insertLink}
       >
         <option value="" disabled>
@@ -66,7 +67,7 @@ export function NoteFormatBar({
             </option>
           ))}
         </optgroup>
-      </select>
+      </StudioSelect>
     </div>
   )
 }

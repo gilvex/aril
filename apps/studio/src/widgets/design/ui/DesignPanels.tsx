@@ -17,7 +17,13 @@ export function DesignPanels({
 }: DesignPanelsProps) {
   const { patch } = model
   const close = useCallback(
-    () => patch({ inspector: false, layers: false, layerActionsId: null }),
+    () =>
+      patch({
+        inspector: false,
+        layers: false,
+        pagesOpen: false,
+        layerActionsId: null,
+      }),
     [patch],
   )
   const change = useCallback(

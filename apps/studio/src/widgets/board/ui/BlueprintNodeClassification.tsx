@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { nodeKinds, statuses } from '@pomegranate/domain/workspace'
 import { kindLabels } from '../config/kindLabels.ts'
@@ -13,7 +14,7 @@ export function BlueprintNodeClassification({
     <div className="field-row">
       <label>
         {t('Type')}
-        <select
+        <StudioSelect
           disabled={readOnly}
           value={node.data.kind}
           onChange={changeKind}
@@ -23,11 +24,11 @@ export function BlueprintNodeClassification({
               {t(kindLabels[kind])}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
       <label>
         {t('Decision')}
-        <select
+        <StudioSelect
           disabled={readOnly}
           value={node.data.status}
           onChange={changeStatus}
@@ -37,7 +38,7 @@ export function BlueprintNodeClassification({
               {t(status)}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
     </div>
   )

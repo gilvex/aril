@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeEdgeDetailsHandlers } from '../model/useWireframeEdgeDetailsHandlers.tsx'
@@ -45,7 +46,7 @@ export function WireframeEdgeDetails({
       </label>
       <label>
         {t('Destination')}
-        <select
+        <StudioSelect
           disabled={readOnly}
           aria-label={t('Interaction destination')}
           value={edge.target}
@@ -58,7 +59,7 @@ export function WireframeEdgeDetails({
                 {n.data.title}
               </option>
             ))}
-        </select>
+        </StudioSelect>
       </label>
       <button
         disabled={readOnly}

@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useThemePreference } from '@/shared/model/useThemePreference.ts'
 import type { ThemePreference } from '@/shared/types/themePreference.ts'
@@ -15,7 +16,7 @@ export function ThemePicker() {
       <span>
         <Icon size={16} /> {t('Appearance')}
       </span>
-      <select
+      <StudioSelect
         aria-label={t('Appearance')}
         value={preference}
         onChange={(event) =>
@@ -25,7 +26,7 @@ export function ThemePicker() {
         <option value="system">{t('System')}</option>
         <option value="light">{t('Light')}</option>
         <option value="dark">{t('Dark')}</option>
-      </select>
+      </StudioSelect>
     </label>
   )
 }

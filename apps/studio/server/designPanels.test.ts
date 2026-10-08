@@ -11,17 +11,17 @@ test('mobile tools share one sheet, retain selection, and remember the last tab'
     createDesignEditorState(),
     patch({ compact: true }),
   )
-  for (const tab of ['layers', 'library', 'properties'] as const) {
+  for (const tab of ['pages', 'layers', 'library', 'properties'] as const) {
     state = designEditorSlice.reducer(state, patch(designMobileToolPatch(tab)))
     assert.equal(state.mobileToolsTab, tab)
-    assert.equal(state.layers, tab !== 'properties')
+    assert.equal(state.layers, tab === 'layers' || tab === 'library')
     assert.equal(state.inspector, tab === 'properties')
-    assert.equal(state.pagesOpen, false)
+    assert.equal(state.pagesOpen, tab === 'pages')
     state = designEditorSlice.reducer(state, patch({ selection: ['frame'] }))
-    assert.equal(state.layers || state.inspector, true)
+    assert.equal(state.pagesOpen || state.layers || state.inspector, true)
     state = designEditorSlice.reducer(
       state,
-      patch({ layers: false, inspector: false }),
+      patch({ layers: false, inspector: false, pagesOpen: false }),
     )
     assert.equal(state.mobileToolsTab, tab)
     state = designEditorSlice.reducer(

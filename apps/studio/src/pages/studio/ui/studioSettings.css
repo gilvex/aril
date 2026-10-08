@@ -149,7 +149,7 @@
   align-items: center;
   gap: 6px;
 }
-.settings-member-actions select {
+.settings-member-actions :is(select, .studio-select) {
   min-width: 100px;
 }
 .settings-role {

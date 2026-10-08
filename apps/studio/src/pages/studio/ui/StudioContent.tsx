@@ -16,8 +16,6 @@ export function StudioContent(props: StudioContentProps) {
   const { t } = useTranslation()
 
   const {
-    compact,
-    sidebarOpen,
     state,
     multiplayer,
     setNotice,
@@ -40,7 +38,7 @@ export function StudioContent(props: StudioContentProps) {
     setModal,
   })
   return (
-    <main className="main-area" inert={compact && sidebarOpen}>
+    <main className="main-area">
       {props.settings.role === 'viewer' && (
         <div className="workspace-readonly-notice">
           {t('View only · You can browse and follow collaborators.')}

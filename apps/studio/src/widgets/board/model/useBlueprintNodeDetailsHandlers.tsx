@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import type { Idea } from '@pomegranate/domain/workspace'
 import { useCallback } from 'react'
 
@@ -9,33 +10,21 @@ export function useBlueprintNodeDetailsHandlers({
   board,
   setSelected,
 }: BlueprintNodeDetailsHandlersProps) {
-  const changeKind = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const changeKind = useCallback<(e: SelectChange) => void>(
     (e) =>
       updateNode({
         kind: e.target.value as Idea['data']['kind'],
       }),
     [updateNode],
   )
-  const changeStatus = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const changeStatus = useCallback<(e: SelectChange) => void>(
     (e) =>
       updateNode({
         status: e.target.value as Idea['data']['status'],
       }),
     [updateNode],
   )
-  const handleLinkARequirementChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleLinkARequirementChange = useCallback<(e: SelectChange) => void>(
     (e) => {
       if (e.target.value)
         updateNode({

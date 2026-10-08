@@ -1,3 +1,4 @@
+import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { removeWireNodes, type WireNode } from '@pomegranate/domain/wireframe'
 import { useCallback } from 'react'
 
@@ -8,11 +9,7 @@ export function useWireframeMultiSelectionHandlers({
   selection,
   setSelection,
 }: WireframeMultiSelectionHandlersProps) {
-  const handleChange = useCallback<
-    (
-      e: import('react').ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-    ) => void
-  >(
+  const handleChange = useCallback<(e: SelectChange) => void>(
     (e) =>
       save({
         ...graph,

@@ -1,3 +1,5 @@
+import { Button } from 'vagabond-ui/button'
+import { Input } from 'vagabond-ui/input'
 import { Plus, Search } from 'lucide-react'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -18,7 +20,7 @@ export function DesignPagesList({ model }: DesignEditorProps) {
       {' '}
       <label className="design-page-search">
         <Search size={15} aria-hidden="true" />
-        <input
+        <Input
           aria-label={t('Find a page')}
           placeholder={t('Find a page')}
           value={model.pageQuery}
@@ -32,14 +34,15 @@ export function DesignPagesList({ model }: DesignEditorProps) {
         {!pages.length && <p role="status">{t('No matching pages.')}</p>}
       </div>
       {canEdit && (
-        <button
+        <Button
+          variant="ghost"
           className="design-page-add"
           disabled={model.pages.length >= 30}
           onClick={model.addPage}
         >
           <Plus size={15} />
           {t('Add page')}
-        </button>
+        </Button>
       )}
     </>
   )

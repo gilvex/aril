@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Check, X } from 'lucide-react'
@@ -58,7 +59,7 @@ export function DesignSettings({
         <h3>{t('Typography')}</h3>
         <label>
           {t('Headings')}
-          <select
+          <StudioSelect
             value={design.headingFont || 'Manrope'}
             onChange={(e) =>
               update({
@@ -68,13 +69,15 @@ export function DesignSettings({
             }
           >
             {fonts.map((font) => (
-              <option key={font}>{font}</option>
+              <option key={font} value={font}>
+                {font}
+              </option>
             ))}
-          </select>
+          </StudioSelect>
         </label>
         <label>
           {t('Body text')}
-          <select
+          <StudioSelect
             value={design.bodyFont || 'DM Sans'}
             onChange={(e) =>
               update({
@@ -84,9 +87,11 @@ export function DesignSettings({
             }
           >
             {fonts.map((font) => (
-              <option key={font}>{font}</option>
+              <option key={font} value={font}>
+                {font}
+              </option>
             ))}
-          </select>
+          </StudioSelect>
         </label>
       </section>
       <section>

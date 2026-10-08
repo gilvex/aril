@@ -163,7 +163,7 @@
   align-items: center;
   flex-wrap: wrap;
 }
-.notebook-format select {
+.notebook-format :is(select, .studio-select) {
   width: 125px;
   margin-left: 10px;
   font-size: 11px;

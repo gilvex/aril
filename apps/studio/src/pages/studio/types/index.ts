@@ -46,3 +46,5 @@ export type { WorkspacePickerDialogProps } from './workspacePickerDialogProps.ts
 export type { BoardTypeChoicesProps } from './boardTypeChoicesProps.ts'
 
 export type { LiveWorkspaceFieldsOptions } from './liveWorkspaceFieldsOptions.ts'
+
+export type { StudioMobileToolsProps } from './studioMobileToolsProps.ts'

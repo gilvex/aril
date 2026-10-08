@@ -1,3 +1,4 @@
+import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
 import { nodeKinds, statuses } from '@pomegranate/domain/workspace'
@@ -37,7 +38,7 @@ export function BlueprintMultiSelection({
       </p>
       <label>
         {t('Type')}
-        <select
+        <StudioSelect
           aria-label={t('Selected nodes type')}
           value={
             selectedNodes.every(
@@ -56,11 +57,11 @@ export function BlueprintMultiSelection({
               {t(kindLabels[k])}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
       <label>
         {t('Decision')}
-        <select
+        <StudioSelect
           aria-label={t('Selected nodes decision')}
           value={
             selectedNodes.every(
@@ -79,7 +80,7 @@ export function BlueprintMultiSelection({
               {t(s)}
             </option>
           ))}
-        </select>
+        </StudioSelect>
       </label>
       <ul className="selected-node-list">
         {selectedNodes.map((n) => (

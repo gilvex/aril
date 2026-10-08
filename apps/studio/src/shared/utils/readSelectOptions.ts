@@ -8,7 +8,7 @@ export function readSelectOptions(
   return Children.toArray(children).flatMap((child) => {
     if (
       !isValidElement<{
-        value?: string
+        value?: string | number
         children?: ReactNode
         disabled?: boolean
         label?: string
@@ -18,7 +18,13 @@ export function readSelectOptions(
     if (child.type === 'option')
       return [
         {
-          value: String(child.props.value ?? ''),
+          value: String(
+            child.props.value ??
+              (typeof child.props.children === 'string' ||
+              typeof child.props.children === 'number'
+                ? child.props.children
+                : ''),
+          ),
           label: child.props.children,
           disabled: child.props.disabled,
           group,

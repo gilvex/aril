@@ -59,7 +59,7 @@
   align-items: center;
   gap: 8px;
 }
-.theme-picker select {
+.theme-picker :is(select, .studio-select) {
   width: auto;
   min-width: 86px;
   padding: 7px 9px;
@@ -146,7 +146,7 @@
   .workspace-home-preferences .theme-picker {
     padding-inline: 0;
   }
-  .theme-picker select {
+  .theme-picker :is(select, .studio-select) {
     min-height: 44px;
     font-size: 16px;
   }

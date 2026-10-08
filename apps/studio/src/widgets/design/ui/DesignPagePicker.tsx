@@ -4,31 +4,18 @@ import { File, ChevronDown } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { DesignPagesList } from './DesignPagesList.tsx'
-import { DesignPagesDrawer } from './DesignPagesDrawer.tsx'
-export function DesignPagePicker({
-  model,
-  mobile = false,
-}: DesignEditorProps & { mobile?: boolean }) {
+export function DesignPagePicker({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const { patch } = model
-  const focusSearch = useCallback(
-    (event: Event) => {
-      if (mobile) event.preventDefault()
-    },
-    [mobile],
-  )
   const openChanged = useCallback(
     (open: boolean) =>
       patch({
         pagesOpen: open,
         pageQuery: '',
         renamingPageId: null,
-        ...(open && mobile ? { layers: false, inspector: false } : {}),
       }),
-    [patch, mobile],
+    [patch],
   )
-  if (mobile)
-    return <DesignPagesDrawer model={model} onOpenChange={openChanged} />
   return (
     <Popover.Root open={model.pagesOpen} onOpenChange={openChanged}>
       <Popover.Trigger asChild>
@@ -38,13 +25,9 @@ export function DesignPagePicker({
         >
           <File size={15} />
           <span>{t('Pages')}</span>
-          {!mobile && (
-            <>
-              <span className="design-nav-divider">/</span>
-              <strong>{model.page.name}</strong>
-              <ChevronDown size={14} />
-            </>
-          )}
+          <span className="design-nav-divider">/</span>
+          <strong>{model.page.name}</strong>
+          <ChevronDown size={14} />
         </button>
       </Popover.Trigger>
       <Popover.Portal
@@ -52,9 +35,8 @@ export function DesignPagePicker({
       >
         <Popover.Content
           className="design-page-popover"
-          onOpenAutoFocus={focusSearch}
           aria-label={t('Pages')}
-          side={mobile ? 'top' : 'bottom'}
+          side="bottom"
           sideOffset={8}
           align="start"
           collisionPadding={12}
