@@ -3,6 +3,7 @@ import type { ControlPresence } from '@pomegranate/domain/collaboration'
 import type { ControlPresenceProps } from '../types/controlPresenceProps.ts'
 import { controlAddress } from '../utils/controlAddress.ts'
 import { controlFingerprint } from '../utils/controlFingerprint.ts'
+import { resolveControlFocus } from '../utils/resolveControlFocus.ts'
 export function useControlBroadcast({
   root,
   active,
@@ -24,7 +25,7 @@ export function useControlBroadcast({
         sendPresence({ controls: null }, true)
         return
       }
-      const element = document.activeElement
+      const element = resolveControlFocus(document.activeElement)
       let focus: ControlPresence['focus'] = null
       if (
         element instanceof HTMLElement &&
