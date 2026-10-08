@@ -42,7 +42,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_workspace',
     {
       description:
-        'Read the connected workspace, current revision, board IDs, requirements, notes and their comments, design settings, and design page IDs/names/layer counts. By default returns a compact overview; use full=true for all graphs and design layers, or get_design_page for one page.',
+        'Read the connected workspace, current revision, board IDs, Scope requirements (decisions, questions, visual links and preserved delivery status), notes and their comments, design settings, and design page IDs/names/layer counts. By default returns a compact overview; use full=true for all graphs and design layers, or get_design_page for one page.',
       inputSchema: z.object({ full: z.boolean().default(false) }),
       annotations: read,
     },

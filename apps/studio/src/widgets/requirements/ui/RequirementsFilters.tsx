@@ -47,7 +47,7 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
         </StudioSelect>
       </label>
       <label>
-        {t('Status')}
+        {t('Delivery status')}
         <StudioSelect
           aria-label={t('Filter requirements by status')}
           value={model.status}

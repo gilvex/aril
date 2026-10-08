@@ -1,6 +1,7 @@
+import { useScopeCollection } from '../model/useScopeCollection.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
-import { Columns3, List, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
 import { useRequirementsToolbar } from '../model/useRequirementsToolbar.ts'
@@ -9,35 +10,38 @@ import { RequirementFilterChips } from './RequirementFilterChips.tsx'
 export function RequirementsToolbar({ model }: RequirementsViewProps) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
+  const { visibleCount } = useScopeCollection(model)
   const controls = useRequirementsToolbar({ model })
-  const value = model.view === 'list' ? 'list' : model.groupBy
   return (
     <header className="requirements-topbar">
-      <h1 className="visually-hidden">{t('Requirements')}</h1>
+      <h1>{t('Scope')}</h1>
       <div className="requirements-view-picker">
-        {model.view === 'list' ? <List size={16} /> : <Columns3 size={16} />}
         <StudioSelect
-          aria-label={t('Requirements view')}
-          value={value}
-          onChange={controls.changeView}
+          aria-label={t('Filter scope by board')}
+          value={model.boardFilter}
+          onChange={(event) =>
+            model.setViewState({ boardFilter: event.target.value })
+          }
         >
-          <option value="list">{t('List')}</option>
-          <option value="status">{t('Status board')}</option>
-          <option value="priority">{t('Priority board')}</option>
+          <option value="">{t('All boards')}</option>
+          <option value="workspace">{t('Workspace-wide')}</option>
+          {model.workspace.boards.map((board) => (
+            <option key={board.id} value={board.id}>
+              {board.name}
+            </option>
+          ))}
         </StudioSelect>
         <span
           className="requirements-view-count"
           role="status"
           aria-label={t('{{shown}} of {{total}} requirements', {
-            shown: model.results.length,
+            shown: visibleCount,
             total: model.workspace.requirements.length,
           })}
         >
-          {model.results.length === model.workspace.requirements.length
-            ? model.results.length
-            : model.results.length +
-              ' / ' +
-              model.workspace.requirements.length}
+          {visibleCount === model.workspace.requirements.length
+            ? visibleCount
+            : visibleCount + ' / ' + model.workspace.requirements.length}
         </span>
       </div>
       <RequirementFilterChips model={model} />
@@ -46,7 +50,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
         <button
           className="button primary req-add"
           aria-label={t('Add requirement')}
-          disabled={readOnly}
+          disabled={readOnly || model.workspace.requirements.length >= 500}
           onClick={controls.addRequirement}
         >
           <Plus size={16} />

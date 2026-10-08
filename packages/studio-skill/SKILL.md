@@ -108,3 +108,10 @@ Persistent `noteComments` is an optional ID-addressed collection (maximum 1,000 
 
 
 Notes body edits made in the studio now stream incremental Yjs changes over the private live connection while persistence remains a delayed workspace save. `noteStates` is internal collaboration metadata: preserve it when reading/exporting a workspace, but do not fabricate its seed or encoded update. Agents may continue to edit `notes` or `documents/<id>/body` with the current revision and exact `before` value; this is a deliberate whole-body replacement, so re-read on conflict. Do not write WebSocket messages or impersonate human cursor chat. The internal `noteText/<noteId>` operation is reserved for valid CRDT states produced by the domain utilities. Deleting a document automatically drops its internal text state; remove its saved comments in the same batch as before.
+
+
+## Scope (requirements)
+
+The UI calls Requirements **Scope**. Existing routes and operation paths remain `requirements`. Read `get_schema` and the current item before editing. Optional fields: `decision` (`Proposed`, `Agreed`, `Deferred`), `workspaceWide` (boolean), `questions` (up to 50 `{ id, text, resolved }` records), and `links` (up to 100 `{ kind, boardId?, pageId? }` records). Kind is `canvas`, `wireframes`, or `design`; blueprint/wireframe links require a board ID. Design-page links use `pageId` and optionally `boardId` for a board design; without a board ID they refer to workspace Design. Use only existing enabled destinations. Legacy node `data.requirements` associations remain valid and are included in board groups.
+
+A missing decision is displayed as Proposed; never infer agreement from the legacy `status` (`Captured`, `Designing`, `Ready`). Priority, category, descriptions, acceptance criteria, and IDs remain unchanged. Questions and links are bounded arrays: read and compare the whole current array when replacing it; do not overwrite concurrent edits. Deleted targets remain removable references, never silently recreated. Scope links navigate to board sections or design pages, not individual layers.

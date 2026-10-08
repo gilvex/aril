@@ -1,3 +1,7 @@
 export * from './filterRequirements.ts'
 export * from './moveRequirements.ts'
 export * from './readRequirementsPreference.ts'
+export * from './scopeTargetKey.ts'
+export * from './scopeTargets.ts'
+export * from './scopeBoards.ts'
+export * from './collectScope.ts'

@@ -112,3 +112,10 @@ New boards start with Blueprint, Wireframes, or Design. Use the + beside their s
 Press `/` on a canvas to type a temporary cursor message (or use the message icon on touch devices). Enter sends it, Escape cancels it, and it disappears after six seconds. Messages travel in presence and are not saved in history. Loading screens use indeterminate progress bars; Notes uses a left-aligned reading column.
 
 Design layers support nested groups and frames. Select sibling layers and use the layer context menu (or ellipsis) to **Group selection**, **Frame selection**, or **Use as mask**. Ctrl/Cmd+G groups; Ctrl/Cmd+Shift+G ungroups. Group resizing scales descendants, and ungrouping preserves canvas positions. Masks use the lowest selected rectangle or ellipse as a geometric clip; **Release mask** keeps all layers. Frames have a **Clip content** checkbox. The parent selector can move layers between containers while preserving their absolute position. Undo, collaboration, export and MCP share this hierarchy.
+
+
+### Scope
+
+Requirements now appear as **Scope**: outcomes grouped by board, a workspace-wide group, and unlinked items. The single toolbar filters by board, with search and secondary delivery-status/priority/area filters. Quick filters show all items, those needing a decision, or unlinked work. A readable detail panel includes the problem, acceptance criteria, Proposed/Agreed/Deferred decisions, resolvable questions, and connections to blueprint sections, wireframe sections and design pages. Compact screens use the shared Vagabond drawer. The board overview also includes requirements connected at board level and workspace-wide outcomes.
+
+Existing requirements, node associations and delivery statuses are preserved. Agreement is separate from implementation status; missing decisions display as Proposed. Connections to deleted work can be removed. New fields use the existing revision-checked save/history/undo path and are available through MCP and JSON export. No database migration or starter-data reset is required.

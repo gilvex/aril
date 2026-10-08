@@ -1,0 +1,56 @@
+.scope-page .requirements-topbar { min-height: 66px; padding: 12px 24px; border-bottom: 1px solid var(--line); gap: 16px; }
+.scope-page .requirements-topbar h1 { margin: 0; font-size: 23px; }
+.scope-page .requirements-view-picker { max-width: 250px; background: transparent; }
+.scope-page .requirements-command-group { background: transparent; border: 0; }
+.scope-page .requirements-workspace { padding: 0; }
+.scope-page .requirements-collection { flex: 1; overflow: hidden; }
+.scope-collection { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.scope-quick-filters { display: flex; padding: 0 20px; gap: 22px; border-bottom: 1px solid var(--line); overflow: auto; flex-shrink: 0; }
+.scope-quick-filters button { position: relative; min-height: 48px; border: 0; padding: 10px 0; white-space: nowrap; background: transparent; color: var(--muted); font-size: 12px; }
+.scope-quick-filters button[aria-pressed=true] { color: var(--text-strong); }
+.scope-quick-filters button[aria-pressed=true]::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--accent); border-radius: 3px; }
+.scope-quick-filters small { margin-left: 5px; }
+.scope-groups { overflow: auto; flex: 1; min-height: 0; padding-bottom: 22px; }
+.scope-group > summary { padding: 20px 24px 12px; cursor: pointer; font-weight: 650; font-size: 12px; }
+.scope-group > summary small { margin-left: 12px; color: var(--muted); font-weight: 400; }
+.scope-row { display: flex; gap: 14px; width: 100%; align-items: center; padding: 17px 24px; min-height: 70px; border: 0; border-bottom: 1px solid var(--line); border-left: 3px solid transparent; background: transparent; text-align: left; color: var(--text-strong); }
+.scope-row:hover { background: var(--surface-muted); }
+.scope-row.is-selected { background: var(--accent-light); border-left-color: var(--accent); }
+.scope-id { color: var(--muted); font-size: 11px; min-width: 30px; max-width: 82px; overflow-wrap: anywhere; }
+.scope-row-title { flex: 1; min-width: 0; }
+.scope-row-title strong { display: block; font-size: 14px; font-weight: 550; line-height: 1.5; overflow-wrap: anywhere; }
+.scope-row-title small { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere; }
+.scope-decision { font-size: 11px; display: flex; gap: 7px; align-items: center; max-width: 105px; flex-shrink: 0; }
+.scope-decision::before { content: ''; width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: currentColor; }
+.decision-proposed { color: var(--muted); }.decision-agreed { color: var(--success-ink, #75b8a4); }.decision-deferred { color: var(--warning-ink, #bd9e72); }
+.scope-add { display: flex; gap: 10px; align-items: center; padding: 18px 24px; border: 0; background: transparent; color: var(--accent-ink); font-size: 13px; }
+.scope-page .req-editor { max-width: 54%; }
+.scope-page .req-document, .scope-detail-drawer .req-document { padding: 24px 30px; }
+.scope-page .req-document-title textarea { font-size: 26px; }
+.scope-property-row { display: flex; gap: 12px; margin-bottom: 14px; }
+.scope-property-row > * { flex: 1; min-width: 0; }
+.scope-properties { margin: 12px 0 24px; }
+.scope-properties summary { cursor: pointer; font-size: 11px; color: var(--muted); }
+.scope-workspace-check { display: flex; flex-direction: row; gap: 10px; align-items: center; margin-top: 15px; font-size: 12px; }
+.scope-workspace-check input { width: auto; }
+.scope-questions { margin: 8px 0 26px; }
+.scope-questions header { display: flex; align-items: center; justify-content: space-between; }
+.scope-questions h3 { font-size: 14px; margin: 0; }
+.scope-questions > p { font-size: 12px; color: var(--muted); }
+.scope-question { border-left: 2px solid var(--warning-ink, #bd9e72); margin: 12px 0; padding-left: 12px; }
+.scope-question textarea { border: 1px solid transparent; background: transparent; padding: 4px; font-size: 13px; width: 100%; resize: vertical; field-sizing: content; min-height: 44px; }
+.scope-question textarea:hover { border-color: var(--line); }
+.scope-question > div { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+.scope-question .button { padding: 4px; min-height: 30px; font-size: 11px; }
+.scope-question.is-resolved { border-color: var(--line); opacity: .75; }
+.scope-link-row { display: flex; align-items: center; gap: 6px; }
+.scope-link-row .req-board-link { min-width: 0; flex: 1; }
+.scope-link-row .req-board-link small { white-space: normal; overflow-wrap: anywhere; }
+.scope-detail-drawer .studio-drawer-body { padding: 0; overflow: hidden; }
+.scope-detail-drawer .req-document { height: 100%; overflow: auto; }
+@media (max-width: 1100px) { .scope-row { flex-wrap: wrap; gap: 8px 12px; padding: 14px 18px; }.scope-row-title { flex-basis: calc(100% - 115px); }.scope-decision { margin-left: 42px; max-width: none; }.scope-page .req-document { padding: 22px; } }
+@media (max-width: 760px) { .scope-page .requirements-topbar { display: flex; flex-wrap: wrap; padding: 12px; gap: 10px; }.scope-page .requirements-topbar h1 { font-size: 19px; }.scope-page .requirements-view-picker { max-width: 48%; }.scope-page .requirements-command-group { margin-left: auto; }.scope-quick-filters { padding: 0 14px; gap: 18px; }.scope-page .has-detail .requirements-content, .scope-page .has-detail .requirements-collection { visibility: visible; }.scope-detail-drawer .req-back { display: none; }.scope-detail-drawer .req-document-header > span:not(.req-avatars) { display: inline; }.scope-detail-drawer textarea { font-size: 16px; }.scope-detail-drawer .req-document-title textarea { font-size: 24px; } }
+
+.scope-detail-drawer { height: 85dvh; }
+.scope-detail-drawer .studio-drawer-body { flex: 1; }
+.decision-question { color: var(--warning-ink, #bd9e72); }

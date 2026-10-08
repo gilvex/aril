@@ -1,3 +1,4 @@
+import { scopeTargets } from '../utils/scopeTargets.ts'
 import { filterRequirements } from '../utils/filterRequirements.ts'
 import { moveRequirements } from '../utils/moveRequirements.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -225,6 +226,8 @@ export function useRequirementsController({
     () =>
       setViewState({
         query: '',
+        boardFilter: '',
+        scopeFilter: 'all',
         category: 'All areas',
         status: '',
         priority: '',
@@ -251,6 +254,10 @@ export function useRequirementsController({
   )
   const add = useCallback(
     (defaults: Partial<Requirement> = {}) => {
+      if (workspace.requirements.length >= 500) return
+      const target = scopeTargets(workspace).find(
+        (item) => item.boardId === viewState.boardFilter,
+      )
       const id = `R-${crypto.randomUUID().slice(0, 6)}`
       change((w) => ({
         ...w,
@@ -267,13 +274,36 @@ export function useRequirementsController({
                 : (category as Requirement['category']),
             priority: priority || 'Should have',
             status: status || 'Captured',
+            decision: 'Proposed',
+            ...(target
+              ? {
+                  links: [
+                    {
+                      kind: target.kind,
+                      boardId: target.boardId,
+                      pageId: target.pageId,
+                    },
+                  ],
+                }
+              : {}),
+            workspaceWide: viewState.boardFilter === 'workspace',
             ...defaults,
           },
         ],
       }))
       selectRequirement(id)
+      setViewState({ scopeFilter: 'all' })
     },
-    [change, selectRequirement, category, priority, status],
+    [
+      change,
+      selectRequirement,
+      category,
+      priority,
+      status,
+      viewState.boardFilter,
+      workspace,
+      setViewState,
+    ],
   )
   return {
     ...viewState,

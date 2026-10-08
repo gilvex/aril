@@ -63,3 +63,6 @@ The original note remains accessible through `["notes"]`, and its optional title
 Board-specific designs use `get_design_page({ boardId, pageId })` and operation paths under `["boards", boardId, "design", "pages", pageId]`. `get_workspace` lists each board's sections and design page summaries. Boards may set `sections` to an ordered subset of `canvas`, `wireframes`, and `design`; the first is primary. Omitted sections preserve legacy Blueprint + Wireframes behavior. Initialize missing board design settings and ID-keyed pages before adding layers. Workspace designs remain independent.
 
 Browser write protocol 3 protects these new fields from older bundles. Existing connections should restart their MCP process after updating the bridge. Credentials do not need to be recreated.
+
+
+Scope retains the `requirements` API path. `get_schema` exposes optional decision, workspaceWide, questions and links fields; `get_workspace` includes them in both compact and full reads. See the companion skill for link destinations and array conflict rules.

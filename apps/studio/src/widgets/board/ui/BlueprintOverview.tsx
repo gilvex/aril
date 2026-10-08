@@ -1,3 +1,4 @@
+import { BoardScope } from './BoardScope.tsx'
 import { useCallback, useMemo, useRef, type MouseEvent } from 'react'
 import { ChevronRight, CircleHelp } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -19,23 +20,12 @@ export function BlueprintOverview(props: BlueprintOverviewProps) {
     () => board.nodes.filter((node) => node.data.status === 'Question'),
     [board.nodes],
   )
-  const linked = useMemo(() => {
-    const ids = new Set(board.nodes.flatMap((node) => node.data.requirements))
-    return requirements.filter((item) => ids.has(item.id))
-  }, [board.nodes, requirements])
   const selectQuestion = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       const id = event.currentTarget.dataset.id
       if (id) focusNode(id)
     },
     [focusNode],
-  )
-  const selectRequirement = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      const id = event.currentTarget.dataset.id
-      if (id) openRequirement(id)
-    },
-    [openRequirement],
   )
   return (
     <div className="inspector-body board-overview">
@@ -99,24 +89,11 @@ export function BlueprintOverview(props: BlueprintOverviewProps) {
           {!questions.length && <p>{t('No open questions on this board.')}</p>}
         </div>
       </section>
-      <section className="board-overview-section">
-        <h3>
-          {t('Linked requirements')}
-          <span>{linked.length}</span>
-        </h3>
-        <div className="board-overview-list">
-          {linked.map((item) => (
-            <button key={item.id} data-id={item.id} onClick={selectRequirement}>
-              <small>{item.id}</small>
-              <span>{item.title}</span>
-              <ChevronRight size={14} />
-            </button>
-          ))}
-          {!linked.length && (
-            <p>{t('Link requirements from a node’s details.')}</p>
-          )}
-        </div>
-      </section>
+      <BoardScope
+        board={board}
+        requirements={requirements}
+        openRequirement={openRequirement}
+      />
       <BoardOverviewActions
         {...props}
         rename={rename}

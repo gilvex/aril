@@ -24,26 +24,14 @@ export function RequirementProperties({
   )
   return (
     <div className="req-properties">
-      {(['status', 'priority', 'category'] as const).map((field) => (
+      {(['status', 'category'] as const).map((field) => (
         <label key={field}>
-          <span>
-            {t(
-              field === 'status'
-                ? 'Status'
-                : field === 'priority'
-                  ? 'Priority'
-                  : 'Area',
-            )}
-          </span>
+          <span>{t(field === 'status' ? 'Delivery status' : 'Area')}</span>
           <StudioSelect
             disabled={readOnly}
             name={field}
             aria-label={t(
-              field === 'status'
-                ? 'Requirement status'
-                : field === 'priority'
-                  ? 'Requirement priority'
-                  : 'Requirement area',
+              field === 'status' ? 'Delivery status' : 'Requirement area',
             )}
             {...fieldProps(field)}
             value={current[field]}

@@ -5,6 +5,9 @@ import type {
 } from '@pomegranate/domain/collaboration'
 import type { Workspace } from '@pomegranate/domain/workspace'
 export type RequirementsProps = {
+  openWork: (
+    link: import('@pomegranate/domain/workspace').RequirementLink,
+  ) => void
   workspaceId: string
   workspace: Workspace
   change: (fn: (w: Workspace) => Workspace) => void

@@ -3,15 +3,10 @@ import type { RequirementField } from '@pomegranate/domain/collaboration'
 import type { Requirement } from '@pomegranate/domain/workspace'
 
 export type RequirementDetailsProps = {
-  current: {
-    id: string
-    title: string
-    description: string
-    category: 'Deployment' | 'Access' | 'Operations' | 'Experience'
-    priority: 'Must have' | 'Should have' | 'Later'
-    status: 'Captured' | 'Designing' | 'Ready'
-    acceptance: string
-  }
+  current: Requirement
+  openWork: (
+    link: import('@pomegranate/domain/workspace').RequirementLink,
+  ) => void
   selectRequirement: (id: string | null) => void
   peopleFor: (id: string) => RequirementViewer[]
   profile: import('@pomegranate/domain/collaboration').Profile

@@ -14,7 +14,17 @@ export function filterRequirements(
         item.category === filters.category) &&
       (!filters.priority || item.priority === filters.priority) &&
       (!filters.status || item.status === filters.status) &&
-      (item.id + ' ' + item.title + ' ' + item.description)
+      (
+        item.id +
+        ' ' +
+        item.title +
+        ' ' +
+        item.description +
+        ' ' +
+        item.acceptance +
+        ' ' +
+        (item.questions || []).map((q) => q.text).join(' ')
+      )
         .toLocaleLowerCase()
         .includes(query),
   )

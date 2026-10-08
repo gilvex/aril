@@ -6,7 +6,7 @@ import { AlertCircle, X } from 'lucide-react'
 import { Suspense } from 'react'
 import { useStudioContentHandlers } from '../model/useStudioContentHandlers.tsx'
 import { DesignBoard } from './DesignBoard.tsx'
-import { Requirements } from './Requirements.tsx'
+import { StudioScope } from './StudioScope.tsx'
 
 import { StudioBottomNavigation } from './StudioBottomNavigation.tsx'
 import { StudioCanvas } from './StudioCanvas.tsx'
@@ -23,7 +23,6 @@ export function StudioContent(props: StudioContentProps) {
     multiplayer,
     setNotice,
     view,
-    setRequirementId,
     setModal,
     importRef,
     exportWorkspace,
@@ -34,8 +33,6 @@ export function StudioContent(props: StudioContentProps) {
     workspace,
     change,
     sendPresence,
-    requirementId,
-    navigateBoard,
   } = props
 
   const { handleImportWorkspaceFileChange } = useStudioContentHandlers({
@@ -92,19 +89,7 @@ export function StudioContent(props: StudioContentProps) {
         </>
       )}
       <Suspense fallback={<LoadingStatus centered label={t('Loading…')} />}>
-        {view === 'requirements' && (
-          <Requirements
-            workspaceId={props.studio.id}
-            workspace={workspace}
-            change={change}
-            selected={requirementId}
-            onSelect={setRequirementId}
-            openBoard={navigateBoard}
-            profile={multiplayer.profile}
-            peers={multiplayer.peers}
-            sendPresence={sendPresence}
-          />
-        )}
+        {view === 'requirements' && <StudioScope {...props} />}
         {view === 'design' && (
           <DesignBoard
             key={props.studio.id}

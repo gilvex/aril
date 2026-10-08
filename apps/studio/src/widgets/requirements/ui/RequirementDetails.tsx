@@ -5,7 +5,8 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useRequirementDetailsHandlers } from '../model/useRequirementDetailsHandlers.tsx'
 import type { RequirementDetailsProps } from '../types/requirementDetailsProps.ts'
 import { RequirementAvatars } from './RequirementAvatars.tsx'
-import { RequirementProperties } from './RequirementProperties.tsx'
+import { ScopeProperties } from './ScopeProperties.tsx'
+import { ScopeQuestions } from './ScopeQuestions.tsx'
 import { RequirementLinks } from './RequirementLinks.tsx'
 export function RequirementDetails(props: RequirementDetailsProps) {
   const { t } = useTranslation()
@@ -67,9 +68,9 @@ export function RequirementDetails(props: RequirementDetailsProps) {
         />
         {fieldHint('title')}
       </label>
-      <RequirementProperties {...props} />
+      <ScopeProperties {...props} />
       <label className="req-document-field">
-        <span>{t('Problem')}</span>
+        <span>{t('Why it matters')}</span>
         {fieldHint('description')}
         <textarea
           readOnly={readOnly}
@@ -98,6 +99,7 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           onChange={edit}
         />
       </label>
+      <ScopeQuestions {...props} />
       <RequirementLinks {...props} />
       <footer className="req-document-footer">
         <span>

@@ -85,3 +85,8 @@ Desktop groups the Layers toggle beside Pages. On compact screens, Design replac
 ## Movable dialogs and mobile drawers
 
 Desktop dialogs, collaboration windows and Design panels can be dragged from their header or grip. Arrow keys move a focused grip (Shift takes larger steps); Home resets its position. Movement stays inside the viewport or canvas bounds, and resize or reopening resets the offset. Offsets are transient UI state and never saved to workspace documents. Compact screens use bottom drawers with bounded scrolling, safe-area padding and reduced-motion support. Design drawers close from their close button or backdrop; Pages uses a modal drawer with focus trapping and Escape dismissal.
+
+
+## Scope direction
+
+Requirements are presented as a board-linked product scope, not a second task board. Use one toolbar, flat board groups, a resizable reading panel and a mobile drawer. Charcoal surfaces and the existing rose selection accent retain the editor identity. Purpose, acceptance and unresolved questions lead; delivery metadata stays under More properties. Agreement is an independent choice and never inferred from existing saved status. Preserve internal requirements IDs and route compatibility.
