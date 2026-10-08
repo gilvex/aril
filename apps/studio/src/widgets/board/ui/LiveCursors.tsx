@@ -35,7 +35,7 @@ export function LiveCursors({
       })}
       {peers.map((peer) => (
         <div key={peer.clientId}>
-          {peer.cursor && (
+          {peer.cursor && !peer.controls?.pointer && (
             <PeerCursor
               key={peer.clientId}
               profile={peer.profile}

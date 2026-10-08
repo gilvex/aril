@@ -17,7 +17,7 @@ export function StudioSettings(props: StudioContentProps) {
   const user = useCallback(() => set({ section: 'user' }), [set])
   const app = useCallback(() => set({ section: 'app' }), [set])
   return (
-    <section className="studio-settings">
+    <section className="studio-settings" data-collaboration-private>
       <div className="settings-layout">
         <aside className="settings-sidebar">
           <header className="settings-heading">

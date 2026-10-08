@@ -4,6 +4,7 @@ import type { Profile } from './profile.ts'
 import type { RequirementPresence } from './requirementPresence.ts'
 import type { NotePresence } from './notePresence.ts'
 export type Presence = {
+  controls?: import('./controlPresence.ts').ControlPresence | null
   note?: NotePresence | null
   chat?: { text: string; expiresAt: number } | null
   clientId: string

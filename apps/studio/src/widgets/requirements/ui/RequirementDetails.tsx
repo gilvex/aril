@@ -32,7 +32,10 @@ export function RequirementDetails(props: RequirementDetailsProps) {
     [update],
   )
   return (
-    <div className="req-document">
+    <div
+      className="req-document"
+      data-collaboration-scope={`requirement:${current.id}`}
+    >
       <header className="req-document-header">
         <button
           className="button subtle req-back"

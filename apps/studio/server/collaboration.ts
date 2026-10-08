@@ -1,4 +1,4 @@
-import { noteTextMessageSchema } from '@pomegranate/domain/noteText'
+import { liveDocumentMessageSchema } from '@pomegranate/domain/liveSession'
 import { installWorkspaceAccess } from './utils/installWorkspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import {
@@ -604,7 +604,10 @@ export function installCollaboration(
   })
   app.post('/api/note-text', (req, res) => {
     const parsed = z
-      .object({ clientId: z.string().uuid(), message: noteTextMessageSchema })
+      .object({
+        clientId: z.string().uuid(),
+        message: liveDocumentMessageSchema,
+      })
       .safeParse(req.body)
     if (!parsed.success) {
       res.status(400).json({ error: 'Invalid note update.' })
@@ -624,6 +627,13 @@ export function installCollaboration(
     const key = `${res.locals.workspaceId}:${res.locals.profile.id}:${parsed.data.clientId}`
     if (!clients.has(key)) {
       res.status(409).json({ error: 'Join the live session first.' })
+      return
+    }
+    if (
+      parsed.data.message.kind === 'fields' &&
+      parsed.data.message.id !== parsed.data.clientId
+    ) {
+      res.status(400).json({ error: 'Invalid live session.' })
       return
     }
     broadcast('note-text', parsed.data, res.locals.workspaceId)

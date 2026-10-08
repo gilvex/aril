@@ -10,3 +10,15 @@ export { publicKey } from './utils/publicKey.ts'
 export { signMessage } from './utils/signMessage.ts'
 export { verifyCertificate } from './utils/verifyCertificate.ts'
 export { verifyMessage } from './utils/verifyMessage.ts'
+
+export { liveFieldsMessageSchema } from './config/liveFieldsMessageSchema.ts'
+
+export { liveDocumentMessageSchema } from './config/liveDocumentMessageSchema.ts'
+
+export type { LiveFieldsMessage } from './types/liveFieldsMessage.ts'
+
+export type { LiveDocumentMessage } from './types/liveDocumentMessage.ts'
+
+export type { LiveDocumentChannel } from './types/liveDocumentChannel.ts'
+
+export { isLiveFieldOperation } from './utils/isLiveFieldOperation.ts'

@@ -28,6 +28,7 @@ export function ScopeProperties(props: RequirementDetailsProps) {
     <div className="scope-properties">
       <div className="scope-property-row">
         <StudioSelect
+          name="decision"
           aria-label={t('Decision')}
           disabled={readOnly}
           value={current.decision || 'Proposed'}
@@ -40,6 +41,7 @@ export function ScopeProperties(props: RequirementDetailsProps) {
           ))}
         </StudioSelect>
         <StudioSelect
+          name="priority"
           aria-label={t('Priority')}
           {...props.fieldProps('priority')}
           disabled={readOnly}

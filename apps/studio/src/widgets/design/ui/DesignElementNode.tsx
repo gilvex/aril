@@ -65,7 +65,9 @@ export function DesignElementNode({
         maxHeight={6000}
       />
       {isDesignContainer(element) && (
-        <div className={`design-frame-title${element.kind === 'group' ? ' design-group-title' : ''}`}>
+        <div
+          className={`design-frame-title${element.kind === 'group' ? ' design-group-title' : ''}`}
+        >
           {element.name}
           <span>
             {Math.round(element.width)} × {Math.round(element.height)}
@@ -86,6 +88,7 @@ export function DesignElementNode({
           ))}
         {editing ? (
           <textarea
+            data-collaboration-scope={`design-text:${element.id}`}
             autoFocus
             className="nodrag nopan design-inline-text"
             aria-label={t('Text content')}

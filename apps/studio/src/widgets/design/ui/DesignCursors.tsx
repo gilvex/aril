@@ -7,7 +7,8 @@ export function DesignCursors({ peers }: DesignCursorsProps) {
     <ViewportPortal>
       {peers.map(
         (peer) =>
-          peer.cursor && (
+          peer.cursor &&
+          !peer.controls?.pointer && (
             <PeerCursor
               key={peer.clientId}
               profile={peer.profile}

@@ -9,3 +9,5 @@ export type { RequirementField } from './requirementField.ts'
 export type { RequirementPresence } from './requirementPresence.ts'
 
 export type { NotePresence } from './notePresence.ts'
+
+export type { ControlPresence } from './controlPresence.ts'

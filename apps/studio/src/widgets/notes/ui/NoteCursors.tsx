@@ -15,6 +15,7 @@ export function NoteCursors({
       {peers.map((peer) => {
         const note = peer.note
         if (
+          !!peer.controls?.pointer ||
           peer.view !== 'notes' ||
           note?.id !== model.note.id ||
           note.surface !== surface ||

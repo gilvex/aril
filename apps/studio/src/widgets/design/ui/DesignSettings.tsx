@@ -11,7 +11,10 @@ export function DesignSettings({
 }: DesignSettingsProps) {
   const { t } = useTranslation()
   return (
-    <aside className="design-style-panel">
+    <aside
+      className="design-style-panel"
+      data-collaboration-scope="design-defaults"
+    >
       <header>
         <SurfaceGrip />
         <h2>{t('Design defaults')}</h2>

@@ -18,3 +18,8 @@ export { equal } from './utils/equal.ts'
 export { MergeConflict } from './utils/mergeConflict.ts'
 
 export type { NotePresence } from './types/notePresence.ts'
+
+export type { ControlPresence } from './types/controlPresence.ts'
+export { controlPresenceSchema } from './config/controlPresenceSchema.ts'
+
+export { documentOf } from './utils/documentOf.ts'

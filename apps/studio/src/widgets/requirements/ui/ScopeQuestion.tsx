@@ -44,6 +44,7 @@ export function ScopeQuestion({
       className={'scope-question ' + (question.resolved ? 'is-resolved' : '')}
     >
       <textarea
+        name={`question:${question.id}`}
         aria-label={t('Question')}
         readOnly={readOnly}
         value={question.text}

@@ -1,3 +1,4 @@
+import { useLiveWorkspaceFields } from './useLiveWorkspaceFields.ts'
 import { useSettings } from './useSettings.ts'
 import { useWorkspace } from '@/entities/workspace/index.ts'
 import { useCanvasFullscreen } from '@/features/canvasFullscreen/index.ts'
@@ -39,6 +40,12 @@ export function useStudioController({
     state.receive,
     studio.id,
     active && settings.role !== null,
+  )
+  useLiveWorkspaceFields(
+    state,
+    multiplayer,
+    active && settings.role !== null,
+    canEdit,
   )
   const { workspace, change } = state
   const {

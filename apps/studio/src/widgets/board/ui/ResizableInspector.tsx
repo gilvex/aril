@@ -12,6 +12,7 @@ import { useResizableInspectorHandlers } from '../model/useResizableInspectorHan
 
 export function ResizableInspector({
   id,
+  scope,
   className = '',
   children,
 }: ResizableInspectorProps) {
@@ -69,6 +70,7 @@ export function ResizableInspector({
     <aside
       ref={panel}
       id={id}
+      data-collaboration-scope={scope}
       className={`inspector resizable-inspector ${className} ${resizing ? 'is-resizing' : ''}`}
       style={
         compact ? undefined : { width: visibleWidth, position: 'relative' }

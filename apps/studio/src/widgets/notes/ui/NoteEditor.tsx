@@ -20,10 +20,14 @@ export function NoteEditor(props: NoteEditorProps) {
   )
   return (
     <>
-      <article className="notebook-sheet">
+      <article
+        className="notebook-sheet"
+        data-collaboration-scope={`note:${note.id}`}
+      >
         <header className="notebook-title">
           <input
             readOnly={readOnly}
+            name="title"
             aria-label={t('Note title')}
             value={state.titleDraft ?? note.title}
             maxLength={120}

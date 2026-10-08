@@ -11,54 +11,9 @@ export type StudioContentProps = {
   onWorkspaces: (
     profile: import('@pomegranate/domain/collaboration').Profile,
   ) => void
-  multiplayer: {
-    noteText: import('@pomegranate/domain/noteText').NoteTextChannel
-    profile: import('@pomegranate/domain/collaboration').Profile
-    setProfile: (
-      value:
-        | import('../../../features/liveSession/types/multiplayerState.ts').MultiplayerState['profile']
-        | ((
-            current: import('../../../features/liveSession/types/multiplayerState.ts').MultiplayerState['profile'],
-          ) => import('../../../features/liveSession/types/multiplayerState.ts').MultiplayerState['profile']),
-    ) => void
-    peers: import('@pomegranate/domain/collaboration').Presence[]
-    activity: import('@pomegranate/domain/collaboration').Activity[]
-    connected: boolean
-    clientId: `${string}-${string}-${string}-${string}-${string}`
-    sendPresence: (
-      changes: Partial<{
-        camera: { x: number; y: number; zoom: number } | null
-        following: string | null
-        clientId: string
-        boardId: string | null
-        view:
-          | 'canvas'
-          | 'requirements'
-          | 'design'
-          | 'notes'
-          | 'wireframes'
-          | 'settings'
-        cursor: { x: number; y: number } | null
-        selected: string[]
-        selectedEdges: string[]
-        requirement: {
-          id: string
-          field:
-            | 'description'
-            | 'title'
-            | 'status'
-            | 'category'
-            | 'priority'
-            | 'acceptance'
-            | null
-          typing: boolean
-        } | null
-        dragging: { id: string; position: { x: number; y: number } }[]
-        sequence?: number | undefined
-      }>,
-      force?: boolean,
-    ) => void
-  }
+  multiplayer: ReturnType<
+    typeof import('@/features/liveSession/index.ts').useMultiplayer
+  >
   setNotice: (
     value:
       | import('../types/studioState.ts').StudioState['notice']

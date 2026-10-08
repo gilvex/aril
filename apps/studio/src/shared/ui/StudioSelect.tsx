@@ -36,7 +36,11 @@ export function StudioSelect({
       onValueChange={change}
       disabled={disabled}
     >
-      <SelectTrigger {...props} className={`studio-select ${className}`}>
+      <SelectTrigger
+        {...props}
+        name={name || undefined}
+        className={`studio-select ${className}`}
+      >
         <SelectValue />
       </SelectTrigger>
       <StudioSelectMenu>

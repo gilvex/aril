@@ -47,7 +47,11 @@ export function WireframeInspector({
     inspectorToggle,
   })
   return (
-    <ResizableInspector id="wireframe-inspector" className="wire-inspector">
+    <ResizableInspector
+      id="wireframe-inspector"
+      className="wire-inspector"
+      scope={`wireframe:${[...selection].sort().join(',')}:${edge?.id || ''}`}
+    >
       <div className="inspector-heading">
         <span>
           {preview

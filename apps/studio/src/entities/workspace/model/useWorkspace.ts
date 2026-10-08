@@ -1,9 +1,19 @@
+import { projectLiveFields } from '../utils/projectLiveFields.ts'
+import { editLiveFields } from '../utils/editLiveFields.ts'
+import { workspaceSlice } from './slices/workspaceSlice.ts'
+import type { LiveFieldsMessage } from '@pomegranate/domain/liveSession'
 import { setNoteText, type NoteTextState } from '@pomegranate/domain/noteText'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import { createWorkspaceSession } from '@/entities/workspace/model/createWorkspaceSession.ts'
 import type { Recovery } from '@/entities/workspace/types/recovery.ts'
 import type { Envelope } from '@pomegranate/domain/workspace'
-import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  useMemo,
+} from 'react'
 export function useWorkspace(
   initial: Envelope,
   workspaceId: string,
@@ -45,7 +55,11 @@ export function useWorkspace(
     (update, record, historyBase) => {
       session.change(
         (current) => {
-          const next = update(current)
+          const next = editLiveFields(
+            current,
+            session.store.getState().liveFields,
+            update,
+          )
           return canEdit || !diffWorkspace(current, next).length
             ? next
             : current
@@ -73,8 +87,33 @@ export function useWorkspace(
   const redo = useCallback(() => {
     if (canEdit) session.redo()
   }, [canEdit, session])
+  const receiveFields = useCallback(
+    (message: LiveFieldsMessage) => {
+      session.store.dispatch(
+        workspaceSlice.actions.liveFieldsReceived({
+          ...message,
+          receivedAt: Date.now(),
+        }),
+      )
+    },
+    [session],
+  )
+  const pruneFields = useCallback(() => {
+    session.store.dispatch(
+      workspaceSlice.actions.liveFieldsPruned(Date.now() - 6000),
+    )
+  }, [session])
+  const workspace = useMemo(
+    () => projectLiveFields(snapshot.workspace, snapshot.liveFields),
+    [snapshot.workspace, snapshot.liveFields],
+  )
   return {
     ...snapshot,
+    workspace,
+    receiveFields,
+    pruneFields,
+    pendingFields: session.pendingFields,
+    subscribeFields: session.store.subscribe,
     canUndo: canEdit && snapshot.canUndo,
     canRedo: canEdit && snapshot.canRedo,
     change,

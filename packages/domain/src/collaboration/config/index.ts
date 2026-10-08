@@ -4,3 +4,5 @@ export { presenceSchema } from './presenceSchema.ts'
 export { requirementFieldSchema } from './requirementFieldSchema.ts'
 
 export { notePresenceSchema } from './notePresenceSchema.ts'
+
+export { controlPresenceSchema } from './controlPresenceSchema.ts'

@@ -1,16 +1,16 @@
-import type { NoteTextMessage } from '@pomegranate/domain/noteText'
+import type { LiveDocumentMessage } from '@pomegranate/domain/liveSession'
 export function createNoteTextChannel() {
-  const listeners = new Set<(message: NoteTextMessage) => void>()
-  let sender: ((message: NoteTextMessage) => void) | null = null
+  const listeners = new Set<(message: LiveDocumentMessage) => void>()
+  let sender: ((message: LiveDocumentMessage) => void) | null = null
   return {
-    send: (message: NoteTextMessage) => sender?.(message),
+    send: (message: LiveDocumentMessage) => sender?.(message),
     setSender: (next: typeof sender) => {
       sender = next
     },
-    receive: (message: NoteTextMessage) => {
+    receive: (message: LiveDocumentMessage) => {
       for (const listener of listeners) listener(message)
     },
-    subscribe: (listener: (message: NoteTextMessage) => void) => {
+    subscribe: (listener: (message: LiveDocumentMessage) => void) => {
       listeners.add(listener)
       return () => {
         listeners.delete(listener)

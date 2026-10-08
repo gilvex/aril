@@ -1,5 +1,5 @@
+import { DesignImageUrl } from './DesignImageUrl.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
-import { useCallback, type FocusEvent } from 'react'
 import { MoreHorizontal, X } from 'lucide-react'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
@@ -18,16 +18,10 @@ export function DesignInspector({ model }: DesignEditorProps) {
   const node = model.selected[0]
   const actions = useDesignLayerActions(model)
   const Icon = node ? designLayerIcons[node.kind] : null
-  const setImage = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      if (event.target.reportValidity())
-        model.edit({ imageUrl: event.target.value.trim() })
-    },
-    [model],
-  )
   return (
     <aside
       className="design-inspector"
+      data-collaboration-scope={`design:${model.page.id}:${model.selection.slice().sort().join(',')}`}
 
       aria-label={t('Design properties')}
     >
@@ -88,16 +82,7 @@ export function DesignInspector({ model }: DesignEditorProps) {
           {node.kind === 'image' && (
             <section>
               <h3>{t('Image URL')}</h3>
-              <input
-                key={`${node.id}-${node.imageUrl}`}
-                aria-label={t('Image URL')}
-                type="url"
-                pattern="https://.*"
-                placeholder="https://…"
-                defaultValue={node.imageUrl}
-                onBlur={setImage}
-                maxLength={2000}
-              />
+              <DesignImageUrl key={node.id} model={model} />
             </section>
           )}
         </fieldset>

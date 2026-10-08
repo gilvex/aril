@@ -1,3 +1,4 @@
+import { ControlPresenceOverlay } from '@/features/controlPresence/index.ts'
 import { CursorChat } from '@/features/cursorChat/index.ts'
 import { WorkspaceRoleContext } from '@/entities/workspace/index.ts'
 import type { StudioProps } from '@/pages/studio/types/studioProps.ts'
@@ -22,6 +23,7 @@ export function Studio(props: StudioProps) {
     <WorkspaceRoleContext value={model.settings.role}>
       <div
         ref={full.element}
+        data-collaboration-root={props.studio.id}
         className={`studio-shell canvas-first editor-shell${!compact && model.navigationCollapsed ? ' nav-collapsed' : ''}${full.fullscreen ? ' studio-fullscreen' : ''}${followed ? ' is-following' : ''}`}
         onPointerDownCapture={handlePointerDownCapture}
         onKeyDownCapture={handleKeyDownCapture}
@@ -44,13 +46,21 @@ export function Studio(props: StudioProps) {
             </button>
           </main>
         )}
+        <ControlPresenceOverlay
+          root={full.element}
+          workspaceId={props.studio.id}
+          route={`${model.view}:${model.view === 'canvas' ? model.board.id + ':' + model.canvasMode : ''}`}
+          active={props.active !== false && !!model.settings.role}
+          peers={model.multiplayer.peers}
+          sendPresence={model.sendPresence}
+        />
         <CursorChat
           profile={model.multiplayer.profile}
           active={
             props.active !== false &&
             !!model.settings.role &&
             !model.modal &&
-            ['canvas', 'design', 'notes'].includes(model.view)
+            ['canvas', 'design', 'notes', 'requirements'].includes(model.view)
           }
           scope={model.view + ':' + model.board.id + ':' + model.canvasMode}
           sendPresence={model.sendPresence}

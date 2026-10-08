@@ -23,3 +23,5 @@ export { createSettingsModel } from './createSettingsModel.ts'
 export { useSettings } from './useSettings.ts'
 
 export { useWorkspacePicker } from './useWorkspacePicker.ts'
+
+export { useLiveWorkspaceFields } from './useLiveWorkspaceFields.ts'

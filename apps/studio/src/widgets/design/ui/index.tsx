@@ -41,3 +41,5 @@ export { DesignPanelCorner } from './DesignPanelCorner.tsx'
 
 export { DesignLayerControls } from './DesignLayerControls.tsx'
 export { DesignLayerActionSheet } from './DesignLayerActionSheet.tsx'
+
+export { DesignImageUrl } from './DesignImageUrl.tsx'

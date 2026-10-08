@@ -39,7 +39,10 @@ export function BlueprintInspector({
     inspectorToggle,
   })
   return (
-    <ResizableInspector id="board-inspector">
+    <ResizableInspector
+      id="board-inspector"
+      scope={`blueprint:${board.id}:${[...selectedIds].sort().join(',')}:${edge?.id || ''}`}
+    >
       <div className="inspector-heading">
         <span>
           {selectedNodes.length > 1

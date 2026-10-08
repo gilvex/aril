@@ -1,8 +1,10 @@
 import { z } from 'zod'
+import { controlPresenceSchema } from './controlPresenceSchema.ts'
 import { cameraSchema } from './cameraSchema.ts'
 import { requirementFieldSchema } from './requirementFieldSchema.ts'
 import { notePresenceSchema } from './notePresenceSchema.ts'
 export const presenceSchema = z.object({
+  controls: controlPresenceSchema.nullable().optional(),
   note: notePresenceSchema.nullable().optional(),
   chat: z
     .object({

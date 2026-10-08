@@ -66,3 +66,6 @@ Browser write protocol 3 protects these new fields from older bundles. Existing 
 
 
 Scope retains the `requirements` API path. `get_schema` exposes optional decision, workspaceWide, questions and links fields; `get_workspace` includes them in both compact and full reads. See the companion skill for link destinations and array conflict rules.
+
+
+Shared field edits now appear in browsers as transient signed live previews before autosave. MCP reads still return the authoritative saved revision, not another member's unsaved field draft. Re-read before applying a targeted change, and keep existing revision/conflict checks. Field focus, selected text ranges and cursor positions are ephemeral presence, not writable workspace fields; do not synthesize human presence or publish live preview packets through agent tools.

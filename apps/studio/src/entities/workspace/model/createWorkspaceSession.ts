@@ -37,6 +37,7 @@ export function createWorkspaceSession(
     reducer: workspaceSlice.reducer,
     preloadedState: {
       workspace,
+      liveFields: {},
       saveState: recovery ? 'pending' : 'saved',
       error: '',
       revision: initial.revision,
@@ -234,6 +235,10 @@ export function createWorkspaceSession(
   }
   const flush = () => saga.run(flushWorkspace, runtime).toPromise()
   return {
+    pendingFields: () =>
+      store.getState().saveState === 'error'
+        ? []
+        : diffWorkspace(base.current.workspace, current.current),
     store,
     change,
     checkpoint,

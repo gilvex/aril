@@ -5,3 +5,4 @@ export { scopedDraftKey } from '@/entities/workspace/utils/scopedDraftKey.ts'
 
 export { WorkspaceRoleContext } from './model/workspaceRoleContext.ts'
 export { useWorkspaceRole } from './model/useWorkspaceRole.ts'
+

@@ -1,7 +1,7 @@
 import {
-  noteTextMessageSchema,
-  type NoteTextMessage,
-} from '@pomegranate/domain/noteText'
+  liveDocumentMessageSchema,
+  type LiveDocumentMessage,
+} from '@pomegranate/domain/liveSession'
 import { ApiError } from '@/shared/api/apiError.ts'
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
@@ -28,7 +28,7 @@ export async function openLiveChannel(
   onPeers: (peers: Presence[]) => void,
   onConnection: (connected: boolean) => void,
   signal: AbortSignal,
-  onNoteText: (message: NoteTextMessage) => void,
+  onNoteText: (message: LiveDocumentMessage) => void,
 ) {
   const keys = (await crypto.subtle.generateKey('Ed25519', true, [
     'sign',
@@ -88,7 +88,7 @@ export async function openLiveChannel(
       payload: { body, signature },
     })
   }
-  const sendNoteText = async (message: NoteTextMessage) => {
+  const sendNoteText = async (message: LiveDocumentMessage) => {
     if (!subscribed || closed || !socket.isConnected()) return
     const body = JSON.stringify({ clientId, sentAt: Date.now(), message })
     const signature = await signMessage(keys.privateKey, body)
@@ -128,7 +128,8 @@ export async function openLiveChannel(
       identities.get(data.clientId) !== identity
     )
       return
-    const message = noteTextMessageSchema.parse(data.message)
+    const message = liveDocumentMessageSchema.parse(data.message)
+    if (message.kind === 'fields' && message.id !== data.clientId) return
     if (message.kind !== 'sync' && !identity.certificate.canEdit) return
     onNoteText(message)
   }
@@ -301,7 +302,13 @@ export async function openLiveChannel(
         Date.now() - peer.seenAt > 15000 &&
         (peer.cursor || peer.note || peer.dragging?.length)
       ) {
-        peers.set(id, { ...peer, cursor: null, note: null, dragging: [] })
+        peers.set(id, {
+          ...peer,
+          cursor: null,
+          note: null,
+          controls: null,
+          dragging: [],
+        })
         changed = true
       }
     }

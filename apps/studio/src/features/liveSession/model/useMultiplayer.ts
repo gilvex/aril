@@ -1,5 +1,5 @@
 import { createNoteTextChannel } from '../utils/createNoteTextChannel.ts'
-import { noteTextMessageSchema } from '@pomegranate/domain/noteText'
+import { liveDocumentMessageSchema } from '@pomegranate/domain/liveSession'
 import { connectLiveSession } from '@/features/liveSession/model/iterators/connectLiveSession.ts'
 import { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
 import { useMultiplayerModel } from '@/features/liveSession/model/useMultiplayerModel.ts'
@@ -46,6 +46,18 @@ export function useMultiplayer(
   })
 
   const noteText = useMemo(createNoteTextChannel, [])
+  const notesChannel = useMemo<
+    import('@pomegranate/domain/noteText').NoteTextChannel
+  >(
+    () => ({
+      send: noteText.send,
+      subscribe: (listener) =>
+        noteText.subscribe((message) => {
+          if (message.kind !== 'fields') listener(message)
+        }),
+    }),
+    [noteText],
+  )
   const latest = useRef<LiveState>({
     clientId,
     camera: null,
@@ -168,7 +180,7 @@ export function useMultiplayer(
     const handle = (event: string, raw: string) => {
       if (event === 'note-text' && transport.current === 'local') {
         const packet = JSON.parse(raw)
-        const parsed = noteTextMessageSchema.safeParse(packet.message)
+        const parsed = liveDocumentMessageSchema.safeParse(packet.message)
         if (packet.clientId !== clientId && parsed.success)
           noteText.receive(parsed.data)
       }
@@ -261,8 +273,8 @@ export function useMultiplayer(
     noteText,
   ])
   return {
-    noteText:
-      noteText as import('@pomegranate/domain/noteText').NoteTextChannel,
+    liveDocuments: noteText,
+    noteText: notesChannel,
     profile,
     setProfile,
     peers,

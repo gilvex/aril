@@ -3,7 +3,7 @@ import type { Presence } from '@pomegranate/domain/collaboration'
 import type { LiveState } from '@pomegranate/domain/liveSession'
 export type LiveConnectionOptions = {
   noteText: (
-    message: import('@pomegranate/domain/noteText').NoteTextMessage,
+    message: import('@pomegranate/domain/liveSession').LiveDocumentMessage,
   ) => void
   workspaceId: string
   clientId: string
