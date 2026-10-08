@@ -36,7 +36,7 @@
 .req-lane.is-drop-target { background: var(--accent-light); border-radius: 7px; }
 .req-lane > header { padding: 7px 8px 9px; }
 .req-lane h2 .req-badge { font-weight: 650; font-size: 13px; }
-.req-lane-cards { padding: 0 5px 8px; scrollbar-width: thin; }
+.req-lane-cards { padding: 0 5px 8px; }
 .req-card { padding: 11px 12px; margin-bottom: 8px; box-shadow: none; cursor: grab; }
 .req-card.is-checked { border-color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent); }
 .req-card.is-selected:not(.is-checked) { border-color: var(--line-strong, #b6a5c2); background: var(--surface-muted, #fcfaff); }

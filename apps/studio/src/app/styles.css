@@ -560,7 +560,6 @@ code {
 .board-tabs > div {
   display: flex;
   overflow-x: auto;
-  scrollbar-width: none;
   gap: 8px;
 }
 .board-tabs > div > button {
@@ -772,7 +771,6 @@ code {
   background: var(--surface, #fff);
   border-left: 1px solid var(--line);
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 .inspector-heading {
   display: flex;
@@ -794,7 +792,6 @@ code {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-width: thin;
 }
 .inspector-resize-handle {
   position: absolute;

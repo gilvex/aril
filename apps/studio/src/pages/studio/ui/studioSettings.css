@@ -243,7 +243,6 @@
     display: flex;
     overflow-x: auto;
     gap: 4px;
-    scrollbar-width: thin;
   }
   .settings-navigation button {
     flex: 0 0 auto;

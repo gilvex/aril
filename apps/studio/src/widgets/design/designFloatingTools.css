@@ -180,7 +180,6 @@
 }
 .design-layers-list {
   overscroll-behavior: contain;
-  scrollbar-width: thin;
 }
 .design-mobile-bar {
   display: none;

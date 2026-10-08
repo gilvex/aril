@@ -1,0 +1,85 @@
+/* One native scroll treatment, including portaled menus and drawers.
+   Keep track dimensions constant so appearing thumbs never move content. */
+:root {
+  --scroll-indicator: #0006;
+  --scroll-indicator-hover: #0009;
+}
+
+:root[data-theme='dark'] {
+  --scroll-indicator: #ffffff66;
+  --scroll-indicator-hover: #ffffff99;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+:where([data-scroll-active], :focus-visible, :has(> :focus-visible)) {
+  scrollbar-color: var(--scroll-indicator) transparent;
+}
+
+@media (hover: hover) {
+  :where(:hover) {
+    scrollbar-color: var(--scroll-indicator) transparent;
+  }
+}
+
+/* Standard scrollbar colors override WebKit thumb geometry in Chromium.
+   Use its native pseudo-elements when available for rounded, inset thumbs. */
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  *::-webkit-scrollbar-thumb {
+    min-height: 28px;
+    min-width: 28px;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    background-clip: padding-box;
+  }
+  [data-scroll-active]::-webkit-scrollbar-thumb,
+  :focus-visible::-webkit-scrollbar-thumb,
+  :has(> :focus-visible)::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-indicator);
+  }
+  @media (hover: hover) {
+    :hover::-webkit-scrollbar-thumb {
+      background-color: var(--scroll-indicator);
+    }
+    *::-webkit-scrollbar-thumb:hover,
+    *::-webkit-scrollbar-thumb:active {
+      background-color: var(--scroll-indicator-hover);
+    }
+  }
+}
+
+/* Respect high-contrast accessibility instead of making controls disappear. */
+@media (forced-colors: active) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+  *::-webkit-scrollbar {
+    width: auto;
+    height: auto;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: CanvasText !important;
+  }
+}

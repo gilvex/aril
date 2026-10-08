@@ -90,3 +90,8 @@ Desktop dialogs, collaboration windows and Design panels can be dragged from the
 ## Scope direction
 
 Requirements are presented as a board-linked product scope, not a second task board. Use one toolbar, flat board groups, a resizable reading panel and a mobile drawer. Charcoal surfaces and the existing rose selection accent retain the editor identity. Purpose, acceptance and unresolved questions lead; delivery metadata stays under More properties. Agreement is an independent choice and never inferred from existing saved status. Preserve internal requirements IDs and route compatibility.
+
+
+## Global scroll indicators
+
+All scrollable surfaces use a transparent native track with a slim, rounded neutral thumb. Scrolling reveals the indicator for one second after the last scroll event; mouse hover and keyboard focus also reveal it. Both axes share the treatment, including portaled menus, drawers, text areas and nested Layers trees. Track dimensions remain constant to avoid layout shifts. Touch momentum, keyboard scrolling and thumb dragging stay browser-native; forced-colors mode keeps system scroll controls visible. The passive document listener manages only temporary DOM feedback and cleans up on unmount.

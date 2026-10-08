@@ -9,8 +9,11 @@ import { SessionChangedScreen } from './SessionChangedScreen.tsx'
 import { useAppController } from '../model/useAppController.ts'
 import { useAppHandlers } from '../model/useAppHandlers.tsx'
 import { InitialLoadingScreen } from './InitialLoadingScreen.tsx'
+import { useScrollIndicators } from '../model/useScrollIndicators.ts'
+import '../scrollbars.css'
 
 export function App() {
+  useScrollIndicators()
   const sessionChanged = useSessionChange()
   const model = useAppController()
   const {
