@@ -43,3 +43,5 @@ export { DesignLayerControls } from './DesignLayerControls.tsx'
 export { DesignLayerActionSheet } from './DesignLayerActionSheet.tsx'
 
 export { DesignImageUrl } from './DesignImageUrl.tsx'
+export { DesignDockTabs } from './DesignDockTabs.tsx'
+export { DesignDockPreview } from './DesignDockPreview.tsx'

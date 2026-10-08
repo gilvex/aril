@@ -2,13 +2,13 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { designEditorSlice } from '../src/widgets/design/model/slices/designEditorSlice.ts'
 import { createDesignEditorState } from '../src/widgets/design/model/createDesignEditorState.ts'
-import { designPanelLimit } from '../src/widgets/design/utils/designPanelLimit.ts'
+import { designDockLayout } from '../src/widgets/design/utils/designDockLayout.ts'
 
 test('desktop selection and page picker preserve both design panels; compact mode opens one drawer', () => {
   const patch = designEditorSlice.actions.patch
   let state = designEditorSlice.reducer(
     createDesignEditorState(),
-    patch({ layers: true, layersDocked: true, layersWidth: 340 }),
+    patch({ layers: true, layersDocked: 'left' as const, layersWidth: 340 }),
   )
   state = designEditorSlice.reducer(
     state,
@@ -30,7 +30,7 @@ test('desktop selection and page picker preserve both design panels; compact mod
   )
   assert.equal(state.layers, true)
   assert.equal(state.pagesOpen, false)
-  assert.equal(state.layersDocked, true)
+  assert.equal(state.layersDocked, 'left')
   assert.equal(state.layersWidth, 340)
   state = designEditorSlice.reducer(state, patch({ inspector: true }))
   assert.equal(state.layers, false)
@@ -43,11 +43,14 @@ test('docked panel limits leave room for the canvas while floating panels can ex
     panelSpace: 900,
     layers: true,
     inspector: true,
-    layersDocked: true,
-    inspectorDocked: true,
+    layersDocked: 'left' as const,
+    inspectorDocked: 'right' as const,
   }
-  assert.equal(designPanelLimit(state, true), 310)
-  assert.equal(state.panelSpace - 2 * designPanelLimit(state, true), 280)
-  assert.equal(designPanelLimit(state, false), 480)
-  assert.equal(designPanelLimit({ ...state, inspector: false }, true), 480)
+  assert.equal(designDockLayout(state).insets.left, 280)
+  assert.equal(designDockLayout(state).insets.right, 290)
+  assert.equal(
+    designDockLayout({ ...state, layersDocked: null }).panels.left.width,
+    280,
+  )
+  assert.equal(designDockLayout({ ...state, inspector: false }).insets.right, 0)
 })

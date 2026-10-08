@@ -6,7 +6,11 @@ export const designEditorSlice = createSlice({
   initialState: createDesignEditorState(),
   reducers: {
     patch(state, action: PayloadAction<Partial<DesignEditorState>>) {
+      const openingLayers = action.payload.layers && !state.layers
+      const openingInspector = action.payload.inspector && !state.inspector
       Object.assign(state, action.payload)
+      if (openingLayers) state.dockActive = 'left'
+      if (openingInspector) state.dockActive = 'right'
       if (!state.compact) return
       if (
         action.payload.pagesOpen ||

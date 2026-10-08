@@ -7,11 +7,11 @@ import {
 export function useDesignPanelResize(
   width: number,
   limit: number,
-  side: 'left' | 'right' | 'bottom',
+  side: 'left' | 'right' | 'bottom' | 'top',
   change: (width: number) => void,
   defaultSize = side === 'left' ? 280 : 300,
 ) {
-  const vertical = side === 'bottom'
+  const vertical = side === 'bottom' || side === 'top'
   const minimum = Math.min(limit, vertical ? 180 : side === 'left' ? 280 : 220)
   const gesture = useRef<{ id: number; x: number; width: number } | null>(null)
   const resize = useCallback(
@@ -41,7 +41,7 @@ export function useDesignPanelResize(
       resize(
         drag.width +
           ((vertical ? event.clientY : event.clientX) - drag.x) *
-            (side === 'right' ? -1 : 1),
+            (side === 'right' || side === 'top' ? -1 : 1),
       )
     },
     [resize, side, vertical],
@@ -53,7 +53,9 @@ export function useDesignPanelResize(
   }, [])
   const key = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
-      const step = (event.shiftKey ? 40 : 10) * (side === 'right' ? -1 : 1)
+      const step =
+        (event.shiftKey ? 40 : 10) *
+        (side === 'right' || side === 'top' ? -1 : 1)
       const next =
         event.key === (vertical ? 'ArrowDown' : 'ArrowRight')
           ? width + step

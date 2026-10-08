@@ -1,4 +1,5 @@
 import { useDesignPanelBounds } from '../model/useDesignPanelBounds.ts'
+import { designDockLayout } from '../utils/designDockLayout.ts'
 import { DesignPanels } from './DesignPanels.tsx'
 import { DesignMobileBar } from './DesignMobileBar.tsx'
 import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
@@ -25,6 +26,7 @@ export function DesignCanvas(props: DesignBoardProps) {
   const labels = useDesignCanvasLabels()
   const compact = useCompactLayout()
   const model = useDesignDocument(props)
+  const { insets } = designDockLayout({ ...model, compact })
   const panelBounds = useDesignPanelBounds(model.patch)
   const canvas = useDesignCanvas(model, props)
   const context = useDesignContextMenu(model)
@@ -55,6 +57,12 @@ export function DesignCanvas(props: DesignBoardProps) {
         <div
           ref={canvas.surface}
           className="design-canvas-surface"
+          style={{
+            marginLeft: insets.left,
+            marginRight: insets.right,
+            marginTop: insets.top,
+            marginBottom: insets.bottom,
+          }}
           onPointerMove={canvas.moveCursor}
           onPointerLeave={() => props.sendPresence({ cursor: null })}
         >

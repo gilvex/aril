@@ -1,3 +1,6 @@
-export { designPanelLimit } from './designPanelLimit.ts'
 export { designTreeRows } from './designTreeRows.ts'
 export { designClipShapes } from './designClipShapes.ts'
+export { designDockLayout } from './designDockLayout.ts'
+export { designDockTarget } from './designDockTarget.ts'
+export { designPanelPreference } from './designPanelPreference.ts'
+export { readDesignPanelLayout } from './readDesignPanelLayout.ts'

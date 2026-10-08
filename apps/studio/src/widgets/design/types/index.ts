@@ -20,3 +20,6 @@ export type { DesignPanelProps } from './designPanelProps.ts'
 export type { DesignPanelCornerProps } from './designPanelCornerProps.ts'
 
 export type { DesignLayerControlsProps } from './designLayerControlsProps.ts'
+export type { DesignDockEdge } from './designDockEdge.ts'
+export type { DesignDockRect } from './designDockRect.ts'
+export type { DesignDockLayout } from './designDockLayout.ts'

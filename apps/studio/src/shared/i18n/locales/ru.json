@@ -988,5 +988,12 @@
   "Connect work": "Связать материал",
   "Choose visual work…": "Выберите материал…",
   "Delivery status": "Статус реализации",
-  "Connect requirements from Scope or a node’s details.": "Свяжите требования через раздел «Замысел» или свойства узла."
+  "Connect requirements from Scope or a node’s details.": "Свяжите требования через раздел «Замысел» или свойства узла.",
+  "Dock panel top": "Закрепить панель сверху",
+  "Dock panel bottom": "Закрепить панель снизу",
+  "Group panels as tabs": "Объединить панели во вкладки",
+  "Separate panels": "Разделить панели",
+  "Reset panel layout": "Сбросить расположение панелей",
+  "Panel tabs": "Вкладки панелей",
+  "Panel layout": "Расположение панели"
 }

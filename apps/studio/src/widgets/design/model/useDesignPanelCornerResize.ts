@@ -36,10 +36,34 @@ export function useDesignPanelCornerResize({
       patch(
         left
           ? { layersWidth: nextWidth, layersHeight: nextHeight }
-          : { inspectorWidth: nextWidth, inspectorHeight: nextHeight },
+          : {
+              inspectorWidth: nextWidth,
+              inspectorHeight: nextHeight,
+              panelPositions: {
+                ...model.panelPositions,
+                right: {
+                  x: Math.max(
+                    0,
+                    (model.panelPositions.right?.x ??
+                      model.panelSpace - width - 18) +
+                      width -
+                      nextWidth,
+                  ),
+                  y: model.panelPositions.right?.y ?? 66,
+                },
+              },
+            },
       )
     },
-    [heightLimit, left, patch, widthLimit],
+    [
+      heightLimit,
+      left,
+      patch,
+      widthLimit,
+      model.panelPositions,
+      model.panelSpace,
+      width,
+    ],
   )
   const down = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {

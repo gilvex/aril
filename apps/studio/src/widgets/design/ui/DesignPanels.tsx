@@ -1,4 +1,6 @@
 import { DesignPanel } from './DesignPanel.tsx'
+import { DesignDockTabs } from './DesignDockTabs.tsx'
+import { DesignDockPreview } from './DesignDockPreview.tsx'
 import { useCallback } from 'react'
 import { StudioDrawer } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -47,6 +49,8 @@ export function DesignPanels({
   if (!compact)
     return (
       <>
+        <DesignDockTabs model={model} />
+        <DesignDockPreview model={model} />
         {layers && (
           <DesignPanel model={model} side="left">
             {layers}

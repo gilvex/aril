@@ -988,5 +988,12 @@
   "Connect work": "Connect work",
   "Choose visual work…": "Choose visual work…",
   "Delivery status": "Delivery status",
-  "Connect requirements from Scope or a node’s details.": "Connect requirements from Scope or a node’s details."
+  "Connect requirements from Scope or a node’s details.": "Connect requirements from Scope or a node’s details.",
+  "Dock panel top": "Dock panel top",
+  "Dock panel bottom": "Dock panel bottom",
+  "Group panels as tabs": "Group panels as tabs",
+  "Separate panels": "Separate panels",
+  "Reset panel layout": "Reset panel layout",
+  "Panel tabs": "Panel tabs",
+  "Panel layout": "Panel layout"
 }
