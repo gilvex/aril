@@ -4,3 +4,5 @@ export { designDockLayout } from './designDockLayout.ts'
 export { designDockTarget } from './designDockTarget.ts'
 export { designPanelPreference } from './designPanelPreference.ts'
 export { readDesignPanelLayout } from './readDesignPanelLayout.ts'
+
+export { designMobileToolPatch } from './designMobileToolPatch.ts'

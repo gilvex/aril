@@ -5,6 +5,7 @@ export function StudioHeader(props: StudioHeaderProps) {
   return (
     <header
       className="topbar workspace-tabs-bar"
+      data-drawer-dismiss
       inert={props.compact && props.sidebarOpen}
     >
       <StudioWorkspaceTabs {...props} />

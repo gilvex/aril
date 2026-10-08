@@ -15,7 +15,11 @@ export function StudioBottomNavigation({
   const { t } = useTranslation()
 
   return (
-    <nav className="mobile-bottom-nav" aria-label={t('Main navigation')}>
+    <nav
+      className="mobile-bottom-nav"
+      data-drawer-dismiss
+      aria-label={t('Main navigation')}
+    >
       {navigation.map((item) => (
         <button
           key={item.id}
@@ -27,15 +31,6 @@ export function StudioBottomNavigation({
           }}
         >
           <item.icon size={21} />
-          <span>
-            {item.id === 'requirements'
-              ? t('Brief')
-              : item.id === 'design'
-                ? t('Design')
-                : item.id === 'notes'
-                  ? t('Notes')
-                  : t('Canvas')}
-          </span>
           <PresenceAvatars
             profiles={present
               .filter(
@@ -58,7 +53,6 @@ export function StudioBottomNavigation({
         onClick={() => setSidebarOpen(true)}
       >
         <Menu size={21} />
-        <span>{t('More')}</span>
       </button>
     </nav>
   )

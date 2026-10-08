@@ -26,6 +26,8 @@ export const designEditorSlice = createSlice({
         state.layers = false
       }
       if (state.layers && state.inspector) state.inspector = false
+      if (state.layers) state.mobileToolsTab = state.leftTab
+      else if (state.inspector) state.mobileToolsTab = 'properties'
     },
   },
 })

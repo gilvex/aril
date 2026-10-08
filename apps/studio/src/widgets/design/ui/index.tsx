@@ -28,8 +28,6 @@ export { DesignNavigation } from './DesignNavigation.tsx'
 
 export { DesignLayersButton } from './DesignLayersButton.tsx'
 
-export { DesignMobileBar } from './DesignMobileBar.tsx'
-
 export { DesignPagesList } from './DesignPagesList.tsx'
 
 export { DesignPagesDrawer } from './DesignPagesDrawer.tsx'
@@ -93,3 +91,7 @@ export { DesignVariableValue } from './DesignVariableValue.tsx'
 export { DesignLibraryAssets } from './DesignLibraryAssets.tsx'
 
 export { DesignVariableTable } from './DesignVariableTable.tsx'
+
+export { DesignMobileTools } from './DesignMobileTools.tsx'
+export { DesignMobileToolsButton } from './DesignMobileToolsButton.tsx'
+export { DesignMobilePropertyMode } from './DesignMobilePropertyMode.tsx'

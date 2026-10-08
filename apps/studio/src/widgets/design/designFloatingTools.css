@@ -181,52 +181,11 @@
 .design-layers-list {
   overscroll-behavior: contain;
 }
-.design-mobile-bar {
-  display: none;
-}
 @media (max-width: 1024px), (max-width: 1366px) and (pointer: coarse) {
   .design-navigation-stack {
     top: 12px;
     left: 12px;
     max-width: calc(100% - 24px);
-  }
-  .design-mobile-bar {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    flex-shrink: 0;
-    height: var(--bottom-nav-height);
-    padding: 5px 8px calc(5px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid var(--line);
-    background: var(--surface);
-    z-index: 30;
-  }
-  .design-mobile-panel-actions {
-    display: contents;
-  }
-  .design-mobile-bar button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    min-width: 0;
-    min-height: 48px;
-    max-width: none;
-    margin: 0;
-    padding: 4px 2px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--text-secondary);
-    box-shadow: none;
-    font-size: 11px;
-  }
-  .design-mobile-bar button > span {
-    color: inherit;
-  }
-  .design-mobile-bar button[aria-expanded='true'] {
-    background: var(--accent-light);
-    color: var(--accent-ink);
   }
   .design-floating-tools > .design-layers,
   .design-floating-tools > .design-inspector,

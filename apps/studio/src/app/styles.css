@@ -2837,7 +2837,8 @@ code {
 .mobile-bottom-nav, .mobile-sheet-heading, .mobile-workspace-tools,
 .touch-tool-label, .button.touch-select { display: none; }
 @media (max-width: 1024px), (pointer: coarse) and (max-width: 1366px) {
-  .studio-shell { --bottom-nav-height: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  :root { --mobile-navigation-height: calc(60px + env(safe-area-inset-bottom, 0px)); }
+  .studio-shell { --bottom-nav-height: var(--mobile-navigation-height); }
   .main-area { min-height: 0; }
   .studio-shell .sidebar {
     display: flex; position: fixed; inset: auto 0 0; margin: 0 auto;
@@ -2869,6 +2870,7 @@ code {
   }
   .mobile-bottom-nav > button { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; min-height: 48px; border: 0; border-radius: 9px; background: transparent; color: var(--text-secondary, #796f82); font-size: 11px; }
   .mobile-bottom-nav > button[aria-current="page"] { background: var(--accent-light); color: var(--accent-ink, #a33d60); font-weight: 650; }
+  .mobile-bottom-nav > button { width: 48px; justify-self: center; align-self: center; }
   .mobile-bottom-nav .tab-presence { position: absolute; top: 3px; right: calc(50% - 26px); }
   .mobile-bottom-nav .person-avatar { width: 14px; height: 14px; font-size: 6px; }
   .mobile-bottom-nav .person-avatar:not(:first-child), .mobile-bottom-nav .tab-presence-more { display: none; }

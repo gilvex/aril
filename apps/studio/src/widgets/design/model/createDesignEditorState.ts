@@ -1,6 +1,7 @@
 import type { DesignEditorState } from '../types/designEditorState.ts'
 export function createDesignEditorState(): DesignEditorState {
   return {
+    mobileToolsTab: 'layers',
     leftTab: 'layers',
     libraryView: 'canvas',
     libraryQuery: '',

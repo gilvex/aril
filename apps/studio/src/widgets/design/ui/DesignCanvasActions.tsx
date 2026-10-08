@@ -7,7 +7,13 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useDesignContextMenu } from '../model/useDesignContextMenu.ts'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 
-export function DesignCanvasActions({ model }: { model: DesignEditorModel }) {
+export function DesignCanvasActions({
+  model,
+  labelled = false,
+}: {
+  model: DesignEditorModel
+  labelled?: boolean
+}) {
   const { t } = useTranslation()
   const flow = useReactFlow()
   const { actions } = useDesignContextMenu(model)
@@ -34,6 +40,7 @@ export function DesignCanvasActions({ model }: { model: DesignEditorModel }) {
         onClick={prepare}
       >
         <MoreHorizontal size={18} />
+        {labelled && <span>{t('Canvas actions')}</span>}
       </ActionBarButton>
     </EditorActionMenu>
   )

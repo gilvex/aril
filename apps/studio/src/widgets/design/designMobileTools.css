@@ -1,0 +1,106 @@
+/* Nonmodal editor sheets leave the persistent app navigation usable. */
+.studio-drawer.design-tools-drawer[data-direction='bottom'],
+.studio-drawer.design-pages-drawer[data-direction='bottom'] {
+  bottom: var(
+    --mobile-navigation-height,
+    calc(60px + env(safe-area-inset-bottom, 0px))
+  );
+  padding-bottom: 0;
+  max-height: calc(100dvh - var(--mobile-navigation-height, 60px) - 72px);
+}
+.design-tools-drawer {
+  height: min(54dvh, 520px);
+}
+.design-tools-drawer > .studio-drawer-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+}
+.design-tools-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 0 8px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--line);
+}
+.design-tools-header > div {
+  display: flex;
+  min-width: 0;
+}
+.design-tools-header button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 12px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+}
+.design-tools-header button[aria-pressed='true'] {
+  color: var(--text-strong);
+  border-bottom-color: var(--accent);
+}
+.design-tools-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.design-tools-drawer .design-layers,
+.design-tools-drawer .design-inspector {
+  height: 100%;
+}
+.design-tools-drawer .design-layers > header,
+.design-tools-drawer .design-inspector > header,
+.design-tools-drawer .design-style-panel > header {
+  display: none;
+}
+.design-tools-drawer .design-library-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.design-tools-property-mode {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.design-tools-property-mode button {
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.design-tools-property-mode button[aria-pressed='true'] {
+  background: var(--accent-light);
+  color: var(--accent-ink);
+}
+@media (max-width: 1024px), (max-width: 1366px) and (pointer: coarse) {
+  .design-tool-dock.tools-open {
+    display: none;
+  }
+  .design-page-tools {
+    max-width: min(300px, calc(100vw - 24px));
+  }
+  .design-tools-header button {
+    padding-inline: 10px;
+  }
+  .design-floating-tools .design-library-workspace,
+  .design-floating-tools .design-machine-workspace {
+    top: 64px;
+    bottom: 80px;
+  }
+  .design-floating-tools.has-board-navigation .design-library-workspace,
+  .design-floating-tools.has-board-navigation .design-machine-workspace {
+    top: 126px;
+  }
+}

@@ -4,8 +4,7 @@ import { DesignPanel } from './DesignPanel.tsx'
 import { DesignDockTabs } from './DesignDockTabs.tsx'
 import { DesignDockPreview } from './DesignDockPreview.tsx'
 import { useCallback } from 'react'
-import { StudioDrawer } from '@/shared/ui/index.tsx'
-import { useTranslation } from '@/shared/i18n/index.ts'
+import { DesignMobileTools } from './DesignMobileTools.tsx'
 import { DesignLayers } from './DesignLayers.tsx'
 import { DesignInspector } from './DesignInspector.tsx'
 import { DesignSettings } from './DesignSettings.tsx'
@@ -16,7 +15,6 @@ export function DesignPanels({
   update,
   compact,
 }: DesignPanelsProps) {
-  const { t } = useTranslation()
   const { patch } = model
   const close = useCallback(
     () => patch({ inspector: false, layers: false, layerActionsId: null }),
@@ -74,20 +72,8 @@ export function DesignPanels({
       </>
     )
   return (
-    <StudioDrawer
-      open={model.layers || model.inspector}
-      onOpenChange={change}
-      title={t(
-        model.layers
-          ? model.leftTab === 'library'
-            ? 'Library'
-            : 'Layers'
-          : model.styles
-            ? 'Design defaults'
-            : 'Design properties',
-      )}
-    >
+    <DesignMobileTools model={model} onOpenChange={change}>
       {content}
-    </StudioDrawer>
+    </DesignMobileTools>
   )
 }

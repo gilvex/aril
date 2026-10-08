@@ -43,3 +43,5 @@ export type { DesignVariableValueProps } from './designVariableValueProps.ts'
 export type { UseDesignLibraryProps } from './useDesignLibraryProps.ts'
 
 export type { DesignVariableTableProps } from './designVariableTableProps.ts'
+
+export type { DesignMobileToolsProps } from './designMobileToolsProps.ts'

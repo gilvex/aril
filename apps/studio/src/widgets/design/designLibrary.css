@@ -314,9 +314,6 @@
   .has-board-navigation .design-machine-workspace {
     top: 76px;
   }
-  .design-mobile-bar .design-library-button span {
-    display: none;
-  }
   .design-machine-workspace > header span {
     display: none;
   }
@@ -364,10 +361,6 @@
 }
 .design-simulation-content input:not([type='checkbox']) {
   width: 110px;
-}
-.design-mobile-bar .design-asset-breadcrumb {
-  flex: 1;
-  min-width: 0;
 }
 .design-mini-preview img {
   width: 100%;

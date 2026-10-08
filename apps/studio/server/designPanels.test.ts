@@ -3,6 +3,38 @@ import assert from 'node:assert/strict'
 import { designEditorSlice } from '../src/widgets/design/model/slices/designEditorSlice.ts'
 import { createDesignEditorState } from '../src/widgets/design/model/createDesignEditorState.ts'
 import { designDockLayout } from '../src/widgets/design/utils/designDockLayout.ts'
+import { designMobileToolPatch } from '../src/widgets/design/utils/designMobileToolPatch.ts'
+
+test('mobile tools share one sheet, retain selection, and remember the last tab', () => {
+  const patch = designEditorSlice.actions.patch
+  let state = designEditorSlice.reducer(
+    createDesignEditorState(),
+    patch({ compact: true }),
+  )
+  for (const tab of ['layers', 'library', 'properties'] as const) {
+    state = designEditorSlice.reducer(state, patch(designMobileToolPatch(tab)))
+    assert.equal(state.mobileToolsTab, tab)
+    assert.equal(state.layers, tab !== 'properties')
+    assert.equal(state.inspector, tab === 'properties')
+    assert.equal(state.pagesOpen, false)
+    state = designEditorSlice.reducer(state, patch({ selection: ['frame'] }))
+    assert.equal(state.layers || state.inspector, true)
+    state = designEditorSlice.reducer(
+      state,
+      patch({ layers: false, inspector: false }),
+    )
+    assert.equal(state.mobileToolsTab, tab)
+    state = designEditorSlice.reducer(
+      state,
+      patch(designMobileToolPatch(state.mobileToolsTab)),
+    )
+    assert.equal(state.mobileToolsTab, tab)
+    assert.deepEqual(state.selection, ['frame'])
+  }
+  state = designEditorSlice.reducer(state, patch({ pagesOpen: true }))
+  assert.equal(state.layers || state.inspector, false)
+  assert.equal(state.pagesOpen, true)
+})
 
 test('desktop selection and page picker preserve both design panels; compact mode opens one drawer', () => {
   const patch = designEditorSlice.actions.patch

@@ -2,7 +2,6 @@ import { DesignLibraryWorkspace } from './DesignLibraryWorkspace.tsx'
 import { useDesignPanelBounds } from '../model/useDesignPanelBounds.ts'
 import { designDockLayout } from '../utils/designDockLayout.ts'
 import { DesignPanels } from './DesignPanels.tsx'
-import { DesignMobileBar } from './DesignMobileBar.tsx'
 import { useDesignDoubleClick } from '../model/useDesignDoubleClick.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, type MouseEvent } from 'react'
@@ -131,7 +130,6 @@ export function DesignCanvas(props: DesignBoardProps) {
           compact={compact}
         />
       </section>
-      {compact && <DesignMobileBar model={model} menu={props.mobileMenu} />}
     </>
   )
 }

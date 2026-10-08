@@ -7,4 +7,6 @@ export type StudioDrawerProps = {
   trigger?: ReactElement
   className?: string
   side?: boolean
+  modal?: boolean
+  keepOpenOnInteract?: boolean
 }

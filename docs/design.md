@@ -80,11 +80,13 @@ Blueprint Overview contains editable board name and description, node/connection
 
 ## Design tools on touch screens
 
-Desktop groups the Layers toggle beside Pages. On compact screens, Design replaces the main bottom navigation with Pages, Layers, Styles, Properties and Menu. The Menu contains the app section links; both standalone and board-specific Design use this layout. Pages opens upward without automatically summoning the phone keyboard. Opening a panel closes the previous panel, including selection-driven Properties. Layer lists scroll within bounded panels that leave the zoom controls and drawing dock reachable.
+Desktop groups the Layers toggle beside Pages. Compact screens keep one fixed, icon-only app navigation across Canvas, Design, Brief, Notes and More, including board-specific Design. Accessible names remain on every icon. The 60px navigation plus safe-area inset reserves the same space on every page.
+
+Design uses a separate floating Select / Pan / Insert / Tools toolbar. Tools opens a nonmodal Vagabond bottom drawer above the navigation, with persistent Layers, Library and Properties tabs. Styles lives under Properties. Selecting layers keeps the drawer open; Redux remembers the last tools tab. The drawer overlays the canvas without changing its viewport, and its drag handle or close button dismisses it. Interacting with the canvas keeps it open; app/workspace navigation dismisses it. The current page picker or asset breadcrumb remains at the top, including a route back from components, variables and state machines. Page selection uses a separate bottom drawer above the same navigation.
 
 ## Movable dialogs and mobile drawers
 
-Desktop dialogs, collaboration windows and Design panels can be dragged from their header or grip. Arrow keys move a focused grip (Shift takes larger steps); Home resets its position. Movement stays inside the viewport or canvas bounds, and resize or reopening resets the offset. Offsets are transient UI state and never saved to workspace documents. Compact screens use bottom drawers with bounded scrolling, safe-area padding and reduced-motion support. Design drawers close from their close button or backdrop; Pages uses a modal drawer with focus trapping and Escape dismissal.
+Desktop dialogs, collaboration windows and Design panels can be dragged from their header or grip. Arrow keys move a focused grip (Shift takes larger steps); Home resets its position. Movement stays inside the viewport or canvas bounds, and resize or reopening resets the offset. Offsets are transient UI state and never saved to workspace documents. Compact screens use bottom drawers with bounded scrolling, safe-area padding and reduced-motion support. Design tools use a nonmodal drawer so the canvas and global navigation remain interactive. Pages also uses a nonmodal drawer, dismissed on outside interaction, close, or Escape. Other dialogs retain modal focus trapping.
 
 
 ## Scope direction

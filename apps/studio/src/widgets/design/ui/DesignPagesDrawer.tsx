@@ -1,5 +1,5 @@
 import { StudioDrawer } from '@/shared/ui/index.tsx'
-import { File, X } from 'lucide-react'
+import { ChevronDown, File, X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignPagesList } from './DesignPagesList.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
@@ -13,13 +13,16 @@ export function DesignPagesDrawer({
       open={model.pagesOpen}
       onOpenChange={onOpenChange}
       title={t('Pages')}
+      modal={false}
+      className="design-pages-drawer"
       trigger={
         <button
           className="design-page-picker-toggle"
           aria-label={t('Choose page: {{name}}', { name: model.page.name })}
         >
           <File size={17} />
-          <span>{t('Pages')}</span>
+          <strong>{model.page.name}</strong>
+          <ChevronDown size={14} />
         </button>
       }
     >
