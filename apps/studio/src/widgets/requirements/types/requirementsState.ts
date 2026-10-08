@@ -1,6 +1,10 @@
-import type { RequirementPresence } from '@pomegranate/domain/collaboration'
+import type {
+  RequirementDisclosure,
+  RequirementPresence,
+} from '@pomegranate/domain/collaboration'
 import type { Requirement } from '@pomegranate/domain/workspace'
 export type RequirementsState = {
+  properties: Record<string, RequirementDisclosure>
   boardFilter: string
   scopeFilter: 'all' | 'decision' | 'unlinked'
   panel: 'filters' | 'search' | null

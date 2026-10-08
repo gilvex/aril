@@ -1,4 +1,5 @@
 import { scopeTargets } from '../utils/scopeTargets.ts'
+import { useRequirementDisclosure } from './useRequirementDisclosure.ts'
 import { filterRequirements } from '../utils/filterRequirements.ts'
 import { moveRequirements } from '../utils/moveRequirements.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -78,14 +79,25 @@ export function useRequirementsController({
     [typingTimer, setActivity, onSelect],
   )
   const currentId = current?.id || null
+  const { disclosure, propertiesOpen, toggleProperties } =
+    useRequirementDisclosure(
+      currentId,
+      viewState.properties,
+      peers,
+      setViewState,
+    )
   const field = activity?.id === currentId ? activity.field : null
   const typing = activity?.id === currentId && activity.typing
   useEffect(() => {
     sendPresence(
-      { requirement: currentId ? { id: currentId, field, typing } : null },
+      {
+        requirement: currentId
+          ? { id: currentId, field, typing, properties: disclosure }
+          : null,
+      },
       true,
     )
-  }, [currentId, field, typing, sendPresence])
+  }, [currentId, field, typing, disclosure, sendPresence])
   useEffect(() => {
     const hide = () => {
       if (document.hidden) {
@@ -307,6 +319,8 @@ export function useRequirementsController({
   )
   return {
     ...viewState,
+    propertiesOpen,
+    toggleProperties,
     workspace,
     selected,
     profile,

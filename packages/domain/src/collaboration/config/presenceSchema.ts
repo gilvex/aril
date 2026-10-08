@@ -39,6 +39,13 @@ export const presenceSchema = z.object({
       id: z.string().min(1).max(100),
       field: requirementFieldSchema.nullable(),
       typing: z.boolean(),
+      properties: z
+        .object({
+          open: z.boolean(),
+          version: z.number().int().nonnegative().safe(),
+          id: z.string().uuid(),
+        })
+        .optional(),
     })
     .nullable()
     .default(null),

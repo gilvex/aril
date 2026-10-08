@@ -24,6 +24,8 @@ export function RequirementEditor({
   if (!model.current) return null
   const details = (
     <RequirementDetails
+      propertiesOpen={model.propertiesOpen}
+      toggleProperties={model.toggleProperties}
       current={model.current}
       selectRequirement={model.selectRequirement}
       peopleFor={model.peopleFor}

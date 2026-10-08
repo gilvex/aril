@@ -3,6 +3,8 @@ import type { RequirementField } from '@pomegranate/domain/collaboration'
 import type { Requirement } from '@pomegranate/domain/workspace'
 
 export type RequirementDetailsProps = {
+  propertiesOpen: boolean
+  toggleProperties: () => void
   current: Requirement
   openWork: (
     link: import('@pomegranate/domain/workspace').RequirementLink,

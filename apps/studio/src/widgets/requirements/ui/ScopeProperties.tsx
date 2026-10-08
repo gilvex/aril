@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, type MouseEvent } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -7,9 +7,16 @@ import type { Requirement } from '@pomegranate/domain/workspace'
 import type { RequirementDetailsProps } from '../types/requirementDetailsProps.ts'
 import { RequirementProperties } from './RequirementProperties.tsx'
 export function ScopeProperties(props: RequirementDetailsProps) {
-  const { current, update } = props
+  const { current, update, propertiesOpen, toggleProperties } = props
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
+  const toggle = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      event.preventDefault()
+      toggleProperties()
+    },
+    [toggleProperties],
+  )
   const decision = useCallback(
     (event: SelectChange) =>
       update({ decision: event.target.value as Requirement['decision'] }),
@@ -55,8 +62,8 @@ export function ScopeProperties(props: RequirementDetailsProps) {
           ))}
         </StudioSelect>
       </div>
-      <details>
-        <summary>{t('More properties')}</summary>
+      <details open={propertiesOpen}>
+        <summary onClick={toggle}>{t('More properties')}</summary>
         <label className="scope-workspace-check">
           <input
             type="checkbox"

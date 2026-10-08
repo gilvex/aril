@@ -2,6 +2,7 @@ import type { RequirementsState } from '../types/requirementsState.ts'
 import { readRequirementsPreference } from '../utils/readRequirementsPreference.ts'
 export function createRequirementsState(preferenceKey = ''): RequirementsState {
   return {
+    properties: {},
     boardFilter: '',
     scopeFilter: 'all',
     panel: null,

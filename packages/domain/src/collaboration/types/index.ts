@@ -7,6 +7,7 @@ export type { Presence } from './presence.ts'
 export type { Profile } from './profile.ts'
 export type { RequirementField } from './requirementField.ts'
 export type { RequirementPresence } from './requirementPresence.ts'
+export type { RequirementDisclosure } from './requirementDisclosure.ts'
 
 export type { NotePresence } from './notePresence.ts'
 
