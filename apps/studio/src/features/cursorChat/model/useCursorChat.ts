@@ -37,7 +37,7 @@ export function useCursorChat({
       model.patch({
         open: true,
         text: '',
-        x: Math.max(8, Math.min(innerWidth - 290, pointer.current.x + 16)),
+        x: Math.max(8, Math.min(innerWidth - 338, pointer.current.x + 16)),
         y: Math.max(8, Math.min(innerHeight - 90, pointer.current.y + 20)),
       }),
     [model],
@@ -91,9 +91,9 @@ export function useCursorChat({
     const move = (event: PointerEvent) => {
       pointer.current = { x: event.clientX, y: event.clientY }
       const current = model.store.getState()
-      if (!current.open && current.text && current.expiresAt > Date.now())
+      if (current.open || (current.text && current.expiresAt > Date.now()))
         model.patch({
-          x: Math.max(8, Math.min(innerWidth - 270, event.clientX + 16)),
+          x: Math.max(8, Math.min(innerWidth - 338, event.clientX + 16)),
           y: Math.max(8, Math.min(innerHeight - 90, event.clientY + 20)),
         })
     }

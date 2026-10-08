@@ -23,7 +23,8 @@
   position: fixed;
   z-index: 400;
   background: var(--surface);
-  border: 1px solid var(--accent);
+  border: 0;
+  outline: none;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -41,10 +42,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.cursor-chat-composer input {
+.cursor-chat-composer input,
+.cursor-chat-composer input:focus,
+.cursor-chat-composer input:focus-visible {
   width: 170px;
   min-width: 60px;
   border: 0;
+  outline: none;
   border-radius: 0;
   padding: 0;
   background: transparent;
@@ -57,7 +61,8 @@
   border-radius: 7px;
   background: var(--surface);
   color: var(--text-strong);
-  border: 1px solid var(--line);
+  border: 0;
+  outline: none;
   box-shadow: 0 3px 12px #0003;
   font-size: 12px;
 }
