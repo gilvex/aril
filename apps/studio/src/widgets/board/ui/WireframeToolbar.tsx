@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { Play, Square } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import {
   CanvasDrawTools,
   CanvasInspectTools,
@@ -38,14 +38,14 @@ export function WireframeToolbar(props: WireframeToolbarProps) {
         <CanvasInspectTools data={props.graph} inspect={inspect} />
       )}
       {mode === 'motion' && (
-        <ActionBarButton
+        <StudioActionButton
           title={t(props.preview ? 'Edit' : 'Preview flow')}
           aria-label={t(props.preview ? 'Edit' : 'Preview flow')}
           aria-pressed={props.preview}
           onClick={handleClick}
         >
           {props.preview ? <Square size={18} /> : <Play size={18} />}
-        </ActionBarButton>
+        </StudioActionButton>
       )}
     </CanvasChrome>
   )

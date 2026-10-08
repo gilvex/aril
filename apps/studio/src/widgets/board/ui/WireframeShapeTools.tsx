@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Plus, Link2 } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -28,7 +28,7 @@ export function WireframeShapeTools({
   )
   return (
     <>
-      <ActionBarButton
+      <StudioActionButton
         disabled={readOnly}
         title={t('Connect tool')}
         aria-label={t('Connect tool')}
@@ -36,11 +36,11 @@ export function WireframeShapeTools({
         onClick={() => setTool('connect')}
       >
         <Link2 size={18} />
-      </ActionBarButton>
+      </StudioActionButton>
       {(['screen', 'text', 'button'] as const).map((kind) => {
         const Icon = icons[kind]
         return (
-          <ActionBarButton
+          <StudioActionButton
             key={kind}
             title={t(wireLabels[kind])}
             aria-label={t(wireLabels[kind])}
@@ -48,17 +48,18 @@ export function WireframeShapeTools({
             onClick={() => add(kind)}
           >
             <Icon size={18} />
-          </ActionBarButton>
+          </StudioActionButton>
         )
       })}
       <EditorActionMenu actions={actions} label={t('Add block')}>
-        <ActionBarButton
+        <StudioActionButton
+          variant="primary"
           disabled={disabled}
           title={t('Add block')}
           aria-label={t('Add block')}
         >
           <Plus size={18} />
-        </ActionBarButton>
+        </StudioActionButton>
       </EditorActionMenu>
     </>
   )

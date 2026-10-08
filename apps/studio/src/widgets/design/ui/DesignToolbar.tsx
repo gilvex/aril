@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { Hand, MousePointer2, Braces } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import {
   CanvasModeBar,
   CanvasDrawTools,
@@ -74,22 +74,22 @@ export function DesignToolbar(props: DesignToolbarProps) {
         onModeChange={changeMode}
         navigation={
           <>
-            <ActionBarButton
+            <StudioActionButton
               aria-pressed={!tools.drawing && model.tool === 'select'}
               title={t('Select')}
               aria-label={t('Select')}
               onClick={select}
             >
               <MousePointer2 size={18} />
-            </ActionBarButton>
-            <ActionBarButton
+            </StudioActionButton>
+            <StudioActionButton
               aria-pressed={!tools.drawing && model.tool === 'pan'}
               title={t('Pan')}
               aria-label={t('Pan')}
               onClick={pan}
             >
               <Hand size={18} />
-            </ActionBarButton>
+            </StudioActionButton>
           </>
         }
         extras={
@@ -113,13 +113,13 @@ export function DesignToolbar(props: DesignToolbarProps) {
               data={model.selected.length ? model.selected : model.page}
               inspect={inspect}
             />
-            <ActionBarButton
+            <StudioActionButton
               onClick={variables}
               title={t('Variables')}
               aria-label={t('Variables')}
             >
               <Braces size={18} />
-            </ActionBarButton>
+            </StudioActionButton>
           </>
         )}
         {tools.mode === 'motion' && <DesignMotionTools model={model} />}

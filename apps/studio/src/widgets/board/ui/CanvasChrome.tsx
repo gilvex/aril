@@ -6,7 +6,7 @@ import { useCanvasChromeHandlers } from '../model/useCanvasChromeHandlers.tsx'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import type { CanvasChromeProps } from '@/widgets/board/types/canvasChromeProps.ts'
 import { Hand, MousePointer2 } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 
 export function CanvasChrome({
   navigation,
@@ -49,8 +49,7 @@ export function CanvasChrome({
         extras={compact && actions}
         navigation={
           <>
-            <ActionBarButton
-              className="button"
+            <StudioActionButton
               aria-label={
                 compact ? t('Select multiple items') : t('Select tool')
               }
@@ -61,18 +60,17 @@ export function CanvasChrome({
               onClick={select}
               disabled={preview}
             >
-              <MousePointer2 size={17} />
-            </ActionBarButton>
-            <ActionBarButton
-              className="button"
+              <MousePointer2 size={18} />
+            </StudioActionButton>
+            <StudioActionButton
               title={t('Pan tool')}
               aria-label={t('Pan tool')}
               aria-pressed={!tools.drawing && tool === 'pan'}
               onClick={pan}
               disabled={preview}
             >
-              <Hand size={17} />
-            </ActionBarButton>
+              <Hand size={18} />
+            </StudioActionButton>
           </>
         }
       >

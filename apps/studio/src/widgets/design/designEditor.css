@@ -140,8 +140,8 @@
   border-radius: 14px;
   box-shadow: 0 6px 24px #21162b16;
 }
-.design-tool-dock button,
-.design-tool-dock summary {
+.design-tool-dock:not(.canvas-mode-bar) button,
+.design-tool-dock:not(.canvas-mode-bar) summary {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,13 +156,9 @@
   cursor: pointer;
   white-space: nowrap;
 }
-.design-tool-dock button.active {
+.design-tool-dock:not(.canvas-mode-bar) button.active {
   color: var(--accent-ink, #963e5c);
   background: var(--accent-light, #f8edf1);
-}
-.design-tool-dock .design-insert-button {
-  background: var(--accent, #b34568);
-  color: #fff;
 }
 .design-layers {
   width: 236px;
@@ -456,8 +452,8 @@
   .design-tool-dock {
     bottom: 14px;
   }
-  .design-tool-dock button,
-  .design-tool-dock summary {
+  .design-tool-dock:not(.canvas-mode-bar) button,
+  .design-tool-dock:not(.canvas-mode-bar) summary {
     min-height: 44px;
   }
   .design-editor .react-flow__controls {

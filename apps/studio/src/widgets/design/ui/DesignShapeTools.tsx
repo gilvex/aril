@@ -1,4 +1,4 @@
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { designTools } from '../config/designTools.ts'
@@ -19,7 +19,7 @@ export function DesignShapeTools(props: DesignToolbarProps) {
           ),
         )
         .map(({ kind, label, icon: Icon }) => (
-          <ActionBarButton
+          <StudioActionButton
             key={label}
             disabled={disabled}
             title={t(label)}
@@ -27,7 +27,7 @@ export function DesignShapeTools(props: DesignToolbarProps) {
             onClick={() => props.add(kind)}
           >
             <Icon size={18} />
-          </ActionBarButton>
+          </StudioActionButton>
         ))}
       {!disabled && <DesignInsertMenu {...props} />}
       {role !== 'viewer' && <DesignCanvasActions model={props.model} />}

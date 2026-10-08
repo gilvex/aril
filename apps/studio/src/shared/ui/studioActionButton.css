@@ -1,0 +1,38 @@
+.canvas-mode-bar .studio-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  min-width: 34px;
+  height: 38px;
+  min-height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text-strong);
+  background: transparent;
+  cursor: pointer;
+}
+.canvas-mode-bar .studio-action-button:where(:hover:not(:disabled)) {
+  background: var(--surface-raised);
+}
+.canvas-mode-bar .studio-action-button[aria-pressed='true'] {
+  color: var(--accent-ink);
+  background: var(--accent-light);
+}
+.canvas-mode-bar .studio-action-button[data-variant='primary'] {
+  color: #fff;
+  background: var(--accent);
+}
+.canvas-mode-bar .studio-action-button:disabled {
+  cursor: default;
+}
+@media (max-width: 760px), (pointer: coarse) {
+  .canvas-mode-bar .studio-action-button {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+}

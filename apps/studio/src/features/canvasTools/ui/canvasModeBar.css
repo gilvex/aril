@@ -67,18 +67,6 @@
 .canvas-mode-bar .canvas-mode-group > button:hover {
   background: color-mix(in srgb, var(--text) 6%, transparent);
 }
-.canvas-mode-bar .canvas-navigation-tools > button,
-.canvas-mode-bar .canvas-context-tools > button {
-  min-width: 34px;
-  width: 34px;
-  height: 38px;
-  padding: 0;
-}
-.canvas-mode-bar .canvas-navigation-tools > button[aria-pressed='true'],
-.canvas-mode-bar .canvas-context-tools > button[aria-pressed='true'] {
-  background: var(--accent-light);
-  color: var(--accent-ink);
-}
 .canvas-floating-palette {
   position: absolute;
   z-index: 20;
@@ -130,12 +118,6 @@
   .canvas-mode-bar .canvas-mode-group > button {
     height: 44px;
     min-height: 44px;
-  }
-  .canvas-mode-bar .canvas-navigation-tools > button,
-  .canvas-mode-bar .canvas-context-tools > button {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
   }
   .canvas-tool-divider {
     display: none;

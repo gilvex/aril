@@ -1,5 +1,5 @@
 import { Pencil, Highlighter, Eraser, AlignJustify } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasTools } from '../model/useCanvasTools.ts'
@@ -17,7 +17,7 @@ export function CanvasDrawTools({ disabled = false }: { disabled?: boolean }) {
   return (
     <>
       {brushes.map(({ id, label, icon: Icon }) => (
-        <ActionBarButton
+        <StudioActionButton
           key={id}
           disabled={blocked}
           title={t(label)}
@@ -26,17 +26,17 @@ export function CanvasDrawTools({ disabled = false }: { disabled?: boolean }) {
           onClick={() => patch({ drawing: id })}
         >
           <Icon size={18} />
-        </ActionBarButton>
+        </StudioActionButton>
       ))}
-      <ActionBarButton
+      <StudioActionButton
         disabled={blocked}
         title={t('Stroke width: {{width}}', { width })}
         aria-label={t('Stroke width: {{width}}', { width })}
         onClick={() => patch({ width: width === 3 ? 6 : width === 6 ? 12 : 3 })}
       >
         <AlignJustify size={18} />
-      </ActionBarButton>
-      <ActionBarButton
+      </StudioActionButton>
+      <StudioActionButton
         disabled={blocked}
         title={t('Ink color')}
         aria-label={t('Ink color')}
@@ -45,7 +45,7 @@ export function CanvasDrawTools({ disabled = false }: { disabled?: boolean }) {
         }
       >
         <span className="canvas-draw-color" style={{ background: color }} />
-      </ActionBarButton>
+      </StudioActionButton>
     </>
   )
 }

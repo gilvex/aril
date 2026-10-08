@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Plus } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { designTools } from '../config/designTools.ts'
@@ -37,13 +37,13 @@ export function DesignInsertMenu({
   )
   return (
     <EditorActionMenu actions={actions} label={t('Insert element')}>
-      <ActionBarButton
-        className="design-insert-button"
+      <StudioActionButton
+        variant="primary"
         title={t('Insert')}
         aria-label={t('Insert')}
       >
         <Plus size={18} />
-      </ActionBarButton>
+      </StudioActionButton>
     </EditorActionMenu>
   )
 }

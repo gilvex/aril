@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { Play, GitBranch, Plus, ArrowLeft } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -22,38 +22,38 @@ export function DesignMotionTools({ model }: { model: DesignEditorModel }) {
   return (
     <>
       <EditorActionMenu actions={actions} label={t('State machines')}>
-        <ActionBarButton
+        <StudioActionButton
           disabled={!machines.length}
           title={t('State machines')}
           aria-label={t('State machines')}
         >
           <GitBranch size={18} />
-        </ActionBarButton>
+        </StudioActionButton>
       </EditorActionMenu>
-      <ActionBarButton
+      <StudioActionButton
         disabled={role === 'viewer' || role === null || machines.length >= 100}
         onClick={model.addMachine}
         title={t('New state machine')}
         aria-label={t('New state machine')}
       >
         <Plus size={18} />
-      </ActionBarButton>
-      <ActionBarButton
+      </StudioActionButton>
+      <StudioActionButton
         disabled={!model.machineId}
         onClick={play}
         title={t('Test machine')}
         aria-label={t('Test machine')}
       >
         <Play size={18} />
-      </ActionBarButton>
-      <ActionBarButton
+      </StudioActionButton>
+      <StudioActionButton
         disabled={model.libraryView === 'canvas'}
         onClick={model.closeAsset}
         title={t('Back to canvas')}
         aria-label={t('Back to canvas')}
       >
         <ArrowLeft size={18} />
-      </ActionBarButton>
+      </StudioActionButton>
     </>
   )
 }

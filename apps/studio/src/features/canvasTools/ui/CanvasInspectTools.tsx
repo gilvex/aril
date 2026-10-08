@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { Scan, CodeXml, Download } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { StudioModal } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasTools } from '../model/useCanvasTools.ts'
@@ -19,27 +19,27 @@ export function CanvasInspectTools({
   const download = useCallback(() => downloadCanvasData(data), [data])
   return (
     <>
-      <ActionBarButton
+      <StudioActionButton
         title={t('Inspect')}
         aria-label={t('Inspect')}
         onClick={inspect}
       >
         <Scan size={18} />
-      </ActionBarButton>
-      <ActionBarButton
+      </StudioActionButton>
+      <StudioActionButton
         title={t('View canvas data')}
         aria-label={t('View canvas data')}
         onClick={() => patch({ dataOpen: true })}
       >
         <CodeXml size={18} />
-      </ActionBarButton>
-      <ActionBarButton
+      </StudioActionButton>
+      <StudioActionButton
         title={t('Export canvas JSON')}
         aria-label={t('Export canvas JSON')}
         onClick={download}
       >
         <Download size={18} />
-      </ActionBarButton>
+      </StudioActionButton>
       {dataOpen &&
         createPortal(
           <StudioModal title={t('View canvas data')} close={close}>

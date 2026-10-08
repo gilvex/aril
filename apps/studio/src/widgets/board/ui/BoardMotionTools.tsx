@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { Play, SkipForward, RotateCcw } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
+import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { useCanvasTools } from '@/features/canvasTools/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { BlueprintToolbarProps } from '../types/blueprintToolbarProps.ts'
@@ -38,7 +38,7 @@ export function BoardMotionTools({
   }, [flow, patch])
   return (
     <>
-      <ActionBarButton
+      <StudioActionButton
         disabled={!flow || !board.nodes.length}
         onClick={step}
         title={t(
@@ -49,15 +49,15 @@ export function BoardMotionTools({
         )}
       >
         {flowIndex < 0 ? <Play size={18} /> : <SkipForward size={18} />}
-      </ActionBarButton>
-      <ActionBarButton
+      </StudioActionButton>
+      <StudioActionButton
         disabled={!flow}
         onClick={reset}
         title={t('Fit canvas')}
         aria-label={t('Fit canvas')}
       >
         <RotateCcw size={18} />
-      </ActionBarButton>
+      </StudioActionButton>
     </>
   )
 }
