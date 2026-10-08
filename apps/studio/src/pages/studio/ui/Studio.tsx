@@ -55,6 +55,8 @@ export function Studio(props: StudioProps) {
           sendPresence={model.sendPresence}
         />
         <CursorChat
+          root={full.element}
+          toolbar={model.view === 'canvas' || model.view === 'design'}
           profile={model.multiplayer.profile}
           active={
             props.active !== false &&

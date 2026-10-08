@@ -16,12 +16,14 @@ export function documentOf(workspace: Workspace): Json {
             board.id,
             {
               ...board,
+              strokes: board.strokes || {},
               ...(board.design
                 ? { design: designDocumentOf(board.design) }
                 : {}),
               nodes: indexed(board.nodes),
               edges: indexed(board.edges),
               wireframe: {
+                strokes: board.wireframe?.strokes || {},
                 nodes: indexed(board.wireframe?.nodes || []),
                 edges: indexed(board.wireframe?.edges || []),
               },

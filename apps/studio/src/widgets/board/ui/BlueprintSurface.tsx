@@ -3,6 +3,8 @@ import { Link2, MousePointer2, Plus } from 'lucide-react'
 import { BlueprintFlow } from './BlueprintFlow.tsx'
 import { BlueprintInsertMenu } from './BlueprintInsertMenu.tsx'
 import { BlueprintToolbar } from './BlueprintToolbar.tsx'
+import { BoardDrawing } from './BoardDrawing.tsx'
+import { BlueprintNodePalette } from './BlueprintNodePalette.tsx'
 
 import type { BlueprintSurfaceProps } from '../types/blueprintSurfaceProps.ts'
 export function BlueprintSurface(props: BlueprintSurfaceProps) {
@@ -30,6 +32,11 @@ export function BlueprintSurface(props: BlueprintSurfaceProps) {
       onPointerLeave={() => sendPresence({ cursor: null }, true)}
     >
       <BlueprintToolbar {...props} />
+      {props.palette && (
+        <div className="canvas-floating-palette">
+          <BlueprintNodePalette close={() => setPalette(false)} add={addNode} />
+        </div>
+      )}
       <div className="canvas-caption">
         <span className="small-dot" />
         {t('nodeCount', { count: board.nodes.length })}
@@ -43,6 +50,7 @@ export function BlueprintSurface(props: BlueprintSurfaceProps) {
       )}
       <BlueprintFlow
         {...props}
+        drawing={<BoardDrawing board={board} update={props.update} />}
 
         profile={profile}
       />

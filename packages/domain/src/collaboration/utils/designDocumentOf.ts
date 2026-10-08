@@ -33,7 +33,11 @@ export function designDocumentOf(design: Workspace['design']) {
           pages: Object.fromEntries(
             design.pages.map((page) => [
               page.id,
-              { ...page, nodes: indexed(page.nodes) },
+              {
+                ...page,
+                strokes: page.strokes || {},
+                nodes: indexed(page.nodes),
+              },
             ]),
           ),
         }

@@ -1,6 +1,8 @@
 import type { Idea } from '@pomegranate/domain/workspace'
 
 export type BlueprintToolbarProps = {
+  board: import('@pomegranate/domain/workspace').Board
+  flow: import('./blueprintSurfaceProps.ts').BlueprintSurfaceProps['flow']
   navigation: import('react').ReactNode
   tool: import('../types/canvasTool.ts').CanvasTool
   setTool: (

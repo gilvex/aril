@@ -9,4 +9,7 @@ export type CanvasChromeProps = {
   multiSelect: boolean
   onMultiSelect: (value: boolean) => void
   preview?: boolean
+  onModeChange?: (
+    mode: import('@/features/canvasTools/index.ts').CanvasToolMode,
+  ) => void
 }

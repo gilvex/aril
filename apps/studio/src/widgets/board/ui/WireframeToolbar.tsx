@@ -1,81 +1,51 @@
-import { useWorkspaceRole } from '@/entities/workspace/index.ts'
+import { useCallback } from 'react'
+import { Play, Square } from 'lucide-react'
+import { ActionBarButton } from 'vagabond-ui/action-bar'
+import {
+  CanvasDrawTools,
+  CanvasInspectTools,
+  useCanvasTools,
+} from '@/features/canvasTools/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeToolbarHandlers } from '../model/useWireframeToolbarHandlers.tsx'
-import { WireframePalette } from './WireframePalette.tsx'
 import { WireframeViewActions } from './WireframeViewActions.tsx'
-
-import { CanvasChrome } from '@/widgets/board/ui/CanvasChrome.tsx'
-import { Pencil, Play, Plus } from 'lucide-react'
-import { ActionBarButton } from 'vagabond-ui/action-bar'
-
+import { WireframeShapeTools } from './WireframeShapeTools.tsx'
+import { CanvasChrome } from './CanvasChrome.tsx'
 import type { WireframeToolbarProps } from '../types/wireframeToolbarProps.ts'
-export function WireframeToolbar({
-  navigation,
-  tool,
-  setTool,
-  touchSelection,
-  setTouchSelection,
-  preview,
-  inspectorToggle,
-  inspectorOpen,
-  setInspectorOpen,
-  full,
-  setPreview,
-  setPalette,
-  palette,
-  graph,
-  add,
-}: WireframeToolbarProps) {
+export function WireframeToolbar(props: WireframeToolbarProps) {
   const { t } = useTranslation()
-  const readOnly = useWorkspaceRole() === 'viewer'
-
-  const { handleClick } = useWireframeToolbarHandlers({
-    setPreview,
-    preview,
-    setPalette,
-  })
+  const { mode } = useCanvasTools()
+  const { handleClick } = useWireframeToolbarHandlers(props)
+  const inspect = useCallback(() => props.setInspectorOpen(true), [props])
+  const changeMode = useCallback(() => {
+    props.setPreview(false)
+    props.setPalette(false)
+  }, [props])
   return (
     <CanvasChrome
-      navigation={navigation}
-      tool={tool}
-      onTool={setTool}
-      multiSelect={touchSelection}
-      onMultiSelect={setTouchSelection}
-      preview={preview}
-      actions={
-        <WireframeViewActions
-          inspectorToggle={inspectorToggle}
-          inspectorOpen={inspectorOpen}
-          setInspectorOpen={setInspectorOpen}
-          full={full}
-        />
-      }
+      navigation={props.navigation}
+      tool={props.tool}
+      onTool={props.setTool}
+      multiSelect={props.touchSelection}
+      onMultiSelect={props.setTouchSelection}
+      preview={props.preview}
+      onModeChange={changeMode}
+      actions={<WireframeViewActions {...props} />}
     >
-      <ActionBarButton
-        className={`button preview-toggle ${preview ? 'primary' : ''}`}
-        title={preview ? t('Edit') : t('Preview flow')}
-        aria-label={preview ? t('Edit') : t('Preview flow')}
-        aria-pressed={preview}
-        onClick={handleClick}
-      >
-        {preview ? <Pencil size={15} /> : <Play size={15} />}
-      </ActionBarButton>
-      {!preview && (
-        <div className="add-node-wrap">
-          <ActionBarButton
-            className="button primary"
-            title={t('Add block')}
-            aria-label={t('Add block')}
-            aria-expanded={palette}
-            onClick={() => setPalette(!palette)}
-            disabled={readOnly || graph.nodes.length >= 500}
-          >
-            <Plus size={16} />
-          </ActionBarButton>
-          {palette && (
-            <WireframePalette t={t} setPalette={setPalette} add={add} />
-          )}
-        </div>
+      {mode === 'draw' && <CanvasDrawTools />}
+      {mode === 'shapes' && <WireframeShapeTools {...props} />}
+      {mode === 'dev' && (
+        <CanvasInspectTools data={props.graph} inspect={inspect} />
+      )}
+      {mode === 'motion' && (
+        <ActionBarButton
+          title={t(props.preview ? 'Edit' : 'Preview flow')}
+          aria-label={t(props.preview ? 'Edit' : 'Preview flow')}
+          aria-pressed={props.preview}
+          onClick={handleClick}
+        >
+          {props.preview ? <Square size={18} /> : <Play size={18} />}
+        </ActionBarButton>
       )}
     </CanvasChrome>
   )

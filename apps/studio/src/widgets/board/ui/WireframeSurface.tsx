@@ -3,6 +3,8 @@ import { AppWindow, MousePointer2, Plus } from 'lucide-react'
 import { WireframeFlow } from './WireframeFlow.tsx'
 import { WireframeInsertMenu } from './WireframeInsertMenu.tsx'
 import { WireframeToolbar } from './WireframeToolbar.tsx'
+import { BoardDrawing } from './BoardDrawing.tsx'
+import { WireframePalette } from './WireframePalette.tsx'
 
 import type { WireframeSurfaceProps } from '../types/wireframeSurfaceProps.ts'
 export function WireframeSurface(props: WireframeSurfaceProps) {
@@ -34,6 +36,11 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
       onPointerLeave={() => sendPresence({ cursor: null }, true)}
     >
       <WireframeToolbar {...props} />
+      {props.palette && (
+        <div className="canvas-floating-palette">
+          <WireframePalette t={t} setPalette={setPalette} add={add} />
+        </div>
+      )}
       <div className="canvas-caption">
         {t('screenCount', { count: screens.length })}
         <span className="caption-separator" />
@@ -46,7 +53,18 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
           {t('Tap blocks to select. Tap Done to move them together.')}
         </div>
       )}
-      <WireframeFlow {...props} profile={profile} />
+      <WireframeFlow
+        {...props}
+        profile={profile}
+        drawing={
+          <BoardDrawing
+            board={props.board}
+            update={props.update}
+            wireframe
+            disabled={preview}
+          />
+        }
+      />
       {insertPoint && !preview && (
         <WireframeInsertMenu
           insertPoint={insertPoint}

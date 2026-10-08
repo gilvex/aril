@@ -13,6 +13,7 @@ export function useCursorChat({
   active,
   scope,
   sendPresence,
+  root,
 }: CursorChatProps) {
   const model = useMemo(() => {
     const store = configureStore({
@@ -118,13 +119,16 @@ export function useCursorChat({
       open()
     }
     document.addEventListener('pointermove', move)
+    const element = root?.current
+    element?.addEventListener('aril:cursor-chat', open)
     document.addEventListener('keydown', shortcut)
     return () => {
       document.removeEventListener('pointermove', move)
+      element?.removeEventListener('aril:cursor-chat', open)
       document.removeEventListener('keydown', shortcut)
       clear()
     }
-  }, [active, scope, model, open, clear])
+  }, [active, scope, model, open, clear, root])
   return {
     ...state,
     openComposer: open,

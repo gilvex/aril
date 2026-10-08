@@ -13,6 +13,8 @@ Workspace owners manage member access in Settings → File. Editors can write; V
 
 ## Read and edit
 
+Canvas documents can also contain freehand `strokes`: a record keyed by stroke ID, with `points: [{x,y}]`, hexadecimal `color`, numeric `width`, and `opacity`. Blueprint strokes live on the board, wireframe strokes on `board.wireframe`, and design strokes on each page. Preserve these fields when editing or replacing documents. They are annotations, not design layers, components, or machine states. The UI's Draw / Shapes / Dev / Motion mode selection is local editor state and must not be stored in a workspace document.
+
 - `get_workspace`: overview and revision, including design page IDs/names/layer counts; `full: true` includes complete graphs and design layers. Overview summaries are not valid replacement documents.
 - `get_board`: full blueprint and wireframe for a board ID, revision, and browser link.
 - `get_design_page`: a design page's complete layers, revision, defaults, and Design-section link. The link opens Design; tell the user the page name to select.

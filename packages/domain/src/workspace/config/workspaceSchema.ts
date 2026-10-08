@@ -1,6 +1,7 @@
 import { readNoteText } from '../../noteText/utils/readNoteText.ts'
 import { noteTextStateSchema } from '../../noteText/config/noteTextStateSchema.ts'
 import { z } from 'zod'
+import { strokesSchema } from '../../drawing/index.ts'
 import { designSchema } from '../../design/index.ts'
 import { wireframeSchema } from '../../wireframe/index.ts'
 import { edge } from './edge.ts'
@@ -17,6 +18,7 @@ export const workspaceSchema = z
             id: z.string().min(1).max(100),
             name: z.string().min(1).max(100),
             description: z.string().max(1000),
+            strokes: strokesSchema.optional(),
             nodes: z.array(node).max(500),
             edges: z.array(edge).max(1500),
             sections: z

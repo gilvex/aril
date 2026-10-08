@@ -7,6 +7,7 @@ import {
 } from '@xyflow/react'
 
 export type BlueprintFlowProps = {
+  drawing?: import('react').ReactNode
   board: import('@pomegranate/domain/workspace').Board
   liveNodes: import('@pomegranate/domain/workspace').Idea[]
   dimensions: Record<string, { width: number; height: number }>

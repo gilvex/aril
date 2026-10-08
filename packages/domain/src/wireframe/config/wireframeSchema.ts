@@ -1,7 +1,9 @@
 import { z } from 'zod'
+import { strokesSchema } from '../../drawing/index.ts'
 import { wireNode } from './wireNode.ts'
 export const wireframeSchema = z
   .object({
+    strokes: strokesSchema.optional(),
     nodes: z.array(wireNode).max(500),
     edges: z
       .array(

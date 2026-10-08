@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { CanvasToolsProvider } from '@/features/canvasTools/index.ts'
 import { useBlueprintController } from '../model/useBlueprintController.ts'
 import { useCanvasBoardHandlers } from '../model/useCanvasBoardHandlers.tsx'
 import type { CanvasBoardProps } from '../types/canvasBoardProps.ts'
@@ -38,24 +39,26 @@ export function CanvasBoard(props: CanvasBoardProps) {
     inspectorOpen,
   } = model
   return (
-    <div
-      ref={canvasRef}
-      onPointerDownCapture={() => {
-        selectionBeforePointerDown.current = selectedIds
-      }}
-      className={`canvas-page${fullscreen ? ' canvas-fullscreen' : ''}`}
-    >
-      <div className="canvas-layout">
-        <BlueprintSurface {...props} {...model} {...handlers} />
-        {inspectorOpen && (
-          <BlueprintInspector
-            {...props}
-            {...model}
-            focusNode={focusNode}
-            fitBoard={fitBoard}
-          />
-        )}
+    <CanvasToolsProvider key={props.board.id}>
+      <div
+        ref={canvasRef}
+        onPointerDownCapture={() => {
+          selectionBeforePointerDown.current = selectedIds
+        }}
+        className={`canvas-page${fullscreen ? ' canvas-fullscreen' : ''}`}
+      >
+        <div className="canvas-layout">
+          <BlueprintSurface {...props} {...model} {...handlers} />
+          {inspectorOpen && (
+            <BlueprintInspector
+              {...props}
+              {...model}
+              focusNode={focusNode}
+              fitBoard={fitBoard}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </CanvasToolsProvider>
   )
 }

@@ -91,6 +91,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       connectionRadius={28}
     >
       <StableCanvasViewport following={!!props.following} />
+      {props.drawing}
       <Background
         color="var(--canvas-dot, #d9d6e2)"
         gap={22}

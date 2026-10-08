@@ -147,7 +147,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_design_page',
     {
       description:
-        'Read one saved design canvas page and all its layers, current revision, design defaults, and a link to the Design section. Discover page IDs with get_workspace. Supply boardId for a board-specific design; omit it for the workspace design. Layers use kind, x/y, width/height, order, and optional parentId pointing to a frame or group. Containers can nest without cycles; child coordinates are relative to their immediate parent. Groups can set maskId to a direct rectangle/ellipse child to clip their other descendants; frames can set clipContent. The browser link opens Design; select the returned page by name.',
+        'Read one saved design canvas page and all its layers, freehand strokes, current revision, design defaults, and a link to the Design section. Preserve the optional strokes record when replacing a page. Discover page IDs with get_workspace. Supply boardId for a board-specific design; omit it for the workspace design. Layers use kind, x/y, width/height, order, and optional parentId pointing to a frame or group. Containers can nest without cycles; child coordinates are relative to their immediate parent. Groups can set maskId to a direct rectangle/ellipse child to clip their other descendants; frames can set clipContent. The browser link opens Design; select the returned page by name.',
       inputSchema: z.object({
         pageId: z.string().min(1).max(100),
         boardId: z.string().min(1).max(100).optional(),

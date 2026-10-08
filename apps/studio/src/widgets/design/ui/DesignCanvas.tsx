@@ -15,6 +15,7 @@ import { useDesignCanvas } from '../model/useDesignCanvas.ts'
 import { useDesignCanvasLabels } from '../model/useDesignCanvasLabels.ts'
 import { DesignElementNode } from './DesignElementNode.tsx'
 import { DesignToolbar } from './DesignToolbar.tsx'
+import { DesignDrawing } from './DesignDrawing.tsx'
 import { DesignCursors } from './DesignCursors.tsx'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'
 import type { DesignFlowNode } from '../types/designFlowNode.ts'
@@ -105,6 +106,7 @@ export function DesignCanvas(props: DesignBoardProps) {
                 elevateNodesOnSelect={false}
               >
                 <StableCanvasViewport following={!!props.following} />
+                <DesignDrawing model={model} />
                 <Background
                   gap={20}
                   size={1}

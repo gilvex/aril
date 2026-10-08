@@ -10,15 +10,17 @@ export function CursorChat(props: CursorChatProps) {
   if (!props.active) return null
   return (
     <>
-      <button
-        data-follow-controls
-        className="icon-button cursor-chat-toggle"
-        title={t('Cursor chat (/)')}
-        aria-label={t('Cursor chat (/)')}
-        onClick={model.openComposer}
-      >
-        <MessageSquare size={18} />
-      </button>
+      {!props.toolbar && (
+        <button
+          data-follow-controls
+          className="icon-button cursor-chat-toggle"
+          title={t('Cursor chat (/)')}
+          aria-label={t('Cursor chat (/)')}
+          onClick={model.openComposer}
+        >
+          <MessageSquare size={18} />
+        </button>
+      )}
       {!model.open && model.text && model.expiresAt > 0 && (
         <div
           className="self-cursor-message"

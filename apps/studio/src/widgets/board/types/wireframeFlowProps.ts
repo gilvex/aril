@@ -4,6 +4,7 @@ import { type NodeChange, type ReactFlowInstance } from '@xyflow/react'
 import type * as React from 'react'
 
 export type WireframeFlowProps = {
+  drawing?: import('react').ReactNode
   liveNodes: import('@pomegranate/domain/wireframe').WireNode[]
   selection: Set<string>
   graph: import('@pomegranate/domain/wireframe').Wireframe

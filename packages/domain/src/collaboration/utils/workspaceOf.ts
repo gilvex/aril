@@ -16,6 +16,9 @@ export function workspaceOf(document: Json): Workspace {
         nodes: Object.values(board.nodes as object),
         edges: Object.values(board.edges as object),
         wireframe: {
+          strokes:
+            (board.wireframe as Record<string, Json> | undefined)?.strokes ||
+            {},
           nodes: Object.values(
             (board.wireframe as Record<string, Json> | undefined)?.nodes || {},
           ),
@@ -47,11 +50,23 @@ export function workspaceOf(document: Json): Workspace {
       board.design ? [board.design] : [],
     ),
   ]) {
+    for (const page of design.pages || []) {
+      if (page.strokes && !Object.keys(page.strokes).length) delete page.strokes
+    }
     if (design.library && design.pages)
       design.pages = design.pages.map((page) => ({
         ...page,
         nodes: syncDesignInstances(page.nodes, design.library!),
       }))
+  }
+  for (const board of workspace.boards) {
+    if (board.strokes && !Object.keys(board.strokes).length)
+      delete board.strokes
+    if (
+      board.wireframe?.strokes &&
+      !Object.keys(board.wireframe.strokes).length
+    )
+      delete board.wireframe.strokes
   }
   return workspaceSchema.parse(workspace)
 }

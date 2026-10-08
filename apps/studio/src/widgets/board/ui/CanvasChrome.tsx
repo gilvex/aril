@@ -1,12 +1,12 @@
-import { useWorkspaceRole } from '@/entities/workspace/index.ts'
+import { useCallback } from 'react'
+import { CanvasModeBar, useCanvasTools } from '@/features/canvasTools/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasChromeHandlers } from '../model/useCanvasChromeHandlers.tsx'
 
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import type { CanvasChromeProps } from '@/widgets/board/types/canvasChromeProps.ts'
-import { Hand, Link2, MousePointer2 } from 'lucide-react'
+import { Hand, MousePointer2 } from 'lucide-react'
 import { ActionBarButton } from 'vagabond-ui/action-bar'
-import { StudioActionBar } from '@/shared/ui/index.tsx'
 
 export function CanvasChrome({
   navigation,
@@ -17,9 +17,10 @@ export function CanvasChrome({
   multiSelect,
   onMultiSelect,
   preview = false,
+  onModeChange,
 }: CanvasChromeProps) {
   const { t } = useTranslation()
-  const readOnly = useWorkspaceRole() === 'viewer'
+  const tools = useCanvasTools()
 
   const compact = useCompactLayout()
 
@@ -29,15 +30,24 @@ export function CanvasChrome({
     onMultiSelect,
     multiSelect,
   })
+  const select = useCallback(() => {
+    tools.patch({ drawing: null, draft: null, pointerId: null })
+    handleClick()
+  }, [tools, handleClick])
+  const pan = useCallback(() => {
+    tools.patch({ drawing: null, draft: null, pointerId: null })
+    onTool('pan')
+  }, [tools, onTool])
   return (
     <>
       {navigation}
       {!compact && <div className="canvas-top-actions">{actions}</div>}
-      <StudioActionBar
+      <CanvasModeBar
         className="canvas-tool-dock"
         label={t('Canvas tools')}
-      >
-        {!preview && (
+        onModeChange={onModeChange}
+        extras={compact && actions}
+        navigation={
           <>
             <ActionBarButton
               className="button"
@@ -45,39 +55,29 @@ export function CanvasChrome({
                 compact ? t('Select multiple items') : t('Select tool')
               }
               title={compact ? t('Select multiple items') : t('Select tool')}
-              aria-pressed={compact ? multiSelect : tool === 'select'}
-              onClick={handleClick}
+              aria-pressed={
+                !tools.drawing && (compact ? multiSelect : tool === 'select')
+              }
+              onClick={select}
+              disabled={preview}
             >
               <MousePointer2 size={17} />
             </ActionBarButton>
-            {!compact && (
-              <>
-                <ActionBarButton
-                  className="button"
-                  title={t('Pan tool')}
-                  aria-label={t('Pan tool')}
-                  aria-pressed={tool === 'pan'}
-                  onClick={() => onTool('pan')}
-                >
-                  <Hand size={17} />
-                </ActionBarButton>
-                <ActionBarButton
-                  className="button"
-                  disabled={readOnly}
-                  title={t('Connect tool')}
-                  aria-label={t('Connect tool')}
-                  aria-pressed={tool === 'connect'}
-                  onClick={() => onTool('connect')}
-                >
-                  <Link2 size={17} />
-                </ActionBarButton>
-              </>
-            )}
+            <ActionBarButton
+              className="button"
+              title={t('Pan tool')}
+              aria-label={t('Pan tool')}
+              aria-pressed={!tools.drawing && tool === 'pan'}
+              onClick={pan}
+              disabled={preview}
+            >
+              <Hand size={17} />
+            </ActionBarButton>
           </>
-        )}
-        {compact && actions}
+        }
+      >
         {children}
-      </StudioActionBar>
+      </CanvasModeBar>
     </>
   )
 }
