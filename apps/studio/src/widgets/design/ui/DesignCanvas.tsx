@@ -1,3 +1,4 @@
+import { DesignLibraryWorkspace } from './DesignLibraryWorkspace.tsx'
 import { useDesignPanelBounds } from '../model/useDesignPanelBounds.ts'
 import { designDockLayout } from '../utils/designDockLayout.ts'
 import { DesignPanels } from './DesignPanels.tsx'
@@ -73,6 +74,11 @@ export function DesignCanvas(props: DesignBoardProps) {
           >
             <div
               className="design-flow-context"
+              style={
+                model.libraryView !== 'canvas'
+                  ? { visibility: 'hidden' }
+                  : undefined
+              }
               onContextMenuCapture={context.prepare}
             >
               <ReactFlow<DesignFlowNode>
@@ -109,6 +115,7 @@ export function DesignCanvas(props: DesignBoardProps) {
               </ReactFlow>
             </div>
           </EditorContextMenu>
+          <DesignLibraryWorkspace model={model} />
           <DesignToolbar
             navigation={props.navigation}
             model={model}

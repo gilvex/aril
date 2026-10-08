@@ -161,6 +161,7 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
     assert.deepEqual(tools.tools.map((t) => t.name).sort(), [
       'apply_changes',
       'get_board',
+      'get_design_library',
       'get_design_page',
       'get_history',
       'get_schema',

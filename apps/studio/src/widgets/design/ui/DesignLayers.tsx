@@ -4,6 +4,7 @@ import {
   type MouseEvent,
   type KeyboardEvent,
 } from 'react'
+import { DesignLibraryTabs } from './DesignLibraryTabs.tsx'
 import { X } from 'lucide-react'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -57,7 +58,7 @@ export function DesignLayers({ model }: DesignEditorProps) {
         style={actionsOpen ? { display: 'none' } : undefined}
       >
         <SurfaceGrip />
-        <strong>{t('Layers')}</strong>
+        <DesignLibraryTabs model={model} />
         <small title={`${model.page.nodes.length}/500`}>
           {model.page.nodes.length}
         </small>

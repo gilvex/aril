@@ -16,6 +16,7 @@ Workspace owners manage member access in Settings → File. Editors can write; V
 - `get_workspace`: overview and revision, including design page IDs/names/layer counts; `full: true` includes complete graphs and design layers. Overview summaries are not valid replacement documents.
 - `get_board`: full blueprint and wireframe for a board ID, revision, and browser link.
 - `get_design_page`: a design page's complete layers, revision, defaults, and Design-section link. The link opens Design; tell the user the page name to select.
+- `get_design_library`: components, variants, variable collections/modes, and state machines; optional `boardId` selects a board design.
 - `get_schema`: current field types and limits. Read it before creating unfamiliar entities.
 - `get_history`: recent saved revisions and attributed activity.
 - `apply_changes`: one atomic batch of up to 500 targeted operations.
@@ -70,7 +71,7 @@ After editing, read the affected board, design page, or workspace to verify the 
 
 ## Editable design canvas
 
-Design pages belong to the workspace, independently of boards and their wireframes. Use wireframes for connected navigation flows; use Design for editable visual compositions. Design supports nested frames, groups, rectangle/ellipse masks, frame clipping, rectangles, ellipses, text, buttons, and HTTPS image references, not vector paths, auto-layout, reusable components, or prototype connections.
+Design pages belong to the workspace, independently of boards and their wireframes. Use wireframes for connected navigation flows; use Design for editable visual compositions. Design supports nested frames, groups, rectangle/ellipse masks, frame clipping, rectangles, ellipses, text, buttons, and HTTPS image references, reusable components and variants, typed variables, and state-machine simulations. Vector paths, auto-layout, nested component instances, and navigation prototypes are not supported.
 
 Read `get_workspace` and `get_schema`, then `get_design_page` for pages you will edit. Old workspaces can have no `design.pages` field: this is valid, and existing direction, accent, density and fonts must be preserved. Only when `pages` is absent, create it with an operation like `{ "path": ["design", "pages"], "after": { "new-page-id": { "id": "new-page-id", "name": "Dashboard", "nodes": {} } } }`. When it already exists (including an empty array in reads), add at `["design", "pages", newPageId]` with `{ "id": newPageId, "name": "Dashboard", "nodes": {} }`. Never replace existing pages with this initialization example.
 
@@ -118,3 +119,18 @@ A missing decision is displayed as Proposed; never infer agreement from the lega
 
 
 Shared field edits now appear in browsers as transient signed live previews before autosave. MCP reads still return the authoritative saved revision, not another member's unsaved field draft. Re-read before applying a targeted change, and keep existing revision/conflict checks. Field focus, selected text ranges and cursor positions are ephemeral presence, not writable workspace fields; do not synthesize human presence or publish live preview packets through agent tools.
+
+
+## Design Library: components, variables and machines
+
+Use `get_design_library` (optional `boardId`) to read the design's saved assets. The Library button beside Pages opens the movable, resizable Layers/Library panel; both panels support docking at all four edges. Libraries belong to their design document; board designs and workspace Design have separate libraries.
+
+The optional `design.library` contains four ID-keyed records: `components`, `collections`, `variables`, and `machines`. Initialize these empty records only if absent. Library data is shared, revisioned, and undoable; active assets, variable preview modes, panel layout and simulator values are personal UI state.
+
+- Components have `id`, `name`, and ID-keyed `variants`. Each variant is a design page with exactly one root and no nested instances. Variant nodes are arrays in reads and ID-keyed in operations, e.g. `design/library/components/<id>/variants/<variantId>/nodes/<sourceId>/text`. Board design paths start `boards/<boardId>/design/library`. Preserve other variants and nodes.
+- Instances are ordinary page nodes with `instance: {componentId, variantId, instanceId, sourceId, overrides}` on every member. IDs are unique per page; parent/mask IDs refer to the instance's copied nodes. Master changes synchronize non-overridden fields, preserving instance root position. To intentionally override a field through MCP, update that field and include its key in `instance.overrides` in the same batch. To detach, remove instance metadata from every member. Removing a component or variant detaches its remaining instances. Remove machine references before deleting an asset used by a machine.
+- Collections define named `modes`; typed variables (`color`, `number`, `string`, `boolean`) reference a collection and have a value for every mode. Colors are six-digit hex values. Layer `bindings` map supported properties to variable IDs. Missing or incompatible values fall back to the stored layer property. Machine conditions/actions must reference existing variables with matching value types.
+- Machines have an initial state, ID-keyed states and transitions, and an optional component reference. States hold graph positions, entry actions, and an optional component variant. Transitions specify from/to, event, an optional typed comparison guard (`eq`, `ne`, `gt`, `lt`), and assignments. Delete transitions with their endpoints, and choose a new initial state before deleting the old one.
+- The simulator applies transition assignments followed by target-state entry assignments. It evaluates the first enabled transition in ID order for each event. It is a local planning preview: it cannot deploy infrastructure, call APIs, run code or save runtime values. The UI's Add example kit creates an optional Deploy button, theme modes, and an interaction machine without replacing existing designs.
+
+Read `get_schema` for current limits and verify edits with `get_design_library` and affected `get_design_page` calls. Do not invent unsupported bindings or evaluate expressions in guards.

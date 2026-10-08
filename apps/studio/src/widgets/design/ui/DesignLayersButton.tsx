@@ -8,11 +8,13 @@ export function DesignLayersButton({ model }: DesignEditorProps) {
   const toggle = useCallback(
     () =>
       patch({
-        layers: !layers,
+        layers: model.leftTab !== 'layers' || !layers,
+        leftTab: 'layers',
+        dockActive: 'left',
         ...(model.compact ? { inspector: false } : {}),
         pagesOpen: false,
       }),
-    [patch, layers, model.compact],
+    [patch, layers, model.compact, model.leftTab],
   )
   return (
     <button

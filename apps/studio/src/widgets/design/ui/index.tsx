@@ -45,3 +45,51 @@ export { DesignLayerActionSheet } from './DesignLayerActionSheet.tsx'
 export { DesignImageUrl } from './DesignImageUrl.tsx'
 export { DesignDockTabs } from './DesignDockTabs.tsx'
 export { DesignDockPreview } from './DesignDockPreview.tsx'
+
+export { DesignAssetBreadcrumb } from './DesignAssetBreadcrumb.tsx'
+
+export { DesignComponentDetails } from './DesignComponentDetails.tsx'
+
+export { DesignInstanceControls } from './DesignInstanceControls.tsx'
+
+export { DesignLibrary } from './DesignLibrary.tsx'
+
+export { DesignLibraryButton } from './DesignLibraryButton.tsx'
+
+export { DesignLibraryTabs } from './DesignLibraryTabs.tsx'
+
+export { DesignLibraryWorkspace } from './DesignLibraryWorkspace.tsx'
+
+export { DesignMachineActionRow } from './DesignMachineActionRow.tsx'
+
+export { DesignMachineActions } from './DesignMachineActions.tsx'
+
+export { DesignMachineCondition } from './DesignMachineCondition.tsx'
+
+export { DesignMachineInspector } from './DesignMachineInspector.tsx'
+
+export { DesignMachineSimulator } from './DesignMachineSimulator.tsx'
+
+export { DesignMachineStateProperties } from './DesignMachineStateProperties.tsx'
+
+export { DesignMachineTransitionProperties } from './DesignMachineTransitionProperties.tsx'
+
+export { DesignMachineWorkspace } from './DesignMachineWorkspace.tsx'
+
+export { DesignMiniPreview } from './DesignMiniPreview.tsx'
+
+export { DesignSimulationVariable } from './DesignSimulationVariable.tsx'
+
+export { DesignVariableBindings } from './DesignVariableBindings.tsx'
+
+export { DesignVariableCell } from './DesignVariableCell.tsx'
+
+export { DesignVariableRow } from './DesignVariableRow.tsx'
+
+export { DesignVariablesWorkspace } from './DesignVariablesWorkspace.tsx'
+
+export { DesignVariableValue } from './DesignVariableValue.tsx'
+
+export { DesignLibraryAssets } from './DesignLibraryAssets.tsx'
+
+export { DesignVariableTable } from './DesignVariableTable.tsx'

@@ -1,3 +1,4 @@
+import { syncDesignInstances } from '../../designLibrary/index.ts'
 import { designWorkspaceOf } from './designWorkspaceOf.ts'
 import { workspaceSchema, type Workspace } from '../../workspace/index.ts'
 import type { Json } from '../types/json.ts'
@@ -25,7 +26,7 @@ export function workspaceOf(document: Json): Workspace {
       }
     },
   )
-  return workspaceSchema.parse({
+  const workspace = workspaceSchema.parse({
     ...value,
     noteStates: Object.fromEntries(
       Object.entries((value.noteStates || {}) as Record<string, Json>).filter(
@@ -40,4 +41,17 @@ export function workspaceOf(document: Json): Workspace {
     noteComments: Object.values((value.noteComments || {}) as object),
     documents: Object.values((value.documents || {}) as object),
   })
+  for (const design of [
+    workspace.design,
+    ...workspace.boards.flatMap((board) =>
+      board.design ? [board.design] : [],
+    ),
+  ]) {
+    if (design.library && design.pages)
+      design.pages = design.pages.map((page) => ({
+        ...page,
+        nodes: syncDesignInstances(page.nodes, design.library!),
+      }))
+  }
+  return workspaceSchema.parse(workspace)
 }

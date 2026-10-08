@@ -1,6 +1,54 @@
 import { z } from 'zod'
 
 export const designElementSchema = z.object({
+  bindings: z
+    .object({
+      fill: z.string().max(100).optional(),
+      stroke: z.string().max(100).optional(),
+      color: z.string().max(100).optional(),
+      width: z.string().max(100).optional(),
+      height: z.string().max(100).optional(),
+      radius: z.string().max(100).optional(),
+      fontSize: z.string().max(100).optional(),
+      text: z.string().max(100).optional(),
+      hidden: z.string().max(100).optional(),
+    })
+    .optional(),
+  instance: z
+    .object({
+      componentId: z.string().min(1).max(100),
+      variantId: z.string().min(1).max(100),
+      instanceId: z.string().min(1).max(60),
+      sourceId: z.string().min(1).max(100),
+      overrides: z
+        .array(
+          z.enum([
+            'name',
+            'x',
+            'y',
+            'width',
+            'height',
+            'order',
+            'parentId',
+            'fill',
+            'stroke',
+            'strokeWidth',
+            'radius',
+            'text',
+            'color',
+            'fontSize',
+            'fontFamily',
+            'fontWeight',
+            'textAlign',
+            'imageUrl',
+            'hidden',
+            'locked',
+            'bindings',
+          ]),
+        )
+        .max(24),
+    })
+    .optional(),
   id: z.string().min(1).max(100),
   kind: z.enum([
     'frame',

@@ -1,3 +1,4 @@
+import { resolveDesignBindings } from '@pomegranate/domain/designLibrary'
 import {
   useCallback,
   useEffect,
@@ -110,14 +111,20 @@ export function useDesignCanvas(
   )
   const finishEditing = useCallback(() => patch({ editingId: null }), [patch])
   const nodes = useMemo<DesignFlowNode[]>(() => {
-    const effective = applyDesignChanges(page.nodes, {
-      ...Object.fromEntries(
-        peers
-          .flatMap((peer) => peer.dragging || [])
-          .map((item) => [item.id, { x: item.position.x, y: item.position.y }]),
-      ),
-      ...drafts,
-    })
+    const effective = applyDesignChanges(
+      resolveDesignBindings(page.nodes, model.library, model.variableModes),
+      {
+        ...Object.fromEntries(
+          peers
+            .flatMap((peer) => peer.dragging || [])
+            .map((item) => [
+              item.id,
+              { x: item.position.x, y: item.position.y },
+            ]),
+        ),
+        ...drafts,
+      },
+    )
     return designTreeRows(effective, [], false).map(
       ({ node: element }, index) => {
         const ancestors = designAncestors(effective, element.id)
@@ -176,6 +183,8 @@ export function useDesignCanvas(
     )
   }, [
     page.nodes,
+    model.library,
+    model.variableModes,
     peers,
     drafts,
     selection,
@@ -290,7 +299,7 @@ export function useDesignCanvas(
   }, [flow, model])
   const keyboard = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
-      if (event.defaultPrevented) return
+      if (event.defaultPrevented || model.libraryView !== 'canvas') return
       if (
         (event.target as HTMLElement).closest(
           'input, textarea, select, [contenteditable], [role="combobox"], [role="menu"], [role="separator"]',

@@ -1,6 +1,19 @@
 import type { DesignEditorState } from '../types/designEditorState.ts'
 export function createDesignEditorState(): DesignEditorState {
   return {
+    leftTab: 'layers',
+    libraryView: 'canvas',
+    libraryQuery: '',
+    componentId: null,
+    variantId: '',
+    machineId: null,
+    machineDrafts: {},
+    machineSelection: null,
+    variableModes: {},
+    libraryCollectionId: '',
+    libraryModeDraft: '',
+    libraryError: '',
+    simulation: null,
     panelPositions: { left: null, right: null },
     dockMode: 'split',
     dockActive: 'left',

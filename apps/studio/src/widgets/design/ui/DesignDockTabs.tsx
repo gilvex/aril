@@ -16,10 +16,10 @@ export function DesignDockTabs({ model }: DesignEditorProps) {
       aria-label={t('Panel tabs')}
     >
       <button aria-pressed={model.dockActive === 'left'} onClick={layers}>
-        {t('Layers')}
+        {t(model.leftTab === 'library' ? 'Library' : 'Layers')}
       </button>
       <button aria-pressed={model.dockActive === 'right'} onClick={inspector}>
-        {t('Design')}
+        {t(model.libraryView === 'machine' ? 'Behavior' : 'Design')}
       </button>
     </div>
   )

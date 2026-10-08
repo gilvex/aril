@@ -14,3 +14,17 @@ export { useDesignPanelCornerResize } from './useDesignPanelCornerResize.ts'
 export { useDesignPanelDrag } from './useDesignPanelDrag.ts'
 export { useDesignDockMenu } from './useDesignDockMenu.ts'
 export { useDesignPanel } from './useDesignPanel.ts'
+
+export { useDesignContextMenu } from './useDesignContextMenu.ts'
+
+export { useDesignGroupingMenu } from './useDesignGroupingMenu.ts'
+
+export { useDesignLayerActions } from './useDesignLayerActions.ts'
+
+export { useDesignLibrary } from './useDesignLibrary.ts'
+
+export { useDesignStructureActions } from './useDesignStructureActions.ts'
+
+export { useDesignMachineWorkspace } from './useDesignMachineWorkspace.ts'
+
+export { useDesignVariables } from './useDesignVariables.ts'

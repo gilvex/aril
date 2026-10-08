@@ -1,3 +1,5 @@
+import { DesignLibrary } from './DesignLibrary.tsx'
+import { DesignMachineInspector } from './DesignMachineInspector.tsx'
 import { DesignPanel } from './DesignPanel.tsx'
 import { DesignDockTabs } from './DesignDockTabs.tsx'
 import { DesignDockPreview } from './DesignDockPreview.tsx'
@@ -27,10 +29,18 @@ export function DesignPanels({
     [close],
   )
   const closeInspector = useCallback(() => patch({ inspector: false }), [patch])
-  const layers = model.layers && <DesignLayers model={model} />
+  const layers =
+    model.layers &&
+    (model.leftTab === 'library' ? (
+      <DesignLibrary model={model} />
+    ) : (
+      <DesignLayers model={model} />
+    ))
   const inspector =
     model.inspector &&
-    (model.styles ? (
+    (model.libraryView === 'machine' ? (
+      <DesignMachineInspector model={model} />
+    ) : model.styles ? (
       <DesignSettings
         design={design}
         update={update}
@@ -69,7 +79,9 @@ export function DesignPanels({
       onOpenChange={change}
       title={t(
         model.layers
-          ? 'Layers'
+          ? model.leftTab === 'library'
+            ? 'Library'
+            : 'Layers'
           : model.styles
             ? 'Design defaults'
             : 'Design properties',

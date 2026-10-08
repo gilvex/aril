@@ -1,3 +1,8 @@
+import {
+  createExampleDesignLibrary,
+  type DesignLibrary,
+} from '@pomegranate/domain/designLibrary'
+import { documentOf } from '@pomegranate/domain/collaboration'
 import { Client } from '@modelcontextprotocol/client'
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio'
 import { makeDesignElement, type DesignPage } from '@pomegranate/domain/design'
@@ -256,6 +261,77 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
         })
       ).page.nodes,
       [],
+    )
+    const emptyLibrary = await read<{ library: DesignLibrary }>(
+      'get_design_library',
+    )
+    assert.equal(Object.keys(emptyLibrary.library.components).length, 0)
+    const withLibrary = structuredClone(instance.store.read().workspace)
+    withLibrary.design.library = createExampleDesignLibrary('agent')
+    const canonical = documentOf(withLibrary) as {
+      design: { library: unknown }
+    }
+    await read('apply_changes', {
+      baseRevision: instance.store.read().revision,
+      requestId: randomUUID(),
+      operations: [
+        { path: ['design', 'library'], after: canonical.design.library },
+      ],
+    })
+    const savedLibrary = await read<{ library: DesignLibrary }>(
+      'get_design_library',
+    )
+    assert.equal(
+      savedLibrary.library.components['agent-button'].variants.idle.nodes[0]
+        .text,
+      'Deploy server',
+    )
+    const compactLibrary = await read<{
+      workspace: {
+        design: {
+          library: { components: { variants: { layers: number }[] }[] }
+        }
+      }
+    }>('get_workspace')
+    assert.equal(
+      compactLibrary.workspace.design.library.components[0].variants[0].layers,
+      1,
+    )
+    await read('apply_changes', {
+      baseRevision: instance.store.read().revision,
+      requestId: randomUUID(),
+      operations: [
+        {
+          path: [
+            'design',
+            'library',
+            'components',
+            'agent-button',
+            'variants',
+            'idle',
+            'nodes',
+            'agent-button-root',
+            'text',
+          ],
+          before: 'Deploy server',
+          after: 'Start server',
+        },
+      ],
+    })
+    assert.equal(
+      (await read<{ library: DesignLibrary }>('get_design_library')).library
+        .components['agent-button'].variants.idle.nodes[0].text,
+      'Start server',
+    )
+    assert.equal(
+      Object.keys(
+        (
+          await read<{ library: DesignLibrary }>('get_design_library', {
+            boardId,
+          })
+        ).library.components,
+      ).length,
+      0,
     )
   } finally {
     await client.close()

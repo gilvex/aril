@@ -33,6 +33,7 @@ export function DesignPanelActions({
       }),
     [patch, inspector, styles, mobile],
   )
+  if (model.libraryView === 'variables') return null
   return (
     <div
       className={
@@ -42,16 +43,18 @@ export function DesignPanelActions({
             (boardDesign ? ' board-design-actions' : '')
       }
     >
-      <button
-        className="button"
-        title={t('Styles')}
-        aria-label={t('Styles')}
-        aria-expanded={inspector && styles}
-        onClick={toggleStyles}
-      >
-        <Palette size={18} />
-        <span>{t('Styles')}</span>
-      </button>
+      {model.libraryView !== 'machine' && (
+        <button
+          className="button"
+          title={t('Styles')}
+          aria-label={t('Styles')}
+          aria-expanded={inspector && styles}
+          onClick={toggleStyles}
+        >
+          <Palette size={18} />
+          <span>{t('Styles')}</span>
+        </button>
+      )}
       <button
         className="button"
         title={t('Properties')}

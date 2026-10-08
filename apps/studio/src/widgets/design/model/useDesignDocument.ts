@@ -1,3 +1,10 @@
+import {
+  emptyDesignLibrary,
+  syncDesignInstances,
+  markDesignOverrides,
+} from '@pomegranate/domain/designLibrary'
+import { designSchema } from '@pomegranate/domain/design'
+import { useDesignLibrary } from './useDesignLibrary.ts'
 import { useCallback, useMemo, useEffect } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import {
@@ -17,12 +24,41 @@ import type { DesignBoardProps } from '../types/designBoardProps.ts'
 
 export function useDesignDocument({
   design,
-  update,
+  update: updateDocument,
   workspaceId,
 }: DesignBoardProps) {
   const { t } = useTranslation()
   const state = useDesignEditorState(workspaceId)
   const { patch } = state
+  const library = useMemo(
+    () => design.library || emptyDesignLibrary(),
+    [design.library],
+  )
+  const update = useCallback(
+    (next: typeof design) => {
+      const synchronized = next.library
+        ? {
+            ...next,
+            pages: next.pages?.map((page) => ({
+              ...page,
+              nodes: syncDesignInstances(page.nodes, next.library!),
+            })),
+          }
+        : next
+      const result = designSchema.safeParse(synchronized)
+      if (!result.success) {
+        patch({
+          libraryError: t(
+            'That change would leave invalid or oversized design assets.',
+          ),
+        })
+        return
+      }
+      patch({ libraryError: '' })
+      updateDocument(result.data)
+    },
+    [patch, t, updateDocument],
+  )
   const pages = useMemo(
     () =>
       design.pages?.length
@@ -30,29 +66,71 @@ export function useDesignDocument({
         : [{ id: 'design-main', name: t('Page 1'), nodes: [] }],
     [design.pages, t],
   )
-  const page = pages.find((item) => item.id === state.pageId) || pages[0]
+  const documentPage =
+    pages.find((item) => item.id === state.pageId) || pages[0]
+  const component = state.componentId
+    ? library.components[state.componentId]
+    : undefined
+  const variant = component
+    ? component.variants[state.variantId] ||
+      Object.values(component.variants)[0]
+    : undefined
+  const page = useMemo(
+    () =>
+      variant
+        ? { ...variant, id: `component:${component!.id}:${variant.id}` }
+        : documentPage,
+    [variant, component, documentPage],
+  )
   useEffect(() => {
     try {
-      sessionStorage.setItem(`aril:designPage:${workspaceId}`, page.id)
+      sessionStorage.setItem(`aril:designPage:${workspaceId}`, documentPage.id)
     } catch {
       /* Editing remains available without storage. */
     }
-  }, [page.id, workspaceId])
+  }, [documentPage.id, workspaceId])
   const selected = useMemo(
     () => page.nodes.filter((node) => state.selection.includes(node.id)),
     [page.nodes, state.selection],
   )
   const save = useCallback(
-    (nodes: DesignElement[]) =>
-      update({
-        ...design,
-        pages: pages.map((item) =>
-          item.id === page.id
-            ? { ...item, nodes: normalizeDesignGroups(nodes) }
-            : item,
-        ),
-      }),
-    [design, page.id, pages, update],
+    (nodes: DesignElement[]) => {
+      if (component && variant) {
+        update({
+          ...design,
+          library: {
+            ...library,
+            components: {
+              ...library.components,
+              [component.id]: {
+                ...component,
+                variants: {
+                  ...component.variants,
+                  [variant.id]: {
+                    ...variant,
+                    nodes: normalizeDesignGroups(nodes),
+                  },
+                },
+              },
+            },
+          },
+        })
+      } else
+        update({
+          ...design,
+          pages: pages.map((item) =>
+            item.id === page.id
+              ? {
+                  ...item,
+                  nodes: normalizeDesignGroups(
+                    markDesignOverrides(page.nodes, nodes),
+                  ),
+                }
+              : item,
+          ),
+        })
+    },
+    [component, variant, design, library, pages, page.id, page.nodes, update],
   )
   const select = useCallback(
     (id: string, multiple = false) => {
@@ -71,17 +149,34 @@ export function useDesignDocument({
     [patch, state.selection, state.compact, state.layers],
   )
   const selectPage = useCallback(
-    (pageId: string) =>
+    (pageId: string) => {
+      const componentEntry = Object.values(library.components)
+        .flatMap((asset) =>
+          Object.values(asset.variants).map((variant) => ({ asset, variant })),
+        )
+        .find(
+          ({ asset, variant }) =>
+            `component:${asset.id}:${variant.id}` === pageId,
+        )
       patch({
-        pageId,
+        ...(componentEntry
+          ? {
+              componentId: componentEntry.asset.id,
+              variantId: componentEntry.variant.id,
+              leftTab: 'library' as const,
+            }
+          : { pageId, componentId: null }),
+        libraryView: 'canvas',
+        machineSelection: null,
         pagesOpen: false,
         pageQuery: '',
         selection: [],
         drafts: {},
         editingId: null,
         inspector: false,
-      }),
-    [patch],
+      })
+    },
+    [patch, library.components],
   )
   const addPage = useCallback(() => {
     if (pages.length >= 30) return
@@ -245,8 +340,24 @@ export function useDesignDocument({
     save,
     selectStructure,
   )
+  const assets = useDesignLibrary({
+    design,
+    update,
+    library,
+    state,
+    page: documentPage,
+    selected,
+    component,
+    variant,
+  })
   return {
     ...state,
+    ...assets,
+    library,
+    component,
+    variant,
+    design,
+    updateDesign: update,
     pages,
     page,
     selected,

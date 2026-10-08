@@ -1,3 +1,4 @@
+import { designLibrarySummary } from './designLibrarySummary.ts'
 import { McpServer } from '@modelcontextprotocol/server'
 import { operationsSchema } from '@pomegranate/domain/collaboration'
 import { z } from 'zod'
@@ -57,6 +58,7 @@ export function createMcpServer(config: AgentConfig) {
                 ...state.workspace,
                 design: {
                   ...state.workspace.design,
+                  library: designLibrarySummary(state.workspace.design.library),
                   ...(state.workspace.design.pages
                     ? {
                         pages: state.workspace.design.pages.map((page) => ({
@@ -75,6 +77,7 @@ export function createMcpServer(config: AgentConfig) {
                   name: b.name,
                   description: b.description,
                   sections: b.sections || ['canvas', 'wireframes'],
+                  library: designLibrarySummary(b.design?.library),
                   designPages:
                     b.design?.pages?.map((page) => ({
                       id: page.id,
@@ -114,6 +117,33 @@ export function createMcpServer(config: AgentConfig) {
       }),
   )
   server.registerTool(
+    'get_design_library',
+    {
+      description:
+        'Read the full component definitions, variants, typed variable collections/modes, and state machines for a design. Supply boardId for a board design; omit for workspace Design. Component variant nodes are arrays in reads and ID-keyed objects in operations. Instances link nodes through instance metadata; master edits synchronize their non-overridden properties. Simulation is local and does not execute infrastructure.',
+      inputSchema: z.object({ boardId: z.string().min(1).max(100).optional() }),
+      annotations: read,
+    },
+    ({ boardId }) =>
+      result(async () => {
+        const state = await api<AgentWorkspace>('workspace')
+        const design = boardId
+          ? state.workspace.boards.find((board) => board.id === boardId)?.design
+          : state.workspace.design
+        if (!design) throw new Error('Board design not found.')
+        return {
+          revision: state.revision,
+          library: design.library || {
+            components: {},
+            collections: {},
+            variables: {},
+            machines: {},
+          },
+          url: `${config.origin}/?${new URLSearchParams({ workspace: state.studio.id, view: boardId ? 'canvas' : 'design', ...(boardId ? { board: boardId, canvas: 'design' } : {}) })}`,
+        }
+      }),
+  )
+  server.registerTool(
     'get_design_page',
     {
       description:
@@ -149,7 +179,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_schema',
     {
       description:
-        'Get the document JSON schema before creating nodes, boards, wireframes, requirements, or design pages/layers. Reads use arrays, but edits address collections by ID. Inserted boards use ID-keyed nodes, edges, and wireframe.nodes/edges; design.pages and each design page’s nodes are also ID-keyed in operations. Empty collections are {}. Initialize design.pages if absent before adding nested pages. Omit before when creating; omit after when deleting. Updates require the exact current before value.',
+        'Get the document JSON schema before creating nodes, boards, wireframes, requirements, or design pages/layers. Reads use arrays, but edits address collections by ID. Inserted boards use ID-keyed nodes, edges, and wireframe.nodes/edges; design.pages and each design page’s nodes are also ID-keyed in operations. Empty collections are {}. Initialize design.pages if absent before adding nested pages. Design library collections are ID-keyed, including components/variants and variant nodes in operations. Use get_design_library before editing assets. Initialize library with four empty records only when absent. Omit before when creating; omit after when deleting. Updates require the exact current before value.',
       inputSchema: z.object({}),
       annotations: read,
     },

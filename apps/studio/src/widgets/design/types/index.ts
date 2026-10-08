@@ -23,3 +23,23 @@ export type { DesignLayerControlsProps } from './designLayerControlsProps.ts'
 export type { DesignDockEdge } from './designDockEdge.ts'
 export type { DesignDockRect } from './designDockRect.ts'
 export type { DesignDockLayout } from './designDockLayout.ts'
+
+export type { DesignMachineActionRowProps } from './designMachineActionRowProps.ts'
+
+export type { DesignMachineActionsProps } from './designMachineActionsProps.ts'
+
+export type { DesignMachineConditionProps } from './designMachineConditionProps.ts'
+
+export type { DesignMiniPreviewProps } from './designMiniPreviewProps.ts'
+
+export type { DesignSimulationVariableProps } from './designSimulationVariableProps.ts'
+
+export type { DesignVariableCellProps } from './designVariableCellProps.ts'
+
+export type { DesignVariableRowProps } from './designVariableRowProps.ts'
+
+export type { DesignVariableValueProps } from './designVariableValueProps.ts'
+
+export type { UseDesignLibraryProps } from './useDesignLibraryProps.ts'
+
+export type { DesignVariableTableProps } from './designVariableTableProps.ts'

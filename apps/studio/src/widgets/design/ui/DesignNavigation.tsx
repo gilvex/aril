@@ -1,3 +1,5 @@
+import { DesignLibraryButton } from './DesignLibraryButton.tsx'
+import { DesignAssetBreadcrumb } from './DesignAssetBreadcrumb.tsx'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import { DesignLayersButton } from './DesignLayersButton.tsx'
 import { DesignPagePicker } from './DesignPagePicker.tsx'
@@ -11,8 +13,13 @@ export function DesignNavigation({ model, navigation }: DesignNavigationProps) {
       )}
       {!compact && (
         <div className="design-page-tools">
-          <DesignPagePicker model={model} />
+          {model.component || model.libraryView !== 'canvas' ? (
+            <DesignAssetBreadcrumb model={model} />
+          ) : (
+            <DesignPagePicker model={model} />
+          )}
           <DesignLayersButton model={model} />
+          <DesignLibraryButton model={model} />
         </div>
       )}
     </div>

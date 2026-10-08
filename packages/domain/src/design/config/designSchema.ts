@@ -1,6 +1,8 @@
 import { z } from 'zod'
 import { designPageSchema } from './designPageSchema.ts'
+import { designLibrarySchema } from '../../designLibrary/config/designLibrarySchema.ts'
 export const designSchema = z.object({
+  library: designLibrarySchema.optional(),
   pages: z
     .array(designPageSchema)
     .max(30)

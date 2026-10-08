@@ -1,6 +1,20 @@
 import type { DesignElement } from '@pomegranate/domain/design'
 import type { DesignDockEdge } from './designDockEdge.ts'
 export type DesignEditorState = {
+  leftTab: 'layers' | 'library'
+  libraryView: 'canvas' | 'variables' | 'machine'
+  libraryQuery: string
+  componentId: string | null
+  variantId: string
+  machineId: string | null
+  machineDrafts: Record<string, { x: number; y: number }>
+  machineSelection: { kind: 'state' | 'transition'; id: string } | null
+  variableModes: Record<string, string>
+  libraryCollectionId: string
+  libraryModeDraft: string
+  libraryError: string
+  simulation:
+    import('@pomegranate/domain/designLibrary').DesignSimulation | null
   panelPositions: {
     left: { x: number; y: number } | null
     right: { x: number; y: number } | null

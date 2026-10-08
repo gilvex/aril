@@ -14,7 +14,7 @@ export const operationsSchema = z
             ),
         )
         .min(1)
-        .max(8),
+        .max(12),
       before: z.json().optional(),
       after: z.json().optional(),
     }),

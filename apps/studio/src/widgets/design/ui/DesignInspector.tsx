@@ -1,3 +1,5 @@
+import { DesignInstanceControls } from './DesignInstanceControls.tsx'
+import { DesignVariableBindings } from './DesignVariableBindings.tsx'
 import { DesignImageUrl } from './DesignImageUrl.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { MoreHorizontal, X } from 'lucide-react'
@@ -73,7 +75,9 @@ export function DesignInspector({ model }: DesignEditorProps) {
               )}
             </p>
           )}
+          <DesignInstanceControls model={model} />
           <DesignGeometry model={model} />
+          <DesignVariableBindings model={model} />
           {isDesignContainer(node) && <DesignContainerSettings model={model} />}
           <DesignPaint model={model} />
           {!isDesignContainer(node) && node.kind !== 'image' && (

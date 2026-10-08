@@ -16,6 +16,25 @@ export function duplicateDesignElements(
     return {
       ...node,
       id: mapping.get(node.id)!,
+      ...(node.instance &&
+      nodes
+        .filter(
+          (item) => item.instance?.instanceId === node.instance!.instanceId,
+        )
+        .every((item) => ids.has(item.id))
+        ? {
+            instance: {
+              ...node.instance,
+              instanceId:
+                mapping.get(
+                  source.find(
+                    (item) =>
+                      item.instance?.instanceId === node.instance?.instanceId,
+                  )?.id || '',
+                ) || node.instance.instanceId,
+            },
+          }
+        : { instance: undefined }),
       parentId,
       ...(node.maskId ? { maskId: mapping.get(node.maskId) } : {}),
       order: order + index,

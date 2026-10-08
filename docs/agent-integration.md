@@ -69,3 +69,10 @@ Scope retains the `requirements` API path. `get_schema` exposes optional decisio
 
 
 Shared field edits now appear in browsers as transient signed live previews before autosave. MCP reads still return the authoritative saved revision, not another member's unsaved field draft. Re-read before applying a targeted change, and keep existing revision/conflict checks. Field focus, selected text ranges and cursor positions are ephemeral presence, not writable workspace fields; do not synthesize human presence or publish live preview packets through agent tools.
+
+
+### Design Library
+
+`get_design_library({ boardId? })` reads components/variants, variable collections/modes and state machines for workspace Design or one board design. `get_workspace` includes compact library summaries; `full: true` includes full definitions. Saved edits still use `apply_changes` and the current revision. Variant nodes, like page nodes, are addressed by ID in operations.
+
+Component master edits synchronize instance fields that are not listed in per-node `instance.overrides`. Variable bindings resolve locally for the selected collection mode. State-machine runtime values and event traces are local preview state, never backend actions. The companion skill documents schema paths, reference constraints, and safe editing examples. Existing designs need no data migration; Library is optional.
