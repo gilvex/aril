@@ -100,9 +100,20 @@ test('Scope preserves node associations and only offers available visual destina
   const targets = scopeTargets(w).filter((t) => t.boardId === board.id)
   assert.deepEqual(
     targets.map((t) => t.kind),
-    ['design'],
+    ['design', 'design'],
   )
-  assert.equal(targets[0].pageId, 'board-page')
+  assert.equal(targets[1].pageId, 'board-page')
+  board.design.pages = []
+  board.nodes.forEach((node) => {
+    node.data.requirements = []
+  })
+  item.links = [{ kind: 'design', boardId: board.id }]
+  assert.equal(workspaceSchema.safeParse(w).success, true)
+  assert.equal(
+    scopeTargets(w).filter((target) => target.boardId === board.id).length,
+    1,
+  )
+  assert.equal(collectScope(w, [item], board.id, 'all').visibleCount, 1)
   assert.equal(
     requirementSchema.safeParse({ ...item, links: [{ kind: 'wireframes' }] })
       .success,

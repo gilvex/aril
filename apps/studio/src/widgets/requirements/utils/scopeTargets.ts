@@ -11,13 +11,15 @@ export function scopeTargets(workspace: Workspace): ScopeTarget[] {
       add({ kind: 'canvas', boardId: board.id }, board.name, 'Blueprint')
     if (sections.includes('wireframes'))
       add({ kind: 'wireframes', boardId: board.id }, board.name, 'Wireframes')
-    if (sections.includes('design'))
+    if (sections.includes('design')) {
+      add({ kind: 'design', boardId: board.id }, board.name, 'Design')
       for (const page of board.design?.pages || [])
         add(
           { kind: 'design', boardId: board.id, pageId: page.id },
           page.name,
           board.name,
         )
+    }
   }
   for (const page of workspace.design.pages || [])
     add({ kind: 'design', pageId: page.id }, page.name, 'Design')

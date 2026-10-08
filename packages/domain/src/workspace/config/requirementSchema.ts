@@ -33,7 +33,7 @@ export const requirementSchema = z.object({
         })
         .refine((link) =>
           link.kind === 'design'
-            ? !!link.pageId
+            ? !!link.pageId || !!link.boardId
             : !!link.boardId && !link.pageId,
         ),
     )
