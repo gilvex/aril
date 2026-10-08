@@ -1,3 +1,4 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useMemo } from 'react'
 import { useReactFlow } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -9,6 +10,8 @@ export function useDesignLayerActions(
   model: DesignEditorModel,
   targetId?: string,
 ) {
+  const role = useWorkspaceRole()
+  const readOnly = role === 'viewer' || role === null
   const { t } = useTranslation()
   const flow = useReactFlow()
   const grouping = useDesignGroupingMenu(model, targetId)
@@ -29,7 +32,7 @@ export function useDesignLayerActions(
         ),
       )
     }
-    return [
+    const actions: EditorMenuAction[] = [
       ...grouping,
       {
         id: 'focus',
@@ -100,5 +103,8 @@ export function useDesignLayerActions(
         run: () => model.remove(ids),
       },
     ]
-  }, [flow, model, t, targetId, grouping])
+    return readOnly
+      ? actions.filter((action) => action.id === 'focus')
+      : actions
+  }, [flow, model, t, targetId, grouping, readOnly])
 }

@@ -27,7 +27,10 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
     [left, patch],
   )
   const limit = designPanelLimit(model, docked)
-  const width = Math.min(left ? model.layersWidth : model.inspectorWidth, limit)
+  const width = Math.min(
+    left ? Math.max(280, model.layersWidth) : model.inspectorWidth,
+    limit,
+  )
   const heightLimit = Math.max(96, model.panelVerticalSpace - 16)
   const height = Math.min(
     left ? model.layersHeight : model.inspectorHeight,
@@ -77,7 +80,7 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
         tabIndex={0}
         aria-label={t(left ? 'Resize layers panel' : 'Resize properties panel')}
         aria-orientation="vertical"
-        aria-valuemin={220}
+        aria-valuemin={Math.min(left ? 280 : 220, limit)}
         aria-valuemax={Math.floor(limit)}
         aria-valuenow={Math.round(width)}
         title={t(

@@ -1,5 +1,6 @@
 import type { DesignElement } from '@pomegranate/domain/design'
 export type DesignEditorState = {
+  layerActionsId: string | null
   compact: boolean
   panelSpace: number
   panelVerticalSpace: number

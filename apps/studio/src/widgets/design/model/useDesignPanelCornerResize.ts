@@ -25,7 +25,10 @@ export function useDesignPanelCornerResize({
   const resize = useCallback(
     (w: number, h: number) => {
       const nextWidth = Math.round(
-        Math.max(Math.min(220, widthLimit), Math.min(widthLimit, w)),
+        Math.max(
+          Math.min(left ? 280 : 220, widthLimit),
+          Math.min(widthLimit, w),
+        ),
       )
       const nextHeight = Math.round(
         Math.max(Math.min(180, heightLimit), Math.min(heightLimit, h)),
@@ -94,7 +97,7 @@ export function useDesignPanelCornerResize({
       event.stopPropagation()
       const step = event.shiftKey ? 40 : 10
       if (event.key === 'Enter' || event.key === ' ') return reset()
-      if (event.key === 'Home') return resize(220, 180)
+      if (event.key === 'Home') return resize(left ? 280 : 220, 180)
       if (event.key === 'End') return resize(widthLimit, heightLimit)
       resize(
         width +

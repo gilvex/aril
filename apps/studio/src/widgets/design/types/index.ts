@@ -18,3 +18,5 @@ export type { DesignNavigationProps } from './designNavigationProps.ts'
 export type { DesignPanelsProps } from './designPanelsProps.ts'
 export type { DesignPanelProps } from './designPanelProps.ts'
 export type { DesignPanelCornerProps } from './designPanelCornerProps.ts'
+
+export type { DesignLayerControlsProps } from './designLayerControlsProps.ts'

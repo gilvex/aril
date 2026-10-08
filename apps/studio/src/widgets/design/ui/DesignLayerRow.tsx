@@ -1,21 +1,13 @@
-import {
-  Eye,
-  EyeOff,
-  Lock,
-  Unlock,
-  ChevronDown,
-  ChevronRight,
-  MoreHorizontal,
-  Scan,
-} from 'lucide-react'
+import { ChevronDown, ChevronRight, Scan } from 'lucide-react'
 import { isDesignContainer } from '@pomegranate/domain/design'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { useCallback } from 'react'
+import { useCallback, type MouseEvent } from 'react'
 import { useReactFlow } from '@xyflow/react'
-import { EditorContextMenu, EditorActionMenu } from '@/shared/ui/index.tsx'
+import { EditorContextMenu } from '@/shared/ui/index.tsx'
 import { useDesignLayerActions } from '../model/useDesignLayerActions.ts'
 import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignLayerRowProps } from '../types/designLayerRowProps.ts'
+import { DesignLayerControls } from './DesignLayerControls.tsx'
 export function DesignLayerRow({ node, model, depth }: DesignLayerRowProps) {
   const { t } = useTranslation()
   const Icon = node.maskId ? Scan : designLayerIcons[node.kind]
@@ -45,70 +37,52 @@ export function DesignLayerRow({ node, model, depth }: DesignLayerRowProps) {
         : [...model.collapsed, node.id],
     })
   }, [model, node.id])
+  const selectLayer = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      model.select(node.id, event.ctrlKey || event.metaKey || event.shiftKey)
+    },
+    [model, node.id],
+  )
   return (
     <EditorContextMenu actions={actions} label={t('Layer actions')}>
       <div
         onContextMenuCapture={prepareMenu}
-        style={{ paddingLeft: 6 + depth * 14 }}
         className={`design-layer-row${model.selection.includes(node.id) ? ' selected' : ''}${node.parentId ? ' child' : ''}${node.hidden ? ' hidden' : ''}`}
       >
-        {isDesignContainer(node) && (
+        <div
+          className="design-layer-content"
+          style={{ paddingLeft: 6 + depth * 12 }}
+        >
+          {isDesignContainer(node) && (
+            <button
+              className="icon-button"
+              aria-label={t(
+                model.collapsed.includes(node.id)
+                  ? 'Expand child layers'
+                  : 'Collapse child layers',
+              )}
+              aria-expanded={!model.collapsed.includes(node.id)}
+              onClick={toggleFrame}
+            >
+              {model.collapsed.includes(node.id) ? (
+                <ChevronRight size={13} />
+              ) : (
+                <ChevronDown size={13} />
+              )}
+            </button>
+          )}
           <button
-            className="icon-button"
-            aria-label={t(
-              model.collapsed.includes(node.id)
-                ? 'Expand child layers'
-                : 'Collapse child layers',
-            )}
-            aria-expanded={!model.collapsed.includes(node.id)}
-            onClick={toggleFrame}
+            className="design-layer-select"
+            onDoubleClick={focusLayer}
+            onClick={selectLayer}
+            aria-pressed={model.selection.includes(node.id)}
+            title={node.name}
           >
-            {model.collapsed.includes(node.id) ? (
-              <ChevronRight size={13} />
-            ) : (
-              <ChevronDown size={13} />
-            )}
+            <Icon size={15} />
+            <span>{node.name}</span>
           </button>
-        )}
-        <button
-          className="design-layer-select"
-          onDoubleClick={focusLayer}
-          onClick={(event) =>
-            model.select(
-              node.id,
-              event.ctrlKey || event.metaKey || event.shiftKey,
-            )
-          }
-          aria-pressed={model.selection.includes(node.id)}
-          title={node.name}
-        >
-          <Icon size={15} />
-          <span>{node.name}</span>
-        </button>
-        <button
-          className="icon-button"
-          aria-label={t(node.hidden ? 'Show layer' : 'Hide layer')}
-          title={t(node.hidden ? 'Show layer' : 'Hide layer')}
-          onClick={() => model.edit({ hidden: !node.hidden }, [node.id])}
-        >
-          {node.hidden ? <EyeOff size={13} /> : <Eye size={13} />}
-        </button>
-        <button
-          className="icon-button"
-          aria-label={t(node.locked ? 'Unlock layer' : 'Lock layer')}
-          title={t(node.locked ? 'Unlock layer' : 'Lock layer')}
-          onClick={() => model.edit({ locked: !node.locked }, [node.id])}
-        >
-          {node.locked ? <Lock size={13} /> : <Unlock size={13} />}
-        </button>
-        <EditorActionMenu actions={actions} label={t('Layer actions')}>
-          <button
-            className="icon-button layer-more"
-            aria-label={t('Layer actions')}
-          >
-            <MoreHorizontal size={13} />
-          </button>
-        </EditorActionMenu>
+        </div>
+        <DesignLayerControls node={node} model={model} actions={actions} />
       </div>
     </EditorContextMenu>
   )

@@ -1,0 +1,154 @@
+.design-layers {
+  container: layerPanel / inline-size;
+}
+.design-layers .design-layers-list {
+  padding: 4px 0;
+}
+.design-layers .design-layer-row {
+  --layer-row-background: var(--surface);
+  background: var(--layer-row-background);
+  border-radius: 0;
+  gap: 0;
+}
+.design-layers .design-layer-row:hover {
+  --layer-row-background: var(--surface-muted);
+}
+.design-layers .design-layer-row.selected {
+  --layer-row-background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+}
+.design-layer-content {
+  display: flex;
+  align-items: center;
+  flex: 1 0 auto;
+  min-width: max-content;
+}
+.design-layer-content > .icon-button {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 28px;
+  padding: 2px;
+}
+.design-layers .design-layer-select {
+  min-height: 32px;
+  padding-block: 5px;
+}
+.design-layers .design-layer-row.child .design-layer-select {
+  padding-left: 6px;
+}
+.design-layer-content > .design-layer-select:first-child {
+  margin-left: 20px;
+}
+.design-layer-controls {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  flex: 0 0 84px;
+  width: 84px;
+  margin-left: 8px;
+  background: var(--layer-row-background);
+  box-shadow: -1px 0 var(--line);
+}
+.design-layer-controls > .icon-button {
+  flex: 0 0 28px;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  padding: 4px;
+  opacity: 0;
+  pointer-events: none;
+}
+.design-layer-controls > .layer-state,
+.design-layer-row:is(:hover, :focus-within, .selected)
+  .design-layer-controls
+  > .icon-button,
+.design-layer-controls > [data-state='open'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+.design-layers[data-compact] .design-layer-controls {
+  flex-basis: 44px;
+  width: 44px;
+}
+.design-layers[data-compact] .design-layer-controls > .layer-quick {
+  display: none;
+}
+.design-layers[data-compact] .design-layer-controls > .layer-more {
+  opacity: 1;
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  flex-basis: 44px;
+}
+.design-layers[data-compact] .design-layer-select {
+  min-height: 44px;
+}
+@container layerPanel (max-width: 277px) {
+  .design-layer-controls {
+    flex-basis: 32px;
+    width: 32px;
+  }
+  .design-layer-controls > .layer-quick {
+    display: none;
+  }
+  .design-layer-controls > .layer-more {
+    opacity: 1;
+    pointer-events: auto;
+    flex-basis: 32px;
+    width: 32px;
+  }
+}
+.design-layer-action-sheet {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+.design-layer-action-sheet > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.design-layer-action-sheet > header strong {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.design-layer-action-sheet > header button {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+.design-layer-action-list {
+  overflow: auto;
+  padding: 8px 12px;
+}
+.design-layer-action-list > button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  color: var(--text-strong);
+  padding: 10px 12px;
+}
+.design-layer-action-list > button.separated {
+  border-top: 1px solid var(--line);
+  margin-top: 6px;
+}
+.design-layer-action-list > button.danger {
+  color: var(--accent);
+}
+.design-layer-action-list > button:disabled {
+  opacity: 0.4;
+}
+.design-layer-action-list > button:not(:disabled):hover {
+  background: var(--surface-muted);
+}

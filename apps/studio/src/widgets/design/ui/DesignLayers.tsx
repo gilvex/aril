@@ -7,6 +7,8 @@ import {
 import { X } from 'lucide-react'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
+import '../designLayerList.css'
+import { DesignLayerActionSheet } from './DesignLayerActionSheet.tsx'
 import { DesignLayerRow } from './DesignLayerRow.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { designTreeRows } from '../utils/designTreeRows.ts'
@@ -19,7 +21,7 @@ export function DesignLayers({ model }: DesignEditorProps) {
         .closest('.main-area')
         ?.querySelector<HTMLButtonElement>('[data-design-tool="layers"]')
         ?.focus()
-      patch({ layers: false })
+      patch({ layers: false, layerActionsId: null })
     },
     [patch],
   )
@@ -43,12 +45,22 @@ export function DesignLayers({ model }: DesignEditorProps) {
     )
       event.stopPropagation()
   }, [])
+  const actionsOpen = model.compact && !!model.layerActionsId
   return (
-    <aside className="design-layers" aria-label={t('Layers')}>
-      <header className="design-layers-heading">
+    <aside
+      className="design-layers"
+      data-compact={model.compact || undefined}
+      aria-label={t('Layers')}
+    >
+      <header
+        className="design-layers-heading"
+        style={actionsOpen ? { display: 'none' } : undefined}
+      >
         <SurfaceGrip />
         <strong>{t('Layers')}</strong>
-        <small>{model.page.nodes.length}/500</small>
+        <small title={`${model.page.nodes.length}/500`}>
+          {model.page.nodes.length}
+        </small>
         <button
           className="icon-button"
           aria-label={t('Close layers')}
@@ -59,6 +71,7 @@ export function DesignLayers({ model }: DesignEditorProps) {
       </header>
       <div
         className="design-layers-list"
+        style={actionsOpen ? { display: 'none' } : undefined}
         tabIndex={0}
         role="region"
         aria-label={t('Layers')}
@@ -76,6 +89,7 @@ export function DesignLayers({ model }: DesignEditorProps) {
         </div>
         {!nodes.length && <p>{t('Insert a frame to start designing.')}</p>}
       </div>
+      {actionsOpen && <DesignLayerActionSheet model={model} />}
     </aside>
   )
 }

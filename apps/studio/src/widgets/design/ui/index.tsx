@@ -38,3 +38,6 @@ export { DesignPanel } from './DesignPanel.tsx'
 export { DesignContainerSettings } from './DesignContainerSettings.tsx'
 export { DesignNodeClips } from './DesignNodeClips.tsx'
 export { DesignPanelCorner } from './DesignPanelCorner.tsx'
+
+export { DesignLayerControls } from './DesignLayerControls.tsx'
+export { DesignLayerActionSheet } from './DesignLayerActionSheet.tsx'

@@ -12,7 +12,7 @@ export function useDesignPanelResize(
   defaultSize = side === 'left' ? 280 : 300,
 ) {
   const vertical = side === 'bottom'
-  const minimum = Math.min(limit, vertical ? 180 : 220)
+  const minimum = Math.min(limit, vertical ? 180 : side === 'left' ? 280 : 220)
   const gesture = useRef<{ id: number; x: number; width: number } | null>(null)
   const resize = useCallback(
     (next: number) =>

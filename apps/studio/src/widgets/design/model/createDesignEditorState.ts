@@ -1,6 +1,7 @@
 import type { DesignEditorState } from '../types/designEditorState.ts'
 export function createDesignEditorState(): DesignEditorState {
   return {
+    layerActionsId: null,
     compact: false,
     panelSpace: 1000,
     panelVerticalSpace: 800,
