@@ -1,4 +1,8 @@
 export type NotesState = {
+  comments: boolean
+  commentDraft: string
+  commentQuote: string
+  showResolved: boolean
   titleDraft: string | null
   selected: string
   query: string

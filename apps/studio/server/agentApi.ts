@@ -100,6 +100,7 @@ export function installAgentApi(
             'requirements',
             'notes',
             'notesTitle',
+            'noteComments',
             'documents',
             'design',
           ].includes(op.path[0]),

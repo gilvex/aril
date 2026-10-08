@@ -4,13 +4,15 @@ import { Trash2 } from 'lucide-react'
 import type { NoteEditorProps } from '../types/noteEditorProps.ts'
 import { useNoteEditor } from '../model/useNoteEditor.ts'
 import { NoteFormatBar } from './NoteFormatBar.tsx'
+import { NoteViewer } from './NoteViewer.tsx'
 import { NoteOutline } from './NoteOutline.tsx'
-import { NoteMarkdown } from './NoteMarkdown.tsx'
+import { NoteSurface } from './NoteSurface.tsx'
+import { NoteCommentsPanel } from './NoteCommentsPanel.tsx'
 export function NoteEditor(props: NoteEditorProps) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
   const { model, workspace, peers } = props
-  const { note, state, patch, edit } = model
+  const { note, state, patch } = model
   const editor = useNoteEditor(props)
   const viewers = peers.filter(
     (peer) =>
@@ -46,16 +48,7 @@ export function NoteEditor(props: NoteEditorProps) {
         {!!viewers.length && (
           <div className="notebook-viewers" aria-live="polite">
             {viewers.map((peer) => (
-              <span
-                key={peer.clientId}
-                style={{ borderColor: peer.profile.color }}
-              >
-                {peer.profile.name} ·{' '}
-                {peer.selected.includes('note-field:body') ||
-                peer.selected.includes('note-field:title')
-                  ? t('Editing')
-                  : t('Viewing')}
-              </span>
+              <NoteViewer key={peer.clientId} peer={peer} />
             ))}
           </div>
         )}
@@ -82,23 +75,20 @@ export function NoteEditor(props: NoteEditorProps) {
         )}
         <div className={'notebook-content mode-' + state.mode.toLowerCase()}>
           {!readOnly && state.mode !== 'Read' && (
-            <textarea
-              ref={editor.editor}
-              className="notebook-input"
-              aria-label={t('Note content')}
-              value={note.body}
-              placeholder={t('Write a note…')}
-              maxLength={50000}
-              onFocus={editor.focusBody}
-              onBlur={editor.blur}
-              onChange={(e) => edit({ body: e.target.value })}
+            <NoteSurface
+              model={model}
+              editor={editor}
+              peers={peers}
+              surface="edit"
             />
           )}
           {(readOnly || state.mode !== 'Edit') && (
-            <div ref={editor.reader} className="notebook-reading">
-              <NoteMarkdown body={note.body} />
-              {!note.body && <p className="empty-message">{t('Empty note')}</p>}
-            </div>
+            <NoteSurface
+              model={model}
+              editor={editor}
+              peers={peers}
+              surface="read"
+            />
           )}
         </div>
         <footer className="notebook-meta">
@@ -106,6 +96,7 @@ export function NoteEditor(props: NoteEditorProps) {
           <span>{note.body.length.toLocaleString()} / 50,000</span>
         </footer>
       </article>
+      {state.comments && <NoteCommentsPanel {...props} />}
       {state.outline && (
         <NoteOutline editor={editor} close={() => patch({ outline: false })} />
       )}

@@ -4,6 +4,7 @@ import { wireframeSchema } from '../../wireframe/index.ts'
 import { edge } from './edge.ts'
 import { node } from './node.ts'
 import { requirementSchema } from './requirementSchema.ts'
+import { noteCommentSchema } from './noteCommentSchema.ts'
 export const workspaceSchema = z
   .object({
     schemaVersion: z.literal(1),
@@ -65,6 +66,7 @@ export const workspaceSchema = z
       .min(1)
       .max(50),
     requirements: z.array(requirementSchema).max(500),
+    noteComments: z.array(noteCommentSchema).max(1000).optional(),
     notes: z.string().max(50000),
     notesTitle: z.string().min(1).max(120).optional(),
     documents: z
@@ -94,6 +96,14 @@ export const workspaceSchema = z
       workspace.boards.length
     )
       context.addIssue({ code: 'custom', message: 'Duplicate board IDs' })
+    if (
+      new Set(workspace.noteComments?.map((c) => c.id)).size !==
+      (workspace.noteComments?.length || 0)
+    )
+      context.addIssue({
+        code: 'custom',
+        message: 'Duplicate note comment IDs',
+      })
     const requirements = new Set(workspace.requirements.map((r) => r.id))
     if (requirements.size !== workspace.requirements.length)
       context.addIssue({ code: 'custom', message: 'Duplicate requirement IDs' })

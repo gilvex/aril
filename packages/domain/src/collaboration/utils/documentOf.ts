@@ -31,6 +31,7 @@ export function documentOf(workspace: Workspace): Json {
       ),
       requirements: indexed(workspace.requirements),
       notes: workspace.notes,
+      noteComments: indexed(workspace.noteComments || []),
       notesTitle: workspace.notesTitle,
       documents: indexed(workspace.documents || []),
       design: designDocumentOf(workspace.design),

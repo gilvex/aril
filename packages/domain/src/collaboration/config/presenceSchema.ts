@@ -1,7 +1,9 @@
 import { z } from 'zod'
 import { cameraSchema } from './cameraSchema.ts'
 import { requirementFieldSchema } from './requirementFieldSchema.ts'
+import { notePresenceSchema } from './notePresenceSchema.ts'
 export const presenceSchema = z.object({
+  note: notePresenceSchema.nullable().optional(),
   chat: z
     .object({
       text: z.string().min(1).max(160),

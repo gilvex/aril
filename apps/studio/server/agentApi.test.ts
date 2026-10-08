@@ -107,8 +107,28 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
           before: state.workspace.notes,
           after: 'Agent planning note',
         },
-        { path: ['documents', 'agent-note'], after: { id: 'agent-note', title: 'Recipe', body: 'Runtime → game layer → blueprint' } },
+        {
+          path: ['documents', 'agent-note'],
+          after: {
+            id: 'agent-note',
+            title: 'Recipe',
+            body: 'Runtime → game layer → blueprint',
+          },
+        },
         { path: ['notesTitle'], after: 'Project brief' },
+        {
+          path: ['noteComments', '11111111-1111-4111-8111-111111111111'],
+          after: {
+            id: '11111111-1111-4111-8111-111111111111',
+            noteId: 'agent-note',
+            authorId: randomUUID(),
+            authorName: 'Planning agent',
+            body: 'Check the runtime version',
+            quote: 'Runtime',
+            createdAt: Date.now(),
+            resolved: false,
+          },
+        },
       ],
     }
     assert.equal(
@@ -165,6 +185,10 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
     assert.equal(instance.store.read().workspace.notes, 'Agent planning note')
     assert.equal(instance.store.read().workspace.documents?.[0].title, 'Recipe')
     assert.equal(instance.store.read().workspace.notesTitle, 'Project brief')
+    assert.equal(
+      instance.store.read().workspace.noteComments?.[0].body,
+      'Check the runtime version',
+    )
     assert.equal(instance.store.read().revision, state.revision + 1)
     const duplicate = await client.callTool({
       name: 'apply_changes',

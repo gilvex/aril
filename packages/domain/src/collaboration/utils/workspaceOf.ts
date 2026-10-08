@@ -30,6 +30,7 @@ export function workspaceOf(document: Json): Workspace {
     design: designWorkspaceOf(design),
     boards,
     requirements: Object.values(value.requirements as object),
+    noteComments: Object.values((value.noteComments || {}) as object),
     documents: Object.values((value.documents || {}) as object),
   })
 }

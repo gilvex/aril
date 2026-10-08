@@ -948,5 +948,18 @@
   "Collapse child layers": "Свернуть дочерние слои",
   "Resize layers width and height": "Изменить ширину и высоту слоёв",
   "Resize properties width and height": "Изменить ширину и высоту свойств",
-  "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset": "Потяните угол для изменения ширины и высоты · Стрелки для настройки · Двойной щелчок для сброса"
+  "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset": "Потяните угол для изменения ширины и высоты · Стрелки для настройки · Двойной щелчок для сброса",
+  "Comments": "Комментарии",
+  "Note comments": "Комментарии к заметке",
+  "Close comments": "Закрыть комментарии",
+  "Write a comment": "Напишите комментарий",
+  "Post comment": "Отправить",
+  "No comments yet. Select text to quote it in a comment.": "Пока нет комментариев. Выделите текст, чтобы процитировать его в комментарии.",
+  "Show resolved": "Показать решённые",
+  "Resolve comment": "Решить",
+  "Reopen comment": "Открыть снова",
+  "Delete comment": "Удалить комментарий",
+  "Remove quote": "Убрать цитату",
+  "Comment limit reached": "Достигнут лимит комментариев",
+  "Resolved": "Решено"
 }

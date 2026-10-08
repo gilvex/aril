@@ -16,3 +16,5 @@ export { describeOperations } from './utils/describeOperations.ts'
 export { diffWorkspace } from './utils/diffWorkspace.ts'
 export { equal } from './utils/equal.ts'
 export { MergeConflict } from './utils/mergeConflict.ts'
+
+export type { NotePresence } from './types/notePresence.ts'

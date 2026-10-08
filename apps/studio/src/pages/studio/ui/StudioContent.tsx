@@ -124,7 +124,7 @@ export function StudioContent(props: StudioContentProps) {
             workspace={workspace}
             change={change}
             workspaceId={props.studio.id}
-            profileId={multiplayer.profile.id}
+            profile={multiplayer.profile}
             peers={multiplayer.peers}
             sendPresence={sendPresence}
             followed={followed}

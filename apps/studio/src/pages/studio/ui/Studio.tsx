@@ -51,7 +51,7 @@ export function Studio(props: StudioProps) {
             props.active !== false &&
             !!model.settings.role &&
             !model.modal &&
-            (model.view === 'canvas' || model.view === 'design')
+            ['canvas', 'design', 'notes'].includes(model.view)
           }
           scope={model.view + ':' + model.board.id + ':' + model.canvasMode}
           sendPresence={model.sendPresence}

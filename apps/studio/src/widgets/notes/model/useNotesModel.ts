@@ -14,9 +14,9 @@ import { updateNote } from '../utils/updateNote.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 export function useNotesModel(props: NotesProps) {
   const { t } = useTranslation()
-  const { workspace, change, workspaceId, profileId, sendPresence, followed } =
+  const { workspace, change, workspaceId, profile, sendPresence, followed } =
     props
-  const key = `pomegranate-notebook:${profileId}:${workspaceId}`
+  const key = `pomegranate-notebook:${profile.id}:${workspaceId}`
   const ref = useRef<ReturnType<typeof configureStore<NotesState>> | null>(null)
   if (!ref.current) {
     let selected = 'project-notes'
@@ -50,7 +50,7 @@ export function useNotesModel(props: NotesProps) {
   const note =
     documents.find((entry) => entry.id === state.selected) || documents[0]
   useEffect(() => {
-    patch({ titleDraft: null })
+    patch({ titleDraft: null, commentDraft: '', commentQuote: '' })
   }, [note.id, patch])
   const visible = useMemo(
     () =>
@@ -69,8 +69,8 @@ export function useNotesModel(props: NotesProps) {
     }
   }, [key, note.id])
   useEffect(() => {
-    sendPresence({ selected: [`note:${note.id}`] }, true)
-    return () => sendPresence({ selected: [] }, true)
+    sendPresence({ selected: [`note:${note.id}`], note: null }, true)
+    return () => sendPresence({ selected: [], note: null, chat: null }, true)
   }, [sendPresence, note.id])
   useEffect(() => {
     const target =
@@ -117,6 +117,7 @@ export function useNotesModel(props: NotesProps) {
     if (note.id === 'project-notes') return
     change((w) => ({
       ...w,
+      noteComments: w.noteComments?.filter((entry) => entry.noteId !== note.id),
       documents: w.documents?.filter((entry) => entry.id !== note.id),
     }))
     patch({ selected: 'project-notes', titleDraft: null, deleting: false })
@@ -132,6 +133,9 @@ export function useNotesModel(props: NotesProps) {
     [note.id, sendPresence],
   )
   return {
+    change,
+    profile: props.profile,
+    sendPresence,
     state,
     patch,
     documents,

@@ -1,5 +1,5 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { PanelLeft, ListTree, Plus, X } from 'lucide-react'
+import { PanelLeft, ListTree, Plus, X, MessageSquare } from 'lucide-react'
 import type { NotesProps } from '../types/notesProps.ts'
 import { useNotesModel } from '../model/useNotesModel.ts'
 import { NoteList } from './NoteList.tsx'
@@ -38,10 +38,18 @@ export function Notes(props: NotesProps) {
         <button
           className="button subtle notebook-outline-toggle"
           aria-expanded={state.outline}
-          onClick={() => patch({ outline: !state.outline })}
+          onClick={() => patch({ outline: !state.outline, comments: false })}
         >
           <ListTree size={16} />
           {t('Outline')}
+        </button>
+        <button
+          className="button subtle"
+          aria-expanded={state.comments}
+          onClick={() => patch({ comments: !state.comments, outline: false })}
+        >
+          <MessageSquare size={16} />
+          {t('Comments')}
         </button>
         <button
           className="button primary"

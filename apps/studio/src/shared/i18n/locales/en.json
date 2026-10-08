@@ -948,5 +948,18 @@
   "Collapse child layers": "Collapse child layers",
   "Resize layers width and height": "Resize layers width and height",
   "Resize properties width and height": "Resize properties width and height",
-  "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset": "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset"
+  "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset": "Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset",
+  "Comments": "Comments",
+  "Note comments": "Note comments",
+  "Close comments": "Close comments",
+  "Write a comment": "Write a comment",
+  "Post comment": "Post comment",
+  "No comments yet. Select text to quote it in a comment.": "No comments yet. Select text to quote it in a comment.",
+  "Show resolved": "Show resolved",
+  "Resolve comment": "Resolve comment",
+  "Reopen comment": "Reopen comment",
+  "Delete comment": "Delete comment",
+  "Remove quote": "Remove quote",
+  "Comment limit reached": "Comment limit reached",
+  "Resolved": "Resolved"
 }

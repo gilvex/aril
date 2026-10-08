@@ -174,6 +174,7 @@ export function useStudioController({
         selectedEdges: [],
         camera: null,
         dragging: [],
+        ...(view !== 'notes' ? { note: null } : {}),
         ...(view !== 'requirements' ? { requirement: null } : {}),
       },
       true,

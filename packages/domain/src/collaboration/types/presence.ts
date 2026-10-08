@@ -2,7 +2,9 @@ import type { CameraPresence } from './cameraPresence.ts'
 import type { DragPosition } from './dragPosition.ts'
 import type { Profile } from './profile.ts'
 import type { RequirementPresence } from './requirementPresence.ts'
+import type { NotePresence } from './notePresence.ts'
 export type Presence = {
+  note?: NotePresence | null
   chat?: { text: string; expiresAt: number } | null
   clientId: string
   profile: Profile

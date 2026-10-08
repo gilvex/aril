@@ -20,6 +20,7 @@ export function applyOperations(
         'boards',
         'requirements',
         'notes',
+        'noteComments',
         'notesTitle',
         'documents',
         'design',

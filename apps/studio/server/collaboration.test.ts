@@ -422,6 +422,41 @@ test('invited users share edits, profiles, cursors and activity without stale ov
       1,
     )
     assert.equal(store.read().revision, revisionBeforeDrag)
+    const notePresence = {
+      id: 'project-notes',
+      surface: 'edit',
+      bodyKey: '5:123',
+      selection: { start: 0, end: 5, quote: 'hello' },
+      pointer: { x: 0.25, y: 0.4 },
+    }
+    await call('/api/presence', cookieB, 'POST', {
+      ...dragFrame,
+      sequence: 104,
+      boardId: null,
+      view: 'notes',
+      dragging: [],
+      note: notePresence,
+    })
+    const notePeople = (await streamA.next('presence', (value) =>
+      (value as { sequence?: number }[]).some((peer) => peer.sequence === 104),
+    )) as { sequence?: number; note?: typeof notePresence }[]
+    assert.deepEqual(
+      notePeople.find((peer) => peer.sequence === 104)?.note,
+      notePresence,
+    )
+    assert.equal(store.read().revision, revisionBeforeDrag)
+    await call('/api/presence', cookieB, 'POST', {
+      ...dragFrame,
+      sequence: 105,
+      boardId: null,
+      view: 'notes',
+      dragging: [],
+      note: null,
+    })
+    const clearedNotes = (await streamA.next('presence', (value) =>
+      (value as { sequence?: number }[]).some((peer) => peer.sequence === 105),
+    )) as { sequence?: number; note?: unknown }[]
+    assert.equal(clearedNotes.find((peer) => peer.sequence === 105)?.note, null)
     streamB.close()
     streamB = undefined
     await streamA.next(

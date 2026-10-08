@@ -35,6 +35,7 @@ Operation paths address collections **by ID**, even though read responses contai
 | Project notes        | `["notes"]`                                             |
 | Project notes title  | `["notesTitle"]`                                        |
 | Notebook document    | `["documents", documentId]`                             |
+| Note comment         | `["noteComments", commentId]`                            |
 | Note body            | `["documents", documentId, "body"]`                     |
 | Design direction     | `["design", "direction"]`                               |
 | Design page          | `["design", "pages", pageId]`                            |
@@ -98,3 +99,9 @@ The MCP server runs locally over stdio and calls the studio's authenticated HTTP
 ### Optional board sections and board designs
 New boards may set `sections` to an ordered subset of `canvas`, `wireframes`, `design`; the first is the primary section. Missing `sections` means legacy Blueprint + Wireframes. Never discard hidden content when changing sections. Add another section by appending its type, preserving the current order.
 Each board can now hold a separate `design` with the same schema as the workspace design. Existing `workspace.design` remains independent. Use `get_design_page` with `boardId` to read a board design. Canonical operation paths are `boards/<boardId>/design/pages/<pageId>/nodes/<layerId>`; pages and nodes are ID-keyed objects in operations. Initialize the board design before adding nested pages. Cursor chat is transient presence and must not be written to notes, history, or workspace data.
+
+## Notes collaboration
+
+Notes supports live pointers and text selections in Edit, Split, and Read. This transient `note` presence is scoped by document ID and a body fingerprint; it is never written to workspace history. Do not create presence records through document operations.
+
+Persistent `noteComments` is an optional ID-addressed collection (maximum 1,000 per workspace). Each comment contains `id` (UUID), `noteId` (`project-notes` or a document ID), `authorId` (profile UUID), `authorName`, `body` (1–2,000 characters), `quote` (0–2,000 characters of selected text), `createdAt` (Unix milliseconds), and `resolved` (boolean). Read the schema before creating comments; never invent another user's attribution. Quotes are snapshots of selected text, not live text anchors. Keep them unchanged when editing note content. Resolve with a targeted `resolved` update. When deleting a document, include removal of its comments in the same batch. Editors can comment; Viewers can read comments and share selections.
