@@ -1,7 +1,11 @@
 import { AgentAccess } from '@/features/agentAccess/index.ts'
 import { useCallback } from 'react'
 import { File, User, SlidersHorizontal, Bot } from 'lucide-react'
-import { LanguagePicker, ThemePicker } from '@/features/appearance/index.ts'
+import {
+  AccentPicker,
+  LanguagePicker,
+  ThemePicker,
+} from '@/features/appearance/index.ts'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { SettingsProfile } from '@/widgets/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -89,6 +93,7 @@ export function StudioSettings(props: StudioContentProps) {
                 <section className="settings-card settings-preferences">
                   <ThemePicker />
                   <LanguagePicker />
+                  <AccentPicker />
                   <InstallApp />
                 </section>
               </>

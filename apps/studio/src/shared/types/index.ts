@@ -16,3 +16,5 @@ export type { StudioModalProps } from './studioModalProps.ts'
 export type { DraggableSurfaceOptions } from './draggableSurfaceOptions.ts'
 export type { StudioActionBarProps } from './studioActionBarProps.ts'
 export type { CanvasViewportController } from './canvasViewportController.ts'
+
+export type { AccentPreference } from './accentPreference.ts'

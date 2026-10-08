@@ -11,3 +11,18 @@ try {
   document.documentElement.dataset.theme = 'dark'
   document.documentElement.style.colorScheme = 'dark'
 }
+
+try {
+  var savedAccent = localStorage.getItem('aril-accent')
+  document.documentElement.dataset.accent = [
+    'berry',
+    'blue',
+    'violet',
+    'teal',
+    'amber',
+  ].includes(savedAccent)
+    ? savedAccent
+    : 'berry'
+} catch {
+  document.documentElement.dataset.accent = 'berry'
+}

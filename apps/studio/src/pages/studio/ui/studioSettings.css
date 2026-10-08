@@ -59,7 +59,7 @@
 }
 .settings-navigation button[aria-current] {
   background: var(--accent-light);
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .settings-content {
   min-width: 0;
@@ -169,7 +169,7 @@
 }
 .settings-error {
   font-size: 13px;
-  color: var(--accent);
+  color: var(--accent-ink);
   display: flex;
   align-items: center;
   gap: 12px;

@@ -1079,5 +1079,12 @@
   "boolean": "boolean",
   "Delete variant": "Delete variant",
   "Delete collection": "Delete collection",
-  "No enabled transition": "No enabled transition"
+  "No enabled transition": "No enabled transition",
+  "Accent color": "Accent color",
+  "Choose a color for app controls. Your designs keep their own colors.": "Choose a color for app controls. Your designs keep their own colors.",
+  "Berry": "Berry",
+  "Blue": "Blue",
+  "Violet": "Violet",
+  "Teal": "Teal",
+  "Amber": "Amber"
 }

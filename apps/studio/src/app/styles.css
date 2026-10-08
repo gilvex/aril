@@ -67,7 +67,7 @@
 .wire-empty { gap: 14px; }
 .wire-empty .button + .button { margin-top: 8px; background: transparent; border-color: transparent; }
 .wire-hotspot { position: absolute; inset: 0; width: 100%; height: 100%; border: none; background: transparent; border-radius: inherit; }
-.wire-hotspot:hover { outline: 2px dashed #b34568; outline-offset: 3px; }
+.wire-hotspot:hover { outline: 2px dashed var(--accent-ink); outline-offset: 3px; }
 .wire-flow-link { white-space: normal; text-align: left; overflow-wrap: anywhere; }
 .wire-edge-halo { pointer-events: none; }
 .wire-surface .react-flow__edgelabel-renderer { z-index: 5; }
@@ -78,7 +78,7 @@
 .wire-flow-index { display: grid; gap: 6px; }
 .wire-flow-index h3 { font-size: 12px; text-align: left; }
 .wire-flow-index button { display: flex; gap: 8px; padding: 8px; background: var(--surface, #fff); border: 1px solid var(--line); border-radius: 6px; text-align: left; }
-.wire-flow-index button:hover { border-color: #b34568; background: var(--surface-muted, #fcf7f9); }
+.wire-flow-index button:hover { border-color: var(--accent); background: var(--surface-muted, #fcf7f9); }
 .wire-flow-index button > span { flex-shrink: 0; width: 19px; height: 19px; display: grid; place-items: center; background: var(--accent-light, #f8edf1); color: var(--accent-ink, #a34d6c); border-radius: 4px; font-size: 10px; }
 .wire-flow-index strong { font-size: 11px; font-weight: 600; }
 .wire-flow-index small { display: block; font-size: 10px; line-height: 1.5; margin-top: 3px; color: var(--text-secondary, #898491); }
@@ -133,7 +133,7 @@ button:disabled {
 }
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #a777bd;
+  outline: 3px solid var(--accent-ink, #a777bd);
   outline-offset: 3px;
 }
 button {
@@ -180,7 +180,7 @@ input:focus,
 textarea:focus,
 :is(select, .studio-select):focus {
   border-color: var(--line-strong, #aa7795);
-  box-shadow: 0 0 0 3px #b3456810;
+  box-shadow: 0 0 0 3px var(--accent-ring);
 }
 textarea {
   resize: vertical;
@@ -226,7 +226,7 @@ code {
   color: #fff;
 }
 .button.primary:hover {
-  background: #9f3758;
+  background: color-mix(in srgb, var(--accent) 86%, #000);
 }
 .button.destructive {
   background: #af3750;
@@ -576,7 +576,7 @@ code {
 }
 .board-tabs > div > button.active {
   color: var(--accent-ink, #a14464);
-  border-bottom-color: #b34568;
+  border-bottom-color: var(--accent);
   font-weight: 600;
 }
 .board-tabs > div > button:hover {
@@ -996,8 +996,8 @@ code {
   color: var(--text-strong, #4c4259);
 }
 .idea-node.is-selected {
-  border-color: #a47fbb;
-  box-shadow: 0 0 0 3px #a47fbb20;
+  border-color: var(--accent-ink, #a47fbb);
+  box-shadow: 0 0 0 3px var(--accent-ring);
 }
 .node-heading {
   display: flex;
@@ -1085,8 +1085,8 @@ code {
   border: 2px solid var(--line, #c3b6d0) !important;
 }
 .react-flow__handle:hover {
-  background: #b34568 !important;
-  border-color: #b34568 !important;
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
 }
 .react-flow__edge-path {
   stroke: var(--edge-selection-color, var(--diagram-edge, #c7bed2)) !important;
@@ -2607,7 +2607,7 @@ code {
 .activity-seed {
   width: 7px;
   height: 7px;
-  background: #b34568;
+  background: var(--accent);
   border-radius: 50%;
   margin-top: 4px;
   flex-shrink: 0;

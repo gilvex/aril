@@ -1079,5 +1079,12 @@
   "boolean": "Логическое значение",
   "Delete variant": "Удалить вариант",
   "Delete collection": "Удалить коллекцию",
-  "No enabled transition": "Нет доступного перехода"
+  "No enabled transition": "Нет доступного перехода",
+  "Accent color": "Акцентный цвет",
+  "Choose a color for app controls. Your designs keep their own colors.": "Выберите цвет элементов приложения. Цвета ваших дизайнов не изменятся.",
+  "Berry": "Ягодный",
+  "Blue": "Синий",
+  "Violet": "Фиолетовый",
+  "Teal": "Бирюзовый",
+  "Amber": "Янтарный"
 }

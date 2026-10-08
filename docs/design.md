@@ -99,3 +99,10 @@ Requirements are presented as a board-linked product scope, not a second task bo
 ## Global scroll indicators
 
 All scrollable surfaces use a transparent native track with a slim, rounded neutral thumb. Scrolling reveals the indicator for one second after the last scroll event; mouse hover and keyboard focus also reveal it. Both axes share the treatment, including portaled menus, drawers, text areas and nested Layers trees. Track dimensions remain constant to avoid layout shifts. Touch momentum, keyboard scrolling and thumb dragging stay browser-native; forced-colors mode keeps system scroll controls visible. The passive document listener manages only temporary DOM feedback and cleans up on unmount.
+
+
+## Personal accent colors
+
+Settings → App offers Berry (the default), Blue, Violet, Teal and Amber. Each preset pairs a solid action color with a soft selection background and readable foreground for light and dark appearance. The labeled swatches use a single-selection Vagabond button group with a checkmark and keyboard navigation. Applying a preset is immediate, persists on this device, and synchronizes between its browser tabs. Invalid or unavailable storage falls back to Berry; the active session still supports changes when storage is blocked.
+
+Accent preference is local Redux state, not workspace content. It changes app actions, navigation selections and focus feedback. User-authored design colors, collaborator identity colors, semantic status colors and the Aril brand asset are preserved. The initial appearance script restores the validated preset before app rendering.

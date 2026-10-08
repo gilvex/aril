@@ -1,0 +1,40 @@
+/* Personal app colors; saved design element colors are never changed. */
+:root[data-accent] {
+  accent-color: var(--accent);
+  --accent: var(--accent-fill, #b34568);
+  --accent-ink: var(--accent-fill, #b34568);
+  --accent-light: var(--accent-soft-light, #f8edf1);
+  --accent-ring: color-mix(in srgb, var(--accent) 18%, transparent);
+  --primary: var(--accent);
+  --primary-foreground: #fff;
+  --accent-foreground: #fff;
+  --accent-soft: var(--accent-light);
+}
+:root[data-accent][data-theme='dark'] {
+  --accent-ink: var(--accent-text-dark, #f0a1be);
+  --accent-light: var(--accent-soft-dark, #442b3b);
+}
+:root[data-accent='blue'] {
+  --accent-fill: #3568c9;
+  --accent-soft-light: #eaf0fc;
+  --accent-text-dark: #9abcfb;
+  --accent-soft-dark: #28364f;
+}
+:root[data-accent='violet'] {
+  --accent-fill: #7952b3;
+  --accent-soft-light: #f1ebfa;
+  --accent-text-dark: #c4a9ec;
+  --accent-soft-dark: #382f48;
+}
+:root[data-accent='teal'] {
+  --accent-fill: #25786b;
+  --accent-soft-light: #e6f3ef;
+  --accent-text-dark: #86d4c1;
+  --accent-soft-dark: #263f39;
+}
+:root[data-accent='amber'] {
+  --accent-fill: #895b1b;
+  --accent-soft-light: #faf0dd;
+  --accent-text-dark: #e8c17e;
+  --accent-soft-dark: #423927;
+}

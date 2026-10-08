@@ -9,9 +9,12 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 import './theme.css'
+import './accent.css'
+import { initializeAccent } from '@/shared/utils/initializeAccent.ts'
 import { registerServiceWorker } from './utils/registerServiceWorker.ts'
 
 initializeTheme()
+initializeAccent()
 initializeLanguage()
 registerServiceWorker()
 

@@ -5,3 +5,6 @@ export { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 export { event } from '@/shared/config/themeEvent.ts'
 export { key } from '@/shared/config/themeKey.ts'
 export { media } from '@/shared/config/themeMedia.ts'
+
+export { accentOptions } from './accentOptions.ts'
+export { accentKey } from './accentKey.ts'

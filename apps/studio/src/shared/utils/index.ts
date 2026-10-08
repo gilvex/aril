@@ -14,3 +14,8 @@ export { isDemoMode } from './isDemoMode.ts'
 
 export { readSelectOptions } from './readSelectOptions.ts'
 export { observeCanvasViewport } from './observeCanvasViewport.ts'
+
+export { isAccentPreference } from './isAccentPreference.ts'
+export { readAccentPreference } from './readAccentPreference.ts'
+export { setAccentPreference } from './setAccentPreference.ts'
+export { initializeAccent } from './initializeAccent.ts'

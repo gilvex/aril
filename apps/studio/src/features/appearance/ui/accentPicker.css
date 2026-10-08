@@ -1,0 +1,51 @@
+.accent-picker {
+  padding: 16px 12px;
+  border-top: 1px solid var(--line);
+}
+.accent-picker > p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 8px 0 14px;
+}
+.accent-picker .accent-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+}
+.accent-options .accent-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 76px;
+  min-height: 80px;
+  height: auto;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.accent-options .accent-option:hover {
+  background: var(--surface-muted, #f3f1f5);
+}
+.accent-options .accent-option[data-state='on'] {
+  border-color: var(--accent-ink);
+  background: var(--accent-light);
+  color: var(--accent-ink);
+}
+.accent-option:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.accent-swatch {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+}
