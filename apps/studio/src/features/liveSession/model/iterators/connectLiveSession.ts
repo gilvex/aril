@@ -20,6 +20,7 @@ export function* connectLiveSession(
           options.peers,
           options.connected,
           controller.signal,
+          options.noteText,
         )
         options.ready(session)
         break

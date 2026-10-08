@@ -61,7 +61,11 @@ export function useStudioFollowing({
   useEffect(() => {
     if (!followId) return
     const escape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setFollowId(null)
+      if (
+        event.key === 'Escape' &&
+        !(event.target as Element)?.closest('[data-follow-controls]')
+      )
+        setFollowId(null)
     }
     document.addEventListener('keydown', escape)
     return () => document.removeEventListener('keydown', escape)

@@ -1,3 +1,7 @@
+import {
+  noteTextMessageSchema,
+  type NoteTextMessage,
+} from '@pomegranate/domain/noteText'
 import { ApiError } from '@/shared/api/apiError.ts'
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
@@ -24,6 +28,7 @@ export async function openLiveChannel(
   onPeers: (peers: Presence[]) => void,
   onConnection: (connected: boolean) => void,
   signal: AbortSignal,
+  onNoteText: (message: NoteTextMessage) => void,
 ) {
   const keys = (await crypto.subtle.generateKey('Ed25519', true, [
     'sign',
@@ -82,6 +87,50 @@ export async function openLiveChannel(
       event: 'state',
       payload: { body, signature },
     })
+  }
+  const sendNoteText = async (message: NoteTextMessage) => {
+    if (!subscribed || closed || !socket.isConnected()) return
+    const body = JSON.stringify({ clientId, sentAt: Date.now(), message })
+    const signature = await signMessage(keys.privateKey, body)
+    if (!closed && socket.isConnected())
+      await channel.send({
+        type: 'broadcast',
+        event: 'note-text',
+        payload: { body, signature },
+      })
+  }
+  const receiveNoteText = async (payload: unknown) => {
+    if (!payload || typeof payload !== 'object') return
+    const packet = payload as { body?: unknown; signature?: unknown }
+    if (
+      typeof packet.body !== 'string' ||
+      packet.body.length > 1400000 ||
+      typeof packet.signature !== 'string' ||
+      packet.signature.length > 100
+    )
+      return
+    const data = JSON.parse(packet.body) as {
+      clientId: string
+      sentAt: number
+      message: unknown
+    }
+    const identity = identities.get(data.clientId)
+    if (
+      !identity ||
+      identity.certificate.expiresAt <= Date.now() ||
+      !Number.isFinite(data.sentAt) ||
+      Math.abs(Date.now() - data.sentAt) > 30000
+    )
+      return
+    if (
+      !(await verifyMessage(identity.key, packet.body, packet.signature)) ||
+      closed ||
+      identities.get(data.clientId) !== identity
+    )
+      return
+    const message = noteTextMessageSchema.parse(data.message)
+    if (message.kind !== 'sync' && !identity.certificate.canEdit) return
+    onNoteText(message)
   }
   const sync = async () => {
     const generation = ++syncGeneration
@@ -208,6 +257,11 @@ export async function openLiveChannel(
     })())
   }
   channel
+    .on(
+      'broadcast',
+      { event: 'note-text' },
+      ({ payload }) => void receiveNoteText(payload).catch(() => {}),
+    )
     .on('presence', { event: 'sync' }, () => void sync().catch(() => {}))
     .on(
       'broadcast',
@@ -245,9 +299,9 @@ export async function openLiveChannel(
         changed = true
       } else if (
         Date.now() - peer.seenAt > 15000 &&
-        (peer.cursor || peer.dragging?.length)
+        (peer.cursor || peer.note || peer.dragging?.length)
       ) {
-        peers.set(id, { ...peer, cursor: null, dragging: [] })
+        peers.set(id, { ...peer, cursor: null, note: null, dragging: [] })
         changed = true
       }
     }
@@ -262,5 +316,5 @@ export async function openLiveChannel(
   }
   if (signal.aborted) close()
   else signal.addEventListener('abort', close, { once: true })
-  return { send, refresh, close }
+  return { send, sendNoteText, refresh, close }
 }

@@ -15,8 +15,8 @@ export function Studio(props: StudioProps) {
   const { t } = useTranslation()
 
   const model = useStudioController({ ...props, recovery: props.recovery })
-  const { full, followed, followId, setFollowId, compact } = model
-  const { handlePointerDownCapture, handleKeyDownCapture } =
+  const { full, followed, compact } = model
+  const { handlePointerDownCapture, handleKeyDownCapture, handleWheelCapture } =
     useStudioHandlers(model)
   return (
     <WorkspaceRoleContext value={model.settings.role}>
@@ -25,9 +25,7 @@ export function Studio(props: StudioProps) {
         className={`studio-shell canvas-first editor-shell${!compact && model.navigationCollapsed ? ' nav-collapsed' : ''}${full.fullscreen ? ' studio-fullscreen' : ''}${followed ? ' is-following' : ''}`}
         onPointerDownCapture={handlePointerDownCapture}
         onKeyDownCapture={handleKeyDownCapture}
-        onWheelCapture={() => {
-          if (followId) setFollowId(null)
-        }}
+        onWheelCapture={handleWheelCapture}
       >
         {compact && <StudioMobileMenu {...props} {...model} />}
         <StudioHeader {...props} {...model} />
@@ -47,6 +45,7 @@ export function Studio(props: StudioProps) {
           </main>
         )}
         <CursorChat
+          profile={model.multiplayer.profile}
           active={
             props.active !== false &&
             !!model.settings.role &&

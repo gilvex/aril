@@ -1,5 +1,4 @@
-import { CursorMessage } from '@/entities/collaboration/index.ts'
-import { useTranslation } from '@/shared/i18n/index.ts'
+import { PeerCursor } from '@/entities/collaboration/index.ts'
 import type { LiveCursorsProps } from '@/widgets/board/types/liveCursorsProps.ts'
 import { SelectionBadges } from '@/widgets/board/ui/SelectionBadges.tsx'
 import { ViewportPortal, useViewport } from '@xyflow/react'
@@ -10,8 +9,6 @@ export function LiveCursors({
   profile,
   selectedIds,
 }: LiveCursorsProps) {
-  const { t } = useTranslation()
-
   const { zoom } = useViewport()
   return (
     <ViewportPortal>
@@ -39,36 +36,14 @@ export function LiveCursors({
       {peers.map((peer) => (
         <div key={peer.clientId}>
           {peer.cursor && (
-            <div
-              className="peer-cursor"
-              aria-label={t('{{name}} cursor', { name: peer.profile.name })}
-              style={{
-                translate: `${peer.cursor.x}px ${peer.cursor.y}px`,
-                transform: `scale(${1 / zoom})`,
-                color: peer.profile.color,
-              }}
-            >
-              <svg
-                width="19"
-                height="23"
-                viewBox="0 0 19 23"
-                aria-hidden="true"
-              >
-                <path
-                  d="M1 1L17 12L9 13L6 21Z"
-                  fill="currentColor"
-                  stroke="white"
-                  strokeWidth="1.5"
-                />
-              </svg>
-              <span style={{ background: peer.profile.color }}>
-                {peer.profile.avatar && (
-                  <img src={peer.profile.avatar} alt="" />
-                )}
-                {peer.profile.name}
-              </span>
-              <CursorMessage chat={peer.chat} />
-            </div>
+            <PeerCursor
+              key={peer.clientId}
+              profile={peer.profile}
+              chat={peer.chat}
+              x={peer.cursor.x}
+              y={peer.cursor.y}
+              scale={1 / zoom}
+            />
           )}
         </div>
       ))}

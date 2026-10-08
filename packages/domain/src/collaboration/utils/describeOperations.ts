@@ -22,7 +22,9 @@ export function describeOperations(operations: Operation[]): string {
     return 'Updated requirements'
   if (
     operations.some((o) =>
-      ['notes', 'notesTitle', 'documents', 'noteComments'].includes(o.path[0]),
+      ['notes', 'notesTitle', 'documents', 'noteComments', 'noteText'].includes(
+        o.path[0],
+      ),
     )
   )
     return 'Updated project notes'

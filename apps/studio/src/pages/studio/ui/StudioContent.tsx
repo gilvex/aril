@@ -10,7 +10,7 @@ import { Requirements } from './Requirements.tsx'
 
 import { StudioBottomNavigation } from './StudioBottomNavigation.tsx'
 import { StudioCanvas } from './StudioCanvas.tsx'
-import { StudioNotes } from './StudioNotes.tsx'
+import { StudioNotebook } from './StudioNotebook.tsx'
 
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 export function StudioContent(props: StudioContentProps) {
@@ -118,18 +118,7 @@ export function StudioContent(props: StudioContentProps) {
             sendPresence={sendPresence}
           />
         )}
-        {view === 'notes' && (
-          <StudioNotes
-            key={props.studio.id}
-            workspace={workspace}
-            change={change}
-            workspaceId={props.studio.id}
-            profile={multiplayer.profile}
-            peers={multiplayer.peers}
-            sendPresence={sendPresence}
-            followed={followed}
-          />
-        )}
+        {view === 'notes' && <StudioNotebook {...props} />}
       </Suspense>
       {!(
         view === 'design' ||

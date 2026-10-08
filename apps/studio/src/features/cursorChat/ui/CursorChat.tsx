@@ -11,6 +11,7 @@ export function CursorChat(props: CursorChatProps) {
   return (
     <>
       <button
+        data-follow-controls
         className="icon-button cursor-chat-toggle"
         title={t('Cursor chat (/)')}
         aria-label={t('Cursor chat (/)')}
@@ -18,11 +19,12 @@ export function CursorChat(props: CursorChatProps) {
       >
         <MessageSquare size={18} />
       </button>
-      {!model.open && model.text && (
+      {!model.open && model.text && model.expiresAt > 0 && (
         <div
           className="self-cursor-message"
           style={{ left: model.x, top: model.y }}
         >
+          <strong>{props.profile.name}</strong>
           <CursorMessage
             chat={{ text: model.text, expiresAt: model.expiresAt }}
           />
@@ -30,9 +32,11 @@ export function CursorChat(props: CursorChatProps) {
       )}
       {model.open && (
         <div
+          data-follow-controls
           className="cursor-chat-composer"
           style={{ left: model.x, top: model.y }}
         >
+          <strong>{props.profile.name}:</strong>
           <input
             autoFocus
             maxLength={160}
@@ -43,7 +47,6 @@ export function CursorChat(props: CursorChatProps) {
             onKeyDown={model.key}
             onBlur={model.close}
           />
-          <small>{t('Enter to send. Disappears in 6 seconds.')}</small>
         </div>
       )}
     </>

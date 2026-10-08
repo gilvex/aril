@@ -1,3 +1,12 @@
+import {
+  noteTextSnapshot,
+  noteTextStateSchema,
+  mergeNoteText,
+  setNoteText,
+  isNoteTextUndo,
+  writeNoteText,
+  readNoteText,
+} from '../../noteText/index.ts'
 import { type Workspace } from '../../workspace/index.ts'
 import { operationsSchema } from '../config/operationsSchema.ts'
 import type { Json } from '../types/json.ts'
@@ -15,6 +24,7 @@ export function applyOperations(
   const doc = documentOf(workspace)
   const conflicts: string[] = []
   for (const op of operationsSchema.parse(operations) as Operation[]) {
+    if (op.path[0] === 'noteText') continue
     if (
       ![
         'boards',
@@ -47,5 +57,35 @@ export function applyOperations(
     else parent[key] = structuredClone(op.after)
   }
   if (conflicts.length) throw new MergeConflict(conflicts)
-  return workspaceOf(doc)
+  workspace = workspaceOf(doc)
+  for (const op of operationsSchema
+    .parse(operations)
+    .filter((entry) => entry.path[0] === 'noteText')) {
+    const id = op.path[1]
+    const current = noteTextSnapshot(workspace, id)
+    if (op.path.length === 2 && !current && op.after === undefined) continue
+    const after = noteTextStateSchema.parse(op.after)
+    if (
+      op.before === undefined &&
+      op.path.length === 2 &&
+      current &&
+      readNoteText(current) === readNoteText(after)
+    ) {
+      workspace = setNoteText(workspace, id, after)
+      continue
+    }
+    const before = noteTextStateSchema.parse(op.before)
+    if (
+      op.path.length !== 2 ||
+      !current ||
+      current.seed !== before.seed ||
+      after.seed !== before.seed
+    )
+      throw new MergeConflict(['noteText / ' + id])
+    const next = isNoteTextUndo(before, after)
+      ? writeNoteText(before, readNoteText(after))
+      : after
+    workspace = setNoteText(workspace, id, mergeNoteText(current, next))
+  }
+  return workspace
 }

@@ -1,3 +1,4 @@
+import { noteTextMessageSchema } from '@pomegranate/domain/noteText'
 import { installWorkspaceAccess } from './utils/installWorkspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import {
@@ -401,7 +402,7 @@ export function installCollaboration(
   })
   app.use('/api', async (req, res, next) => {
     if (
-      !/^\/(workspace|history|events|presence|invites|realtime)(\/|$)/.test(
+      !/^\/(workspace|history|events|presence|invites|realtime|note-text)(\/|$)/.test(
         req.path,
       )
     ) {
@@ -600,6 +601,33 @@ export function installCollaboration(
         presenceChanged(workspaceId)
       }
     })
+  })
+  app.post('/api/note-text', (req, res) => {
+    const parsed = z
+      .object({ clientId: z.string().uuid(), message: noteTextMessageSchema })
+      .safeParse(req.body)
+    if (!parsed.success) {
+      res.status(400).json({ error: 'Invalid note update.' })
+      return
+    }
+    if (store.cloud) {
+      res.status(428).json({ error: 'Use the live WebSocket connection.' })
+      return
+    }
+    if (
+      res.locals.workspaceRole === 'viewer' &&
+      parsed.data.message.kind !== 'sync'
+    ) {
+      res.status(403).json({ error: 'This workspace is view-only.' })
+      return
+    }
+    const key = `${res.locals.workspaceId}:${res.locals.profile.id}:${parsed.data.clientId}`
+    if (!clients.has(key)) {
+      res.status(409).json({ error: 'Join the live session first.' })
+      return
+    }
+    broadcast('note-text', parsed.data, res.locals.workspaceId)
+    res.status(204).end()
   })
   app.post('/api/presence', async (req, res) => {
     const input = presenceSchema.safeParse(req.body)

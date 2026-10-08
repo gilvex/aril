@@ -98,15 +98,5 @@ export function drawNotePresence(
           peer.profile.name,
         )
     }
-    if (note.pointer && note.surface === (edit ? 'edit' : 'read')) {
-      add(
-        'note-peer-pointer',
-        note.pointer.x * element.clientWidth,
-        note.pointer.y * element.scrollHeight - element.scrollTop,
-        12,
-        18,
-        `↖ ${peer.profile.name}`,
-      )
-    }
   }
 }

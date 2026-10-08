@@ -144,6 +144,66 @@ test('invited users share edits, profiles, cursors and activity without stale ov
     const initial = (await (
       await call('/api/workspace', cookieA)
     ).json()) as Envelope
+    const liveMessage = {
+      kind: 'delta',
+      id: 'project-notes',
+      seedKey: 'fixture',
+      update: 'AAA',
+    }
+    const livePacket = { clientId: clientA, message: liveMessage }
+    const revisionBeforeLive = store.read().revision
+    assert.equal(
+      (await call('/api/note-text', cookieA, 'POST', livePacket)).status,
+      204,
+    )
+    assert.deepEqual(await streamB.next('note-text'), livePacket)
+    assert.equal(store.read().revision, revisionBeforeLive)
+    assert.equal(
+      (await call('/api/note-text', cookieB, 'POST', livePacket)).status,
+      409,
+    )
+    assert.equal(
+      (await call('/api/note-text', '', 'POST', livePacket)).status,
+      401,
+    )
+    assert.equal(
+      (
+        await call(`/api/members/${peerProfile.id}`, cookieA, 'PATCH', {
+          role: 'viewer',
+        })
+      ).status,
+      200,
+    )
+    assert.equal(
+      (
+        await call('/api/note-text', cookieB, 'POST', {
+          ...livePacket,
+          clientId: clientB,
+        })
+      ).status,
+      403,
+    )
+    streamB.close()
+    streamB = await events(url, '', clientB, joined.token)
+    assert.equal(
+      (
+        await call('/api/note-text', cookieB, 'POST', {
+          clientId: clientB,
+          message: { kind: 'sync', id: 'project-notes' },
+        })
+      ).status,
+      204,
+    )
+    assert.equal(
+      (
+        await call(`/api/members/${peerProfile.id}`, cookieA, 'PATCH', {
+          role: 'member',
+        })
+      ).status,
+      200,
+    )
+    streamB.close()
+    streamB = await events(url, '', clientB, joined.token)
     const changeA = structuredClone(initial.workspace)
     changeA.boards[0].nodes[0].data.title = 'Runtime edited by owner'
     const changeB = structuredClone(initial.workspace)

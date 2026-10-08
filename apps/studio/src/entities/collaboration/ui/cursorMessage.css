@@ -1,17 +1,38 @@
 .cursor-message {
-  position: absolute;
-  left: 18px;
-  top: 44px;
-  width: max-content;
-  max-width: 240px;
+  display: inline;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  padding: 9px 12px;
-  border-radius: 3px 12px 12px;
-  background: var(--surface, #292929);
-  color: var(--text, #eee);
-  border: 1px solid currentColor;
-  box-shadow: 0 5px 20px #0003;
-  font: 13px/1.5 sans-serif;
+  font: inherit;
+  font-style: normal;
   pointer-events: none;
+  animation: cursor-message-enter 140ms ease-out;
+}
+@keyframes cursor-message-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.peer-cursor-label {
+  max-width: 300px;
+  white-space: normal !important;
+  flex-wrap: wrap;
+  gap: 0 !important;
+  transition: background 160ms ease;
+}
+.peer-cursor-label img {
+  margin-right: 5px;
+}
+.peer-cursor-label strong {
+  font-weight: 600;
+}
+@media (prefers-reduced-motion: reduce) {
+  .peer-cursor {
+    transition: none !important;
+  }
+  .cursor-message {
+    animation: none;
+  }
 }

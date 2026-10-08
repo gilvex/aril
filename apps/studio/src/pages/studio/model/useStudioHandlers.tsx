@@ -23,11 +23,33 @@ export function useStudioHandlers({
     (event) => {
       if (
         followId &&
+        !(event.target as Element).closest('[data-follow-controls]') &&
+        !(
+          event.key === '/' &&
+          !event.ctrlKey &&
+          !event.metaKey &&
+          !event.altKey &&
+          !(event.target as Element).closest(
+            'input,textarea,select,[contenteditable="true"]',
+          )
+        ) &&
         !['Tab', 'Shift', 'Control', 'Meta', 'Alt'].includes(event.key)
       )
         setFollowId(null)
     },
     [followId, setFollowId],
   )
-  return { handlePointerDownCapture, handleKeyDownCapture }
+  const handleWheelCapture = useCallback<
+    (event: import('react').WheelEvent<HTMLDivElement>) => void
+  >(
+    (event) => {
+      if (
+        followId &&
+        !(event.target as Element).closest('[data-follow-controls]')
+      )
+        setFollowId(null)
+    },
+    [followId, setFollowId],
+  )
+  return { handlePointerDownCapture, handleKeyDownCapture, handleWheelCapture }
 }

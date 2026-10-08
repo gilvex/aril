@@ -1,3 +1,5 @@
+import { readNoteText } from '../../noteText/utils/readNoteText.ts'
+import { noteTextStateSchema } from '../../noteText/config/noteTextStateSchema.ts'
 import { z } from 'zod'
 import { designSchema } from '../../design/index.ts'
 import { wireframeSchema } from '../../wireframe/index.ts'
@@ -67,6 +69,10 @@ export const workspaceSchema = z
       .max(50),
     requirements: z.array(requirementSchema).max(500),
     noteComments: z.array(noteCommentSchema).max(1000).optional(),
+    noteStates: z
+      .record(z.string().min(1).max(90), noteTextStateSchema)
+      .refine((value) => Object.keys(value).length <= 51)
+      .optional(),
     notes: z.string().max(50000),
     notesTitle: z.string().min(1).max(120).optional(),
     documents: z
@@ -86,6 +92,17 @@ export const workspaceSchema = z
     design: designSchema,
   })
   .superRefine((workspace, context) => {
+    for (const state of Object.values(workspace.noteStates || {})) {
+      try {
+        readNoteText(state)
+      } catch {
+        context.addIssue({
+          code: 'custom',
+          message: 'Invalid collaborative note state',
+        })
+        break
+      }
+    }
     if (
       new Set(workspace.documents?.map((d) => d.id)).size !==
       (workspace.documents?.length || 0)

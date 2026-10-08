@@ -3,6 +3,8 @@ import type { NotesState } from '../../types/notesState.ts'
 export const notesSlice = createSlice({
   name: 'notes',
   initialState: {
+    liveText: {},
+    composition: null,
     comments: false,
     commentDraft: '',
     commentQuote: '',

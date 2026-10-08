@@ -1,5 +1,4 @@
 import type { Presence } from '@pomegranate/domain/collaboration'
-import { CursorMessage } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
 export function NoteViewer({ peer }: { peer: Presence }) {
@@ -13,7 +12,6 @@ export function NoteViewer({ peer }: { peer: Presence }) {
           ? t('Editing')
           : t('Viewing')}
       </span>
-      <CursorMessage chat={peer.chat} />
     </div>
   )
 }

@@ -1,3 +1,8 @@
+import {
+  noteTextSnapshot,
+  writeNoteText,
+  setNoteText,
+} from '@pomegranate/domain/noteText'
 import { applyOperations } from '@pomegranate/domain/collaboration'
 import { createSeed } from '@pomegranate/domain/seed'
 import type { Envelope } from '@pomegranate/domain/workspace'
@@ -186,4 +191,33 @@ test('canvas Redux models keep multi-selection serializable and isolated between
     JSON.parse(JSON.stringify(a.store.getState())),
     a.store.getState(),
   )
+})
+
+test('live Notes undo and redo preserve a peer edit received before the background save', async () => {
+  const initial = {
+    ...envelope(),
+    workspace: { ...createSeed(), notes: 'Hello world' },
+  }
+  const session = createWorkspaceSession(initial, 'fixture', 'owner')
+  const base = noteTextSnapshot(initial.workspace, 'project-notes')!
+  const remote = writeNoteText(base, 'Hello world!')
+  const local = writeNoteText(remote, 'Hello brave world!')
+  session.change(
+    (w) => setNoteText(w, 'project-notes', local),
+    true,
+    (w) => setNoteText(w, 'project-notes', remote),
+  )
+  session.receive({
+    ...initial,
+    revision: 2,
+    workspace: setNoteText(initial.workspace, 'project-notes', remote),
+  })
+  assert.equal(session.store.getState().workspace.notes, 'Hello brave world!')
+  session.undo()
+  assert.equal(session.store.getState().workspace.notes, 'Hello world!')
+  session.redo()
+  assert.equal(session.store.getState().workspace.notes, 'Hello brave world!')
+  session.undo()
+  assert.equal(session.store.getState().workspace.notes, 'Hello world!')
+  assert.equal(session.store.getState().error, '')
 })

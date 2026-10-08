@@ -11,6 +11,7 @@ export function useNoteSurface({
   peers,
   surface,
 }: NoteSurfaceProps) {
+  const lastPointer = useRef<{ x: number; y: number } | null>(null)
   const overlay = useRef<HTMLDivElement>(null)
   const mirror = useRef<HTMLDivElement>(null)
   const { note, sendPresence, patch } = model
@@ -21,31 +22,28 @@ export function useNoteSurface({
       if (!element) return
       const selection = readNoteSelection(element)
       const bounds = element.getBoundingClientRect()
+      if (event)
+        lastPointer.current = {
+          x: Math.max(
+            0,
+            Math.min(1, (event.clientX - bounds.left) / element.clientWidth),
+          ),
+          y: Math.max(
+            0,
+            Math.min(
+              1,
+              (event.clientY - bounds.top + element.scrollTop) /
+                element.scrollHeight,
+            ),
+          ),
+        }
       sendPresence({
         note: {
           id: note.id,
           bodyKey: noteBodyKey(note.body),
           surface,
           selection,
-          pointer: event
-            ? {
-                x: Math.max(
-                  0,
-                  Math.min(
-                    1,
-                    (event.clientX - bounds.left) / element.clientWidth,
-                  ),
-                ),
-                y: Math.max(
-                  0,
-                  Math.min(
-                    1,
-                    (event.clientY - bounds.top + element.scrollTop) /
-                      element.scrollHeight,
-                  ),
-                ),
-              }
-            : null,
+          pointer: lastPointer.current,
         },
       })
     },

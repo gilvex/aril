@@ -1,25 +1,38 @@
+import { useNoteInput } from '../model/useNoteInput.ts'
+import { useNoteCaret } from '../model/useNoteCaret.ts'
 import { useCallback } from 'react'
-import type { ChangeEvent } from 'react'
+import type { FocusEvent } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useNoteSurface } from '../model/useNoteSurface.ts'
 import type { NoteSurfaceProps } from '../types/noteSurfaceProps.ts'
+import { NoteCursors } from './NoteCursors.tsx'
 import { NoteMarkdown } from './NoteMarkdown.tsx'
 
 export function NoteSurface(props: NoteSurfaceProps) {
   const { t } = useTranslation()
   const { model, editor, surface } = props
   const live = useNoteSurface(props)
+  const caret = useNoteCaret(props)
+  const input = useNoteInput(props, caret.beforeInput)
   const { blur: blurEditor } = editor
   const { clear } = live
-  const blur = useCallback(() => {
-    blurEditor()
-    clear()
-  }, [blurEditor, clear])
-  const change = useCallback(
-    (event: ChangeEvent<HTMLTextAreaElement>) =>
-      model.edit({ body: event.target.value }),
-    [model],
+  const blur = useCallback(
+    (event: FocusEvent) => {
+      if (
+        (event.relatedTarget as Element | null)?.closest(
+          '[data-follow-controls]',
+        )
+      )
+        return
+      blurEditor()
+      clear()
+    },
+    [blurEditor, clear],
   )
+  const select = useCallback(() => {
+    caret.capture()
+    live.select()
+  }, [caret, live])
   return (
     <div className={`note-surface note-surface-${surface}`}>
       {surface === 'edit' ? (
@@ -27,13 +40,15 @@ export function NoteSurface(props: NoteSurfaceProps) {
           ref={editor.editor}
           className="notebook-input"
           aria-label={t('Note content')}
-          value={model.note.body}
+          value={input.value}
           placeholder={t('Write a note…')}
           maxLength={50000}
           onFocus={editor.focusBody}
           onBlur={blur}
-          onChange={change}
-          onSelect={live.select}
+          onChange={input.change}
+          onCompositionStart={input.compositionStart}
+          onCompositionEnd={input.compositionEnd}
+          onSelect={select}
           onPointerMove={live.publish}
           onPointerLeave={live.select}
         />
@@ -46,7 +61,7 @@ export function NoteSurface(props: NoteSurfaceProps) {
           onPointerUp={live.select}
           onKeyUp={live.select}
           onPointerLeave={live.select}
-          onBlur={live.clear}
+          onBlur={blur}
         >
           <NoteMarkdown body={model.note.body} />
           {!model.note.body && (
@@ -61,6 +76,7 @@ export function NoteSurface(props: NoteSurfaceProps) {
           aria-hidden="true"
         />
       )}
+      <NoteCursors {...props} />
       <div
         ref={live.overlay}
         className="note-presence-overlay"

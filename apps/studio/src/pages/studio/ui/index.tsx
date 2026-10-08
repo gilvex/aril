@@ -39,3 +39,5 @@ export { BoardTypeChoices } from './BoardTypeChoices.tsx'
 export { StudioMenuNavigation } from './StudioMenuNavigation.tsx'
 
 export { StudioMobileMenuButton } from './StudioMobileMenuButton.tsx'
+
+export { StudioNotebook } from './StudioNotebook.tsx'

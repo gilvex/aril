@@ -12,6 +12,7 @@ export type StudioContentProps = {
     profile: import('@pomegranate/domain/collaboration').Profile,
   ) => void
   multiplayer: {
+    noteText: import('@pomegranate/domain/noteText').NoteTextChannel
     profile: import('@pomegranate/domain/collaboration').Profile
     setProfile: (
       value:

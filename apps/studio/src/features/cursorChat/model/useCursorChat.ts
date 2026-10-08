@@ -54,10 +54,10 @@ export function useCursorChat({
         { chat: text.trim() ? { text, expiresAt: Date.now() + 6000 } : null },
         true,
       )
-      expiry.current = setTimeout(
-        () => sendPresence({ chat: null }, true),
-        6000,
-      )
+      expiry.current = setTimeout(() => {
+        sendPresence({ chat: null }, true)
+        model.patch({ expiresAt: 0 })
+      }, 6000)
     },
     [sendPresence, model],
   )

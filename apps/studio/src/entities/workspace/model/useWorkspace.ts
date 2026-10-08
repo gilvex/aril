@@ -1,3 +1,4 @@
+import { setNoteText, type NoteTextState } from '@pomegranate/domain/noteText'
 import { diffWorkspace } from '@pomegranate/domain/collaboration'
 import { createWorkspaceSession } from '@/entities/workspace/model/createWorkspaceSession.ts'
 import type { Recovery } from '@/entities/workspace/types/recovery.ts'
@@ -41,11 +42,28 @@ export function useWorkspace(
   }, [session])
   useEffect(() => session.receive(initial), [session, initial])
   const change = useCallback<typeof session.change>(
-    (update, record) => {
-      session.change((current) => {
-        const next = update(current)
-        return canEdit || !diffWorkspace(current, next).length ? next : current
-      }, record)
+    (update, record, historyBase) => {
+      session.change(
+        (current) => {
+          const next = update(current)
+          return canEdit || !diffWorkspace(current, next).length
+            ? next
+            : current
+        },
+        record,
+        historyBase,
+      )
+    },
+    [canEdit, session],
+  )
+  const changeText = useCallback(
+    (id: string, before: NoteTextState, after: NoteTextState) => {
+      if (canEdit)
+        session.change(
+          (value) => setNoteText(value, id, after),
+          true,
+          (value) => setNoteText(value, id, before),
+        )
     },
     [canEdit, session],
   )
@@ -60,6 +78,7 @@ export function useWorkspace(
     canUndo: canEdit && snapshot.canUndo,
     canRedo: canEdit && snapshot.canRedo,
     change,
+    changeText,
     checkpoint: session.checkpoint,
     flush: session.flush,
     receive: session.receive,

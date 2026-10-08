@@ -22,8 +22,8 @@ export function CursorMessage({ chat }: Pick<Presence, 'chat'>) {
   )
   const text = useSyncExternalStore(subscribe, read)
   return text ? (
-    <div className="cursor-message" role="status">
-      {text}
-    </div>
+    <em className="cursor-message" role="status">
+      {': ' + text}
+    </em>
   ) : null
 }

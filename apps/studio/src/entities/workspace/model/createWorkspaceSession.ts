@@ -158,9 +158,16 @@ export function createWorkspaceSession(
     lastCheckpoint.current = Date.now()
     setHistoryVersion()
   }
-  const change = (update: (value: Workspace) => Workspace, record = true) => {
+  const change = (
+    update: (value: Workspace) => Workspace,
+    record = true,
+    historyBase?: (value: Workspace) => Workspace,
+  ) => {
     const next = update(current.current)
-    const operations = diffWorkspace(current.current, next)
+    const operations = diffWorkspace(
+      historyBase ? historyBase(current.current) : current.current,
+      next,
+    )
     if (operations.length) {
       if (
         (record && Date.now() - lastCheckpoint.current > 500) ||
@@ -193,7 +200,11 @@ export function createWorkspaceSession(
       for (const operations of steps)
         next = keepViews(applyOperations(next, operations), next)
       source.current.pop()
-      target.current.push(entry)
+      target.current.push([
+        backwards
+          ? diffWorkspace(next, current.current)
+          : diffWorkspace(current.current, next),
+      ])
       apply(next)
       lastCheckpoint.current = 0
       setHistoryVersion()

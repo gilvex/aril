@@ -2,6 +2,9 @@ import type { openLiveChannel } from '@/features/liveSession/model/requests/open
 import type { Presence } from '@pomegranate/domain/collaboration'
 import type { LiveState } from '@pomegranate/domain/liveSession'
 export type LiveConnectionOptions = {
+  noteText: (
+    message: import('@pomegranate/domain/noteText').NoteTextMessage,
+  ) => void
   workspaceId: string
   clientId: string
   read: () => LiveState

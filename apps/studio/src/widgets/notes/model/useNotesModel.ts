@@ -1,3 +1,5 @@
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
+import { useLiveNote } from './useLiveNote.ts'
 import { configureStore } from '@reduxjs/toolkit'
 import {
   useEffect,
@@ -47,10 +49,25 @@ export function useNotesModel(props: NotesProps) {
     () => noteDocuments(workspace, t('Project notes')),
     [workspace, t],
   )
-  const note =
+  const selectedNote =
     documents.find((entry) => entry.id === state.selected) || documents[0]
+  const liveNote = useLiveNote({
+    note: selectedNote,
+    workspace,
+    changeText: props.changeText,
+    noteText: props.noteText,
+    canEdit: useWorkspaceRole() !== 'viewer',
+    patch,
+    getState: store.getState,
+  })
+  const note = { ...selectedNote, body: liveNote.body }
   useEffect(() => {
-    patch({ titleDraft: null, commentDraft: '', commentQuote: '' })
+    patch({
+      titleDraft: null,
+      commentDraft: '',
+      commentQuote: '',
+      composition: null,
+    })
   }, [note.id, patch])
   const visible = useMemo(
     () =>
@@ -81,9 +98,12 @@ export function useNotesModel(props: NotesProps) {
       patch({ selected: target, deleting: false })
   }, [followed, documents, patch])
   const edit = useCallback(
-    (value: Partial<Pick<typeof note, 'title' | 'body'>>) =>
-      change((w) => updateNote(w, note.id, value)),
-    [change, note.id],
+    (value: Partial<Pick<typeof note, 'title' | 'body'>>) => {
+      if (value.body !== undefined) liveNote.editBody(value.body)
+      if (value.title !== undefined)
+        change((w) => updateNote(w, note.id, { title: value.title }))
+    },
+    [change, note.id, liveNote],
   )
   const select = useCallback(
     (id: string) =>
@@ -117,11 +137,23 @@ export function useNotesModel(props: NotesProps) {
     if (note.id === 'project-notes') return
     change((w) => ({
       ...w,
+      noteStates: Object.fromEntries(
+        Object.entries(w.noteStates || {}).filter(([id]) => id !== note.id),
+      ),
       noteComments: w.noteComments?.filter((entry) => entry.noteId !== note.id),
       documents: w.documents?.filter((entry) => entry.id !== note.id),
     }))
-    patch({ selected: 'project-notes', titleDraft: null, deleting: false })
-  }, [change, note.id, patch])
+    patch({
+      selected: 'project-notes',
+      titleDraft: null,
+      deleting: false,
+      liveText: Object.fromEntries(
+        Object.entries(store.getState().liveText).filter(
+          ([id]) => id !== note.id,
+        ),
+      ),
+    })
+  }, [change, note.id, patch, store])
   const presence = useCallback(
     (field?: string) =>
       sendPresence({
@@ -133,6 +165,9 @@ export function useNotesModel(props: NotesProps) {
     [note.id, sendPresence],
   )
   return {
+    textState: liveNote.textState,
+    editBody: liveNote.editBody,
+    getState: store.getState,
     change,
     profile: props.profile,
     sendPresence,

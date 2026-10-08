@@ -99,6 +99,7 @@ export function installAgentApi(
             'boards',
             'requirements',
             'notes',
+            'noteText',
             'notesTitle',
             'noteComments',
             'documents',

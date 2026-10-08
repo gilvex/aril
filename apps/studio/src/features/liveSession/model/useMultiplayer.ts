@@ -1,3 +1,5 @@
+import { createNoteTextChannel } from '../utils/createNoteTextChannel.ts'
+import { noteTextMessageSchema } from '@pomegranate/domain/noteText'
 import { connectLiveSession } from '@/features/liveSession/model/iterators/connectLiveSession.ts'
 import { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
 import { useMultiplayerModel } from '@/features/liveSession/model/useMultiplayerModel.ts'
@@ -14,7 +16,7 @@ import type {
 } from '@pomegranate/domain/collaboration'
 import type { LiveState } from '@pomegranate/domain/liveSession'
 import type { Envelope } from '@pomegranate/domain/workspace'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useMemo } from 'react'
 import { runSaga } from 'redux-saga'
 
 export function useMultiplayer(
@@ -43,6 +45,7 @@ export function useMultiplayer(
     return { profile, peers, activity, connected, clientId }
   })
 
+  const noteText = useMemo(createNoteTextChannel, [])
   const latest = useRef<LiveState>({
     clientId,
     camera: null,
@@ -116,9 +119,22 @@ export function useMultiplayer(
       workspaceId,
       clientId,
       read: () => latest.current,
+      noteText: noteText.receive,
       peers: setPeers,
       connected: setConnected,
       ready: (session) => {
+        noteText.setSender((message) => {
+          if (session) void session.sendNoteText(message).catch(() => {})
+          else
+            void request('/api/note-text', {
+              method: 'POST',
+              headers: {
+                ...workspaceHeaders(workspaceId),
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ clientId, message }),
+            }).catch(() => {})
+        })
         live.current = session
         transport.current = session ? 'websocket' : 'local'
         if (!session) setConnected(streamConnected.current)
@@ -126,11 +142,20 @@ export function useMultiplayer(
       },
     })
     return () => {
+      noteText.setSender(null)
       task.cancel()
       live.current = null
       transport.current = 'pending'
     }
-  }, [active, workspaceId, clientId, sendPresence, setPeers, setConnected])
+  }, [
+    active,
+    workspaceId,
+    clientId,
+    sendPresence,
+    setPeers,
+    setConnected,
+    noteText,
+  ])
   useEffect(() => {
     // Profile edits receive a fresh server-attested identity, never a claimed
     // name/avatar supplied in an ordinary cursor packet.
@@ -141,6 +166,12 @@ export function useMultiplayer(
     const controller = new AbortController()
     let retryTimer: ReturnType<typeof setTimeout> | undefined
     const handle = (event: string, raw: string) => {
+      if (event === 'note-text' && transport.current === 'local') {
+        const packet = JSON.parse(raw)
+        const parsed = noteTextMessageSchema.safeParse(packet.message)
+        if (packet.clientId !== clientId && parsed.success)
+          noteText.receive(parsed.data)
+      }
       if (event === 'workspace') receive(JSON.parse(raw))
       if (event === 'activity') setActivity(JSON.parse(raw))
       if (event === 'presence' && transport.current === 'local') {
@@ -227,8 +258,11 @@ export function useMultiplayer(
     setPeers,
     setProfile,
     workspaceId,
+    noteText,
   ])
   return {
+    noteText:
+      noteText as import('@pomegranate/domain/noteText').NoteTextChannel,
     profile,
     setProfile,
     peers,
