@@ -7,8 +7,8 @@ import { designMobileToolPatch } from '../utils/designMobileToolPatch.ts'
 
 export function DesignMobileToolsButton({ model }: DesignEditorProps) {
   const { t } = useTranslation()
-  const { patch, layers, inspector, pagesOpen, mobileToolsTab } = model
-  const open = layers || inspector || pagesOpen
+  const { patch, layers, inspector, mobileToolsTab } = model
+  const open = layers || inspector
   const toggle = useCallback(
     () =>
       patch(

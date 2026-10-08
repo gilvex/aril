@@ -11,12 +11,12 @@ test('mobile tools share one sheet, retain selection, and remember the last tab'
     createDesignEditorState(),
     patch({ compact: true }),
   )
-  for (const tab of ['pages', 'layers', 'library', 'properties'] as const) {
+  for (const tab of ['layers', 'library', 'properties'] as const) {
     state = designEditorSlice.reducer(state, patch(designMobileToolPatch(tab)))
     assert.equal(state.mobileToolsTab, tab)
     assert.equal(state.layers, tab === 'layers' || tab === 'library')
     assert.equal(state.inspector, tab === 'properties')
-    assert.equal(state.pagesOpen, tab === 'pages')
+    assert.equal(state.pagesOpen, false)
     state = designEditorSlice.reducer(state, patch({ selection: ['frame'] }))
     assert.equal(state.pagesOpen || state.layers || state.inspector, true)
     state = designEditorSlice.reducer(
@@ -34,6 +34,33 @@ test('mobile tools share one sheet, retain selection, and remember the last tab'
   state = designEditorSlice.reducer(state, patch({ pagesOpen: true }))
   assert.equal(state.layers || state.inspector, false)
   assert.equal(state.pagesOpen, true)
+})
+
+test('Pages never replaces the panel remembered by the Tools action', () => {
+  const patch = designEditorSlice.actions.patch
+  let state = designEditorSlice.reducer(
+    createDesignEditorState(),
+    patch({ compact: true }),
+  )
+  for (const tab of ['layers', 'library', 'properties'] as const) {
+    state = designEditorSlice.reducer(state, patch(designMobileToolPatch(tab)))
+    state = designEditorSlice.reducer(
+      state,
+      patch(designMobileToolPatch('pages')),
+    )
+    assert.equal(state.pagesOpen, true)
+    assert.equal(state.layers || state.inspector, false)
+    assert.equal(state.mobileToolsTab, tab)
+    state = designEditorSlice.reducer(state, patch({ pagesOpen: false }))
+    state = designEditorSlice.reducer(
+      state,
+      patch(designMobileToolPatch(state.mobileToolsTab)),
+    )
+    assert.equal(state.pagesOpen, false)
+    assert.equal(state.layers, tab !== 'properties')
+    assert.equal(state.inspector, tab === 'properties')
+    assert.equal(state.mobileToolsTab, tab)
+  }
 })
 
 test('desktop selection and page picker preserve both design panels; compact mode opens one drawer', () => {

@@ -26,7 +26,11 @@ export function DesignMobileTools({
   const selectTab = useCallback(
     (tab: string) => {
       if (['pages', 'layers', 'library', 'properties'].includes(tab))
-        patch(designMobileToolPatch(tab as DesignEditorState['mobileToolsTab']))
+        patch(
+          designMobileToolPatch(
+            tab as DesignEditorState['mobileToolsTab'] | 'pages',
+          ),
+        )
     },
     [patch],
   )

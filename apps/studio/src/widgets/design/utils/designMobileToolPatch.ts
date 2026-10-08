@@ -1,10 +1,10 @@
 import type { DesignEditorState } from '../types/designEditorState.ts'
 
 export function designMobileToolPatch(
-  tab: DesignEditorState['mobileToolsTab'],
+  tab: DesignEditorState['mobileToolsTab'] | 'pages',
 ): Partial<DesignEditorState> {
   return {
-    mobileToolsTab: tab,
+    ...(tab !== 'pages' ? { mobileToolsTab: tab } : {}),
     layers: tab === 'layers' || tab === 'library',
     inspector: tab === 'properties',
     ...(tab === 'layers' || tab === 'library' ? { leftTab: tab } : {}),
