@@ -90,6 +90,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       defaultEdgeOptions={{ type: 'smoothstep' }}
       connectionRadius={28}
     >
+      <StableCanvasViewport following={!!props.following} />
       <Background
         color="var(--canvas-dot, #d9d6e2)"
         gap={22}
@@ -113,3 +114,4 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
     </ReactFlow>
   )
 }
+import { StableCanvasViewport } from '@/shared/ui/index.tsx'

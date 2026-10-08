@@ -9,7 +9,7 @@ import { useCallback, type MouseEvent } from 'react'
 import { Background, Controls, ReactFlow } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
-import { EditorContextMenu } from '@/shared/ui/index.tsx'
+import { EditorContextMenu, StableCanvasViewport } from '@/shared/ui/index.tsx'
 import { useDesignContextMenu } from '../model/useDesignContextMenu.ts'
 import { useDesignDocument } from '../model/useDesignDocument.ts'
 import { useDesignCanvas } from '../model/useDesignCanvas.ts'
@@ -105,6 +105,7 @@ export function DesignCanvas(props: DesignBoardProps) {
                 fitViewOptions={{ padding: 0.15, maxZoom: 1 }}
                 elevateNodesOnSelect={false}
               >
+                <StableCanvasViewport following={!!props.following} />
                 <Background
                   gap={20}
                   size={1}
