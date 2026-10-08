@@ -1,3 +1,4 @@
+import { useCallback, type ChangeEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
 import { Plus, Search } from 'lucide-react'
@@ -10,6 +11,11 @@ export function DesignPagesList({ model }: DesignEditorProps) {
   const role = useWorkspaceRole()
   const canEdit = role !== null && role !== 'viewer'
   const { patch } = model
+  const changeQuery = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      patch({ pageQuery: event.target.value }),
+    [patch],
+  )
   const pages = model.pages.filter((page) =>
     page.name
       .toLocaleLowerCase()
@@ -24,7 +30,7 @@ export function DesignPagesList({ model }: DesignEditorProps) {
           aria-label={t('Find a page')}
           placeholder={t('Find a page')}
           value={model.pageQuery}
-          onChange={(event) => patch({ pageQuery: event.target.value })}
+          onChange={changeQuery}
         />
       </label>
       <div className="design-page-picker-list">
