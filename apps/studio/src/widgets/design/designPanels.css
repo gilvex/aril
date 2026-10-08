@@ -66,7 +66,7 @@
 .design-panel-height-resize:hover,
 .design-panel-height-resize:focus-visible {
   background: var(--accent-light);
-  outline: 1px solid var(--accent);
+  outline: 1px solid var(--accent-ink);
 }
 .design-panel-height-resize {
   position: absolute;
@@ -103,8 +103,8 @@
 }
 .design-panel-corner-resize:hover,
 .design-panel-corner-resize:focus-visible {
-  color: var(--accent);
-  outline: 1px solid var(--accent);
+  color: var(--accent-ink);
+  outline: 1px solid var(--accent-ink);
   background: var(--accent-light);
 }
 

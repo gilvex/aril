@@ -86,7 +86,7 @@
 .design-pages-splitter:hover,
 .design-pages-splitter:focus-visible {
   background: var(--accent-light);
-  outline: 1px solid var(--accent);
+  outline: 1px solid var(--accent-ink);
 }
 .design-layers .design-layers-heading {
   border-top: 0;
@@ -187,7 +187,7 @@
   box-shadow: none;
 }
 .design-number-field:focus-within {
-  outline: 1px solid var(--accent);
+  outline: 1px solid var(--accent-ink);
 }
 .design-color-field {
   display: flex;

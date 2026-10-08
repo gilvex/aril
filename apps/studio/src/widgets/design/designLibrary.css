@@ -15,7 +15,7 @@
 }
 .design-library-tabs button[aria-pressed='true'] {
   background: var(--accent-light);
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .design-library-body {
   flex: 1;
@@ -226,7 +226,7 @@
   min-height: 180px;
 }
 .design-machine-flow .design-state-active {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 4px;
 }
 .design-machine-flow .react-flow__edge.selected path {

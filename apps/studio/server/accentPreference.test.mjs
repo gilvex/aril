@@ -121,6 +121,12 @@ test('all presets have readable primary text and selected text in light and dark
     const read = (name, fallback) =>
       block.match(new RegExp('--' + name + ': (#[a-f0-9]+)'))?.[1] ?? fallback
     assert.equal(read('accent-fill', '#b34568'), option.color)
+    for (const surface of ['#1e1e1e', '#262626', '#2c2c2c', '#414141']) {
+      assert.ok(
+        contrast(read('accent-text-dark', '#f0a1be'), surface) >= 4.5,
+        option.id + ' text on ' + surface,
+      )
+    }
     assert.ok(
       contrast(option.color, '#ffffff') >= 4.5,
       option.id + ' primary text',
@@ -132,7 +138,7 @@ test('all presets have readable primary text and selected text in light and dark
     assert.ok(
       contrast(
         read('accent-text-dark', '#f0a1be'),
-        read('accent-soft-dark', '#442b3b'),
+        read('accent-soft-dark', '#372e33'),
       ) >= 4.5,
       option.id + ' dark selection',
     )

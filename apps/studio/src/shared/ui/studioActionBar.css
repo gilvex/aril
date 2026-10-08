@@ -27,7 +27,7 @@
   justify-content: center;
 }
 .studio-action-bar [data-slot='button']:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 .requirements-bulk-slot > .studio-action-bar-positioner {

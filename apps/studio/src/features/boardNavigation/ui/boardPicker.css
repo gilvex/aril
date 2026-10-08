@@ -30,7 +30,7 @@
   background: var(--canvas);
 }
 .board-picker-search:focus-within {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 1px;
 }
 .board-picker-search svg {

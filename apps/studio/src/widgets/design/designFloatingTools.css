@@ -87,7 +87,7 @@
   box-shadow: none;
 }
 .design-page-search:focus-within {
-  outline: 1px solid var(--accent);
+  outline: 1px solid var(--accent-ink);
 }
 .design-page-picker-list {
   overflow-y: auto;

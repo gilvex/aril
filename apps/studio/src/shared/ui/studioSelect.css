@@ -1,7 +1,7 @@
 .studio-select { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; min-width: 0; width: 100%; padding: 8px 10px; border: 1px solid var(--line, #e1dbe8); border-radius: 7px; color: var(--text-strong, #34313d); background: var(--surface, white); font: inherit; text-align: left; }
 .studio-select > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .studio-select svg { flex-shrink: 0; }
-.studio-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.studio-select:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
 .studio-select[data-state='open'] { border-color: var(--accent); }
 .studio-select:disabled { opacity: .5; }
 .studio-select-menu { z-index: 1000; min-width: var(--radix-select-trigger-width); max-width: min(420px, calc(100vw - 24px)); max-height: min(340px, var(--radix-select-content-available-height)); overflow: hidden; padding: 5px; border: 1px solid var(--line, #e1dbe8); border-radius: 9px; background: var(--surface, white); color: var(--text-strong, #34313d); box-shadow: 0 10px 35px #17102130; font: 12px var(--body, sans-serif); }

@@ -65,7 +65,7 @@
 .req-board-link { display: flex; align-items: center; gap: 12px; width: 100%; background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 11px; text-align: left; margin-bottom: 8px; color: inherit; }.req-board-link > span { flex: 1; min-width: 0; }.req-board-link strong { display: block; font-size: 12px; }.req-board-link small { display: block; color: var(--muted); font-size: 11px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .req-link-picker { margin-top: 16px; font-size: 11px; gap: 6px; color: var(--muted); }.req-link-picker :is(select, .studio-select) { font-size: 12px; }
 .req-document-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding-top: 25px; color: var(--muted); font-size: 11px; }.req-document-footer > span { display: flex; gap: 6px; align-items: center; }.req-back { display: none; }
-.requirements-page :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.requirements-page :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
 @media (max-width: 1200px) and (min-width: 761px) {
   .has-detail .req-table-head { grid-template-columns: 20px 1fr; }.has-detail .req-table-head > span:nth-last-child(-n+2) { display: none; }
   .has-detail .req-row-open { grid-template-columns: 1fr 1fr; gap: 8px; }.has-detail .req-title { grid-column: 1 / -1; }.has-detail .req-title > small { display: none; }

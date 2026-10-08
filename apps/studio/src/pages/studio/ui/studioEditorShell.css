@@ -314,7 +314,7 @@
   align-items: center;
 }
 .sidebar-collapse-control[aria-current] {
-  color: var(--accent);
+  color: var(--accent-ink);
   background: var(--accent-light);
 }
 

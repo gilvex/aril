@@ -144,7 +144,7 @@
   margin-top: 6px;
 }
 .design-layer-action-list > button.danger {
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .design-layer-action-list > button:disabled {
   opacity: 0.4;
