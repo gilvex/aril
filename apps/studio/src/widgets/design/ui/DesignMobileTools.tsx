@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { X } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'vagabond-ui/tabs'
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { StudioDrawer } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignMobilePropertyMode } from './DesignMobilePropertyMode.tsx'
@@ -52,35 +52,36 @@ export function DesignMobileTools({
           <X size={18} />
         </Button>
       </header>
-      <Tabs
-        className="design-tools-tabs"
-        value={active}
-        onValueChange={selectTab}
-      >
-        <TabsContent className="design-tools-tab-content" value={active}>
-          {model.inspector && model.libraryView !== 'machine' && (
-            <DesignMobilePropertyMode model={model} />
+      <div className="design-tools-panel">
+        {model.inspector && model.libraryView !== 'machine' && (
+          <DesignMobilePropertyMode model={model} />
+        )}
+        <div className="design-tools-content">
+          {model.pagesOpen ? (
+            <div className="design-page-popover">
+              <DesignPagesList model={model} />
+            </div>
+          ) : (
+            children
           )}
-          <div className="design-tools-content">
-            {model.pagesOpen ? (
-              <div className="design-page-popover">
-                <DesignPagesList model={model} />
-              </div>
-            ) : (
-              children
-            )}
-          </div>
-        </TabsContent>
-        <TabsList
-          className="design-tools-tabs-list"
+        </div>
+      </div>
+      <footer className="design-tools-switcher">
+        <ToggleGroup
+          type="single"
+          value={active}
+          onValueChange={selectTab}
+          className="design-tools-button-group"
           aria-label={t('Design tools')}
         >
-          <TabsTrigger value="pages">{t('Pages')}</TabsTrigger>
-          <TabsTrigger value="layers">{t('Layers')}</TabsTrigger>
-          <TabsTrigger value="library">{t('Library')}</TabsTrigger>
-          <TabsTrigger value="properties">{t('Properties')}</TabsTrigger>
-        </TabsList>
-      </Tabs>
+          <ToggleGroupItem value="pages">{t('Pages')}</ToggleGroupItem>
+          <ToggleGroupItem value="layers">{t('Layers')}</ToggleGroupItem>
+          <ToggleGroupItem value="library">{t('Library')}</ToggleGroupItem>
+          <ToggleGroupItem value="properties">
+            {t('Properties')}
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </footer>
     </StudioDrawer>
   )
 }
