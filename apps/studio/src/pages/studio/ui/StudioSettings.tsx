@@ -11,6 +11,7 @@ import { SettingsProfile } from '@/widgets/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 import { SettingsFile } from './SettingsFile.tsx'
+import { ProjectLinks } from '@/shared/ui/index.tsx'
 import './studioSettings.css'
 export function StudioSettings(props: StudioContentProps) {
   const { t } = useTranslation()
@@ -96,6 +97,7 @@ export function StudioSettings(props: StudioContentProps) {
                   <AccentPicker />
                   <InstallApp />
                 </section>
+                <ProjectLinks />
               </>
             )}
           </div>

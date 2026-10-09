@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { request } from '@/shared/api/index.ts'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { Spinner } from '@/shared/ui/index.tsx'
+import { Spinner, ProjectLinks } from '@/shared/ui/index.tsx'
 import type { JoinStudioScreenProps } from '../types/joinStudioScreenProps.ts'
 import { LoginHeader } from './LoginHeader.tsx'
 import { LoginBlueprint } from './LoginBlueprint.tsx'
@@ -93,6 +93,9 @@ export function GuestJoinScreen({
         </section>
         <LoginBlueprint />
       </main>
+      <footer className="login-footer">
+        <ProjectLinks />
+      </footer>
     </div>
   )
 }

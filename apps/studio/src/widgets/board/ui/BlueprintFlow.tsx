@@ -51,6 +51,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
   return (
     <ReactFlow
       ariaLabelConfig={ariaLabelConfig}
+      proOptions={{ hideAttribution: true }}
       key={board.id}
       nodes={nodes}
       edges={edges}
@@ -91,6 +92,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       connectionRadius={28}
     >
       <StableCanvasViewport following={!!props.following} />
+      <CanvasRepositoryLink />
       {props.drawing}
       <Background
         color="var(--canvas-dot, #d9d6e2)"
@@ -115,4 +117,4 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
     </ReactFlow>
   )
 }
-import { StableCanvasViewport } from '@/shared/ui/index.tsx'
+import { CanvasRepositoryLink, StableCanvasViewport } from '@/shared/ui/index.tsx'

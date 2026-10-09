@@ -8,7 +8,11 @@ import { useCallback, type MouseEvent } from 'react'
 import { Background, Controls, ReactFlow } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
-import { EditorContextMenu, StableCanvasViewport } from '@/shared/ui/index.tsx'
+import {
+  CanvasRepositoryLink,
+  EditorContextMenu,
+  StableCanvasViewport,
+} from '@/shared/ui/index.tsx'
 import { useDesignContextMenu } from '../model/useDesignContextMenu.ts'
 import { useDesignDocument } from '../model/useDesignDocument.ts'
 import { useDesignCanvas } from '../model/useDesignCanvas.ts'
@@ -83,6 +87,7 @@ export function DesignCanvas(props: DesignBoardProps) {
             >
               <ReactFlow<DesignFlowNode>
                 ariaLabelConfig={labels}
+                proOptions={{ hideAttribution: true }}
                 nodes={canvas.nodes}
                 edges={[]}
                 nodeTypes={nodeTypes}
@@ -106,6 +111,7 @@ export function DesignCanvas(props: DesignBoardProps) {
                 elevateNodesOnSelect={false}
               >
                 <StableCanvasViewport following={!!props.following} />
+                <CanvasRepositoryLink />
                 <DesignDrawing model={model} />
                 <Background
                   gap={20}

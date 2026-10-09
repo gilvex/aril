@@ -3,7 +3,7 @@ import { AccountActions } from '@/features/accountActions/index.ts'
 import { useCallback } from 'react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
-import { LoadingStatus } from '@/shared/ui/index.tsx'
+import { LoadingStatus, ProjectLinks } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useJoinStudioScreenHandlers } from '../model/useJoinStudioScreenHandlers.tsx'
 import type { JoinStudioScreenProps } from '../types/joinStudioScreenProps.ts'
@@ -77,6 +77,7 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
         <LoginBlueprint />
       </main>
       <footer className="login-footer">
+        <ProjectLinks />
         <InstallApp />
       </footer>
     </div>

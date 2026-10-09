@@ -42,6 +42,7 @@ export function DesignMachineWorkspace({ model }: DesignEditorProps) {
         <ReactFlowProvider>
           <ReactFlow
             key={machine.id}
+            proOptions={{ hideAttribution: true }}
             nodes={nodes}
             edges={edges}
             fitView
@@ -59,6 +60,7 @@ export function DesignMachineWorkspace({ model }: DesignEditorProps) {
             deleteKeyCode={null}
           >
             <StableCanvasViewport />
+            <CanvasRepositoryLink />
             <Background gap={20} color="var(--line)" />
             <Controls showInteractive={false} />
           </ReactFlow>
@@ -70,4 +72,4 @@ export function DesignMachineWorkspace({ model }: DesignEditorProps) {
     </div>
   )
 }
-import { StableCanvasViewport } from '@/shared/ui/index.tsx'
+import { CanvasRepositoryLink, StableCanvasViewport } from '@/shared/ui/index.tsx'

@@ -1,0 +1,24 @@
+.react-flow__panel.canvas-repository-link {
+  margin: 0 4px 0 0;
+}
+.canvas-repository-link a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  color: var(--text-muted);
+  background: var(--canvas);
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 14px;
+  text-decoration: none;
+}
+.canvas-repository-link a:hover,
+.canvas-repository-link a:focus-visible {
+  color: var(--text-strong);
+  background: var(--surface-raised);
+}
+.canvas-repository-link a:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}

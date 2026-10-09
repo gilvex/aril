@@ -38,6 +38,7 @@
 .login-auth > .form-error { font-size: 13px; line-height: 1.6; margin: 16px 0; overflow-wrap: anywhere; }
 .login-footer { padding: 24px 0 30px; width: 100%; }
 .login-footer .install-app { max-width: 400px; }
+.login-footer .project-links { margin-bottom: 16px; }
 .login-blueprint { align-self: center; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface, #fff); box-shadow: 0 18px 60px #1710210a; }
 .login-blueprint-heading { padding: 18px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); font-size: 12px; }
 .login-blueprint-heading > svg { color: var(--accent-ink, #b34568); }
