@@ -1178,5 +1178,8 @@
   "Previous": "Назад",
   "Next": "Далее",
   "Automatic shape icon": "Иконка по форме",
-  "Leave empty to use the component silhouette. Updates with its design.": "Оставьте пустым для силуэта компонента. Обновляется вместе с дизайном."
+  "Leave empty to use the component silhouette. Updates with its design.": "Оставьте пустым для силуэта компонента. Обновляется вместе с дизайном.",
+  "Expand groups here. Drag to arrange.": "Раскрывайте группы здесь. Перетаскивайте для расположения.",
+  "Expand {{name}}": "Раскрыть {{name}}",
+  "Collapse {{name}}": "Свернуть {{name}}"
 }

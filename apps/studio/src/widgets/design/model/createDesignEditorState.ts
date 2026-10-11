@@ -13,6 +13,7 @@ export function createDesignEditorState(): DesignEditorState {
     libraryDirection: 'both',
     libraryOffset: 0,
     libraryPositions: {},
+    libraryExpanded: {},
     libraryDetailsTab: 'usedBy',
     libraryUsageLimit: 50,
     variableLimit: 50,

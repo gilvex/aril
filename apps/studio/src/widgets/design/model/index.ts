@@ -29,3 +29,5 @@ export { useDesignMachineWorkspace } from './useDesignMachineWorkspace.ts'
 
 export { useDesignVariables } from './useDesignVariables.ts'
 export { useLibraryExplorer } from './useLibraryExplorer.ts'
+
+export { useLibraryMapControls } from './useLibraryMapControls.ts'

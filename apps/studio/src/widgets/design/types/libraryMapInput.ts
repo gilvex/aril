@@ -13,4 +13,6 @@ export type LibraryMapInput = {
   direction: 'both' | 'uses' | 'usedBy'
   offset: number
   individual?: boolean
+  expanded?: Record<string, number>
+  positions?: Record<string, { x: number; y: number }>
 }

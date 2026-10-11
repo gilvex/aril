@@ -13,6 +13,7 @@ export type DesignEditorState = {
   libraryDirection: 'both' | 'uses' | 'usedBy'
   libraryOffset: number
   libraryPositions: Record<string, { x: number; y: number }>
+  libraryExpanded: Record<string, number>
   libraryDetailsTab: 'usedBy' | 'uses' | 'impact'
   libraryUsageLimit: number
   variableLimit: number

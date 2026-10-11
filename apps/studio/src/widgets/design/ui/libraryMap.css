@@ -280,3 +280,36 @@
   padding: 0 4px;
   border-radius: 4px;
 }
+
+.library-cluster-expand {
+  width: 24px;
+  height: 24px;
+  right: -9px;
+  top: -9px;
+  border: 1px solid var(--line);
+  padding: 0;
+  color: var(--text-strong);
+}
+.library-map-more {
+  min-height: 44px;
+  margin-top: 8px;
+}
+
+@keyframes library-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.library-map-node,
+.library-map-more {
+  animation: library-reveal 180ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .library-map-node,
+  .library-map-more {
+    animation: none;
+  }
+}

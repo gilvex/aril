@@ -1,5 +1,7 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react'
-import { Variable, File, Layers, ArrowUpRight } from 'lucide-react'
+import { Variable, File, Layers, Plus, Minus } from 'lucide-react'
+import { Button } from 'vagabond-ui/button'
+import { useCallback, type MouseEvent } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LibraryMapNode as MapNode } from '../types/libraryMapNode.ts'
@@ -7,6 +9,24 @@ import { ComponentGlyph } from './ComponentGlyph.tsx'
 export function LibraryMapNode({ data }: NodeProps<MapNode>) {
   const { t } = useTranslation()
   const cluster = data.kind === 'cluster'
+  const { toggle: toggleGroup } = data
+  const toggle = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation()
+      toggleGroup?.()
+    },
+    [toggleGroup],
+  )
+  if (data.kind === 'more')
+    return (
+      <Button
+        className="nodrag nopan library-map-more"
+        variant="outline"
+        onClick={toggle}
+      >
+        {t('Show more')} · {data.count}
+      </Button>
+    )
   const Icon = cluster ? Layers : data.kind === 'variable' ? Variable : File
   return (
     <div
@@ -23,7 +43,19 @@ export function LibraryMapNode({ data }: NodeProps<MapNode>) {
           <Icon size={22} />
         )}
         {cluster && (
-          <ArrowUpRight className="library-cluster-expand" size={12} />
+          <Button
+            className="nodrag nopan library-cluster-expand"
+            variant="ghost"
+            size="icon"
+            aria-label={t(
+              data.expanded ? 'Collapse {{name}}' : 'Expand {{name}}',
+              { name: data.label },
+            )}
+            aria-expanded={!!data.expanded}
+            onClick={toggle}
+          >
+            {data.expanded ? <Minus size={12} /> : <Plus size={12} />}
+          </Button>
         )}
       </span>
       <strong>{data.label}</strong>

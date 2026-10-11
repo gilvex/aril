@@ -4,6 +4,7 @@ import type { LibraryMapNode } from '../types/libraryMapNode.ts'
 import { libraryMapColor } from './libraryMapColor.ts'
 import { libraryMapNeighborhood } from './libraryMapNeighborhood.ts'
 import { libraryMapLayout } from './libraryMapLayout.ts'
+import { expandLibraryMap } from './expandLibraryMap.ts'
 export function libraryMapGraph(input: LibraryMapInput) {
   const { assets, edges, path, focus, depth, direction } = input
   const selected = assets.some((a) => a.id === input.selected)
@@ -41,6 +42,7 @@ export function libraryMapGraph(input: LibraryMapInput) {
     const existing = entries.get(id)
     if (existing) {
       existing.data.count++
+      existing.data.members?.push(asset.id)
       continue
     }
     entries.set(id, {
@@ -55,6 +57,7 @@ export function libraryMapGraph(input: LibraryMapInput) {
         color: libraryMapColor(asset.library),
         icon: asset.icon,
         glyph: asset.glyph,
+        ...(individual ? {} : { members: [asset.id] }),
         ...(individual ? {} : { path: nextPath }),
       },
     })
@@ -98,9 +101,12 @@ export function libraryMapGraph(input: LibraryMapInput) {
             color: libraryMapColor(missing.library),
             path: [missing.library],
             external: true,
+            members: [],
           },
         })
       external.get(id)!.data.count++
+      const members = external.get(id)!.data.members!
+      if (!members.includes(missing.id)) members.push(missing.id)
       if (sourceVisible) target = id
       else source = id
     }
@@ -138,7 +144,7 @@ export function libraryMapGraph(input: LibraryMapInput) {
       )
     }
   const layout = libraryMapLayout(nodes, visibleEdges, focus ? selected : null)
-  return {
+  const result = expandLibraryMap({
     nodes: layout.map((node) => ({
       ...node,
       style: {
@@ -147,6 +153,12 @@ export function libraryMapGraph(input: LibraryMapInput) {
       },
     })),
     edges: visibleEdges,
+    input: { ...input, selected },
+    highlighted: neighborhood,
+  })
+  return {
+    ...result,
+    scopeKey: nodes.map((node) => node.id).join('|') + (focus ? selected : ''),
     total,
     pageSize,
     offset,

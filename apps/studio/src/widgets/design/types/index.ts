@@ -58,3 +58,5 @@ export type { LibraryUsageGroupProps } from './libraryUsageGroupProps.ts'
 
 export type { ComponentGlyphProps } from './componentGlyphProps.ts'
 export type { LibraryEdgeBounds } from './libraryEdgeBounds.ts'
+
+export type { LibraryMapExpansionInput } from './libraryMapExpansionInput.ts'

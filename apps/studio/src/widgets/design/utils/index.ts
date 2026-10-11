@@ -14,3 +14,6 @@ export { libraryEdgePath } from './libraryEdgePath.ts'
 export { libraryMapNeighborhood } from './libraryMapNeighborhood.ts'
 export { libraryMapGraph } from './libraryMapGraph.ts'
 export { libraryIndirectUsage } from './libraryIndirectUsage.ts'
+
+export { libraryExpansionPosition } from './libraryExpansionPosition.ts'
+export { expandLibraryMap } from './expandLibraryMap.ts'

@@ -331,3 +331,117 @@ test('retired machines survive active edits but cannot be added or changed via M
     ]),
   )
 })
+
+test('inline expansion preserves context, reveals exact neighbors, and collapses without moving base nodes', () => {
+  const library = createExampleDesignLibrary('inline')
+  const usage = getDesignUsage({ library }).filter(
+    (u) => u.ownerKind !== 'machine',
+  )
+  const assets = libraryMapAssets({ library, pages: [], usage })
+  const edges = usage.map((u, i) => ({
+    id: String(i),
+    source: u.assetKind + ':' + u.assetId,
+    target: u.ownerKind + ':' + u.ownerId,
+  }))
+  const input: LibraryMapInput = {
+    assets,
+    edges,
+    path: [],
+    query: 'Deploy',
+    kind: 'all',
+    usage: 'all',
+    selected: null,
+    focus: false,
+    depth: 1,
+    direction: 'both',
+    offset: 0,
+  }
+  const base = libraryMapGraph(input)
+  const group = base.nodes.find((n) => n.data.external)!
+  const positions = Object.fromEntries(
+    base.nodes.map((n) => [
+      n.id,
+      { x: n.position.x + 80, y: n.position.y + 50 },
+    ]),
+  )
+  const open = libraryMapGraph({
+    ...input,
+    expanded: { [group.id]: 12 },
+    positions,
+  })
+  assert.equal(open.scopeKey, base.scopeKey)
+  for (const node of base.nodes)
+    assert.deepEqual(
+      open.nodes.find((n) => n.id === node.id)?.position,
+      positions[node.id],
+    )
+  assert.ok(open.nodes.some((n) => n.id === 'variable:inline-accent'))
+  assert.ok(!open.nodes.some((n) => n.id === 'variable:inline-busy'))
+  assert.ok(
+    open.edges.some(
+      (e) =>
+        e.source === 'variable:inline-accent' &&
+        e.target === 'component:inline-button',
+    ),
+  )
+  assert.ok(open.nodes.find((n) => n.id === group.id)?.data.expanded)
+  assert.equal(new Set(open.nodes.map((n) => n.id)).size, open.nodes.length)
+  for (const edge of open.edges)
+    assert.ok(
+      open.nodes.some((n) => n.id === edge.source) &&
+        open.nodes.some((n) => n.id === edge.target),
+    )
+  const close = libraryMapGraph({ ...input, expanded: {} })
+  assert.deepEqual(close.nodes, base.nodes)
+  assert.deepEqual(close.edges, base.edges)
+})
+
+test('large inline groups reveal twelve assets per batch without losing earlier positions', () => {
+  const library = createExampleDesignLibrary('expand')
+  for (let i = 0; i < 1000; i++)
+    library.variables['v' + i] = {
+      id: 'v' + i,
+      name: 'Token ' + i,
+      collectionId: 'expand-theme',
+      type: 'number',
+      values: { Light: 1, Dark: 2 },
+    }
+  const assets = libraryMapAssets({ library, pages: [], usage: [] })
+  const input: LibraryMapInput = {
+    assets,
+    edges: [],
+    path: [],
+    query: '',
+    kind: 'all',
+    usage: 'all',
+    selected: null,
+    focus: false,
+    depth: 1,
+    direction: 'both',
+    offset: 0,
+  }
+  const base = libraryMapGraph(input),
+    group = base.nodes.find((n) => n.data.label === 'Foundations')!
+  const first = libraryMapGraph({ ...input, expanded: { [group.id]: 12 } })
+  assert.equal(first.nodes.length, base.nodes.length + 13)
+  const positions = Object.fromEntries(
+    first.nodes.map((n) => [n.id, n.position]),
+  )
+  const more = libraryMapGraph({
+    ...input,
+    expanded: { [group.id]: 24 },
+    positions,
+  })
+  assert.equal(more.nodes.length, base.nodes.length + 25)
+  for (const node of first.nodes.filter((n) => n.data.kind !== 'more'))
+    assert.deepEqual(
+      more.nodes.find((n) => n.id === node.id)?.position,
+      node.position,
+    )
+  for (let i = 0; i < more.nodes.length; i++)
+    for (let j = i + 1; j < more.nodes.length; j++) {
+      const a = more.nodes[i].position,
+        b = more.nodes[j].position
+      assert.ok(Math.abs(a.x - b.x) >= 220 || Math.abs(a.y - b.y) >= 150)
+    }
+})

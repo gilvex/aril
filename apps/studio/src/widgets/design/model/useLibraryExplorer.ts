@@ -18,6 +18,8 @@ export function useLibraryExplorer(model: DesignEditorModel) {
     libraryDirection: direction,
     libraryOffset: offset,
     libraryTab,
+    libraryExpanded: expanded,
+    libraryPositions: positions,
   } = model
   const assets = useMemo(
     () => libraryMapAssets({ library, pages: design.pages || [], usage }),
@@ -50,6 +52,8 @@ export function useLibraryExplorer(model: DesignEditorModel) {
         direction,
         offset,
         individual: libraryTab === 'browse',
+        expanded,
+        positions,
       }),
     [
       assets,
@@ -64,6 +68,8 @@ export function useLibraryExplorer(model: DesignEditorModel) {
       direction,
       offset,
       libraryTab,
+      expanded,
+      positions,
     ],
   )
   const groups = useMemo(() => {
