@@ -15,6 +15,7 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
     openAsset,
     insertComponent,
     navigateDesign,
+    libraryPreviewVariant,
   } = model
   const split = libraryAsset?.indexOf(':') ?? -1
   const kind = libraryAsset?.slice(0, split)
@@ -65,8 +66,16 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
     [navigateDesign],
   )
   const edit = useCallback(() => {
-    if (kind === 'component' || kind === 'machine') openAsset(kind, id)
-    else if (kind === 'variable')
+    if (kind === 'component' || kind === 'machine') {
+      openAsset(
+        kind,
+        id,
+        kind === 'component' &&
+          library.components[id]?.variants[libraryPreviewVariant]
+          ? libraryPreviewVariant
+          : '',
+      )
+    } else if (kind === 'variable')
       patch({
         libraryTab: 'variables',
         libraryCollectionId: library.variables[id]?.collectionId || '',
@@ -84,8 +93,25 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
         editingId: null,
       })
     patch({ panelMaximized: null })
-  }, [kind, id, openAsset, patch, library.variables, navigateDesign])
-  const insert = useCallback(() => insertComponent(id), [insertComponent, id])
+  }, [
+    kind,
+    id,
+    openAsset,
+    patch,
+    library.variables,
+    library.components,
+    libraryPreviewVariant,
+    navigateDesign,
+  ])
+  const insert = useCallback(() => {
+    if (!readOnly)
+      insertComponent(
+        id,
+        library.components[id]?.variants[libraryPreviewVariant]
+          ? libraryPreviewVariant
+          : undefined,
+      )
+  }, [insertComponent, id, library.components, libraryPreviewVariant, readOnly])
   return {
     t,
     readOnly,

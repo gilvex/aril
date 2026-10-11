@@ -112,3 +112,12 @@ export { LibraryUsageGroup } from './LibraryUsageGroup.tsx'
 
 export { LibraryExplorer } from './LibraryExplorer.tsx'
 export { LibraryPanelSurface } from './LibraryPanelSurface.tsx'
+
+export { LibraryAssetIdentity } from './LibraryAssetIdentity.tsx'
+export { LibraryAssetActions } from './LibraryAssetActions.tsx'
+export { LibraryPreviewCanvas } from './LibraryPreviewCanvas.tsx'
+export { LibraryAssetProperties } from './LibraryAssetProperties.tsx'
+export { LibraryAssetOverview } from './LibraryAssetOverview.tsx'
+export { LibraryAssetUsage } from './LibraryAssetUsage.tsx'
+export { LibraryInspectorContent } from './LibraryInspectorContent.tsx'
+export { LibraryAssetBindings } from './LibraryAssetBindings.tsx'

@@ -17,3 +17,5 @@ export { libraryIndirectUsage } from './libraryIndirectUsage.ts'
 
 export { libraryExpansionPosition } from './libraryExpansionPosition.ts'
 export { expandLibraryMap } from './expandLibraryMap.ts'
+
+export { libraryUsageResults } from './libraryUsageResults.ts'

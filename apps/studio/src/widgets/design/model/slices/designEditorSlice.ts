@@ -8,6 +8,16 @@ export const designEditorSlice = createSlice({
     patch(state, action: PayloadAction<Partial<DesignEditorState>>) {
       const openingLayers = action.payload.layers && !state.layers
       const openingInspector = action.payload.inspector && !state.inspector
+      if (
+        'libraryAsset' in action.payload &&
+        action.payload.libraryAsset !== state.libraryAsset
+      ) {
+        state.libraryUsageQuery = ''
+        state.libraryPreviewVariant = ''
+        state.libraryUsageLimit = 50
+        if (!('libraryAssetHistory' in action.payload))
+          state.libraryAssetHistory = []
+      }
       Object.assign(state, action.payload)
       if (
         state.compact ||

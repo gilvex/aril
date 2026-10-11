@@ -1,5 +1,6 @@
 import { useCallback, type FormEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
+import { Input } from 'vagabond-ui/input'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LibraryExplorerProps } from '../types/libraryExplorerProps.ts'
@@ -66,7 +67,7 @@ export function LibraryOrganization({ model, explorer }: LibraryExplorerProps) {
         </legend>
         <label>
           {t('Library name')}
-          <input
+          <Input
             name="library"
             list="library-names"
             required
@@ -81,7 +82,7 @@ export function LibraryOrganization({ model, explorer }: LibraryExplorerProps) {
         </datalist>
         <label>
           {t('Family')}
-          <input
+          <Input
             name="family"
             required
             maxLength={120}

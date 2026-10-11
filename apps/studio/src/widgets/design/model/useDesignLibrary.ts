@@ -28,7 +28,11 @@ export function useDesignLibrary({
     [design, update],
   )
   const openAsset = useCallback(
-    (kind: 'component' | 'variables' | 'machine', id = '') => {
+    (
+      kind: 'component' | 'variables' | 'machine',
+      id = '',
+      previewVariant = '',
+    ) => {
       if (kind === 'machine') return
       if (kind === 'variables') {
         openLibrary('variables')
@@ -41,7 +45,7 @@ export function useDesignLibrary({
         libraryAsset: `${kind}:${id}`,
         libraryView: 'canvas',
         componentId: kind === 'component' ? id : null,
-        variantId: '',
+        variantId: previewVariant,
         machineId: null,
         machineSelection: null,
         machineDrafts: {},

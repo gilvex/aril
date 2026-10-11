@@ -32,3 +32,6 @@ export { useLibraryExplorer } from './useLibraryExplorer.ts'
 
 export { useLibraryMapControls } from './useLibraryMapControls.ts'
 export { useLibraryPanelBounds } from './useLibraryPanelBounds.ts'
+
+export { useLibraryAssetNavigation } from './useLibraryAssetNavigation.ts'
+export { useLibraryAssetPreview } from './useLibraryAssetPreview.ts'

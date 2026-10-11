@@ -15,6 +15,10 @@ export type DesignEditorState = {
   libraryOffset: number
   libraryPositions: Record<string, { x: number; y: number }>
   libraryExpanded: Record<string, number>
+  libraryInspectorView: 'details' | 'usage'
+  libraryUsageQuery: string
+  libraryPreviewVariant: string
+  libraryAssetHistory: string[]
   libraryDetailsTab: 'usedBy' | 'uses' | 'impact'
   libraryUsageLimit: number
   variableLimit: number

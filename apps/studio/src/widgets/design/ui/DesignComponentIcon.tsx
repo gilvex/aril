@@ -1,5 +1,6 @@
 import { useCallback, useMemo, type ChangeEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
+import { Input } from 'vagabond-ui/input'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
@@ -39,7 +40,7 @@ export function DesignComponentIcon({ model }: DesignEditorProps) {
     <div className="component-icon-editor">
       <label>
         {t('Component icon')}
-        <input
+        <Input
           value={component.icon || ''}
           onChange={change}
           maxLength={12}

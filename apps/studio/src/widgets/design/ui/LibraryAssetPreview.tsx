@@ -1,37 +1,60 @@
-import { useMemo } from 'react'
-import { resolveDesignBindings } from '@pomegranate/domain/designLibrary'
+import { useCallback } from 'react'
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from 'vagabond-ui/accordion'
+import { StudioSelect } from '@/shared/ui/index.tsx'
+import { useTranslation } from '@/shared/i18n/index.ts'
+import { useLibraryAssetPreview } from '../model/useLibraryAssetPreview.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
-import { DesignMiniPreview } from './DesignMiniPreview.tsx'
+import { LibraryPreviewCanvas } from './LibraryPreviewCanvas.tsx'
 export function LibraryAssetPreview({ model }: DesignEditorProps) {
-  const id = model.libraryAsset?.startsWith('component:')
-    ? model.libraryAsset.slice(10)
-    : ''
-  const component = model.library.components[id]
-  const variants = useMemo(
-    () =>
-      component
-        ? Object.values(component.variants)
-            .slice(0, 3)
-            .map((v) => ({
-              ...v,
-              nodes: resolveDesignBindings(
-                v.nodes,
-                model.library,
-                model.variableModes,
-              ),
-            }))
-        : [],
-    [component, model.library, model.variableModes],
+  const { t } = useTranslation()
+  const { component, variants, variant, page, nodes } =
+    useLibraryAssetPreview(model)
+  const { patch } = model
+  const select = useCallback(
+    (event: { target: { value: string } }) =>
+      patch({ libraryPreviewVariant: event.target.value }),
+    [patch],
   )
-  if (!component) return null
+  if (!component && !page) return null
   return (
-    <div className="library-component-previews">
-      {variants.map((v) => (
-        <div key={v.id}>
-          <DesignMiniPreview nodes={v.nodes} />
-          <small>{v.name}</small>
-        </div>
-      ))}
-    </div>
+    <Accordion
+      type="single"
+      collapsible
+      defaultValue="preview"
+      className="asset-preview-section"
+    >
+      <AccordionItem value="preview">
+        <AccordionTrigger className="asset-section-trigger">
+          {t('Preview')}
+        </AccordionTrigger>
+        <AccordionContent>
+          {component && (
+            <StudioSelect
+              value={variant?.id || ''}
+              onChange={select}
+              aria-label={t('Preview variant')}
+            >
+              {variants.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name}
+                </option>
+              ))}
+            </StudioSelect>
+          )}
+          <div className="asset-preview-tile">
+            {nodes.length ? (
+              <LibraryPreviewCanvas nodes={nodes} />
+            ) : (
+              <p>{t('This design is empty.')}</p>
+            )}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }

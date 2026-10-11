@@ -4,8 +4,8 @@ import { Button } from 'vagabond-ui/button'
 import { StudioDrawer, SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LibraryExplorerProps } from '../types/libraryExplorerProps.ts'
-import { DesignUsageDetails } from './DesignUsageDetails.tsx'
-import { LibraryOrganization } from './LibraryOrganization.tsx'
+import { LibraryInspectorContent } from './LibraryInspectorContent.tsx'
+import { LibraryAssetActions } from './LibraryAssetActions.tsx'
 import { DesignPanel } from './DesignPanel.tsx'
 export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
   const { t } = useTranslation()
@@ -32,10 +32,8 @@ export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
           <X size={16} />
         </Button>
       </header>
-      <div className="library-details-body">
-        <LibraryOrganization model={model} explorer={explorer} />
-        <DesignUsageDetails model={model} />
-      </div>
+      <LibraryInspectorContent model={model} explorer={explorer} />
+      <LibraryAssetActions model={model} />
     </>
   )
   if (model.compact)
