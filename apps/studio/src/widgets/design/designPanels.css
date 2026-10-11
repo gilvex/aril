@@ -159,19 +159,7 @@
   background: var(--surface);
   border: 1px solid var(--line);
 }
-.design-dock-tabs button {
-  flex: 1;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  color: var(--muted);
-  background: transparent;
-  font-size: 12px;
-}
-.design-dock-tabs button[aria-pressed='true'] {
-  color: var(--text-strong);
-  border-bottom-color: var(--accent);
-  background: var(--accent-light);
-}
+.design-dock-tabs button { height: 100%; flex: 1; min-width: 0; }
 .design-panel[data-horizontal] .design-inspector-body {
   display: flex;
   align-items: stretch;

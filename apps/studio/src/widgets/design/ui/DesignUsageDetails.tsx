@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useDesignUsageDetails } from '../model/useDesignUsageDetails.ts'
 import { LibraryAssetPreview } from './LibraryAssetPreview.tsx'
 import { LibraryUsageList } from './LibraryUsageList.tsx'
@@ -12,16 +13,11 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
     () => patch({ libraryTab: 'graph', libraryFocus: true, libraryOffset: 0 }),
     [patch],
   )
-  const usedBy = useCallback(
-    () => patch({ libraryDetailsTab: 'usedBy', libraryUsageLimit: 50 }),
-    [patch],
-  )
-  const uses = useCallback(
-    () => patch({ libraryDetailsTab: 'uses', libraryUsageLimit: 50 }),
-    [patch],
-  )
-  const impact = useCallback(
-    () => patch({ libraryDetailsTab: 'impact', libraryUsageLimit: 50 }),
+  const selectConnection = useCallback(
+    (value: string) => {
+      if (value === 'usedBy' || value === 'uses' || value === 'impact')
+        patch({ libraryDetailsTab: value, libraryUsageLimit: 50 })
+    },
     [patch],
   )
   if (!asset)
@@ -53,36 +49,18 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
           {t('Show in map')}
         </Button>
       </div>
-      <div
+      <ToggleGroup
+        data-studio-toggle-group
+        type="single"
+        value={model.libraryDetailsTab}
+        onValueChange={selectConnection}
         className="library-detail-tabs"
-        role="group"
         aria-label={t('Asset connections')}
       >
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-pressed={model.libraryDetailsTab === 'usedBy'}
-          onClick={usedBy}
-        >
-          {t('Used by')}
-        </Button>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-pressed={model.libraryDetailsTab === 'uses'}
-          onClick={uses}
-        >
-          {t('Uses assets')}
-        </Button>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-pressed={model.libraryDetailsTab === 'impact'}
-          onClick={impact}
-        >
-          {t('Impact')}
-        </Button>
-      </div>
+        <ToggleGroupItem value="usedBy">{t('Used by')}</ToggleGroupItem>
+        <ToggleGroupItem value="uses">{t('Uses assets')}</ToggleGroupItem>
+        <ToggleGroupItem value="impact">{t('Impact')}</ToggleGroupItem>
+      </ToggleGroup>
       <LibraryUsageList model={model} />
     </section>
   )

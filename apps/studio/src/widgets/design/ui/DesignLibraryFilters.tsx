@@ -1,5 +1,5 @@
-import { useCallback, type ChangeEvent, type MouseEvent } from 'react'
-import { Button } from 'vagabond-ui/button'
+import { useCallback, type ChangeEvent } from 'react'
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
@@ -8,12 +8,10 @@ export function DesignLibraryFilters({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const { patch, libraryTab, libraryQuery, libraryKind, libraryUsage } = model
   const view = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) =>
-      patch({
-        libraryTab: e.currentTarget.dataset.view as typeof libraryTab,
-        libraryOffset: 0,
-        libraryFocus: false,
-      }),
+    (value: string) => {
+      if (value === 'browse' || value === 'variables' || value === 'graph')
+        patch({ libraryTab: value, libraryOffset: 0, libraryFocus: false })
+    },
     [patch],
   )
   const search = useCallback(
@@ -48,38 +46,17 @@ export function DesignLibraryFilters({ model }: DesignEditorProps) {
   )
   return (
     <div className="library-filters">
-      <div role="group" aria-label={t('Library view')}>
-        <Button
-          className="button"
-          size="sm"
-          variant="ghost"
-          aria-pressed={libraryTab === 'browse'}
-          data-view="browse"
-          onClick={view}
-        >
-          {t('Browse')}
-        </Button>
-        <Button
-          className="button"
-          size="sm"
-          variant="ghost"
-          aria-pressed={libraryTab === 'variables'}
-          data-view="variables"
-          onClick={view}
-        >
-          {t('Variables')}
-        </Button>
-        <Button
-          className="button"
-          size="sm"
-          variant="ghost"
-          aria-pressed={libraryTab === 'graph'}
-          data-view="graph"
-          onClick={view}
-        >
-          {t('Map')}
-        </Button>
-      </div>
+      <ToggleGroup
+        data-studio-toggle-group
+        type="single"
+        value={libraryTab}
+        onValueChange={view}
+        aria-label={t('Library view')}
+      >
+        <ToggleGroupItem value="browse">{t('Browse')}</ToggleGroupItem>
+        <ToggleGroupItem value="variables">{t('Variables')}</ToggleGroupItem>
+        <ToggleGroupItem value="graph">{t('Map')}</ToggleGroupItem>
+      </ToggleGroup>
       {libraryTab !== 'variables' && (
         <>
           <input

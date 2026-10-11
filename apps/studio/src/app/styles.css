@@ -108,39 +108,42 @@
 body {
   margin: 0;
 }
-button,
-input,
-textarea,
-:is(select, .studio-select) {
-  font: inherit;
+@layer base {
+  button,
+  input,
+  textarea,
+  :is(select, .studio-select) {
+    font: inherit;
+  }
+  button,
+  a,
+  input,
+  textarea,
+  :is(select, .studio-select) {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button {
+    cursor: pointer;
+  }
+  button {
+    color: inherit;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+  }
+  button:focus-visible,
+  a:focus-visible {
+    outline: 3px solid var(--accent-ink, #a777bd);
+    outline-offset: 3px;
+  }
+  button {
+    transition:
+      background 0.15s,
+      border-color 0.15s;
+  }
 }
-button,
-a,
-input,
-textarea,
-:is(select, .studio-select) {
-  -webkit-tap-highlight-color: transparent;
-}
-button {
-  cursor: pointer;
-}
-button {
-  color: inherit;
-}
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.38;
-}
-button:focus-visible,
-a:focus-visible {
-  outline: 3px solid var(--accent-ink, #a777bd);
-  outline-offset: 3px;
-}
-button {
-  transition:
-    background 0.15s,
-    border-color 0.15s;
-}
+
 a {
   color: inherit;
 }
@@ -1524,27 +1527,6 @@ code {
 .color-picker code {
   font-size: 9px;
   color: var(--text-muted, #9f8daa);
-}
-.segmented {
-  display: flex;
-  border: 1px solid var(--line, #e7dfea);
-  padding: 3px;
-  border-radius: 7px;
-  background: var(--surface-muted, #f7f3fa);
-}
-.segmented button {
-  flex: 1;
-  border: 0;
-  background: transparent;
-  border-radius: 5px;
-  padding: 8px 3px;
-  font-size: 10px;
-  color: var(--text-muted, #9e8eaa);
-}
-.segmented button.active {
-  background: var(--surface, white);
-  box-shadow: 0 1px 4px #34224410;
-  color: var(--text-secondary, #6b4e7a);
 }
 .type-sample {
   display: flex;
@@ -2932,7 +2914,7 @@ code {
   .canvas-surface .touch-selection-hint { display: block; position: absolute; bottom: 12px; left: 62px; right: 12px; padding: 9px 12px; border: 1px solid var(--line, #d7bdc8); border-radius: 6px; background: var(--surface, #fff); color: var(--accent-ink, #773a52); font-size: 12px; z-index: 10; }
   .content-page { padding: 22px 16px; overscroll-behavior: contain; }
   .content-page .button, .content-page .icon-button, .requirements-toolbar input, .requirements-toolbar :is(select, .studio-select) { min-height: 44px; }
-  .segmented > button, .preview-tabs > button { min-height: 44px; }
+  .preview-tabs > button { min-height: 44px; }
   .swatches > button { min-width: 44px; min-height: 44px; }
   .content-page input, .content-page textarea, .content-page :is(select, .studio-select) { font-size: 16px; }
   .requirement-row { min-height: 68px; }

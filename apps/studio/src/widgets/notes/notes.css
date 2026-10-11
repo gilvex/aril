@@ -323,7 +323,7 @@
   .notebook-toolbar h1 {
     font-size: 17px;
   }
-  .notebook-toolbar .segmented {
+  .notebook-toolbar .notes-reading-mode {
     order: 5;
   }
   .notebook-toolbar .notebook-outline-toggle {
@@ -378,7 +378,7 @@
     padding: 10px 18px;
   }
 }
-.notebook-toolbar .segmented button {
+.notebook-toolbar .notes-reading-mode button {
   padding: 7px 12px;
 }
 .note-surface {

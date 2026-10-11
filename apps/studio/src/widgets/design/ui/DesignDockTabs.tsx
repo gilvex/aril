@@ -1,3 +1,4 @@
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
@@ -6,21 +7,26 @@ export function DesignDockTabs({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const group = designDockLayout(model).group
   const { patch } = model
-  const layers = useCallback(() => patch({ dockActive: 'left' }), [patch])
-  const inspector = useCallback(() => patch({ dockActive: 'right' }), [patch])
+  const select = useCallback(
+    (value: string) => {
+      if (value === 'left' || value === 'right') patch({ dockActive: value })
+    },
+    [patch],
+  )
   if (!group) return null
   return (
-    <div
+    <ToggleGroup
+      type="single"
+      value={model.dockActive}
+      onValueChange={select}
       className="design-dock-tabs"
       style={{ ...group.rect, height: 36 }}
       aria-label={t('Panel tabs')}
     >
-      <button aria-pressed={model.dockActive === 'left'} onClick={layers}>
-        {t('Layers')}
-      </button>
-      <button aria-pressed={model.dockActive === 'right'} onClick={inspector}>
+      <ToggleGroupItem value="left">{t('Layers')}</ToggleGroupItem>
+      <ToggleGroupItem value="right">
         {t(model.libraryView === 'machine' ? 'Behavior' : 'Design')}
-      </button>
-    </div>
+      </ToggleGroupItem>
+    </ToggleGroup>
   )
 }

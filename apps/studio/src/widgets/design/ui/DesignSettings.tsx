@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -11,6 +13,13 @@ export function DesignSettings({
   close,
 }: DesignSettingsProps) {
   const { t } = useTranslation()
+  const selectDensity = useCallback(
+    (value: string) => {
+      if (value === 'Comfortable' || value === 'Compact')
+        update({ ...design, density: value })
+    },
+    [design, update],
+  )
   return (
     <aside
       className="design-style-panel"
@@ -96,18 +105,19 @@ export function DesignSettings({
       </section>
       <section>
         <h3>{t('Density')}</h3>
-        <div className="segmented">
+        <ToggleGroup
+          data-studio-toggle-group
+          type="single"
+          value={design.density}
+          onValueChange={selectDensity}
+          aria-label={t('Density')}
+        >
           {(['Comfortable', 'Compact'] as const).map((density) => (
-            <button
-              key={density}
-              aria-pressed={design.density === density}
-              className={design.density === density ? 'active' : ''}
-              onClick={() => update({ ...design, density })}
-            >
+            <ToggleGroupItem key={density} value={density}>
               {t(density)}
-            </button>
+            </ToggleGroupItem>
           ))}
-        </div>
+        </ToggleGroup>
       </section>
       <label className="design-direction">
         {t('Direction notes')}

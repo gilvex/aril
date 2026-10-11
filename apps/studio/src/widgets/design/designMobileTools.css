@@ -53,36 +53,12 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   width: 100%;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  background: var(--canvas, #f4f2f6);
 }
 .design-tools-button-group > button {
   min-width: 0;
   min-height: 44px;
-  padding: 8px 2px;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text-secondary);
+  padding-inline: 2px;
   font-size: 12px;
-  font-weight: 500;
-}
-.design-tools-button-group > button:hover {
-  background: var(--surface-muted, #f0edf3);
-  color: var(--text-strong);
-}
-.design-tools-button-group > button[data-state='on'] {
-  border-color: var(--line-strong, #d1cad7);
-  background: var(--surface-raised, #fff);
-  color: var(--text-strong);
-  font-weight: 650;
-}
-.design-tools-button-group > button:focus-visible {
-  outline: 2px solid var(--accent-ink, #a33d61);
-  outline-offset: 1px;
 }
 .design-tools-drawer .design-page-popover {
   height: 100%;
@@ -109,23 +85,8 @@
   overflow: auto;
 }
 .design-tools-property-mode {
-  display: flex;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--line);
-}
-.design-tools-property-mode button {
-  min-height: 40px;
-  padding: 6px 12px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-.design-tools-property-mode button[aria-pressed='true'] {
-  background: var(--accent-light);
-  color: var(--accent-ink);
+  align-self: flex-start;
+  margin: 8px 12px;
 }
 @media (max-width: 1024px), (max-width: 1366px) and (pointer: coarse) {
   .design-tool-dock.tools-open {

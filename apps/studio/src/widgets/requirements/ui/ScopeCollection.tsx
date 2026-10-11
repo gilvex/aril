@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { Plus } from 'lucide-react'
@@ -8,15 +10,26 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
   const { counts, groups, visibleCount } = useScopeCollection(model)
+  const { setViewState } = model
+  const selectFilter = useCallback(
+    (value: string) => {
+      if (value === 'all' || value === 'decision' || value === 'unlinked')
+        setViewState({ scopeFilter: value })
+    },
+    [setViewState],
+  )
   return (
     <div className="scope-collection">
-      <div className="scope-quick-filters" aria-label={t('Filter scope')}>
+      <ToggleGroup
+        data-studio-toggle-group
+        type="single"
+        value={model.scopeFilter}
+        onValueChange={selectFilter}
+        className="scope-quick-filters"
+        aria-label={t('Filter scope')}
+      >
         {(['all', 'decision', 'unlinked'] as const).map((filter) => (
-          <button
-            key={filter}
-            aria-pressed={model.scopeFilter === filter}
-            onClick={() => model.setViewState({ scopeFilter: filter })}
-          >
+          <ToggleGroupItem key={filter} value={filter}>
             {t(
               filter === 'all'
                 ? 'All'
@@ -25,9 +38,9 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
                   : 'Unlinked',
             )}{' '}
             <small>{counts[filter]}</small>
-          </button>
+          </ToggleGroupItem>
         ))}
-      </div>
+      </ToggleGroup>
       <div className="scope-groups">
         {groups.map((group) => (
           <details className="scope-group" key={group.id} open>

@@ -435,9 +435,7 @@
   .design-workbench-toolbar :is(select, .studio-select) {
     width: 105px;
   }
-  .design-workbench-toolbar .segmented {
-    order: 5;
-  }
+
   .design-stage {
     padding: 18px 12px 30px;
   }
@@ -459,11 +457,7 @@
     gap: 8px;
   }
 }
-.design-workbench-toolbar .segmented button {
-  padding: 7px 12px;
-  display: grid;
-  place-items: center;
-}
+
 @media (max-width: 799px) {
   .design-workbench-toolbar {
     display: grid;
@@ -472,16 +466,8 @@
   .design-workbench-toolbar h1 {
     margin: 0;
   }
-  .design-workbench-toolbar > .segmented:nth-child(3) {
-    grid-row: 2;
-    grid-column: 1;
-    justify-self: start;
-  }
-  .design-workbench-toolbar > .segmented:nth-child(4) {
-    grid-row: 2;
-    grid-column: 2 / 4;
-    justify-self: end;
-  }
+
+
   .design-workbench-toolbar > .button {
     grid-row: 1;
     grid-column: 3;

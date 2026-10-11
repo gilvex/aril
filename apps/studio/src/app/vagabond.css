@@ -1,0 +1,19 @@
+/* Keep Vagabond primitives on the user's existing studio theme. */
+:root[data-theme] {
+  --background: var(--canvas, #f8f7fa);
+  --foreground: var(--text-strong, #34313d);
+  --border: var(--line);
+  --border-strong: var(--line-strong, #bcb5c7);
+  --surface-hover: var(--surface-muted, #f2eef5);
+  --ring: var(--accent-ink);
+  --type-body: 'DM Sans Variable', sans-serif;
+  --type-heading: 'Manrope Variable', sans-serif;
+}
+:root[data-theme='light'] {
+  --surface: #fff;
+  --surface-raised: #f0edf3;
+  --muted: #898491;
+}
+@media (pointer: coarse) {
+  [data-studio-toggle-group] > button { min-height: 44px; }
+}

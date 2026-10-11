@@ -34,14 +34,6 @@
 .library-page .library-filters {
   flex-shrink: 0;
 }
-.library-page .library-filters > div[role='group'] {
-  width: auto;
-  background: var(--surface);
-  padding: 3px;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  gap: 2px;
-}
 .library-page .library-filters > input {
   flex: 1;
 }
@@ -96,8 +88,7 @@
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
 }
-.library-catalog button[aria-pressed='true'],
-.library-detail-tabs button[aria-pressed='true'] {
+.library-catalog button[aria-pressed='true'] {
   background: var(--accent-light);
   color: var(--accent-ink);
 }
@@ -164,14 +155,19 @@
 }
 .library-detail-tabs {
   display: flex;
-  gap: 2px;
-  border-bottom: 1px solid var(--line);
   margin: 16px 0 10px;
-  flex-wrap: wrap;
+  max-width: 100%;
 }
-.library-detail-tabs button {
+.library-detail-tabs > button {
+  flex: 1 1 auto;
+  min-width: min-content;
+  padding-inline: 6px;
   font-size: 11px;
-  padding: 8px;
+  height: auto;
+  min-height: 44px;
+  padding-block: 6px;
+  line-height: 1.4;
+  white-space: normal;
 }
 .library-organization fieldset {
   border: 1px solid var(--line);

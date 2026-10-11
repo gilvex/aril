@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { PanelLeft, ListTree, Plus, X, MessageSquare } from 'lucide-react'
 import type { NotesProps } from '../types/notesProps.ts'
@@ -9,6 +11,13 @@ export function Notes(props: NotesProps) {
   const { t } = useTranslation()
   const model = useNotesModel(props)
   const { state, patch, note } = model
+  const selectMode = useCallback(
+    (value: string) => {
+      if (value === 'Edit' || value === 'Split' || value === 'Read')
+        patch({ mode: value })
+    },
+    [patch],
+  )
   return (
     <section className="notebook">
       <header className="notebook-toolbar">
@@ -23,18 +32,20 @@ export function Notes(props: NotesProps) {
         <h1>
           {t('Notes')} <span>{model.documents.length}</span>
         </h1>
-        <div className="segmented" aria-label={t('Reading mode')}>
+        <ToggleGroup
+          data-studio-toggle-group
+          type="single"
+          value={state.mode}
+          onValueChange={selectMode}
+          className="notes-reading-mode"
+          aria-label={t('Reading mode')}
+        >
           {(['Edit', 'Split', 'Read'] as const).map((mode) => (
-            <button
-              key={mode}
-              aria-pressed={state.mode === mode}
-              className={state.mode === mode ? 'active' : ''}
-              onClick={() => patch({ mode })}
-            >
+            <ToggleGroupItem key={mode} value={mode}>
               {t(mode)}
-            </button>
+            </ToggleGroupItem>
           ))}
-        </div>
+        </ToggleGroup>
         <button
           className="button subtle notebook-outline-toggle"
           aria-expanded={state.outline}
