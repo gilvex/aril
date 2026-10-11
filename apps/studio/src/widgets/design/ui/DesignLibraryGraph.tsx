@@ -52,6 +52,7 @@ export function DesignLibraryGraph({ model }: DesignEditorProps) {
     (_event: MouseEvent, node: AssetNode) => patch({ libraryAsset: node.id }),
     [patch],
   )
+  const clear = useCallback(() => patch({ libraryAsset: null }), [patch])
   return (
     <div
       ref={container}
@@ -63,6 +64,7 @@ export function DesignLibraryGraph({ model }: DesignEditorProps) {
         edges={graph.edges}
         nodeTypes={nodeTypes}
         onNodeClick={select}
+        onPaneClick={clear}
         nodesDraggable={false}
         nodesConnectable={false}
         deleteKeyCode={null}

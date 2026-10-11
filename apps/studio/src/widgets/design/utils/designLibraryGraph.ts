@@ -2,9 +2,7 @@ import type { Edge } from '@xyflow/react'
 import type { DesignLibraryGraphInput } from '../types/designLibraryGraphInput.ts'
 import type { DesignLibraryGraphNode } from '../types/designLibraryGraphNode.ts'
 
-export function designLibraryGraph(
-  model: DesignLibraryGraphInput,
-) {
+export function designLibraryGraph(model: DesignLibraryGraphInput) {
   const { library, pages, usage, libraryQuery, libraryKind, libraryAsset } =
     model
   const nodes: DesignLibraryGraphNode[] = []
@@ -64,6 +62,14 @@ export function designLibraryGraph(
   const rows = { variable: 0, component: 0, machine: 0, page: 0 }
   const columns = { variable: 0, component: 1, machine: 2, page: 3 }
   const filtered = nodes.filter((node) => visible.has(node.id))
+  const focused =
+    libraryAsset && visible.has(libraryAsset) ? libraryAsset : null
+  const neighbors = new Set(focused ? [focused] : [])
+  if (focused)
+    for (const edge of edges) {
+      if (edge.source === focused) neighbors.add(edge.target)
+      if (edge.target === focused) neighbors.add(edge.source)
+    }
   for (const node of filtered) {
     node.position = {
       x: columns[node.data.kind] * 290,
@@ -73,10 +79,28 @@ export function designLibraryGraph(
       86,
       Math.ceil(node.data.label.length / 22) * 20 + 56,
     )
-    node.style = { opacity: matches.has(node.id) ? 1 : 0.55 }
+    node.style = {
+      opacity: focused
+        ? neighbors.has(node.id)
+          ? 1
+          : 0.1
+        : matches.has(node.id)
+          ? 1
+          : 0.55,
+    }
   }
   return {
     nodes: filtered,
-    edges: edges.filter((e) => visible.has(e.source) && visible.has(e.target)),
+    edges: edges
+      .filter((e) => visible.has(e.source) && visible.has(e.target))
+      .map((edge) => ({
+        ...edge,
+        style: {
+          opacity:
+            !focused || edge.source === focused || edge.target === focused
+              ? 1
+              : 0.1,
+        },
+      })),
   }
 }

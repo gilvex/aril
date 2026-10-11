@@ -93,8 +93,61 @@ test('graph search retains immediate usage neighbors without mutating documents'
   )
   assert.equal(graph.edges.length, 1)
   assert.equal(graph.nodes[0].selected, true)
-  assert.equal(graph.nodes[1].style?.opacity, 0.55)
+  assert.equal(graph.nodes[1].style?.opacity, 1)
   assert.deepEqual(library, before)
+})
+
+test('graph focus keeps direct dependencies and usages bright, dims unrelated paths, and resets without changing positions', () => {
+  const library = createExampleDesignLibrary('test')
+  const input = {
+    library,
+    pages: [{ id: 'empty', name: 'Empty', nodes: [] }],
+    usage: getDesignUsage({ library }),
+    libraryQuery: '',
+    libraryKind: 'all' as const,
+    libraryAsset: null,
+  }
+  const normal = designLibraryGraph(input)
+  const focused = designLibraryGraph({
+    ...input,
+    libraryAsset: 'component:test-button',
+  })
+  for (const node of focused.nodes) {
+    assert.equal(
+      node.style?.opacity,
+      [
+        'component:test-button',
+        'variable:test-accent',
+        'machine:test-deploy',
+      ].includes(node.id)
+        ? 1
+        : 0.1,
+    )
+    assert.deepEqual(
+      node.position,
+      normal.nodes.find((item) => item.id === node.id)?.position,
+    )
+  }
+  for (const edge of focused.edges)
+    assert.equal(
+      edge.style?.opacity,
+      edge.source === 'component:test-button' ||
+        edge.target === 'component:test-button'
+        ? 1
+        : 0.1,
+    )
+  assert.ok(
+    designLibraryGraph({ ...input, libraryAsset: 'missing' }).nodes.every(
+      (node) => node.style?.opacity === 1,
+    ),
+  )
+  const hidden = designLibraryGraph({
+    ...input,
+    libraryQuery: 'Empty',
+    libraryAsset: 'component:test-button',
+  })
+  assert.equal(hidden.nodes[0].style?.opacity, 1)
+  assert.deepEqual(designLibraryGraph(input), normal)
 })
 
 test('component icons survive schema parsing and legacy board choices become Design without mutation', () => {

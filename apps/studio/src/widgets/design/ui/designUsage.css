@@ -11,6 +11,16 @@
 .design-library-graph .react-flow__node-asset {
   width: 230px;
 }
+.design-library-graph .react-flow__node-asset,
+.design-library-graph .react-flow__edge {
+  transition: opacity 160ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .design-library-graph .react-flow__node-asset,
+  .design-library-graph .react-flow__edge {
+    transition: none;
+  }
+}
 .design-library-graph .react-flow__controls {
   bottom: 8px;
   left: 8px;
