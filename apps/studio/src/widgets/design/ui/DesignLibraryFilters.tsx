@@ -96,7 +96,6 @@ export function DesignLibraryFilters({ model }: DesignEditorProps) {
             <option value="all">{t('All assets')}</option>
             <option value="component">{t('Components')}</option>
             <option value="variable">{t('Variables')}</option>
-            <option value="machine">{t('State machines')}</option>
             <option value="page">{t('Pages')}</option>
           </StudioSelect>
           <StudioSelect

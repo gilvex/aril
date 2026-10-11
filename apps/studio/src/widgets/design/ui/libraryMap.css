@@ -12,94 +12,111 @@
 .library-map .react-flow__edge {
   transition: opacity 160ms ease;
 }
+
 .library-map-node {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 10px 4px;
+  gap: 7px;
+  padding: 8px;
+  min-height: 110px;
   text-align: center;
   color: var(--text-strong);
-  font-size: 12px;
-  min-height: 76px;
+  border-radius: 14px;
 }
 .library-map-node strong {
+  font-size: 15px;
   font-weight: 600;
-  max-width: 210px;
-  overflow-wrap: anywhere;
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  max-width: 164px;
 }
 .library-map-node small {
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: 11px;
 }
-.library-map-node.is-cluster {
-  width: 240px;
-  min-height: 220px;
-  border: 1px solid color-mix(in srgb, var(--cluster-color) 35%, transparent);
-  background: color-mix(in srgb, var(--cluster-color) 6%, var(--canvas));
-  border-radius: 45%;
-  padding: 15px;
+.library-map-symbol {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--cluster-color) 10%, var(--surface));
+  color: var(--cluster-color);
+  border: 1px solid color-mix(in srgb, var(--cluster-color) 40%, var(--line));
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+.library-map-node.is-cluster .library-map-symbol {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+.library-map-node[data-external] .library-map-symbol {
+  border-style: dashed;
 }
 .library-map-node.is-cluster strong {
   color: var(--cluster-color);
 }
-.library-map-node[data-external] {
-  border-style: dashed;
-  min-height: 125px;
-  width: 240px;
-}
-.library-map-node[data-external] .library-constellation {
-  height: 45px;
-}
-.library-map-symbol {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
+.library-cluster-expand {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  padding: 1px;
+  background: var(--canvas);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--cluster-color) 22%, var(--surface));
-  color: var(--cluster-color);
-  border: 1px solid var(--cluster-color);
 }
-.library-map-symbol.kind-component {
-  border-radius: 10px;
+.library-map-symbol.kind-variable {
+  border-radius: 50%;
 }
-.library-map-symbol.kind-machine {
-  border-radius: 5px;
-}
-.react-flow__node.selected .library-map-symbol {
-  outline: 3px solid var(--accent-ink);
-  outline-offset: 4px;
-  background: var(--accent-light);
+.library-map .react-flow__node.selected .library-map-symbol {
+  box-shadow: 0 0 0 4px var(--accent-light);
+  border-color: var(--accent-ink);
 }
 .library-map .react-flow__node:focus-visible .library-map-node {
   outline: 2px solid var(--accent-ink);
-  outline-offset: 6px;
+  outline-offset: 4px;
 }
 .library-map .react-flow__handle {
   opacity: 0;
   pointer-events: none;
 }
-.library-constellation {
-  width: 190px;
-  height: 110px;
-  overflow: visible;
+.component-glyph {
+  flex-shrink: 0;
+  overflow: hidden;
 }
-.library-constellation circle {
-  fill: var(--cluster-color);
+.component-custom-icon {
+  font-size: 24px;
+  line-height: 1;
 }
-.library-constellation path {
-  stroke: var(--cluster-color);
-  opacity: 0.22;
-  stroke-width: 0.6;
+.component-icon-editor {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
 }
-.library-cluster-expand {
-  position: absolute;
-  right: 12px;
-  top: 16px;
-  color: var(--cluster-color);
+.component-icon-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.component-icon-choice > span {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--accent-ink);
+}
+.component-icon-editor input {
+  width: 100%;
+}
+.component-icon-editor small {
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 .library-map-toolbar {
   padding: 10px 12px;
@@ -257,15 +274,9 @@
   }
 }
 
-.library-map-node strong {
-  font-size: 18px;
-}
+.library-map-node strong,
 .library-map-node small {
-  font-size: 13px;
-}
-.library-map-node.is-cluster strong {
-  font-size: 24px;
-}
-.library-map-node.is-cluster small {
-  font-size: 17px;
+  background: var(--canvas);
+  padding: 0 4px;
+  border-radius: 4px;
 }

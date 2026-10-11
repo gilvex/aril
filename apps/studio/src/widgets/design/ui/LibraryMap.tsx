@@ -4,7 +4,9 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LibraryExplorerProps } from '../types/libraryExplorerProps.ts'
 import type { LibraryMapNode as MapNode } from '../types/libraryMapNode.ts'
 import { LibraryMapNode } from './LibraryMapNode.tsx'
+import { LibraryMapEdge } from './LibraryMapEdge.tsx'
 const nodeTypes = { map: LibraryMapNode }
+const edgeTypes = { library: LibraryMapEdge }
 export function LibraryMap({ model, explorer }: LibraryExplorerProps) {
   const { t } = useTranslation()
   const { fitView } = useReactFlow()
@@ -19,10 +21,20 @@ export function LibraryMap({ model, explorer }: LibraryExplorerProps) {
       })),
     [graph.nodes, libraryPositions],
   )
-  const structure = nodes.map((n) => n.id).join('|')
+  const structure =
+    nodes.map((n) => n.id).join('|') +
+    (model.libraryFocus ? model.libraryAsset : '')
   useEffect(() => {
     const frame = requestAnimationFrame(
-      () => void fitView({ padding: 0.25, maxZoom: 1 }),
+      () =>
+        void fitView({
+          padding: 0.2,
+          maxZoom: 1,
+          duration: window.matchMedia('(prefers-reduced-motion: reduce)')
+            .matches
+            ? 0
+            : 280,
+        }),
     )
     return () => cancelAnimationFrame(frame)
   }, [structure, fitView])
@@ -62,8 +74,10 @@ export function LibraryMap({ model, explorer }: LibraryExplorerProps) {
         nodes={nodes}
         edges={graph.edges}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         onNodeClick={select}
         onPaneClick={clear}
+        onNodeDrag={drag}
         onNodeDragStop={drag}
         nodesConnectable={false}
         deleteKeyCode={null}

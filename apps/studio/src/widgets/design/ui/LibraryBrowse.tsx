@@ -3,6 +3,7 @@ import { Button } from 'vagabond-ui/button'
 import { Component, Variable, Workflow, File } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LibraryExplorerProps } from '../types/libraryExplorerProps.ts'
+import { ComponentGlyph } from './ComponentGlyph.tsx'
 const icons = {
   component: Component,
   variable: Variable,
@@ -98,7 +99,11 @@ export function LibraryBrowse({ model, explorer }: LibraryExplorerProps) {
                         : undefined
                     }
                   >
-                    {asset.icon || <Icon size={28} />}
+                    {asset.kind === 'component' ? (
+                      <ComponentGlyph glyph={asset.glyph} icon={asset.icon} />
+                    ) : (
+                      <Icon size={28} />
+                    )}
                   </span>
                   <strong>{asset.name}</strong>
                   <small>

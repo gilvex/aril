@@ -29,6 +29,7 @@ export function useDesignLibrary({
   )
   const openAsset = useCallback(
     (kind: 'component' | 'variables' | 'machine', id = '') => {
+      if (kind === 'machine') return
       if (kind === 'variables') {
         openLibrary('variables')
         return
@@ -38,16 +39,16 @@ export function useDesignLibrary({
         layers: true,
         libraryTab: 'graph',
         libraryAsset: `${kind}:${id}`,
-        libraryView: kind === 'component' ? 'canvas' : kind,
+        libraryView: 'canvas',
         componentId: kind === 'component' ? id : null,
         variantId: '',
-        machineId: kind === 'machine' ? id : null,
+        machineId: null,
         machineSelection: null,
         machineDrafts: {},
         selection: [],
         drafts: {},
         editingId: null,
-        inspector: kind === 'machine',
+        inspector: false,
         styles: false,
         simulation: null,
         libraryError: '',
@@ -206,7 +207,7 @@ export function useDesignLibrary({
       components: { ...library.components, ...kit.components },
       collections: { ...library.collections, ...kit.collections },
       variables: { ...library.variables, ...kit.variables },
-      machines: { ...library.machines, ...kit.machines },
+      machines: library.machines,
     })
     openAsset('component', Object.keys(kit.components)[0])
     patch({ layers: true })

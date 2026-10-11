@@ -322,6 +322,7 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
     )
     const withLibrary = structuredClone(instance.store.read().workspace)
     withLibrary.design.library = createExampleDesignLibrary('agent')
+    withLibrary.design.library.machines = {}
     const canonical = documentOf(withLibrary) as {
       design: { library: unknown }
     }
@@ -370,12 +371,12 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
       usages: { ownerKind: string }[]
     }>('get_design_usage', {
       kind: 'variable',
-      assetId: 'agent-busy',
+      assetId: 'agent-accent',
       limit: 1,
     })
-    assert.ok(usages.total >= 4)
+    assert.equal(usages.total, 2)
     assert.equal(usages.nextOffset, 1)
-    assert.equal(usages.usages[0].ownerKind, 'machine')
+    assert.equal(usages.usages[0].ownerKind, 'component')
     assert.equal(
       (
         await client.callTool({

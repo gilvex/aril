@@ -65,17 +65,6 @@ export function DesignLibrary({ model }: DesignEditorProps) {
               <Button
                 className="button"
                 size="sm"
-                variant="outline"
-                disabled={
-                  readOnly || Object.keys(model.library.machines).length >= 100
-                }
-                onClick={model.addMachine}
-              >
-                {t('Add state machine')}
-              </Button>
-              <Button
-                className="button"
-                size="sm"
                 variant="ghost"
                 disabled={
                   readOnly ||

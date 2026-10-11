@@ -6,5 +6,6 @@ export type CanvasModeBarProps = {
   navigation: ReactNode
   children: ReactNode
   extras?: ReactNode
+  hideMotion?: boolean
   onModeChange?: (mode: CanvasToolMode) => void
 }

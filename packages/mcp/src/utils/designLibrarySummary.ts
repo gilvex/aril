@@ -19,12 +19,7 @@ export function designLibrarySummary(library?: DesignLibrary) {
           type: v.type,
           collectionId: v.collectionId,
         })),
-        machines: Object.values(library.machines).map((m) => ({
-          id: m.id,
-          name: m.name,
-          states: Object.keys(m.states).length,
-          transitions: Object.keys(m.transitions).length,
-        })),
+        archivedMachineCount: Object.keys(library.machines).length,
       }
     : undefined
 }

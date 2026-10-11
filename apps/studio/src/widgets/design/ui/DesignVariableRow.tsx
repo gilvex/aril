@@ -53,17 +53,6 @@ export function DesignVariableRow({
     delete variables[variable.id]
     saveLibrary({ ...library, variables })
   }, [library, variable.id, saveLibrary])
-  const used = Object.values(library.machines).some(
-    (m) =>
-      Object.values(m.states).some((s) =>
-        s.entry.some((a) => a.variableId === variable.id),
-      ) ||
-      Object.values(m.transitions).some(
-        (tr) =>
-          tr.guard?.variableId === variable.id ||
-          tr.actions.some((a) => a.variableId === variable.id),
-      ),
-  )
   return (
     <tr data-collaboration-scope={`variable:${variable.id}`}>
       <td>
@@ -80,7 +69,7 @@ export function DesignVariableRow({
         <StudioSelect
           value={variable.type}
           onChange={type}
-          disabled={used || readOnly}
+          disabled={readOnly}
           aria-label={t('Type')}
         >
           {['color', 'number', 'string', 'boolean'].map((type) => (
@@ -104,7 +93,7 @@ export function DesignVariableRow({
         <DesignVariableUsage model={model} variableId={variable.id} />
         <button
           className="icon-button"
-          disabled={used || readOnly}
+          disabled={readOnly}
           onClick={remove}
           aria-label={t('Delete variable')}
         >

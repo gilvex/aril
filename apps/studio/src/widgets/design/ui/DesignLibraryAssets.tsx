@@ -1,5 +1,7 @@
 import { useCallback, type MouseEvent } from 'react'
-import { Plus, Component, Variable, Workflow } from 'lucide-react'
+import { ComponentGlyph } from './ComponentGlyph.tsx'
+import { componentGlyph } from '../utils/componentGlyph.ts'
+import { Plus, Component, Variable } from 'lucide-react'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
@@ -47,7 +49,10 @@ export function DesignLibraryAssets({ model }: DesignEditorProps) {
               data-active={asset.id === model.componentId || undefined}
             >
               <button data-id={asset.id} data-kind="component" onClick={pick}>
-                <Component size={15} />
+                <ComponentGlyph
+                  icon={asset.icon}
+                  glyph={componentGlyph(asset)}
+                />
                 <span>{asset.name}</span>
               </button>
               <button
@@ -75,36 +80,6 @@ export function DesignLibraryAssets({ model }: DesignEditorProps) {
           {t('Collections and modes')}
           <small>{Object.keys(model.library.variables).length}</small>
         </button>
-      </section>
-      <section>
-        <h3>
-          <Workflow size={15} />
-          {t('State machines')}
-          <button
-            className="icon-button"
-            aria-label={t('Add state machine')}
-            disabled={
-              readOnly || Object.keys(model.library.machines).length >= 100
-            }
-            onClick={model.addMachine}
-          >
-            <Plus size={15} />
-          </button>
-        </h3>
-        {Object.values(model.library.machines)
-          .filter((a) => a.name.toLowerCase().includes(query))
-          .map((asset) => (
-            <button
-              className="design-asset-link"
-              key={asset.id}
-              data-id={asset.id}
-              data-kind="machine"
-              onClick={pick}
-            >
-              <Workflow size={15} />
-              <span>{asset.name}</span>
-            </button>
-          ))}
       </section>
     </>
   )

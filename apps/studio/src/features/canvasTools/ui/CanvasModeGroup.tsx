@@ -12,8 +12,10 @@ const modes = [
 ] as const
 export function CanvasModeGroup({
   onChange,
+  hideMotion,
 }: {
   onChange?: (mode: CanvasToolMode) => void
+  hideMotion?: boolean
 }) {
   const { t } = useTranslation()
   const { mode, setMode } = useCanvasTools()
@@ -38,16 +40,18 @@ export function CanvasModeGroup({
         } as CSSProperties
       }
     >
-      {modes.map(({ id, label, icon: Icon }) => (
-        <ToggleGroupItem
-          key={id}
-          value={id}
-          title={t(label)}
-          aria-label={t(label)}
-        >
-          <Icon size={18} />
-        </ToggleGroupItem>
-      ))}
+      {modes
+        .filter((item) => !hideMotion || item.id !== 'motion')
+        .map(({ id, label, icon: Icon }) => (
+          <ToggleGroupItem
+            key={id}
+            value={id}
+            title={t(label)}
+            aria-label={t(label)}
+          >
+            <Icon size={18} />
+          </ToggleGroupItem>
+        ))}
     </ToggleGroup>
   )
 }

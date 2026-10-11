@@ -15,7 +15,6 @@ import { DesignPanelActions } from './DesignPanelActions.tsx'
 import { DesignMobileToolsButton } from './DesignMobileToolsButton.tsx'
 import { DesignMobilePagesButton } from './DesignMobilePagesButton.tsx'
 import { DesignShapeTools } from './DesignShapeTools.tsx'
-import { DesignMotionTools } from './DesignMotionTools.tsx'
 import type { DesignToolbarProps } from '../types/designToolbarProps.ts'
 export function DesignToolbar(props: DesignToolbarProps) {
   const { model, navigation } = props
@@ -24,9 +23,9 @@ export function DesignToolbar(props: DesignToolbarProps) {
   const tools = useCanvasTools()
   const { setMode } = tools
   useEffect(() => {
-    if (model.libraryView === 'machine') setMode('motion')
+    if (tools.mode === 'motion') setMode('shapes')
     if (model.libraryView === 'variables') setMode('dev')
-  }, [model.libraryView, setMode])
+  }, [model.libraryView, tools.mode, setMode])
   const select = useCallback(() => {
     tools.patch({ drawing: null, draft: null, pointerId: null })
     model.patch({ tool: 'select' })
@@ -69,6 +68,7 @@ export function DesignToolbar(props: DesignToolbarProps) {
         <DesignPanelActions model={model} boardDesign={!!navigation} />
       )}
       <CanvasModeBar
+        hideMotion
         className={`design-tool-dock${compact && (model.layers || model.inspector || model.pagesOpen) ? ' tools-open' : ''}`}
         label={t('Design tools')}
         onModeChange={changeMode}
@@ -122,7 +122,6 @@ export function DesignToolbar(props: DesignToolbarProps) {
             </StudioActionButton>
           </>
         )}
-        {tools.mode === 'motion' && <DesignMotionTools model={model} />}
       </CanvasModeBar>
     </>
   )

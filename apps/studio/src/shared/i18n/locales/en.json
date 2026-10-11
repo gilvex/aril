@@ -1176,5 +1176,7 @@
   "{{count}} other connected libraries are available in Browse.": "{{count}} other connected libraries are available in Browse.",
   "Show more": "Show more",
   "Previous": "Previous",
-  "Next": "Next"
+  "Next": "Next",
+  "Automatic shape icon": "Automatic shape icon",
+  "Leave empty to use the component silhouette. Updates with its design.": "Leave empty to use the component silhouette. Updates with its design."
 }

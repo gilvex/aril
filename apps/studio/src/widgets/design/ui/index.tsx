@@ -51,7 +51,6 @@ export { DesignInstanceControls } from './DesignInstanceControls.tsx'
 
 export { DesignLibrary } from './DesignLibrary.tsx'
 
-
 export { DesignLibraryTabs } from './DesignLibraryTabs.tsx'
 
 export { DesignLibraryWorkspace } from './DesignLibraryWorkspace.tsx'
@@ -98,6 +97,8 @@ export { DesignInsertMenu } from './DesignInsertMenu.tsx'
 export { DesignLibraryPage } from './DesignLibraryPage.tsx'
 export { DesignLibraryPageActions } from './DesignLibraryPageActions.tsx'
 export { LibraryMapNode } from './LibraryMapNode.tsx'
+export { LibraryMapEdge } from './LibraryMapEdge.tsx'
+export { ComponentGlyph } from './ComponentGlyph.tsx'
 export { LibraryMap } from './LibraryMap.tsx'
 export { LibraryCatalog } from './LibraryCatalog.tsx'
 export { LibraryMapToolbar } from './LibraryMapToolbar.tsx'

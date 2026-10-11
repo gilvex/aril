@@ -53,9 +53,6 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
     patch({ componentId: null, selection: [] })
   }, [component, library, saveLibrary, patch])
   if (!component || !variant) return null
-  const used = Object.values(library.machines).some(
-    (m) => m.componentId === component.id,
-  )
   return (
     <fieldset
       disabled={readOnly}
@@ -104,7 +101,11 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
           {t('Insert instance')}
         </button>
       </div>
-      <button className="button subtle danger" disabled={used} onClick={remove}>
+      <button
+        className="button subtle danger"
+        disabled={readOnly}
+        onClick={remove}
+      >
         {t('Delete component and detach instances')}
       </button>
     </fieldset>

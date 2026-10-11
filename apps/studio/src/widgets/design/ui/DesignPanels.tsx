@@ -1,4 +1,3 @@
-import { DesignMachineInspector } from './DesignMachineInspector.tsx'
 import { DesignPanel } from './DesignPanel.tsx'
 import { DesignDockTabs } from './DesignDockTabs.tsx'
 import { DesignDockPreview } from './DesignDockPreview.tsx'
@@ -35,9 +34,7 @@ export function DesignPanels({
   const layers = model.layers && <DesignLayers model={model} />
   const inspector =
     model.inspector &&
-    (model.libraryView === 'machine' ? (
-      <DesignMachineInspector model={model} />
-    ) : model.styles ? (
+    (model.styles ? (
       <DesignSettings
         design={design}
         update={update}

@@ -1176,5 +1176,7 @@
   "{{count}} other connected libraries are available in Browse.": "Другие связанные библиотеки доступны в обзоре: {{count}}",
   "Show more": "Показать ещё",
   "Previous": "Назад",
-  "Next": "Далее"
+  "Next": "Далее",
+  "Automatic shape icon": "Иконка по форме",
+  "Leave empty to use the component silhouette. Updates with its design.": "Оставьте пустым для силуэта компонента. Обновляется вместе с дизайном."
 }

@@ -54,6 +54,7 @@ export function libraryMapGraph(input: LibraryMapInput) {
         count: individual ? asset.count : 1,
         color: libraryMapColor(asset.library),
         icon: asset.icon,
+        glyph: asset.glyph,
         ...(individual ? {} : { path: nextPath }),
       },
     })
@@ -113,11 +114,11 @@ export function libraryMapGraph(input: LibraryMapInput) {
       id,
       source,
       target,
-      type: 'straight',
+      type: 'library',
       markerEnd: { type: MarkerType.ArrowClosed, color: 'var(--text-muted)' },
       style: {
         stroke: 'var(--text-muted)',
-        strokeWidth: 1.25,
+        strokeWidth: selected && active ? 1.8 : 1.2,
         opacity: active || previous?.style?.opacity === 0.6 ? 0.6 : 0.1,
       },
     })
@@ -136,12 +137,12 @@ export function libraryMapGraph(input: LibraryMapInput) {
           `external:${JSON.stringify(asset.library)}`,
       )
     }
-  const layout = libraryMapLayout(nodes, visibleEdges)
+  const layout = libraryMapLayout(nodes, visibleEdges, focus ? selected : null)
   return {
     nodes: layout.map((node) => ({
       ...node,
       style: {
-        width: node.data.kind === 'cluster' ? 240 : 180,
+        width: 180,
         opacity: selected && !highlighted.has(node.id) ? 0.1 : 1,
       },
     })),

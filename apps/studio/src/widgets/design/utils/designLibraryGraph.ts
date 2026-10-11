@@ -36,7 +36,6 @@ export function designLibraryGraph(model: DesignLibraryGraphInput) {
   }
   add('variable', Object.values(library.variables))
   add('component', Object.values(library.components))
-  add('machine', Object.values(library.machines))
   add('page', pages)
   const ids = new Set(nodes.map((node) => node.id))
   const edges = [...links.values()].filter(

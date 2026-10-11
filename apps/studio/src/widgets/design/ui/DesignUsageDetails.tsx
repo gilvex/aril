@@ -3,6 +3,7 @@ import { Button } from 'vagabond-ui/button'
 import { useDesignUsageDetails } from '../model/useDesignUsageDetails.ts'
 import { LibraryAssetPreview } from './LibraryAssetPreview.tsx'
 import { LibraryUsageList } from './LibraryUsageList.tsx'
+import { DesignComponentIcon } from './DesignComponentIcon.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignUsageDetails({ model }: DesignEditorProps) {
   const { t, readOnly, kind, asset, edit, insert, patch } =
@@ -32,6 +33,7 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
   return (
     <section className="library-usage-details">
       <h3>{asset.name}</h3>
+      {kind === 'component' && <DesignComponentIcon model={model} />}
       <LibraryAssetPreview model={model} />
       <div className="design-library-buttons">
         <Button className="button" size="sm" variant="outline" onClick={edit}>

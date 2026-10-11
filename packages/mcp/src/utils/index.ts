@@ -5,3 +5,4 @@ export { saveConfig } from './saveConfig.ts'
 export { validateConfig } from './validateConfig.ts'
 
 export { designLibrarySummary } from './designLibrarySummary.ts'
+export { rejectRetiredMachineChanges } from './rejectRetiredMachineChanges.ts'

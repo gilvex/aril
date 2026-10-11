@@ -63,7 +63,7 @@ test('large library organization survives parsing and cluster navigation never d
     offset: 0,
   }
   const overview = libraryMapGraph(input)
-  assert.equal(overview.nodes.length, 9)
+  assert.equal(overview.nodes.length, 8)
   assert.equal(
     overview.nodes.reduce((sum, n) => sum + n.data.count, 0),
     assets.length,
@@ -191,4 +191,143 @@ test('dependency traversal handles cycles and distinguishes direct from indirect
     'variable:v',
   )
   assert.deepEqual(indirect, [{ id: 'page:p', name: 'Page' }])
+})
+
+test('compact graph routes outside nodes and focus reads dependencies to usages', async () => {
+  const { libraryEdgePath } =
+    await import('../src/widgets/design/utils/libraryEdgePath.ts')
+  const { libraryMapLayout } =
+    await import('../src/widgets/design/utils/libraryMapLayout.ts')
+  const path = libraryEdgePath(
+    { x: 0, y: 0, width: 180, height: 110 },
+    { x: 300, y: 0, width: 180, height: 110 },
+  )
+  assert.match(path, /^M188,55 Q/)
+  assert.ok(path.endsWith('292,55'))
+  assert.equal(
+    libraryEdgePath(
+      { x: 0, y: 0, width: 180, height: 110 },
+      { x: 0, y: 0, width: 180, height: 110 },
+    ),
+    '',
+  )
+  const library = createExampleDesignLibrary('layout')
+  const assets = libraryMapAssets({
+    library,
+    pages: [],
+    usage: getDesignUsage({ library }),
+  })
+  assert.ok(assets.every((a) => a.kind !== 'machine'))
+  assert.equal(assets.find((a) => a.assetId === 'layout-busy')?.count, 0)
+  const graph = libraryMapGraph({
+    assets,
+    edges: [],
+    path: [],
+    query: '',
+    kind: 'all',
+    usage: 'all',
+    selected: null,
+    focus: false,
+    depth: 1,
+    direction: 'both',
+    offset: 0,
+    individual: true,
+  })
+  const [a, b, c] = graph.nodes
+  const layout = libraryMapLayout(
+    [a, b, c],
+    [
+      { id: 'ab', source: a.id, target: b.id },
+      { id: 'bc', source: b.id, target: c.id },
+    ],
+    b.id,
+  )
+  assert.ok(layout[0].position.x < layout[1].position.x)
+  assert.ok(layout[1].position.x < layout[2].position.x)
+})
+
+test('automatic icons follow geometry and exclude descendants of hidden ancestors', async () => {
+  const { componentGlyph } =
+    await import('../src/widgets/design/utils/componentGlyph.ts')
+  const { makeDesignElement } = await import('@pomegranate/domain/design')
+  const component =
+    createExampleDesignLibrary('glyph').components['glyph-button']
+  component.variants = {
+    idle: {
+      id: 'idle',
+      name: 'Default',
+      nodes: [
+        makeDesignElement('frame', 'root', { width: 200, height: 100 }),
+        makeDesignElement('group', 'hidden', {
+          parentId: 'root',
+          hidden: true,
+        }),
+        makeDesignElement('group', 'nested', { parentId: 'hidden' }),
+        makeDesignElement('text', 'text', { parentId: 'nested' }),
+        makeDesignElement('ellipse', 'circle', {
+          parentId: 'root',
+          x: 10,
+          y: 10,
+          width: 50,
+          height: 50,
+        }),
+      ],
+    },
+  }
+  const glyph = componentGlyph(component)
+  assert.equal(glyph.length, 2)
+  assert.equal(glyph[0].width, 24)
+  assert.equal(glyph[1].kind, 'ellipse')
+  assert.equal(glyph[1].width, 6)
+})
+
+test('retired machines survive active edits but cannot be added or changed via MCP', async () => {
+  const { rejectRetiredMachineChanges } =
+    await import('../../../packages/mcp/src/utils/rejectRetiredMachineChanges.ts')
+  const library = createExampleDesignLibrary('archive')
+  const before = JSON.parse(JSON.stringify(library))
+  delete library.components['archive-button']
+  delete library.variables['archive-busy']
+  assert.ok(designLibrarySchema.safeParse(library).success)
+  assert.deepEqual(library.machines, before.machines)
+  assert.doesNotThrow(() =>
+    rejectRetiredMachineChanges([
+      {
+        path: ['design', 'library'],
+        before,
+        after: JSON.parse(JSON.stringify(library)),
+      },
+    ]),
+  )
+  assert.throws(
+    () =>
+      rejectRetiredMachineChanges([
+        { path: ['design', 'library'], after: before },
+      ]),
+    /retired/,
+  )
+  assert.throws(
+    () =>
+      rejectRetiredMachineChanges([
+        {
+          path: ['boards', 'b', 'design', 'library', 'machines', 'm', 'name'],
+          before: 'A',
+          after: 'B',
+        },
+      ]),
+    /retired/,
+  )
+  assert.doesNotThrow(() =>
+    rejectRetiredMachineChanges([
+      { path: ['design', 'library', 'machines'], after: {} },
+    ]),
+  )
+  assert.doesNotThrow(() =>
+    rejectRetiredMachineChanges([
+      {
+        path: ['boards', 'b', 'nodes', 'machines'],
+        after: { name: 'Machine room' },
+      },
+    ]),
+  )
 })

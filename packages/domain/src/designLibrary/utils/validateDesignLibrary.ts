@@ -43,16 +43,8 @@ export function validateDesignLibrary(
   for (const machine of Object.values(library.machines)) {
     if (!machine.states[machine.initial])
       fail('Machine initial state is missing')
-    if (machine.componentId && !library.components[machine.componentId])
-      fail('Machine component is missing')
     for (const [id, state] of Object.entries(machine.states)) {
       if (state.id !== id) fail('State key must match its ID')
-      if (
-        state.variantId &&
-        (!machine.componentId ||
-          !library.components[machine.componentId]?.variants[state.variantId])
-      )
-        fail('State variant is missing')
     }
     for (const [id, transition] of Object.entries(machine.transitions)) {
       if (
@@ -61,25 +53,6 @@ export function validateDesignLibrary(
         !machine.states[transition.to]
       )
         fail('Transition state is missing')
-      if (transition.guard) {
-        const variable = library.variables[transition.guard.variableId]
-        if (
-          !variable ||
-          !matches(variable.type, transition.guard.value) ||
-          (['gt', 'lt'].includes(transition.guard.operator) &&
-            variable.type !== 'number')
-        )
-          fail('Invalid transition condition')
-      }
-    }
-    const actions = [
-      ...Object.values(machine.states).flatMap((s) => s.entry),
-      ...Object.values(machine.transitions).flatMap((t) => t.actions),
-    ]
-    for (const action of actions) {
-      const variable = library.variables[action.variableId]
-      if (!variable || !matches(variable.type, action.value))
-        fail('Invalid machine action')
     }
   }
 }

@@ -50,7 +50,10 @@ export function useDesignDocument({
     () => design.library || emptyDesignLibrary(),
     [design.library],
   )
-  const usage = useMemo(() => getDesignUsage(design), [design])
+  const usage = useMemo(
+    () => getDesignUsage(design).filter((use) => use.ownerKind !== 'machine'),
+    [design],
+  )
   const update = useCallback(
     (next: typeof design) => {
       const synchronized = next.library

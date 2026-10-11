@@ -1,3 +1,4 @@
+import { rejectRetiredMachineChanges } from './rejectRetiredMachineChanges.ts'
 import { designLibrarySummary } from './designLibrarySummary.ts'
 import {
   getDesignUsage,
@@ -128,11 +129,11 @@ export function createMcpServer(config: AgentConfig) {
     'find_design_assets',
     {
       description:
-        'Search reusable design assets before generating layouts. Names/IDs use case-insensitive substring matching. Returns direct usage counts, custom component icons, library/family organization and variable types/collections, without full layer trees. Supply boardId for that board’s isolated library. Use get_design_usage for exact locations; get_design_library for definitions.',
+        'Search reusable design assets before generating layouts. Names/IDs use case-insensitive substring matching. Returns direct usage counts, custom component icons (empty means automatic shape silhouette), library/family organization and variable types/collections, without full layer trees. Supply boardId for that board’s isolated library. Use get_design_usage for exact locations; get_design_library for definitions.',
       inputSchema: z.object({
         boardId: z.string().min(1).max(100).optional(),
         query: z.string().max(200).default(''),
-        kind: z.enum(['component', 'variable', 'machine']).optional(),
+        kind: z.enum(['component', 'variable']).optional(),
         collectionId: z.string().max(100).optional(),
         libraryName: z.string().max(120).optional(),
         family: z.string().max(120).optional(),
@@ -188,7 +189,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_design_usage',
     {
       description:
-        'Find the exact page layers, component variants and machine states/transitions using one component or variable. Component instances count once; variable bindings list their property. Reports direct references, not transitive dependencies. Results are scoped to one design, paginated, and never modify content.',
+        'Find the exact page layers, component variants using one component or variable. Component instances count once; variable bindings list their property. Reports direct references, not transitive dependencies. Results are scoped to one design, paginated, and never modify content.',
       inputSchema: z.object({
         boardId: z.string().min(1).max(100).optional(),
         kind: z.enum(['component', 'variable']),
@@ -213,9 +214,9 @@ export function createMcpServer(config: AgentConfig) {
           throw new Error(
             'Asset not found. Call find_design_assets for available IDs.',
           )
-        const usages = getDesignUsage(design).filter(
-          (u) => u.assetKind === kind && u.assetId === assetId,
-        )
+        const usages = getDesignUsage(design)
+          .filter((use) => use.ownerKind !== 'machine')
+          .filter((u) => u.assetKind === kind && u.assetId === assetId)
         return {
           revision: state.revision,
           asset: { id: asset.id, name: asset.name, kind },
@@ -229,7 +230,7 @@ export function createMcpServer(config: AgentConfig) {
     'validate_design_changes',
     {
       description:
-        'Dry-run a proposed batch of design layout, component, variable or machine edits against the current revision. Checks exact before values and document schema/graph constraints without saving, reserving a revision, or changing history. Design paths only. Read again if the revision changes before apply_changes. Does not render or judge visual quality.',
+        'Dry-run a proposed batch of design layout, component or variable edits against the current revision. Checks exact before values and document schema/graph constraints without saving, reserving a revision, or changing history. Design paths only. Read again if the revision changes before apply_changes. Does not render or judge visual quality.',
       inputSchema: z.object({
         baseRevision: z.number().int().positive().safe(),
         operations: operationsSchema.min(1).max(500),
@@ -251,6 +252,7 @@ export function createMcpServer(config: AgentConfig) {
           throw new Error(
             'Stale revision. Read the latest workspace before validating.',
           )
+        rejectRetiredMachineChanges(operations)
         applyOperations(state.workspace, operations)
         return {
           valid: true,
@@ -264,7 +266,7 @@ export function createMcpServer(config: AgentConfig) {
     'get_design_library',
     {
       description:
-        'Read the full component definitions, variants, typed variable collections/modes, and state machines for a design. Supply boardId for a board design; omit for workspace Design. Component variant nodes are arrays in reads and ID-keyed objects in operations. Instances link nodes through instance metadata; master edits synchronize their non-overridden properties. Simulation is local and does not execute infrastructure.',
+        'Read the full component definitions, variants, typed variable collections/modes, for a design. The machines record is legacy archived data only; preserve it unchanged. Supply boardId for a board design; omit for workspace Design. Component variant nodes are arrays in reads and ID-keyed objects in operations. Instances link nodes through instance metadata; master edits synchronize their non-overridden properties.',
       inputSchema: z.object({ boardId: z.string().min(1).max(100).optional() }),
       annotations: read,
     },
@@ -356,7 +358,11 @@ export function createMcpServer(config: AgentConfig) {
         openWorldHint: false,
       },
     },
-    (input) => result(() => api('workspace', 'PATCH', input)),
+    (input) =>
+      result(() => {
+        rejectRetiredMachineChanges(input.operations)
+        return api('workspace', 'PATCH', input)
+      }),
   )
   return server
 }

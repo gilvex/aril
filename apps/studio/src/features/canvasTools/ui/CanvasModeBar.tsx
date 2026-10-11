@@ -10,6 +10,7 @@ export function CanvasModeBar({
   children,
   extras,
   onModeChange,
+  hideMotion,
 }: CanvasModeBarProps) {
   const { mode } = useCanvasTools()
   return (
@@ -26,7 +27,7 @@ export function CanvasModeBar({
         className="canvas-tool-divider canvas-mode-divider"
         aria-hidden="true"
       />
-      <CanvasModeGroup onChange={onModeChange} />
+      <CanvasModeGroup onChange={onModeChange} hideMotion={hideMotion} />
       {extras && <div className="canvas-extra-tools">{extras}</div>}
     </StudioActionBar>
   )
