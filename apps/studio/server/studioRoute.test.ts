@@ -8,7 +8,7 @@ test('studio routes round-trip locations and preserve invitation hashes', () => 
     workspaceId: 'team/a & b',
     boardId: 'board/2',
     view: 'requirements' as const,
-    canvasMode: 'wireframes' as const,
+    canvasMode: 'design' as const,
     requirementId: 'req#4',
   }
   const result = new URL(
@@ -46,12 +46,12 @@ test('invalid views fall back to blueprint and leaving requirements clears selec
   assert.equal(href, '/w/other/notes')
 })
 
-test('canvas paths preserve board, wireframe mode, demo mode and legacy bookmarks', () => {
+test('legacy wireframe links open Design and preserve board and demo mode', () => {
   const legacy = readStudioRoute(
     '?demo=1&workspace=default&view=canvas&board=a%2Fb&canvas=wireframes',
   )
   const path = studioRouteUrl('https://example.test/?demo=1', legacy)
-  assert.equal(path, '/w/default/canvas/a%2Fb?demo=1&canvas=wireframes')
+  assert.equal(path, '/w/default/canvas/a%2Fb?demo=1&canvas=design')
   assert.deepEqual(readStudioRoute(path), legacy)
   assert.equal(readStudioRoute('/w/default/design').view, 'design')
   assert.equal(readStudioRoute('/w/%FF/design').workspaceId, '')

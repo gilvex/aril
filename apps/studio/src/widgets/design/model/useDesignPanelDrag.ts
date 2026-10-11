@@ -34,6 +34,7 @@ export function useDesignPanelDrag(
       const target = event.target as HTMLElement
       if (
         latest.current.compact ||
+        latest.current.panelMaximized === side ||
         event.button !== 0 ||
         !target.closest('header,.surface-grip') ||
         target.closest(
@@ -129,6 +130,7 @@ export function useDesignPanelDrag(
         return
       }
       if (!(event.target as HTMLElement).closest('.surface-grip')) return
+      if (latest.current.panelMaximized === side) return
       if (
         !['Home', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(
           event.key,

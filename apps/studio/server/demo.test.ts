@@ -40,9 +40,9 @@ test('simulated edits preview drags then persist attributed revisions without re
     workspaceSchema.parse(state.envelope.workspace)
   }
   assert.notDeepEqual(state.envelope.workspace,initial)
-  assert.equal(state.history.length,7)
+  assert.equal(state.history.length,state.actions.length+1)
   const restored=createDemoState(storage)
-  assert.equal(restored.completedActions.length,6)
+  assert.equal(restored.completedActions.length,state.actions.length)
   advanceDemoActions(restored,storage,Date.parse(restored.studio.createdAt)+60000)
   assert.deepEqual(restored.envelope,state.envelope)
 })
@@ -67,11 +67,11 @@ test('demo teammates stay on independent tasks regardless of visitor navigation 
   const before = createDemoPeers(state,time)
   state.presence = {view:'design',boardId:'system',selected:['panel'],requirement:{id:'R05',field:'title',typing:true}}
   assert.deepEqual(createDemoPeers(state,time),before)
-  assert.deepEqual(before.map(peer=>peer.view),['canvas','wireframes','requirements','notes'])
+  assert.deepEqual(before.map(peer=>peer.view),['canvas','design','requirements','notes'])
   assert.equal(before[2].requirement?.id,'R13')
   assert.deepEqual(before[3].selected,['note:recipe-decisions'])
   state.envelope.workspace.boards = state.envelope.workspace.boards.filter(board=>board.id!=='layers')
-  assert.ok(createDemoPeers(state,time).slice(0,2).every(peer=>peer.cursor===null && peer.boardId===null))
+  assert.ok(createDemoPeers(state,time).slice(0,1).every(peer=>peer.cursor===null && peer.boardId===null))
 })
 
 test('demo gestures pause to read, move continuously, and arrive without an orbit or wrap jump', () => {

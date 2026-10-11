@@ -19,6 +19,9 @@ Canvas documents can also contain freehand `strokes`: a record keyed by stroke I
 - `get_board`: full blueprint and wireframe for a board ID, revision, and browser link.
 - `get_design_page`: a design page's complete layers, revision, defaults, and Design-section link. The link opens Design; tell the user the page name to select.
 - `get_design_library`: components, variants, variable collections/modes, and state machines; optional `boardId` selects a board design.
+- `find_design_assets`: compact paginated inventory; case-insensitive substring `query`, asset `kind`, `collectionId`, `variableType`, and used/unused filters. Always pass the same optional `boardId` throughout a board-design workflow.
+- `get_design_usage`: paginated direct references for a component or variable. Results identify page/variant layers and machine states/transitions. Component instances count once per instance; variables count once per bound property or machine action/guard. These are direct usages, not transitive dependencies.
+- `validate_design_changes`: dry-run 1–500 operations under workspace `design` or `boards/id/design` with the exact current `baseRevision`. Checks before-values and document constraints, without saving or reserving the revision. Does not render or assess visual quality.
 - `get_schema`: current field types and limits. Read it before creating unfamiliar entities.
 - `get_history`: recent saved revisions and attributed activity.
 - `apply_changes`: one atomic batch of up to 500 targeted operations.
@@ -73,7 +76,7 @@ After editing, read the affected board, design page, or workspace to verify the 
 
 ## Editable design canvas
 
-Design pages belong to the workspace, independently of boards and their wireframes. Use wireframes for connected navigation flows; use Design for editable visual compositions. Design supports nested frames, groups, rectangle/ellipse masks, frame clipping, rectangles, ellipses, text, buttons, and HTTPS image references, reusable components and variants, typed variables, and state-machine simulations. Vector paths, auto-layout, nested component instances, and navigation prototypes are not supported.
+Design pages can belong to the workspace or an individual board. Use Design for all new interface layouts. Wireframes is retired from navigation; old URLs open Design, and legacy wireframe records remain archived in documents and available through MCP/export. Never delete or overwrite those records as part of retirement. Design supports nested frames, groups, rectangle/ellipse masks, frame clipping, rectangles, ellipses, text, buttons, and HTTPS image references, reusable components and variants, typed variables, and state-machine simulations. Vector paths, auto-layout, nested component instances, and navigation prototypes are not supported.
 
 Read `get_workspace` and `get_schema`, then `get_design_page` for pages you will edit. Old workspaces can have no `design.pages` field: this is valid, and existing direction, accent, density and fonts must be preserved. Only when `pages` is absent, create it with an operation like `{ "path": ["design", "pages"], "after": { "new-page-id": { "id": "new-page-id", "name": "Dashboard", "nodes": {} } } }`. When it already exists (including an empty array in reads), add at `["design", "pages", newPageId]` with `{ "id": newPageId, "name": "Dashboard", "nodes": {} }`. Never replace existing pages with this initialization example.
 
@@ -100,7 +103,7 @@ Aril's initial purpose is planning a self-hostable and SaaS deployment platform,
 The MCP server runs locally over stdio and calls the studio's authenticated HTTPS API. Read-only credentials cannot write. Expired or revoked credentials require renewal through **Settings → Agent access**, followed by local `pnpm mcp:setup`; do not bypass access with database keys, browser sessions, or direct SQL. Revoking a credential stops subsequent calls. A cloud-only MCP client requires a separate remote transport integration; do not claim this local server is a remote OAuth endpoint.
 
 ### Optional board sections and board designs
-New boards may set `sections` to an ordered subset of `canvas`, `wireframes`, `design`; the first is the primary section. Missing `sections` means legacy Blueprint + Wireframes. Never discard hidden content when changing sections. Add another section by appending its type, preserving the current order.
+New boards should set `sections` to an ordered subset of `canvas`, `design`; the first is the primary section. Legacy `wireframes` entries and missing sections are displayed as Design without changing stored content. Never discard hidden content when changing sections. Add another section by appending its type, preserving the current order.
 Each board can now hold a separate `design` with the same schema as the workspace design. Existing `workspace.design` remains independent. Use `get_design_page` with `boardId` to read a board design. Canonical operation paths are `boards/<boardId>/design/pages/<pageId>/nodes/<layerId>`; pages and nodes are ID-keyed objects in operations. Initialize the board design before adding nested pages. Cursor chat is transient presence and must not be written to notes, history, or workspace data.
 
 ## Notes collaboration
@@ -125,7 +128,7 @@ Shared field edits now appear in browsers as transient signed live previews befo
 
 ## Design Library: components, variables and machines
 
-Use `get_design_library` (optional `boardId`) to read the design's saved assets. The Library button beside Pages opens the movable, resizable Layers/Library panel; both panels support docking at all four edges. Libraries belong to their design document; board designs and workspace Design have separate libraries.
+Use `get_design_library` (optional `boardId`) to read the design's saved assets. The Library button opens a searchable React Flow usage graph in the movable, resizable Layers/Library panel. Select a node for direct usages and dependencies; open a usage to select the referenced layer or state. The Variables tab has substring, type, and used/unused filters, plus usage links. The panel supports docking at all four edges and Maximize/Restore via its layout menu. Component definitions accept an optional `icon` (emoji/short symbol, maximum 12 UTF-16 code units), shown in the graph and instance roots. Libraries belong to their design document; board designs and workspace Design have separate libraries.
 
 The optional `design.library` contains four ID-keyed records: `components`, `collections`, `variables`, and `machines`. Initialize these empty records only if absent. Library data is shared, revisioned, and undoable; active assets, variable preview modes, panel layout and simulator values are personal UI state.
 
@@ -136,3 +139,7 @@ The optional `design.library` contains four ID-keyed records: `components`, `col
 - The simulator applies transition assignments followed by target-state entry assignments. It evaluates the first enabled transition in ID order for each event. It is a local planning preview: it cannot deploy infrastructure, call APIs, run code or save runtime values. The UI's Add example kit creates an optional Deploy button, theme modes, and an interaction machine without replacing existing designs.
 
 Read `get_schema` for current limits and verify edits with `get_design_library` and affected `get_design_page` calls. Do not invent unsupported bindings or evaluate expressions in guards.
+
+## Agent-assisted design workflow
+
+Discover reusable assets with `find_design_assets`, inspect relevant definitions with `get_design_library`, then use `get_design_usage` before changing shared masters or variables. Read the target page and schema, construct targeted layout/binding/variant operations, and call `validate_design_changes`. If valid, use `apply_changes` with a fresh request ID and the same revision; if another edit intervenes, re-read and reassess. Read affected pages and assets again to verify. Prefer existing components and typed variables over duplicated styling. Preserve unrelated layers, overrides, strokes, and archived wireframes. Built-in AI chat is not part of this workflow.

@@ -11,6 +11,17 @@ import { DesignLayerControls } from './DesignLayerControls.tsx'
 export function DesignLayerRow({ node, model, depth }: DesignLayerRowProps) {
   const { t } = useTranslation()
   const Icon = node.maskId ? Scan : designLayerIcons[node.kind]
+  const instance = node.instance
+  const customIcon =
+    !node.maskId &&
+    instance &&
+    !model.page.nodes.some(
+      (parent) =>
+        parent.id === node.parentId &&
+        parent.instance?.instanceId === instance.instanceId,
+    )
+      ? model.library.components[instance.componentId]?.icon
+      : undefined
   const flow = useReactFlow()
   const actions = useDesignLayerActions(model, node.id)
   const prepareMenu = useCallback(() => {
@@ -78,7 +89,11 @@ export function DesignLayerRow({ node, model, depth }: DesignLayerRowProps) {
             aria-pressed={model.selection.includes(node.id)}
             title={node.name}
           >
-            <Icon size={15} />
+            {customIcon ? (
+              <span className="library-custom-icon">{customIcon}</span>
+            ) : (
+              <Icon size={15} />
+            )}
             <span>{node.name}</span>
           </button>
         </div>

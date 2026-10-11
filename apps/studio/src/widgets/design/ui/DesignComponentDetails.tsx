@@ -4,6 +4,7 @@ import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
+import { DesignComponentIcon } from './DesignComponentIcon.tsx'
 export function DesignComponentDetails({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
@@ -62,6 +63,7 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
       data-collaboration-scope={`component:${component.id}`}
     >
       <legend>{t('Component')}</legend>
+      <DesignComponentIcon model={model} />
       <label>
         {t('Name')}
         <input

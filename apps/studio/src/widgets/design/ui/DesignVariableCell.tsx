@@ -5,6 +5,7 @@ export function DesignVariableCell({
   variable,
   mode,
   save,
+  disabled,
 }: DesignVariableCellProps) {
   const change = useCallback(
     (value: string | number | boolean) =>
@@ -17,6 +18,7 @@ export function DesignVariableCell({
       value={variable.values[mode]}
       label={`${variable.name} / ${mode}`}
       onChange={change}
+      disabled={disabled}
     />
   )
 }

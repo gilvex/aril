@@ -1,12 +1,12 @@
 import { useRef, useCallback, type MouseEvent } from 'react'
-import { Workflow, PanelsTopLeft, PenTool, Plus } from 'lucide-react'
+import { Workflow, PenTool, Plus } from 'lucide-react'
+import { activeBoardSections } from '@pomegranate/domain/workspace'
 import { PresenceAvatars } from '@/entities/collaboration/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { CanvasNavigationProps } from '../types/canvasNavigationProps.ts'
 const sections = [
   { id: 'canvas', label: 'Blueprint', icon: Workflow },
-  { id: 'wireframes', label: 'Wireframes', icon: PanelsTopLeft },
   { id: 'design', label: 'Design', icon: PenTool },
 ] as const
 export function BoardSections({
@@ -22,7 +22,7 @@ export function BoardSections({
   const { t } = useTranslation()
   const role = useWorkspaceRole()
   const menu = useRef<HTMLDetailsElement>(null)
-  const enabled = board.sections || ['canvas', 'wireframes']
+  const enabled = activeBoardSections(board)
   const choose = useCallback(
     (event: MouseEvent<HTMLButtonElement>) =>
       onMode(event.currentTarget.dataset.section as typeof mode),
@@ -62,7 +62,7 @@ export function BoardSections({
           </button>
         )
       })}
-      {enabled.length < 3 && role && role !== 'viewer' && (
+      {enabled.length < 2 && role && role !== 'viewer' && (
         <details ref={menu} className="board-section-add">
           <summary title={t('Add section')} aria-label={t('Add section')}>
             <Plus size={16} />

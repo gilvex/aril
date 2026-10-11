@@ -142,7 +142,48 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
         },
       ],
     }
+    const validation = await read<{ valid: boolean; saved: boolean }>(
+      'validate_design_changes',
+      update,
+    )
+    assert.deepEqual(validation, {
+      valid: true,
+      saved: false,
+      revision: page.revision,
+      operationCount: 1,
+    })
+    assert.equal(instance.store.read().revision, page.revision)
+    assert.equal(
+      instance.store.read().workspace.design.pages?.[0].nodes[1].text,
+      'Fleet',
+    )
+    const invalidPreview = await client.callTool({
+      name: 'validate_design_changes',
+      arguments: {
+        baseRevision: page.revision,
+        operations: [
+          {
+            path: ['design', 'pages', 'dashboard', 'nodes', 'desktop'],
+            before: frame,
+          },
+        ],
+      },
+    })
+    assert.equal(invalidPreview.isError, true)
+    const outsideDesign = await client.callTool({
+      name: 'validate_design_changes',
+      arguments: {
+        baseRevision: page.revision,
+        operations: [{ path: ['notes'], after: 'No' }],
+      },
+    })
+    assert.equal(outsideDesign.isError, true)
     await read('apply_changes', update)
+    const stalePreview = await client.callTool({
+      name: 'validate_design_changes',
+      arguments: update,
+    })
+    assert.equal(stalePreview.isError, true)
     const stale = await client.callTool({
       name: 'apply_changes',
       arguments: {
@@ -285,6 +326,37 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
       savedLibrary.library.components['agent-button'].variants.idle.nodes[0]
         .text,
       'Deploy server',
+    )
+    const assets = await read<{ total: number; assets: { id: string }[] }>(
+      'find_design_assets',
+      { query: 'PRIMARY', kind: 'variable', usage: 'used' },
+    )
+    assert.equal(assets.total, 1)
+    assert.equal(assets.assets[0].id, 'agent-accent')
+    assert.equal(
+      (await read<{ total: number }>('find_design_assets', { boardId })).total,
+      0,
+    )
+    const usages = await read<{
+      total: number
+      nextOffset: number | null
+      usages: { ownerKind: string }[]
+    }>('get_design_usage', {
+      kind: 'variable',
+      assetId: 'agent-busy',
+      limit: 1,
+    })
+    assert.ok(usages.total >= 4)
+    assert.equal(usages.nextOffset, 1)
+    assert.equal(usages.usages[0].ownerKind, 'machine')
+    assert.equal(
+      (
+        await client.callTool({
+          name: 'get_design_usage',
+          arguments: { boardId, kind: 'variable', assetId: 'agent-busy' },
+        })
+      ).isError,
+      true,
     )
     const compactLibrary = await read<{
       workspace: {

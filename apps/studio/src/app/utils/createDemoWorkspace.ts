@@ -21,7 +21,7 @@ export function createDemoWorkspace() {
         },
       ]
       requirement.links = [
-        { kind: 'wireframes', boardId: workspace.boards[0].id },
+        { kind: 'design', boardId: workspace.boards[0].id },
       ]
     }
     requirement.status = (['Ready', 'Designing', 'Captured'] as const)[
@@ -40,7 +40,7 @@ export function createDemoWorkspace() {
   }
   workspace.notesTitle = 'Start here'
   workspace.notes =
-    '# Welcome to the Aril demo\n\nThis is your private, editable sandbox. Changes stay in this tab; no account or live workspace is involved. Use **Reset demo** to start again.\n\n## Explore the project\n- **Blueprint:** select or double-click a node, edit its details, drag multiple nodes, connect handles, or open the linked requirements.\n- **Wireframes:** follow the six-screen recipe flow. Switch to Preview flow and click the buttons.\n- **Scope:** explore board-linked outcomes, decisions, open questions, acceptance criteria and connected visual work.\n- **Design:** explore the editable desktop and mobile server dashboard. Double-click text to edit, drag or resize layers, inspect frame children, and try colors, typography, duplicate, hide, lock and undo.\n- **Notes:** add a document, edit Markdown, and use the outline or split view.\n\n## Collaboration preview\nMaya reviews the blueprint, Noah works on wireframes, Iris reviews requirements, and Leo writes notes. These are simulated teammates with independent tasks. Their cursors, selections and cameras demonstrate presence and following. They perform a short sequence of real edits in this sandbox: dragging blocks, refining labels, advancing requirements, and updating notes. They skip items you select or change. Maya finishes small planning tasks: a related idea, its connection, a single alignment, and a decision. She works in a bounded row, keeps three ideas visible at most, varies topics and gesture order, and retires older completed ideas. She pauses between deliberate gestures and avoids occupied space. Edit or connect one of her ideas to keep it. Open People and follow one, or inspect Team activity.\n\n## Make it yours\nRename an idea, move a requirement, then try Undo, Redo, history and JSON export. Your saved demo changes survive refresh in this tab. Closing the tab ends this sandbox.\n'
+    '# Welcome to the Aril demo\n\nThis is your private, editable sandbox. Changes stay in this tab; no account or live workspace is involved. Use **Reset demo** to start again.\n\n## Explore the project\n- **Blueprint:** select or double-click a node, edit its details, drag multiple nodes, connect handles, or open the linked requirements.\n- **Scope:** explore board-linked outcomes, decisions, open questions, acceptance criteria and connected visual work.\n- **Design:** explore the editable desktop and mobile server dashboard. Double-click text to edit, drag or resize layers, inspect frame children, and try colors, typography, duplicate, hide, lock and undo.\n- **Notes:** add a document, edit Markdown, and use the outline or split view.\n\n## Collaboration preview\nMaya reviews the blueprint, Noah reviews the design, Iris reviews requirements, and Leo writes notes. These are simulated teammates with independent tasks. Their cursors, selections and cameras demonstrate presence and following. They perform a short sequence of real edits in this sandbox: dragging blocks, refining labels, advancing requirements, and updating notes. They skip items you select or change. Maya finishes small planning tasks: a related idea, its connection, a single alignment, and a decision. She works in a bounded row, keeps three ideas visible at most, varies topics and gesture order, and retires older completed ideas. She pauses between deliberate gestures and avoids occupied space. Edit or connect one of her ideas to keep it. Open People and follow one, or inspect Team activity.\n\n## Make it yours\nRename an idea, move a requirement, then try Undo, Redo, history and JSON export. Your saved demo changes survive refresh in this tab. Closing the tab ends this sandbox.\n'
   workspace.documents = [
     {
       id: 'recipe-decisions',
@@ -50,7 +50,7 @@ export function createDemoWorkspace() {
     {
       id: 'release-plan',
       title: 'First release checklist',
-      body: '# First release\n\n## Plan\n1. Review the deployment blueprint.\n2. Walk through the recipe wireframes.\n3. Confirm acceptance criteria for the Must have requirements.\n4. Compare desktop and mobile designs.\n\n## Questions\n- Which game ships first?\n- How long should installation logs be retained?\n- How do operators recover a failed batch?\n\n> This is sample planning content, not a working deployment service.',
+      body: '# First release\n\n## Plan\n1. Review the deployment blueprint.\n2. Review the design components and variables.\n3. Confirm acceptance criteria for the Must have requirements.\n4. Compare desktop and mobile designs.\n\n## Questions\n- Which game ships first?\n- How long should installation logs be retained?\n- How do operators recover a failed batch?\n\n> This is sample planning content, not a working deployment service.',
     },
   ]
   workspace.design.headingFont = 'Manrope'

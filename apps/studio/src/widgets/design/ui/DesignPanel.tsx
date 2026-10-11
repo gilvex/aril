@@ -6,6 +6,7 @@ import type { DesignPanelProps } from '../types/designPanelProps.ts'
 import { DesignPanelCorner } from './DesignPanelCorner.tsx'
 export function DesignPanel({ model, side, children }: DesignPanelProps) {
   const { t } = useTranslation()
+  const maximized = model.panelMaximized === side
   const {
     ref,
     left,
@@ -25,8 +26,22 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
       className={`design-panel design-panel-${side}`}
       data-docked={edge || undefined}
       data-horizontal={horizontal || undefined}
-      hidden={!!layout.group && model.dockActive !== side}
-      style={rect}
+      data-maximized={maximized || undefined}
+      hidden={
+        !maximized &&
+        (!!model.panelMaximized ||
+          (!!layout.group && model.dockActive !== side))
+      }
+      style={
+        maximized
+          ? {
+              left: 0,
+              top: 0,
+              width: model.panelSpace,
+              height: model.panelVerticalSpace,
+            }
+          : rect
+      }
     >
       {children}
       <EditorActionMenu actions={actions} label={t('Panel layout')}>
@@ -38,7 +53,7 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
           <PanelsTopLeft size={16} />
         </button>
       </EditorActionMenu>
-      {!horizontal && (
+      {!maximized && !horizontal && (
         <div
           className="design-panel-resize"
           data-edge={edge || side}
@@ -57,7 +72,7 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
           {...resize}
         />
       )}
-      {(!edge || horizontal) && (
+      {!maximized && (!edge || horizontal) && (
         <div
           className="design-panel-height-resize"
           data-edge={edge || 'floating'}
@@ -78,7 +93,7 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
           {...resizeHeight}
         />
       )}
-      {!edge && (
+      {!maximized && !edge && (
         <DesignPanelCorner
           model={model}
           side={side}

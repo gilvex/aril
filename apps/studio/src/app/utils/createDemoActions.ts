@@ -160,5 +160,7 @@ export function createDemoActions(seed: Workspace): DemoAction[] {
         '\n\n## Next review\nWalk through runtime → game layer → blueprint with two independently configured servers.'
     },
   )
-  return actions.filter((action) => action.peerId !== 'demo-maya')
+  return actions.filter(
+    (action) => action.peerId !== 'demo-maya' && action.view !== 'wireframes',
+  )
 }

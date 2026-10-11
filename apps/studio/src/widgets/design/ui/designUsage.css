@@ -1,0 +1,133 @@
+.design-library-graph {
+  position: relative;
+  height: 340px;
+  min-height: 260px;
+  flex: 1 0 260px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--canvas, #f7f6f9);
+}
+.design-library-graph .react-flow__node-asset {
+  width: 230px;
+}
+.design-library-graph .react-flow__controls {
+  bottom: 8px;
+  left: 8px;
+}
+.library-graph-node {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 12px;
+  color: var(--text-strong, #24212b);
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.library-graph-node strong {
+  overflow-wrap: anywhere;
+}
+.library-graph-node small {
+  grid-column: 2;
+  color: var(--text-muted, #6f6879);
+}
+.library-custom-icon {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.react-flow__node.selected .library-graph-node {
+  border-color: var(--accent-ink);
+  background: var(--accent-light);
+}
+.library-graph-empty {
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+.library-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.library-filters > input {
+  flex: 2 1 220px;
+  min-width: 0;
+}
+.library-filters > [role='combobox'] {
+  flex: 1 1 160px;
+  width: auto;
+  min-width: 0;
+}
+.design-library .design-library-workspace > header > [role='combobox'] {
+  flex: 1 1 200px;
+  width: auto;
+}
+.library-filters > div[role='group'] {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.library-filters button[aria-pressed='true'] {
+  background: var(--accent-light);
+  color: var(--accent-ink);
+}
+.library-usage-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+}
+.library-usage-details li button {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-strong, #24212b);
+  overflow-wrap: anywhere;
+}
+.library-usage-details li button:hover {
+  background: var(--surface-raised, #eeeaf2);
+}
+.library-usage-details li span {
+  color: var(--text-muted, #6f6879);
+  font-size: 11px;
+}
+.design-library .design-library-workspace {
+  position: static;
+  inset: auto;
+  width: 100%;
+  padding: 0;
+  overflow: visible;
+  min-height: 0;
+}
+.design-library .design-library-workspace > header {
+  flex-wrap: wrap;
+}
+.design-library .design-variable-tools {
+  flex-wrap: wrap;
+}
+.design-library .design-variable-tools > input {
+  min-width: 0;
+  width: 100%;
+}
+.design-library .design-variable-table {
+  overflow: auto;
+  max-width: 100%;
+}
+.design-panel[data-maximized='true'] {
+  z-index: 30;
+}
+.design-panel[data-maximized='true'] .design-library-graph {
+  min-height: 350px;
+}

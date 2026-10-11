@@ -1,4 +1,5 @@
 import { BoardDesignCanvas } from './BoardDesignCanvas.tsx'
+import { activeBoardSections } from '@pomegranate/domain/workspace'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioCanvasHandlers } from '../model/useStudioCanvasHandlers.tsx'
@@ -54,10 +55,9 @@ export function StudioCanvas(props: StudioCanvasProps) {
           item.id === board.id
             ? {
                 ...item,
-                sections: [
-                  ...(item.sections || (['canvas', 'wireframes'] as const)),
-                  section,
-                ].filter((value, index, all) => all.indexOf(value) === index),
+                sections: [...activeBoardSections(item), section].filter(
+                  (value, index, all) => all.indexOf(value) === index,
+                ),
               }
             : item,
         ),
@@ -69,10 +69,8 @@ export function StudioCanvas(props: StudioCanvasProps) {
   const chooseBoard = useCallback(
     (id: string) => {
       setBoardId(id)
-      setCanvasMode(
-        workspace.boards.find((item) => item.id === id)?.sections?.[0] ||
-          'canvas',
-      )
+      const target = workspace.boards.find((item) => item.id === id)
+      setCanvasMode(target ? activeBoardSections(target)[0] : 'canvas')
     },
     [setBoardId, setCanvasMode, workspace.boards],
   )

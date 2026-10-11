@@ -9,6 +9,12 @@ export const designEditorSlice = createSlice({
       const openingLayers = action.payload.layers && !state.layers
       const openingInspector = action.payload.inspector && !state.inspector
       Object.assign(state, action.payload)
+      if (
+        state.compact ||
+        (state.panelMaximized === 'left' && !state.layers) ||
+        (state.panelMaximized === 'right' && !state.inspector)
+      )
+        state.panelMaximized = null
       if (openingLayers) state.dockActive = 'left'
       if (openingInspector) state.dockActive = 'right'
       if (!state.compact) return

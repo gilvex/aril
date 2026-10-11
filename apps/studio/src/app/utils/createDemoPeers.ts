@@ -1,3 +1,4 @@
+import { designPosition } from '@pomegranate/domain/design'
 import type { Presence } from '@pomegranate/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { sampleDemoCursor } from './sampleDemoCursor.ts'
@@ -11,33 +12,24 @@ export function createDemoPeers(
   const board = state.envelope.workspace.boards.find(
     (item) => item.id === 'layers',
   )
-  const noahTargets = [
-    'runtime-heading',
-    'runtime-content',
-    'runtime-next',
-    'game-content',
-    'game-next',
-  ].flatMap((id, index) => {
-    const node = board?.wireframe?.nodes.find((item) => item.id === id)
-    const parent = board?.wireframe?.nodes.find(
-      (item) => item.id === node?.parentId,
-    )
-    return node
-      ? [
-          {
-            id,
-            x: node.position.x + (parent?.position.x || 0) + 70,
-            y: node.position.y + (parent?.position.y || 0) + 25,
-            pause: [4200, 6000, 1800, 5100, 2900][index],
-            camera: {
-              x: (parent?.position.x || 0) + 220,
-              y: (parent?.position.y || 0) + 260,
-              zoom: [0.8, 1, 0.85, 0.75, 0.95][index],
-            },
-          },
-        ]
-      : []
-  })
+  const page = state.envelope.workspace.design.pages?.[0]
+  const noahTargets = (page?.nodes || [])
+    .filter((node) => node.kind === 'text' || node.kind === 'button')
+    .slice(0, 5)
+    .map((node, index) => {
+      const position = designPosition(page!.nodes, node)
+      return {
+        id: node.id,
+        x: position.x + 30,
+        y: position.y + 12,
+        pause: [4200, 6000, 1800, 5100, 2900][index],
+        camera: {
+          x: position.x + 180,
+          y: position.y + 160,
+          zoom: [0.8, 1, 0.85, 0.75, 0.95][index],
+        },
+      }
+    })
   const maya = sampleDemoPlannerPresence(state, now)
   const noah = sampleDemoCursor(noahTargets, elapsed + 2300)
   const requirement = state.envelope.workspace.requirements.find(
@@ -69,8 +61,9 @@ export function createDemoPeers(
         color: '#359381',
         avatar: '/demo-noah.svg',
       },
-      boardId: board?.id || null,
-      view: 'wireframes',
+      boardId: null,
+      view: 'design',
+      designPageId: page?.id || null,
       ...noah,
       selectedEdges: [],
       seenAt: now,

@@ -10,6 +10,16 @@ export function useDesignDockMenu(
   const { patch, layersDocked, inspectorDocked, dockMode } = model
   return useMemo(
     () => [
+      {
+        id: 'maximize',
+        label: t(
+          model.panelMaximized === side ? 'Restore panel' : 'Maximize panel',
+        ),
+        run: () =>
+          patch({
+            panelMaximized: model.panelMaximized === side ? null : side,
+          }),
+      },
       ...(['left', 'right', 'top', 'bottom'] as const).map((edge) => ({
         id: edge,
         label: t(
@@ -26,6 +36,7 @@ export function useDesignDockMenu(
               ? { layersDocked: edge }
               : { inspectorDocked: edge }),
             dockActive: side,
+            panelMaximized: null,
           }),
       })),
       {
@@ -34,8 +45,8 @@ export function useDesignDockMenu(
         run: () =>
           patch(
             side === 'left'
-              ? { layersDocked: null }
-              : { inspectorDocked: null },
+              ? { layersDocked: null, panelMaximized: null }
+              : { inspectorDocked: null, panelMaximized: null },
           ),
       },
       {
@@ -55,9 +66,22 @@ export function useDesignDockMenu(
         id: 'reset',
         label: t('Reset panel layout'),
         separator: true,
-        run: () => patch({ ...readDesignPanelLayout(null), dockPreview: null }),
+        run: () =>
+          patch({
+            ...readDesignPanelLayout(null),
+            dockPreview: null,
+            panelMaximized: null,
+          }),
       },
     ],
-    [t, patch, side, layersDocked, inspectorDocked, dockMode],
+    [
+      t,
+      patch,
+      side,
+      layersDocked,
+      inspectorDocked,
+      dockMode,
+      model.panelMaximized,
+    ],
   )
 }

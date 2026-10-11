@@ -30,7 +30,7 @@ export function readStudioRoute(location: string): StudioRoute {
       params.get('canvas') === 'design'
         ? 'design'
         : params.get('canvas') === 'wireframes'
-          ? 'wireframes'
+          ? 'design'
           : 'canvas',
     requirementId: params.get('requirement') || undefined,
   }

@@ -27,8 +27,21 @@ export function useDesignLibrary({
   )
   const openAsset = useCallback(
     (kind: 'component' | 'variables' | 'machine', id = '') => {
+      if (kind === 'variables') {
+        patch({
+          layers: true,
+          leftTab: 'library',
+          libraryTab: 'variables',
+          pagesOpen: false,
+          dockActive: 'left',
+          libraryError: '',
+        })
+        return
+      }
       patch({
         leftTab: 'library',
+        libraryTab: 'graph',
+        libraryAsset: `${kind}:${id}`,
         libraryView: kind === 'component' ? 'canvas' : kind,
         componentId: kind === 'component' ? id : null,
         variantId: '',

@@ -7,6 +7,18 @@ export function DesignVariableTable({
 }: DesignVariableTableProps) {
   const { t } = useTranslation()
   const { library } = model
+  const used = new Set(
+    model.usage.filter((u) => u.assetKind === 'variable').map((u) => u.assetId),
+  )
+  const query = model.variableQuery.trim().toLocaleLowerCase()
+  const variables = Object.values(library.variables).filter(
+    (v) =>
+      v.collectionId === collection.id &&
+      v.name.toLocaleLowerCase().includes(query) &&
+      (model.variableType === 'all' || v.type === model.variableType) &&
+      (model.variableUsage === 'all' ||
+        used.has(v.id) === (model.variableUsage === 'used')),
+  )
   return (
     <div className="design-variable-table">
       <table>
@@ -21,18 +33,17 @@ export function DesignVariableTable({
           </tr>
         </thead>
         <tbody>
-          {Object.values(library.variables)
-            .filter((v) => v.collectionId === collection.id)
-            .map((v) => (
-              <DesignVariableRow
-                key={v.id}
-                variable={v}
-                modes={collection.modes}
-                model={model}
-              />
-            ))}
+          {variables.map((v) => (
+            <DesignVariableRow
+              key={v.id}
+              variable={v}
+              modes={collection.modes}
+              model={model}
+            />
+          ))}
         </tbody>
       </table>
+      {!variables.length && <p>{t('No matching variables')}</p>}
     </div>
   )
 }

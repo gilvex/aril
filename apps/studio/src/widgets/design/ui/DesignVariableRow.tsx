@@ -2,6 +2,8 @@ import { useCallback, type ChangeEvent } from 'react'
 import { Trash2 } from 'lucide-react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
+import { useWorkspaceRole } from '@/entities/workspace/index.ts'
+import { DesignVariableUsage } from './DesignVariableUsage.tsx'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import type { DesignVariableRowProps } from '../types/designVariableRowProps.ts'
 import { DesignVariableCell } from './DesignVariableCell.tsx'
@@ -11,6 +13,7 @@ export function DesignVariableRow({
   model,
 }: DesignVariableRowProps) {
   const { t } = useTranslation()
+  const readOnly = useWorkspaceRole() === 'viewer'
   const { library, saveLibrary } = model
   const save = useCallback(
     (next: typeof variable) =>
@@ -66,6 +69,7 @@ export function DesignVariableRow({
       <td>
         <input
           name="name"
+          disabled={readOnly}
           value={variable.name}
           onChange={name}
           aria-label={t('Variable name')}
@@ -76,7 +80,7 @@ export function DesignVariableRow({
         <StudioSelect
           value={variable.type}
           onChange={type}
-          disabled={used}
+          disabled={used || readOnly}
           aria-label={t('Type')}
         >
           {['color', 'number', 'string', 'boolean'].map((type) => (
@@ -88,13 +92,19 @@ export function DesignVariableRow({
       </td>
       {modes.map((mode) => (
         <td key={mode}>
-          <DesignVariableCell variable={variable} mode={mode} save={save} />
+          <DesignVariableCell
+            variable={variable}
+            mode={mode}
+            save={save}
+            disabled={readOnly}
+          />
         </td>
       ))}
       <td>
+        <DesignVariableUsage model={model} variableId={variable.id} />
         <button
           className="icon-button"
-          disabled={used}
+          disabled={used || readOnly}
           onClick={remove}
           aria-label={t('Delete variable')}
         >

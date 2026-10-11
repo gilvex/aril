@@ -2,6 +2,7 @@ import {
   emptyDesignLibrary,
   syncDesignInstances,
   markDesignOverrides,
+  getDesignUsage,
 } from '@pomegranate/domain/designLibrary'
 import { designSchema } from '@pomegranate/domain/design'
 import { useDesignLibrary } from './useDesignLibrary.ts'
@@ -34,6 +35,7 @@ export function useDesignDocument({
     () => design.library || emptyDesignLibrary(),
     [design.library],
   )
+  const usage = useMemo(() => getDesignUsage(design), [design])
   const update = useCallback(
     (next: typeof design) => {
       const synchronized = next.library
@@ -353,6 +355,7 @@ export function useDesignDocument({
   return {
     ...state,
     ...assets,
+    usage,
     library,
     component,
     variant,

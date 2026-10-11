@@ -1,6 +1,14 @@
 import { designLibrarySummary } from './designLibrarySummary.ts'
+import {
+  getDesignUsage,
+  designAssetSummaries,
+} from '@pomegranate/domain/designLibrary'
+import { activeBoardSections } from '@pomegranate/domain/workspace'
 import { McpServer } from '@modelcontextprotocol/server'
-import { operationsSchema } from '@pomegranate/domain/collaboration'
+import {
+  operationsSchema,
+  applyOperations,
+} from '@pomegranate/domain/collaboration'
 import { z } from 'zod'
 import { type AgentConfig } from '../config/index.ts'
 import { createAgentClient } from '../requests/createAgentClient.ts'
@@ -76,7 +84,7 @@ export function createMcpServer(config: AgentConfig) {
                   id: b.id,
                   name: b.name,
                   description: b.description,
-                  sections: b.sections || ['canvas', 'wireframes'],
+                  sections: activeBoardSections(b),
                   library: designLibrarySummary(b.design?.library),
                   designPages:
                     b.design?.pages?.map((page) => ({
@@ -113,6 +121,134 @@ export function createMcpServer(config: AgentConfig) {
           revision: state.revision,
           board,
           url: `${config.origin}/?${new URLSearchParams({ workspace: state.studio.id, board: boardId, view: 'canvas' })}`,
+        }
+      }),
+  )
+  server.registerTool(
+    'find_design_assets',
+    {
+      description:
+        'Search reusable design assets before generating layouts. Names/IDs use case-insensitive substring matching. Returns direct usage counts, custom component icons and variable types/collections, without full layer trees. Supply boardId for that board’s isolated library. Use get_design_usage for exact locations; get_design_library for definitions.',
+      inputSchema: z.object({
+        boardId: z.string().min(1).max(100).optional(),
+        query: z.string().max(200).default(''),
+        kind: z.enum(['component', 'variable', 'machine']).optional(),
+        collectionId: z.string().max(100).optional(),
+        variableType: z
+          .enum(['color', 'number', 'string', 'boolean'])
+          .optional(),
+        usage: z.enum(['all', 'used', 'unused']).default('all'),
+        offset: z.number().int().min(0).default(0),
+        limit: z.number().int().min(1).max(100).default(50),
+      }),
+      annotations: read,
+    },
+    ({
+      boardId,
+      query,
+      kind,
+      collectionId,
+      variableType,
+      usage,
+      offset,
+      limit,
+    }) =>
+      result(async () => {
+        const state = await api<AgentWorkspace>('workspace')
+        const design = boardId
+          ? state.workspace.boards.find((b) => b.id === boardId)?.design
+          : state.workspace.design
+        if (!design) throw new Error('Board design not found.')
+        const search = query.trim().toLocaleLowerCase()
+        const assets = designAssetSummaries(design).filter(
+          (a) =>
+            (!kind || a.kind === kind) &&
+            (!collectionId || a.collectionId === collectionId) &&
+            (!variableType || a.type === variableType) &&
+            `${a.name} ${a.id}`.toLocaleLowerCase().includes(search) &&
+            (usage === 'all' || a.usageCount > 0 === (usage === 'used')),
+        )
+        return {
+          revision: state.revision,
+          total: assets.length,
+          assets: assets.slice(offset, offset + limit),
+          nextOffset: offset + limit < assets.length ? offset + limit : null,
+        }
+      }),
+  )
+  server.registerTool(
+    'get_design_usage',
+    {
+      description:
+        'Find the exact page layers, component variants and machine states/transitions using one component or variable. Component instances count once; variable bindings list their property. Reports direct references, not transitive dependencies. Results are scoped to one design, paginated, and never modify content.',
+      inputSchema: z.object({
+        boardId: z.string().min(1).max(100).optional(),
+        kind: z.enum(['component', 'variable']),
+        assetId: z.string().min(1).max(100),
+        offset: z.number().int().min(0).default(0),
+        limit: z.number().int().min(1).max(100).default(50),
+      }),
+      annotations: read,
+    },
+    ({ boardId, kind, assetId, offset, limit }) =>
+      result(async () => {
+        const state = await api<AgentWorkspace>('workspace')
+        const design = boardId
+          ? state.workspace.boards.find((b) => b.id === boardId)?.design
+          : state.workspace.design
+        if (!design) throw new Error('Board design not found.')
+        const asset =
+          kind === 'component'
+            ? design.library?.components[assetId]
+            : design.library?.variables[assetId]
+        if (!asset)
+          throw new Error(
+            'Asset not found. Call find_design_assets for available IDs.',
+          )
+        const usages = getDesignUsage(design).filter(
+          (u) => u.assetKind === kind && u.assetId === assetId,
+        )
+        return {
+          revision: state.revision,
+          asset: { id: asset.id, name: asset.name, kind },
+          total: usages.length,
+          usages: usages.slice(offset, offset + limit),
+          nextOffset: offset + limit < usages.length ? offset + limit : null,
+        }
+      }),
+  )
+  server.registerTool(
+    'validate_design_changes',
+    {
+      description:
+        'Dry-run a proposed batch of design layout, component, variable or machine edits against the current revision. Checks exact before values and document schema/graph constraints without saving, reserving a revision, or changing history. Design paths only. Read again if the revision changes before apply_changes. Does not render or judge visual quality.',
+      inputSchema: z.object({
+        baseRevision: z.number().int().positive().safe(),
+        operations: operationsSchema.min(1).max(500),
+      }),
+      annotations: read,
+    },
+    ({ baseRevision, operations }) =>
+      result(async () => {
+        if (
+          operations.some(
+            (op) =>
+              op.path[0] !== 'design' &&
+              !(op.path[0] === 'boards' && op.path[2] === 'design'),
+          )
+        )
+          throw new Error('Only design paths are supported by this validator.')
+        const state = await api<AgentWorkspace>('workspace')
+        if (state.revision !== baseRevision)
+          throw new Error(
+            'Stale revision. Read the latest workspace before validating.',
+          )
+        applyOperations(state.workspace, operations)
+        return {
+          valid: true,
+          revision: state.revision,
+          operationCount: operations.length,
+          saved: false,
         }
       }),
   )

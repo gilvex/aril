@@ -19,14 +19,6 @@ export function DemoGuide() {
             )}
           </span>
         </a>
-        <a href={`${base}&view=canvas&canvas=wireframes`}>
-          <strong>{t('Wireframes')}</strong>
-          <span>
-            {t(
-              'Explore six connected screens. Use Preview flow to click through.',
-            )}
-          </span>
-        </a>
         <a href={`${base}&view=requirements`}>
           <strong>{t('Requirements')}</strong>
           <span>

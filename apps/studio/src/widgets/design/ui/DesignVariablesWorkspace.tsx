@@ -2,6 +2,7 @@ import { useDesignVariables } from '../model/useDesignVariables.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { DesignVariableTable } from './DesignVariableTable.tsx'
+import { DesignVariableFilters } from './DesignVariableFilters.tsx'
 export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
   const {
     t,
@@ -40,6 +41,7 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
           {t('Add collection')}
         </button>
       </header>
+      <DesignVariableFilters model={model} />
       {collection ? (
         <>
           <div className="design-library-buttons">
@@ -91,8 +93,8 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
                 {t('Add variable')}
               </button>
             </div>
-            <DesignVariableTable model={model} collection={collection} />
           </fieldset>
+          <DesignVariableTable model={model} collection={collection} />
         </>
       ) : (
         <p>{t('Create a collection to add typed variables and modes.')}</p>

@@ -1,4 +1,5 @@
 import type { Requirement, Workspace } from '@pomegranate/domain/workspace'
+import { activeBoardSections } from '@pomegranate/domain/workspace'
 export function scopeBoards(workspace: Workspace, requirement: Requirement) {
   return workspace.boards.filter(
     (board) =>
@@ -8,7 +9,7 @@ export function scopeBoards(workspace: Workspace, requirement: Requirement) {
       requirement.links?.some(
         (link) =>
           link.boardId === board.id &&
-          (board.sections || ['canvas', 'wireframes']).includes(link.kind) &&
+          activeBoardSections(board).includes(link.kind === 'wireframes' ? 'design' : link.kind) &&
           (link.kind !== 'design' ||
             !link.pageId ||
             board.design?.pages?.some((page) => page.id === link.pageId)),

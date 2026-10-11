@@ -160,12 +160,15 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
     const tools = await client.listTools()
     assert.deepEqual(tools.tools.map((t) => t.name).sort(), [
       'apply_changes',
+      'find_design_assets',
       'get_board',
       'get_design_library',
       'get_design_page',
+      'get_design_usage',
       'get_history',
       'get_schema',
       'get_workspace',
+      'validate_design_changes',
     ])
     const overview = await client.callTool({
       name: 'get_workspace',

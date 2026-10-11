@@ -5,6 +5,13 @@ export type DesignEditorState = {
   leftTab: 'layers' | 'library'
   libraryView: 'canvas' | 'variables' | 'machine'
   libraryQuery: string
+  libraryTab: 'graph' | 'variables'
+  libraryKind: 'all' | 'component' | 'variable' | 'machine' | 'page'
+  libraryAsset: string | null
+  variableQuery: string
+  variableType: string
+  variableUsage: 'all' | 'used' | 'unused'
+  panelMaximized: 'left' | 'right' | null
   componentId: string | null
   variantId: string
   machineId: string | null

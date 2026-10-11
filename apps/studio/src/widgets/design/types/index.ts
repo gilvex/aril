@@ -45,3 +45,7 @@ export type { UseDesignLibraryProps } from './useDesignLibraryProps.ts'
 export type { DesignVariableTableProps } from './designVariableTableProps.ts'
 
 export type { DesignMobileToolsProps } from './designMobileToolsProps.ts'
+export type { DesignLibraryGraphNode } from './designLibraryGraphNode.ts'
+
+export type { DesignVariableUsageProps } from './designVariableUsageProps.ts'
+export type { DesignLibraryGraphInput } from './designLibraryGraphInput.ts'

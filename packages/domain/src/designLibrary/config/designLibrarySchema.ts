@@ -11,6 +11,7 @@ const action = z.object({ variableId: id, value })
 const component = z.object({
   id,
   name: z.string().min(1).max(120),
+  icon: z.string().max(12).optional(),
   variants: z
     .record(id, designPageSchema)
     .refine((v) => Object.keys(v).length > 0 && Object.keys(v).length <= 30),

@@ -1,5 +1,5 @@
 import { useCallback, type ChangeEvent } from 'react'
-import { Workflow, PanelsTopLeft, PenTool, Check } from 'lucide-react'
+import { Workflow, PenTool, Check } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { BoardTypeChoicesProps } from '../types/boardTypeChoicesProps.ts'
 import './boardTypeChoices.css'
@@ -21,12 +21,6 @@ export function BoardTypeChoices({
       title: 'Blueprint',
       description: 'Map systems and flows',
       Icon: Workflow,
-    },
-    {
-      value: 'wireframes',
-      title: 'Wireframes',
-      description: 'Sketch screens and journeys',
-      Icon: PanelsTopLeft,
     },
     {
       value: 'design',

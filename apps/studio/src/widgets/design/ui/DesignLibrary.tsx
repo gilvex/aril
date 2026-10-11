@@ -1,20 +1,24 @@
-import { DesignLibraryAssets } from './DesignLibraryAssets.tsx'
-import { useCallback, type ChangeEvent } from 'react'
+import { useCallback } from 'react'
+import { ReactFlowProvider } from '@xyflow/react'
 import { X } from 'lucide-react'
+import { Button } from 'vagabond-ui/button'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { DesignLibraryTabs } from './DesignLibraryTabs.tsx'
 import { DesignComponentDetails } from './DesignComponentDetails.tsx'
+import { DesignLibraryFilters } from './DesignLibraryFilters.tsx'
+import { DesignLibraryGraph } from './DesignLibraryGraph.tsx'
+import { DesignUsageDetails } from './DesignUsageDetails.tsx'
+import { DesignVariablesWorkspace } from './DesignVariablesWorkspace.tsx'
+import './designUsage.css'
 export function DesignLibrary({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
   const { patch } = model
-  const close = useCallback(() => patch({ layers: false }), [patch])
-  const search = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) =>
-      patch({ libraryQuery: e.target.value }),
+  const close = useCallback(
+    () => patch({ layers: false, panelMaximized: null }),
     [patch],
   )
   return (
@@ -31,29 +35,64 @@ export function DesignLibrary({ model }: DesignEditorProps) {
         </button>
       </header>
       <div className="design-library-body">
-        <input
-          aria-label={t('Search assets')}
-          placeholder={t('Search assets')}
-          value={model.libraryQuery}
-          onChange={search}
-        />
-        <DesignLibraryAssets model={model} />
-        {model.component && <DesignComponentDetails model={model} />}
-        <button
-          className="button"
-          disabled={
-            readOnly || Object.keys(model.library.components).length >= 100
-          }
-          onClick={model.example}
-        >
-          {t('Add example kit')}
-        </button>
+        <DesignLibraryFilters model={model} />
+        {model.libraryTab === 'variables' ? (
+          <DesignVariablesWorkspace model={model} />
+        ) : (
+          <>
+            <ReactFlowProvider>
+              <DesignLibraryGraph model={model} />
+            </ReactFlowProvider>
+            <DesignUsageDetails model={model} />
+            {model.component &&
+              model.libraryAsset === `component:${model.component.id}` && (
+                <DesignComponentDetails model={model} />
+              )}
+            <div className="design-library-buttons">
+              <Button
+                className="button"
+                size="sm"
+                variant="outline"
+                disabled={
+                  readOnly ||
+                  !model.selected.length ||
+                  Object.keys(model.library.components).length >= 100
+                }
+                onClick={model.createComponent}
+              >
+                {t('Create component from selection')}
+              </Button>
+              <Button
+                className="button"
+                size="sm"
+                variant="outline"
+                disabled={
+                  readOnly || Object.keys(model.library.machines).length >= 100
+                }
+                onClick={model.addMachine}
+              >
+                {t('Add state machine')}
+              </Button>
+              <Button
+                className="button"
+                size="sm"
+                variant="ghost"
+                disabled={
+                  readOnly ||
+                  Object.keys(model.library.components).length >= 100
+                }
+                onClick={model.example}
+              >
+                {t('Add example kit')}
+              </Button>
+            </div>
+          </>
+        )}
         {model.libraryError && (
           <p role="alert" className="design-library-error">
             {model.libraryError}
           </p>
         )}
-        <p>{t('Assets are saved with this design.')}</p>
       </div>
     </aside>
   )

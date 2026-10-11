@@ -2,7 +2,12 @@ import type { DesignPage } from '../../design/types/designPage.ts'
 export type DesignLibraryInput = {
   components: Record<
     string,
-    { id: string; name: string; variants: Record<string, DesignPage> }
+    {
+      id: string
+      name: string
+      icon?: string
+      variants: Record<string, DesignPage>
+    }
   >
   collections: Record<string, { id: string; name: string; modes: string[] }>
   variables: Record<

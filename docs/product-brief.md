@@ -51,3 +51,7 @@ Game binaries and prepared dependencies should be immutable, versioned artifacts
 4. Implement a narrow deployment slice with a node agent and one runtime/provider, then expand using the validated contract.
 
 Open decisions include license, SaaS isolation, initial orchestration target, exact Yandex reference, and supported database providers. The user explicitly selected invite-only collaborative planning; the studio now includes shared editing, presence, profiles, and activity.
+
+### Design library and agent workflows
+
+Library is a searchable, automatically arranged usage graph for components, variables, state machines and pages. Component icons and direct usage links help locate reusable assets. Variables share the movable, resizable, dockable and maximizable Library panel, with substring/type/usage filters. MCP provides scoped asset search, direct usage lookup and dry-run validation for design edits; built-in AI chat remains future work. New interface work belongs in Design. Wireframes is retired from navigation, with legacy documents preserved for export and MCP access.

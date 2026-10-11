@@ -5,6 +5,7 @@ export function designLibrarySummary(library?: DesignLibrary) {
         components: Object.values(library.components).map((c) => ({
           id: c.id,
           name: c.name,
+          icon: c.icon,
           variants: Object.values(c.variants).map((v) => ({
             id: v.id,
             name: v.name,

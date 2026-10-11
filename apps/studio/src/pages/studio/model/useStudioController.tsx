@@ -6,7 +6,7 @@ import { useMultiplayer } from '@/features/liveSession/index.ts'
 import { createStudioState } from '@/pages/studio/model/createStudioState.ts'
 import { useStudioModel } from '@/pages/studio/model/useStudioModel.ts'
 import { CanvasBoard } from '@/pages/studio/ui/CanvasBoard.tsx'
-import { WireframeBoard } from '@/pages/studio/ui/WireframeBoard.tsx'
+import { activeBoardSections } from '@pomegranate/domain/workspace'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import { saveStudioRoute } from '@/shared/utils/saveStudioRoute.ts'
@@ -97,7 +97,7 @@ export function useStudioController({
       setModal(null)
     }
   }, [modal, setSettings, setView, setModal])
-  const BoardCanvas = canvasMode === 'wireframes' ? WireframeBoard : CanvasBoard
+  const BoardCanvas = CanvasBoard
 
   const compact = useCompactLayout()
 
@@ -111,9 +111,10 @@ export function useStudioController({
   const board =
     workspace.boards.find((b) => b.id === boardId) || workspace.boards[0]
   useEffect(() => {
-    if (board.sections && !board.sections.includes(canvasMode))
-      setCanvasMode(board.sections[0])
-  }, [board.sections, canvasMode, setCanvasMode])
+    const sections = activeBoardSections(board)
+    if (canvasMode === 'wireframes') setCanvasMode('design')
+    else if (!sections.includes(canvasMode)) setCanvasMode(sections[0])
+  }, [board, canvasMode, setCanvasMode])
   const routedRequirementId = workspace.requirements.find(
     (item) => item.id === requirementId,
   )?.id
