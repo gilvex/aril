@@ -119,7 +119,8 @@
 .changelog-entry figure {
   margin: 0 0 24px;
 }
-.changelog-entry img {
+.changelog-entry img,
+.changelog-entry video {
   width: 100%;
   height: auto;
   display: block;
@@ -196,4 +197,11 @@
     margin-bottom: 32px;
     padding-bottom: 32px;
   }
+}
+
+.changelog-video-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--accent-ink, #963e5c);
+  font-size: 13px;
 }

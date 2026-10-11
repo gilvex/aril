@@ -1,0 +1,13 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:08.000
+Pan the architecture board and inspect its details.
+
+00:00:08.000 --> 00:00:17.925
+Open Design and its Layers panel.
+
+00:00:17.925 --> 00:00:25.311
+Expand Library assets directly in the graph.
+
+00:00:25.311 --> 00:00:46.459
+Move and resize asset details, preview a variant, then find variable usages.

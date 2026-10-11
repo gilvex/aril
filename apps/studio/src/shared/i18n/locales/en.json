@@ -1242,5 +1242,12 @@
   "Reveal connected groups in the same graph. Selection highlights related assets and dims the rest.": "Reveal connected groups in the same graph. Selection highlights related assets and dims the rest.",
   "Components support custom symbols and shape-based icons. Shared controls use Vagabond button groups.": "Components support custom symbols and shape-based icons. Shared controls use Vagabond button groups.",
   "State-machine authoring and Wireframes navigation are retired; existing legacy data is preserved.": "State-machine authoring and Wireframes navigation are retired; existing legacy data is preserved.",
-  "Library map with connected asset groups revealed in place.": "Library map with connected asset groups revealed in place."
+  "Library map with connected asset groups revealed in place.": "Library map with connected asset groups revealed in place.",
+  "Download the demo video": "Download the demo video",
+  "Real demo recording · no audio. Press play to watch.": "Real demo recording · no audio. Press play to watch.",
+  "Open video": "Open video",
+  "Watch the studio workflow: Canvas, Design, and Library.": "Watch the studio workflow: Canvas, Design, and Library.",
+  "Watch asset details move, resize, preview variants and filter usages.": "Watch asset details move, resize, preview variants and filter usages.",
+  "Watch a library group expand directly in the graph.": "Watch a library group expand directly in the graph.",
+  "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.": "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions."
 }

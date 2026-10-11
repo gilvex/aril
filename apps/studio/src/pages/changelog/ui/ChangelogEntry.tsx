@@ -1,3 +1,4 @@
+import { ChangelogMedia } from './ChangelogMedia.tsx'
 import { ArrowUpRight, Link } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -38,26 +39,7 @@ export function ChangelogEntry({ entry }: { entry: ReleaseEntry }) {
           </Button>
         </header>
         <p className="changelog-summary">{t(entry.summary)}</p>
-        <figure>
-          <a
-            href={entry.image}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('Open screenshot: {{description}}', {
-              description: t(entry.imageAlt),
-            })}
-          >
-            <img
-              src={entry.image}
-              alt={t(entry.imageAlt)}
-              width="1600"
-              height="900"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-          <figcaption>{t(entry.imageAlt)}</figcaption>
-        </figure>
+        <ChangelogMedia entry={entry} />
         <ul>
           {entry.changes.map((change) => (
             <li key={change}>{t(change)}</li>

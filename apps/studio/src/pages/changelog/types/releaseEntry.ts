@@ -6,5 +6,7 @@ export type ReleaseEntry = {
   changes: string[]
   image: string
   imageAlt: string
+  video?: string
+  videoAlt?: string
   commit?: string
 }

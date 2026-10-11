@@ -1242,5 +1242,12 @@
   "Reveal connected groups in the same graph. Selection highlights related assets and dims the rest.": "Раскрывайте связанные группы прямо на графе. Выбор ресурса выделяет его связи и приглушает остальные элементы.",
   "Components support custom symbols and shape-based icons. Shared controls use Vagabond button groups.": "Компоненты поддерживают пользовательские символы и значки по форме. Общие элементы управления используют группы кнопок Vagabond.",
   "State-machine authoring and Wireframes navigation are retired; existing legacy data is preserved.": "Редактор машин состояний и раздел Макетов убраны из навигации; ранее сохранённые данные остаются доступны.",
-  "Library map with connected asset groups revealed in place.": "Карта Библиотеки со связанными группами ресурсов, раскрытыми на месте."
+  "Library map with connected asset groups revealed in place.": "Карта Библиотеки со связанными группами ресурсов, раскрытыми на месте.",
+  "Download the demo video": "Скачать демо-видео",
+  "Real demo recording · no audio. Press play to watch.": "Реальная запись демо · без звука. Нажмите воспроизведение для просмотра.",
+  "Open video": "Открыть видео",
+  "Watch the studio workflow: Canvas, Design, and Library.": "Работа в студии: Холст, Дизайн и Библиотека.",
+  "Watch asset details move, resize, preview variants and filter usages.": "Перемещение и размер сведений о ресурсе, предпросмотр вариантов и поиск использований.",
+  "Watch a library group expand directly in the graph.": "Раскрытие группы библиотеки прямо на графе.",
+  "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.": "Вместо одних снимков в обновлениях доступны видеозаписи экрана. GIF в README теперь показывает непрерывную работу в браузере."
 }

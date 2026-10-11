@@ -21,7 +21,9 @@ Plan the architecture on **Canvas**, build editable interfaces in **Design**, an
 
 ![Aril demo walkthrough: inspect a board, open Design, and explore Library assets](apps/studio/public/changelog/studio-tour.gif)
 
-_An animated sequence captured from the local demo. Teammates and service data are simulated; Aril does not execute deployments. Static screenshots below provide an alternative to the animation._
+[Watch the full-quality recording](https://www.aril.studio/changelog#2026-10-11-changelog) · [MP4](apps/studio/public/changelog/studio-tour.mp4)
+
+_A continuous Playwright screen recording of the local demo, converted to a GIF. Teammates and service data are simulated; Aril does not execute deployments. Static screenshots below provide an alternative to the animation._
 
 | Architecture and collaboration                                              | Editable interface design                                               |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |

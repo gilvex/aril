@@ -15,4 +15,10 @@ The initial entries are a curated record of the recent Library work, not a compl
 
 ## Capture safety
 
-The configured local backend shares production Postgres. Use a built frontend with Vite preview and `/?demo=1`; do not start the live backend, reset data or run migration tools to capture media. The checked-in tour is an animated sequence of actual demo screenshots, not a continuous screen recording.
+The configured local backend shares production Postgres. Use a built frontend with Vite preview and `/?demo=1`; do not start the live backend, reset data or run migration tools to capture media. The tour is a continuous Playwright recording. The changelog uses MP4 with playback controls, posters and localized captions; the README GIF is encoded from that same recording. Do not substitute a screenshot slideshow for a workflow recording.
+
+## Record a workflow
+
+Build the frontend, then start Vite preview on `127.0.0.1:4173`. Install the matching browser once with `pnpm exec playwright install chromium`, then run `node scripts/recordDemo.mjs`. The script creates a fresh, headless demo context, blocks external and API requests, adds a visible recording pointer and writes a continuous WebM plus timing markers under ignored `artifacts/demo-recording/`. It never uses an existing signed-in browser.
+
+Trim setup time using the emitted markers and encode H.264 MP4 (`yuv420p`, `+faststart`). Export the README GIF from the same video at 12 fps with a generated palette; keep it under 10 MB. Add matching English/Russian WebVTT captions. Keep videos user-initiated with native controls, so readers can pause, seek or view fullscreen. Preserve static screenshots as posters and README alternatives.
