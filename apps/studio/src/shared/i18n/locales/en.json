@@ -1135,5 +1135,9 @@
   "{{count}} uses_few": "{{count}} uses",
   "{{count}} uses_many": "{{count}} uses",
   "{{count}} uses_other": "{{count}} uses",
-  "Variable type": "Variable type"
+  "Variable type": "Variable type",
+  "Workspace design": "Workspace design",
+  "Library source": "Library source",
+  "Explore assets, their connections, and where they are used.": "Explore assets, their connections, and where they are used.",
+  "Asset details": "Asset details"
 }

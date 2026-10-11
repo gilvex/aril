@@ -12,6 +12,8 @@ export function createStudioModel(initial: StudioState) {
   })
   const getSnapshot = () => selectStudio(store.getState())
   const actions = {
+    setLibrary: (value: Partial<StudioState['library']>) =>
+      store.dispatch(studioSlice.actions.setLibrary(value)),
     setNewBoardType: (value: StudioState['newBoardType']) =>
       store.dispatch(studioSlice.actions.setNewBoardType(value)),
     setNavigationCollapsed: (value: boolean) => {

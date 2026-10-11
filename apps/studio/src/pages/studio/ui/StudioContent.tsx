@@ -4,7 +4,8 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { AlertCircle, X } from 'lucide-react'
 import { Suspense } from 'react'
 import { useStudioContentHandlers } from '../model/useStudioContentHandlers.tsx'
-import { DesignBoard } from './DesignBoard.tsx'
+import { StudioDesign } from './StudioDesign.tsx'
+import { StudioLibrary } from './StudioLibrary.tsx'
 import { StudioScope } from './StudioScope.tsx'
 
 import { StudioBottomNavigation } from './StudioBottomNavigation.tsx'
@@ -17,7 +18,6 @@ export function StudioContent(props: StudioContentProps) {
 
   const {
     state,
-    multiplayer,
     setNotice,
     view,
     setModal,
@@ -27,9 +27,6 @@ export function StudioContent(props: StudioContentProps) {
     setPendingImport,
     notice,
     followed,
-    workspace,
-    change,
-    sendPresence,
   } = props
 
   const { handleImportWorkspaceFileChange } = useStudioContentHandlers({
@@ -83,18 +80,8 @@ export function StudioContent(props: StudioContentProps) {
       )}
       <Suspense fallback={<LoadingStatus centered label={t('Loading…')} />}>
         {view === 'requirements' && <StudioScope {...props} />}
-        {view === 'design' && (
-          <DesignBoard
-            key={props.studio.id}
-            workspaceId={props.studio.id}
-            saveState={state.saveState}
-            design={workspace.design}
-            update={(design) => change((w) => ({ ...w, design }))}
-            peers={multiplayer.peers.filter((peer) => !peer.boardId)}
-            following={followed?.boardId ? null : followed}
-            sendPresence={sendPresence}
-          />
-        )}
+        {view === 'design' && <StudioDesign {...props} />}
+        {view === 'library' && <StudioLibrary {...props} />}
         {view === 'notes' && <StudioNotebook {...props} />}
       </Suspense>
       <StudioBottomNavigation {...props} />

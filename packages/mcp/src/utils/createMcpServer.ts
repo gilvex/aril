@@ -275,7 +275,7 @@ export function createMcpServer(config: AgentConfig) {
             variables: {},
             machines: {},
           },
-          url: `${config.origin}/?${new URLSearchParams({ workspace: state.studio.id, view: boardId ? 'canvas' : 'design', ...(boardId ? { board: boardId, canvas: 'design' } : {}) })}`,
+          url: `${config.origin}/w/${encodeURIComponent(state.studio.id)}/library${boardId ? `?${new URLSearchParams({ libraryBoard: boardId })}` : ''}`,
         }
       }),
   )

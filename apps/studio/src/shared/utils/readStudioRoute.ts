@@ -17,11 +17,15 @@ export function readStudioRoute(location: string): StudioRoute {
     /* A malformed path falls back to the legacy query route. */
   }
   return {
+    ...(view === 'library' && params.get('libraryBoard')
+      ? { libraryBoardId: params.get('libraryBoard')! }
+      : {}),
     workspaceId,
     boardId,
     view:
       view === 'requirements' ||
       view === 'design' ||
+      view === 'library' ||
       view === 'notes' ||
       view === 'settings'
         ? view

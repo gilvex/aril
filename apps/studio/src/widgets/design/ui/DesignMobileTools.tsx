@@ -17,14 +17,18 @@ export function DesignMobileTools({
   onOpenChange,
 }: DesignMobileToolsProps) {
   const { t } = useTranslation()
-  const { patch } = model
+  const { patch, openLibrary } = model
   const active = model.pagesOpen
     ? 'pages'
     : model.layers
-      ? model.leftTab
+      ? 'layers'
       : 'properties'
   const selectTab = useCallback(
     (tab: string) => {
+      if (tab === 'library') {
+        openLibrary()
+        return
+      }
       if (['pages', 'layers', 'library', 'properties'].includes(tab))
         patch(
           designMobileToolPatch(
@@ -32,7 +36,7 @@ export function DesignMobileTools({
           ),
         )
     },
-    [patch],
+    [patch, openLibrary],
   )
   const close = useCallback(() => onOpenChange(false), [onOpenChange])
   return (

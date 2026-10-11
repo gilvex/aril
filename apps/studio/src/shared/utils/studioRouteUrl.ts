@@ -15,6 +15,8 @@ export function studioRouteUrl(href: string, route: StudioRoute | null) {
       url.searchParams.set('canvas', route.canvasMode)
     if (route.view === 'requirements' && route.requirementId)
       url.searchParams.set('requirement', route.requirementId)
+    if (route.view === 'library' && route.libraryBoardId)
+      url.searchParams.set('libraryBoard', route.libraryBoardId)
   }
   return url.pathname + url.search + url.hash
 }

@@ -43,6 +43,7 @@ export type StudioHeaderActionsProps = {
           | 'notes'
           | 'wireframes'
           | 'settings'
+          | 'library'
         cursor: { x: number; y: number } | null
         selected: string[]
         selectedEdges: string[]

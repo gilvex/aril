@@ -6,6 +6,10 @@ import type {
 import type { DesignPage, DesignElement } from '@pomegranate/domain/design'
 import type { useDesignEditorState } from '../model/useDesignEditorState.ts'
 export type UseDesignLibraryProps = {
+  navigateDesign: (
+    state: Partial<import('./designEditorState.ts').DesignEditorState>,
+  ) => void
+  openLibrary: (tab?: 'graph' | 'variables') => void
   design: Workspace['design']
   update: (design: Workspace['design']) => void
   library: DesignLibrary

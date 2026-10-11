@@ -1,4 +1,5 @@
 export type UseStudioFollowingProps = {
+  setLibrary: import('./studioModel.ts').StudioModel['setLibrary']
   multiplayer: {
     profile: import('@pomegranate/domain/collaboration').Profile
     setProfile: (

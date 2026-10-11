@@ -14,6 +14,7 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
     patch,
     openAsset,
     insertComponent,
+    navigateDesign,
   } = model
   const split = libraryAsset?.indexOf(':') ?? -1
   const kind = libraryAsset?.slice(0, split)
@@ -32,10 +33,13 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
   )
   const navigate = useCallback(
     (use: DesignUsage) => {
-      if (use.ownerKind === 'machine') openAsset('machine', use.ownerId)
-      else if (use.ownerKind === 'component')
-        openAsset('component', use.ownerId)
-      patch({
+      navigateDesign({
+        componentId: use.ownerKind === 'component' ? use.ownerId : null,
+        machineId: use.ownerKind === 'machine' ? use.ownerId : null,
+        layers: true,
+        leftTab: 'layers',
+        inspector: use.ownerKind === 'machine',
+        machineSelection: null,
         libraryView: use.ownerKind === 'machine' ? 'machine' : 'canvas',
         ...(use.ownerKind === 'page'
           ? { pageId: use.ownerId, componentId: null }
@@ -58,7 +62,7 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
           : {}),
       })
     },
-    [openAsset, patch],
+    [navigateDesign],
   )
   const edit = useCallback(() => {
     if (kind === 'component' || kind === 'machine') openAsset(kind, id)
@@ -71,7 +75,7 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
         variableUsage: 'all',
       })
     else
-      patch({
+      navigateDesign({
         pageId: id,
         componentId: null,
         libraryView: 'canvas',
@@ -80,7 +84,7 @@ export function useDesignUsageDetails(model: DesignEditorModel) {
         editingId: null,
       })
     patch({ panelMaximized: null })
-  }, [kind, id, openAsset, patch, library.variables])
+  }, [kind, id, openAsset, patch, library.variables, navigateDesign])
   const insert = useCallback(() => insertComponent(id), [insertComponent, id])
   return {
     t,

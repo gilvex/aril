@@ -1,2 +1,2 @@
 export type StudioView =
-  'canvas' | 'requirements' | 'design' | 'notes' | 'settings'
+  'canvas' | 'requirements' | 'design' | 'library' | 'notes' | 'settings'

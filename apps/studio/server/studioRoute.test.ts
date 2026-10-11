@@ -3,6 +3,32 @@ import { test } from 'node:test'
 import { readStudioRoute } from '../src/shared/utils/readStudioRoute.ts'
 import { studioRouteUrl } from '../src/shared/utils/studioRouteUrl.ts'
 
+test('Library routes preserve explicit source without borrowing the current board', () => {
+  const workspace = readStudioRoute('/w/team/library?board=current')
+  assert.equal(workspace.view, 'library')
+  assert.equal(workspace.libraryBoardId, undefined)
+  const scoped = readStudioRoute(
+    '/w/team/library?board=current&libraryBoard=board%2Ftwo',
+  )
+  assert.equal(scoped.libraryBoardId, 'board/two')
+  assert.deepEqual(
+    readStudioRoute(studioRouteUrl('https://example.test/', scoped)),
+    scoped,
+  )
+  assert.equal(
+    studioRouteUrl('https://example.test/w/team/library?libraryBoard=old', {
+      workspaceId: 'team',
+      view: 'design',
+      canvasMode: 'canvas',
+    }),
+    '/w/team/design',
+  )
+  assert.equal(
+    readStudioRoute('/w/team/design?libraryBoard=old').libraryBoardId,
+    undefined,
+  )
+})
+
 test('studio routes round-trip locations and preserve invitation hashes', () => {
   const route = {
     workspaceId: 'team/a & b',

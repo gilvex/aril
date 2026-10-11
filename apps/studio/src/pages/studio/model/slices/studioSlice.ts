@@ -5,6 +5,12 @@ export const studioSlice = createSlice({
   name: 'studio',
   initialState: {} as StudioState,
   reducers: {
+    setLibrary: (
+      state,
+      action: PayloadAction<Partial<StudioState['library']>>,
+    ) => {
+      Object.assign(state.library, action.payload)
+    },
     setNewBoardType: (
       state,
       action: PayloadAction<StudioState['newBoardType']>,

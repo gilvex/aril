@@ -6,7 +6,10 @@ import type { DesignEditorState } from '../types/designEditorState.ts'
 import { createDesignEditorState } from './createDesignEditorState.ts'
 import { readDesignPanelLayout } from '../utils/readDesignPanelLayout.ts'
 import { designPanelPreference } from '../utils/designPanelPreference.ts'
-export function useDesignEditorState(workspaceId: string) {
+export function useDesignEditorState(
+  workspaceId: string,
+  initialState?: Partial<DesignEditorState>,
+) {
   const compact = useCompactLayout()
   const ref = useRef<{
     store: ReturnType<typeof initialize>
@@ -28,6 +31,7 @@ export function useDesignEditorState(workspaceId: string) {
     } catch {
       /* Storage can be unavailable in private browsers. */
     }
+    Object.assign(initial, initialState)
     return configureStore({
       reducer: designEditorSlice.reducer,
       preloadedState: initial,

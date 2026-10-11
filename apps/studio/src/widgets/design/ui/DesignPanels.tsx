@@ -1,4 +1,3 @@
-import { DesignLibrary } from './DesignLibrary.tsx'
 import { DesignMachineInspector } from './DesignMachineInspector.tsx'
 import { DesignPanel } from './DesignPanel.tsx'
 import { DesignDockTabs } from './DesignDockTabs.tsx'
@@ -33,13 +32,7 @@ export function DesignPanels({
     [close],
   )
   const closeInspector = useCallback(() => patch({ inspector: false }), [patch])
-  const layers =
-    model.layers &&
-    (model.leftTab === 'library' ? (
-      <DesignLibrary model={model} />
-    ) : (
-      <DesignLayers model={model} />
-    ))
+  const layers = model.layers && <DesignLayers model={model} />
   const inspector =
     model.inspector &&
     (model.libraryView === 'machine' ? (

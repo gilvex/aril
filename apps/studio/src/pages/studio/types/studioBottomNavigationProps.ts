@@ -27,6 +27,7 @@ export type StudioBottomNavigationProps = {
           | 'notes'
           | 'wireframes'
           | 'settings'
+          | 'library'
         boardId: string | null
       }
   )[]

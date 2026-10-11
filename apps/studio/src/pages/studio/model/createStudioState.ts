@@ -39,6 +39,11 @@ export function createStudioState(
   const historyLoading: boolean = false
   const followId: string | null = null
   return {
+    library: {
+      boardId: initialRoute.libraryBoardId || null,
+      tab: 'graph' as const,
+      target: null,
+    },
     initialRoute,
     view,
     canvasMode,

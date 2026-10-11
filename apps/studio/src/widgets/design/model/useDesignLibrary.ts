@@ -18,6 +18,8 @@ export function useDesignLibrary({
   selected,
   component,
   variant,
+  navigateDesign,
+  openLibrary,
 }: UseDesignLibraryProps) {
   const { patch } = state
   const { t } = useTranslation()
@@ -28,18 +30,12 @@ export function useDesignLibrary({
   const openAsset = useCallback(
     (kind: 'component' | 'variables' | 'machine', id = '') => {
       if (kind === 'variables') {
-        patch({
-          layers: true,
-          leftTab: 'library',
-          libraryTab: 'variables',
-          pagesOpen: false,
-          dockActive: 'left',
-          libraryError: '',
-        })
+        openLibrary('variables')
         return
       }
-      patch({
-        leftTab: 'library',
+      navigateDesign({
+        leftTab: 'layers',
+        layers: true,
         libraryTab: 'graph',
         libraryAsset: `${kind}:${id}`,
         libraryView: kind === 'component' ? 'canvas' : kind,
@@ -57,7 +53,7 @@ export function useDesignLibrary({
         libraryError: '',
       })
     },
-    [patch],
+    [navigateDesign, openLibrary],
   )
   const closeAsset = useCallback(
     () =>
@@ -131,15 +127,16 @@ export function useDesignLibrary({
           p.id === page.id ? { ...p, nodes: [...p.nodes, ...nodes] } : p,
         ),
       })
-      patch({
+      navigateDesign({
         componentId: null,
+        pageId: page.id,
         libraryView: 'canvas',
         selection: [nodes.find((n) => !n.parentId)!.id],
         inspector: !state.compact,
         styles: false,
       })
     },
-    [library, page, design, update, patch, state.compact, t],
+    [library, page, design, update, patch, state.compact, t, navigateDesign],
   )
   const addVariant = useCallback(() => {
     if (!component || !variant || Object.keys(component.variants).length >= 30)

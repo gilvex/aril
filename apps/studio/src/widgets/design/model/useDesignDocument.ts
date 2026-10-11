@@ -27,10 +27,25 @@ export function useDesignDocument({
   design,
   update: updateDocument,
   workspaceId,
+  initialEditorState,
+  onEditorReady,
+  onOpenLibrary,
+  onNavigateDesign,
 }: DesignBoardProps) {
   const { t } = useTranslation()
-  const state = useDesignEditorState(workspaceId)
+  const state = useDesignEditorState(workspaceId, initialEditorState)
   const { patch } = state
+  useEffect(() => {
+    onEditorReady?.()
+  }, [onEditorReady])
+  const navigateDesign = onNavigateDesign || patch
+  const openLibrary = useCallback(
+    (tab: 'graph' | 'variables' = 'graph') => {
+      if (onOpenLibrary) onOpenLibrary(tab)
+      else patch({ libraryTab: tab })
+    },
+    [onOpenLibrary, patch],
+  )
   const library = useMemo(
     () => design.library || emptyDesignLibrary(),
     [design.library],
@@ -343,6 +358,8 @@ export function useDesignDocument({
     selectStructure,
   )
   const assets = useDesignLibrary({
+    navigateDesign,
+    openLibrary,
     design,
     update,
     library,
@@ -353,6 +370,8 @@ export function useDesignDocument({
     variant,
   })
   return {
+    navigateDesign,
+    openLibrary,
     ...state,
     ...assets,
     usage,

@@ -1,4 +1,5 @@
 import { useLiveWorkspaceFields } from './useLiveWorkspaceFields.ts'
+import { useStudioLibraryNavigation } from './useStudioLibraryNavigation.ts'
 import { useSettings } from './useSettings.ts'
 import { useWorkspace } from '@/entities/workspace/index.ts'
 import { useCanvasFullscreen } from '@/features/canvasFullscreen/index.ts'
@@ -49,6 +50,8 @@ export function useStudioController({
   )
   const { workspace, change } = state
   const {
+    library,
+    setLibrary,
     view,
     setView,
     canvasMode,
@@ -80,8 +83,22 @@ export function useStudioController({
     followId,
     setFollowId,
   } = useStudioModel(() => createStudioState(workspace, recovery))
+  const libraryNavigation = useStudioLibraryNavigation({
+    library,
+    setLibrary,
+    setView,
+    setBoardId,
+    setCanvasMode,
+  })
 
   const setSettings = settings.set
+  useEffect(() => {
+    if (
+      library.boardId &&
+      !workspace.boards.some((item) => item.id === library.boardId)
+    )
+      setLibrary({ boardId: null, target: null })
+  }, [library.boardId, workspace.boards, setLibrary])
   const openSettings = useCallback(
     (section: 'file' | 'user') => {
       setSettings({ section })
@@ -126,11 +143,21 @@ export function useStudioController({
       view,
       canvasMode,
       requirementId: routedRequirementId,
+      libraryBoardId: library.boardId || undefined,
     })
-  }, [active, studio.id, board.id, view, canvasMode, routedRequirementId])
+  }, [
+    active,
+    studio.id,
+    board.id,
+    view,
+    canvasMode,
+    routedRequirementId,
+    library.boardId,
+  ])
   const { sendPresence } = multiplayer
 
   const { followed } = useStudioFollowing({
+    setLibrary,
     multiplayer,
     followId,
     sendPresence,
@@ -157,7 +184,12 @@ export function useStudioController({
             {
               profile: multiplayer.profile,
               view: view === 'canvas' ? canvasMode : view,
-              boardId: view === 'canvas' ? board.id : null,
+              boardId:
+                view === 'canvas'
+                  ? board.id
+                  : view === 'library'
+                    ? library.boardId
+                    : null,
             },
           ]
         : []),
@@ -170,13 +202,19 @@ export function useStudioController({
       view,
       canvasMode,
       board.id,
+      library.boardId,
     ],
   )
   useEffect(() => {
     sendPresence(
       {
         view: view === 'canvas' ? canvasMode : view,
-        boardId: view === 'canvas' ? board.id : null,
+        boardId:
+          view === 'canvas'
+            ? board.id
+            : view === 'library'
+              ? library.boardId
+              : null,
         cursor: null,
         ...(view !== 'notes' ? { selected: [] } : {}),
         selectedEdges: [],
@@ -187,7 +225,7 @@ export function useStudioController({
       },
       true,
     )
-  }, [view, canvasMode, board.id, sendPresence])
+  }, [view, canvasMode, board.id, sendPresence, library.boardId])
   const navigateBoard = useCallback(
     (id: string) => {
       setBoardId(id)
@@ -209,6 +247,7 @@ export function useStudioController({
       setNotice,
     })
   return {
+    libraryNavigation,
     settings,
     openSettings,
     full,

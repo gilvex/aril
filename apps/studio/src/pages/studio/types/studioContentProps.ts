@@ -1,6 +1,9 @@
 import type { StudioView as View } from '@/shared/types/studioView.ts'
 
 export type StudioContentProps = {
+  libraryNavigation: ReturnType<
+    typeof import('../model/useStudioLibraryNavigation.ts').useStudioLibraryNavigation
+  >
   settings: ReturnType<typeof import('../model/useSettings.ts').useSettings>
   onOpenWorkspace: import('./studioProps.ts').StudioProps['onOpenWorkspace']
   compact: boolean
@@ -48,6 +51,7 @@ export type StudioContentProps = {
           | 'notes'
           | 'wireframes'
           | 'settings'
+          | 'library'
         boardId: string | null
       }
   )[]
@@ -153,6 +157,7 @@ export type StudioContentProps = {
         | 'notes'
         | 'wireframes'
         | 'settings'
+        | 'library'
       cursor: { x: number; y: number } | null
       selected: string[]
       selectedEdges: string[]

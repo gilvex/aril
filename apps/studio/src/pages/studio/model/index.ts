@@ -25,3 +25,4 @@ export { useSettings } from './useSettings.ts'
 export { useWorkspacePicker } from './useWorkspacePicker.ts'
 
 export { useLiveWorkspaceFields } from './useLiveWorkspaceFields.ts'
+export { useStudioLibraryNavigation } from './useStudioLibraryNavigation.ts'

@@ -25,6 +25,7 @@ export const presenceSchema = z.object({
     'design',
     'notes',
     'settings',
+    'library',
   ]),
   cursor: z
     .object({

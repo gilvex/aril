@@ -48,3 +48,5 @@ export type { BoardTypeChoicesProps } from './boardTypeChoicesProps.ts'
 export type { LiveWorkspaceFieldsOptions } from './liveWorkspaceFieldsOptions.ts'
 
 export type { StudioMobileToolsProps } from './studioMobileToolsProps.ts'
+export type { LibraryNavigationState } from './libraryNavigationState.ts'
+export type { StudioModel } from './studioModel.ts'

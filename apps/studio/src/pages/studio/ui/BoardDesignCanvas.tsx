@@ -13,9 +13,11 @@ export function BoardDesignCanvas({
   sendPresence,
   navigation,
   mobileMenu,
+  libraryNavigation,
 }: StudioCanvasProps & { navigation: ReactNode }) {
   const design = useMemo(
-    () => board.design || { ...workspace.design, pages: [] },
+    () =>
+      board.design || { ...workspace.design, pages: [], library: undefined },
     [board.design, workspace.design],
   )
   const update = useCallback(
@@ -32,8 +34,18 @@ export function BoardDesignCanvas({
     () => multiplayer.peers.filter((peer) => peer.boardId === board.id),
     [multiplayer.peers, board.id],
   )
+  const { open, target, consume, boardId } = libraryNavigation
+  const openLibrary = useCallback(
+    (tab?: 'graph' | 'variables') => open(board.id, tab),
+    [open, board.id],
+  )
   return (
     <DesignBoard
+      onOpenLibrary={openLibrary}
+      initialEditorState={
+        boardId === board.id ? target || undefined : undefined
+      }
+      onEditorReady={consume}
       workspaceId={studio.id + ':' + board.id}
       design={design}
       update={update}

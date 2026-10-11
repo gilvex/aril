@@ -1,7 +1,7 @@
 import { Button } from 'vagabond-ui/button'
 import { StudioDrawer } from '@/shared/ui/index.tsx'
 import { useCallback } from 'react'
-import { Settings } from 'lucide-react'
+import { Library, Settings } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -30,6 +30,10 @@ export function StudioMobileMenu({
 }: StudioMobileMenuProps) {
   const { t } = useTranslation()
   const closeMenu = useCallback(() => setSidebarOpen(false), [setSidebarOpen])
+  const openLibrary = useCallback(() => {
+    setView('library')
+    setSidebarOpen(false)
+  }, [setView, setSidebarOpen])
   const openSettings = useCallback(() => {
     setView('settings')
     setSidebarOpen(false)
@@ -86,6 +90,10 @@ export function StudioMobileMenu({
             <small>{t('Switch workspace')}</small>
           </span>
           <ChevronDown size={14} />
+        </Button>
+        <Button variant="ghost" className="button" onClick={openLibrary}>
+          <Library size={18} />
+          {t('Library')}
         </Button>
         <Button variant="ghost" className="button" onClick={openSettings}>
           <Settings size={18} />

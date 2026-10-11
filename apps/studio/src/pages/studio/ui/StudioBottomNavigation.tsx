@@ -20,34 +20,37 @@ export function StudioBottomNavigation({
       data-drawer-dismiss
       aria-label={t('Main navigation')}
     >
-      {navigation.map((item) => (
-        <button
-          key={item.id}
-          aria-label={t(item.name)}
-          aria-current={view === item.id ? 'page' : undefined}
-          onClick={() => {
-            setView(item.id)
-            setSidebarOpen(false)
-          }}
-        >
-          <item.icon size={21} />
-          <PresenceAvatars
-            profiles={present
-              .filter(
-                (person) =>
-                  (person.view === item.id &&
-                    !(item.id === 'design' && person.boardId)) ||
-                  (item.id === 'canvas' &&
-                    (person.view === 'wireframes' ||
-                      (person.view === 'design' && !!person.boardId))),
-              )
-              .map((person) => person.profile)}
-          />
-        </button>
-      ))}
+      {navigation
+        .filter((item) => item.id !== 'library')
+        .map((item) => (
+          <button
+            key={item.id}
+            aria-label={t(item.name)}
+            aria-current={view === item.id ? 'page' : undefined}
+            onClick={() => {
+              setView(item.id)
+              setSidebarOpen(false)
+            }}
+          >
+            <item.icon size={21} />
+            <PresenceAvatars
+              profiles={present
+                .filter(
+                  (person) =>
+                    (person.view === item.id &&
+                      !(item.id === 'design' && person.boardId)) ||
+                    (item.id === 'canvas' &&
+                      (person.view === 'wireframes' ||
+                        (person.view === 'design' && !!person.boardId))),
+                )
+                .map((person) => person.profile)}
+            />
+          </button>
+        ))}
       <button
         ref={mobileMenuToggle}
         aria-label={t('Open workspace menu')}
+        aria-current={view === 'library' ? 'page' : undefined}
         aria-expanded={sidebarOpen}
         aria-controls="studio-navigation"
         onClick={() => setSidebarOpen(true)}

@@ -303,10 +303,23 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
       ).page.nodes,
       [],
     )
-    const emptyLibrary = await read<{ library: DesignLibrary }>(
+    const emptyLibrary = await read<{ library: DesignLibrary; url: string }>(
       'get_design_library',
     )
     assert.equal(Object.keys(emptyLibrary.library.components).length, 0)
+    assert.equal(new URL(emptyLibrary.url).pathname, '/w/default/library')
+    assert.equal(
+      new URL(emptyLibrary.url).searchParams.has('libraryBoard'),
+      false,
+    )
+    const boardLibraryLink = await read<{ url: string }>('get_design_library', {
+      boardId,
+    })
+    assert.equal(new URL(boardLibraryLink.url).pathname, '/w/default/library')
+    assert.equal(
+      new URL(boardLibraryLink.url).searchParams.get('libraryBoard'),
+      boardId,
+    )
     const withLibrary = structuredClone(instance.store.read().workspace)
     withLibrary.design.library = createExampleDesignLibrary('agent')
     const canonical = documentOf(withLibrary) as {

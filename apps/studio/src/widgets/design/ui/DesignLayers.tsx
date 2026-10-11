@@ -5,6 +5,7 @@ import {
   type KeyboardEvent,
 } from 'react'
 import { DesignLibraryTabs } from './DesignLibraryTabs.tsx'
+import { DesignComponentDetails } from './DesignComponentDetails.tsx'
 import { X } from 'lucide-react'
 import { SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -78,6 +79,7 @@ export function DesignLayers({ model }: DesignEditorProps) {
         aria-label={t('Layers')}
         onKeyDown={scrollKeys}
       >
+        {model.component && <DesignComponentDetails model={model} />}
         <div className="design-layers-tree">
           {nodes.map(({ node, depth }) => (
             <DesignLayerRow

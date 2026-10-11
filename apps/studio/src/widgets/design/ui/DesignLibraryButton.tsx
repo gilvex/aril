@@ -4,17 +4,8 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignLibraryButton({ model }: DesignEditorProps) {
   const { t } = useTranslation()
-  const { patch } = model
-  const open = useCallback(
-    () =>
-      patch({
-        layers: true,
-        leftTab: 'library',
-        dockActive: 'left',
-        pagesOpen: false,
-      }),
-    [patch],
-  )
+  const { openLibrary } = model
+  const open = useCallback(() => openLibrary(), [openLibrary])
   return (
     <button
       className="button design-library-button"

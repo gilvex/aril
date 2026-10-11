@@ -7,6 +7,9 @@ import { useStudioModel } from '../model/useStudioModel.ts'
 import { CanvasBoard } from '../ui/CanvasBoard.tsx'
 
 export type StudioCanvasProps = {
+  libraryNavigation: ReturnType<
+    typeof import('../model/useStudioLibraryNavigation.ts').useStudioLibraryNavigation
+  >
   mobileMenu?: React.ReactNode
   studio: import('./studioProps.ts').StudioProps['studio']
   BoardCanvas: typeof CanvasBoard
@@ -36,6 +39,7 @@ export type StudioCanvasProps = {
         | 'notes'
         | 'wireframes'
         | 'settings'
+        | 'library'
       cursor: { x: number; y: number } | null
       selected: string[]
       selectedEdges: string[]

@@ -1135,5 +1135,9 @@
   "{{count}} uses_few": "{{count}} использования",
   "{{count}} uses_many": "{{count}} использований",
   "{{count}} uses_other": "{{count}} использования",
-  "Variable type": "Тип переменной"
+  "Variable type": "Тип переменной",
+  "Workspace design": "Дизайн проекта",
+  "Library source": "Источник библиотеки",
+  "Explore assets, their connections, and where they are used.": "Изучайте ресурсы, их связи и места использования.",
+  "Asset details": "Сведения о ресурсе"
 }

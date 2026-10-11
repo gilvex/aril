@@ -5,6 +5,14 @@ import type {
   DragPosition,
 } from '@pomegranate/domain/collaboration'
 export type DesignBoardProps = {
+  initialEditorState?: Partial<
+    import('./designEditorState.ts').DesignEditorState
+  >
+  onEditorReady?: () => void
+  onOpenLibrary?: (tab?: 'graph' | 'variables') => void
+  onNavigateDesign?: (
+    state: Partial<import('./designEditorState.ts').DesignEditorState>,
+  ) => void
   mobileMenu?: import('react').ReactNode
   navigation?: import('react').ReactNode
   workspaceId: string

@@ -12,7 +12,7 @@ export function DesignLibraryGraph({ model }: DesignEditorProps) {
   const container = useRef<HTMLDivElement>(null)
   const {
     library,
-    pages,
+    design,
     usage,
     libraryQuery,
     libraryKind,
@@ -23,13 +23,13 @@ export function DesignLibraryGraph({ model }: DesignEditorProps) {
     () =>
       designLibraryGraph({
         library,
-        pages,
+        pages: design.pages || [],
         usage,
         libraryQuery,
         libraryKind,
         libraryAsset,
       }),
-    [library, pages, usage, libraryQuery, libraryKind, libraryAsset],
+    [library, design.pages, usage, libraryQuery, libraryKind, libraryAsset],
   )
   const structure = graph.nodes.map((n) => n.id).join('|')
   useEffect(() => {

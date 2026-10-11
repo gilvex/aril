@@ -13,6 +13,7 @@ export function useStudioFollowing({
   setCanvasMode,
   setBoardId,
   setRequirementId,
+  setLibrary,
 }: UseStudioFollowingProps) {
   const followedPeer = multiplayer.connected
     ? multiplayer.peers.find((p) => p.clientId === followId)
@@ -41,6 +42,9 @@ export function useStudioFollowing({
       setView('canvas')
       setCanvasMode(followed.view === 'wireframes' ? 'design' : followed.view)
       setBoardId(followed.boardId!)
+    } else if (followed.view === 'library') {
+      setLibrary({ boardId: followed.boardId, target: null })
+      setView('library')
     } else if (['requirements', 'design', 'notes'].includes(followed.view)) {
       setView(followed.view as View)
       if (followed.view === 'requirements')
@@ -55,6 +59,7 @@ export function useStudioFollowing({
     setNotice,
     setRequirementId,
     setView,
+    setLibrary,
     t,
     workspace.boards,
   ])
