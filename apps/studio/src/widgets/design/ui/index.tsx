@@ -51,7 +51,6 @@ export { DesignInstanceControls } from './DesignInstanceControls.tsx'
 
 export { DesignLibrary } from './DesignLibrary.tsx'
 
-export { DesignLibraryButton } from './DesignLibraryButton.tsx'
 
 export { DesignLibraryTabs } from './DesignLibraryTabs.tsx'
 

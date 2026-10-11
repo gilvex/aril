@@ -1,4 +1,3 @@
-import { DesignLibraryButton } from './DesignLibraryButton.tsx'
 import { DesignAssetBreadcrumb } from './DesignAssetBreadcrumb.tsx'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import { DesignLayersButton } from './DesignLayersButton.tsx'
@@ -19,7 +18,6 @@ export function DesignNavigation({ model, navigation }: DesignNavigationProps) {
             <DesignPagePicker model={model} />
           )}
           {!compact && <DesignLayersButton model={model} />}
-          {!compact && <DesignLibraryButton model={model} />}
         </div>
       )}
     </div>
