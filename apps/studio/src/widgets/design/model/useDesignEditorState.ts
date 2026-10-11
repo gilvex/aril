@@ -9,6 +9,7 @@ import { designPanelPreference } from '../utils/designPanelPreference.ts'
 export function useDesignEditorState(
   workspaceId: string,
   initialState?: Partial<DesignEditorState>,
+  panelLayoutKey = 'aril:designPanelLayout:v1',
 ) {
   const compact = useCompactLayout()
   const ref = useRef<{
@@ -21,9 +22,7 @@ export function useDesignEditorState(
     try {
       Object.assign(
         initial,
-        readDesignPanelLayout(
-          localStorage.getItem('aril:designPanelLayout:v1'),
-        ),
+        readDesignPanelLayout(localStorage.getItem(panelLayoutKey)),
       )
       initial.pageId =
         sessionStorage.getItem(`aril:designPage:${workspaceId}`) ||
@@ -54,7 +53,7 @@ export function useDesignEditorState(
     let timer: ReturnType<typeof setTimeout> | undefined
     const save = () => {
       try {
-        localStorage.setItem('aril:designPanelLayout:v1', previous)
+        localStorage.setItem(panelLayoutKey, previous)
       } catch {
         /* Layout preferences are optional. */
       }
@@ -73,7 +72,7 @@ export function useDesignEditorState(
         save()
       }
     }
-  }, [store])
+  }, [store, panelLayoutKey])
   useEffect(() => patch({ compact }), [compact, patch])
   const state = useSyncExternalStore(store.subscribe, store.getState)
   return { ...state, patch }

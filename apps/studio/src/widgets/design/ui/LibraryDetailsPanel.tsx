@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 import { X } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
-import { StudioDrawer } from '@/shared/ui/index.tsx'
+import { StudioDrawer, SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { LibraryExplorerProps } from '../types/libraryExplorerProps.ts'
 import { DesignUsageDetails } from './DesignUsageDetails.tsx'
 import { LibraryOrganization } from './LibraryOrganization.tsx'
+import { DesignPanel } from './DesignPanel.tsx'
 export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
   const { t } = useTranslation()
   const { patch } = model
@@ -19,6 +20,7 @@ export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
   const content = (
     <>
       <header className="library-details-heading">
+        {!model.compact && <SurfaceGrip />}
         <strong>{t('Asset details')}</strong>
         <Button
           className="button"
@@ -30,8 +32,10 @@ export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
           <X size={16} />
         </Button>
       </header>
-      <LibraryOrganization model={model} explorer={explorer} />
-      <DesignUsageDetails model={model} />
+      <div className="library-details-body">
+        <LibraryOrganization model={model} explorer={explorer} />
+        <DesignUsageDetails model={model} />
+      </div>
     </>
   )
   if (model.compact)
@@ -46,8 +50,10 @@ export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
       </StudioDrawer>
     )
   return (
-    <aside className="library-page-details" aria-label={t('Asset details')}>
-      {content}
-    </aside>
+    <DesignPanel model={model} side="right" label={t('Asset details')}>
+      <aside className="library-page-details" aria-label={t('Asset details')}>
+        {content}
+      </aside>
+    </DesignPanel>
   )
 }

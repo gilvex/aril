@@ -28,12 +28,17 @@ export function useDesignDocument({
   update: updateDocument,
   workspaceId,
   initialEditorState,
+  panelLayoutKey,
   onEditorReady,
   onOpenLibrary,
   onNavigateDesign,
 }: DesignBoardProps) {
   const { t } = useTranslation()
-  const state = useDesignEditorState(workspaceId, initialEditorState)
+  const state = useDesignEditorState(
+    workspaceId,
+    initialEditorState,
+    panelLayoutKey,
+  )
   const { patch } = state
   useEffect(() => {
     onEditorReady?.()

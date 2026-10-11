@@ -50,9 +50,6 @@
   border-radius: 12px;
   overflow: hidden;
 }
-.library-page-explorer[data-details] {
-  grid-template-columns: 200px minmax(0, 1fr) 290px;
-}
 .library-catalog-column {
   background: var(--surface);
   border-right: 1px solid var(--line);

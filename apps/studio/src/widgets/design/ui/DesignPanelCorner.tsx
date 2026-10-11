@@ -10,11 +10,15 @@ export function DesignPanelCorner(props: DesignPanelCornerProps) {
       className="design-panel-corner-resize"
       role="button"
       tabIndex={0}
-      aria-label={t(
-        props.side === 'left'
-          ? 'Resize layers width and height'
-          : 'Resize properties width and height',
-      )}
+      aria-label={
+        props.label
+          ? t('Resize {{panel}} width and height', { panel: props.label })
+          : t(
+              props.side === 'left'
+                ? 'Resize layers width and height'
+                : 'Resize properties width and height',
+            )
+      }
       title={t(
         'Drag corner to resize both dimensions · Arrow keys to adjust · Double-click to reset',
       )}

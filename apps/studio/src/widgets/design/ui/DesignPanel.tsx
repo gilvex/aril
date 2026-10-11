@@ -4,7 +4,12 @@ import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignPanelProps } from '../types/designPanelProps.ts'
 import { DesignPanelCorner } from './DesignPanelCorner.tsx'
-export function DesignPanel({ model, side, children }: DesignPanelProps) {
+export function DesignPanel({
+  model,
+  side,
+  children,
+  label,
+}: DesignPanelProps) {
   const { t } = useTranslation()
   const maximized = model.panelMaximized === side
   const {
@@ -59,9 +64,11 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
           data-edge={edge || side}
           role="separator"
           tabIndex={0}
-          aria-label={t(
-            left ? 'Resize layers panel' : 'Resize properties panel',
-          )}
+          aria-label={
+            label
+              ? t('Resize {{panel}} width', { panel: label })
+              : t(left ? 'Resize layers panel' : 'Resize properties panel')
+          }
           aria-orientation="vertical"
           aria-valuemin={Math.min(left ? 280 : 220, limit)}
           aria-valuemax={Math.floor(limit)}
@@ -78,9 +85,11 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
           data-edge={edge || 'floating'}
           role="separator"
           tabIndex={0}
-          aria-label={t(
-            left ? 'Resize layers height' : 'Resize properties height',
-          )}
+          aria-label={
+            label
+              ? t('Resize {{panel}} height', { panel: label })
+              : t(left ? 'Resize layers height' : 'Resize properties height')
+          }
           aria-orientation="horizontal"
           aria-valuemin={Math.min(180, heightLimit)}
           aria-valuemax={Math.floor(heightLimit)}
@@ -95,6 +104,7 @@ export function DesignPanel({ model, side, children }: DesignPanelProps) {
       )}
       {!maximized && !edge && (
         <DesignPanelCorner
+          label={label}
           model={model}
           side={side}
           width={rect.width}

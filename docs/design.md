@@ -128,3 +128,7 @@ The usage map uses compact symbols, consistent spacing and curved links anchored
 Component icons default to a miniature outline derived from the first variant’s visible geometry. Set the component `icon` to an emoji or short symbol to override it, or clear it to restore automatic shape rendering. The Library details panel offers both choices. State machines and the Behaviors group no longer appear in Library, Design modes, asset search or active usage counts. Historical machine records remain stored for export/round-trip compatibility and no longer constrain edits to active assets.
 
 Library graph groups now expand in place through their plus/minus control (or by clicking the group). External groups reveal only assets connected to the visible graph, not their entire library. Each expansion starts with 12 assets; Show more reveals another 12. Existing nodes and the camera stay in place while new nodes use nearby free space. Collapse restores aggregate connections. Library/family browsing remains available in the catalog. These expansion preferences are local editor state and do not modify shared documents.
+
+### Library asset details panel
+
+Desktop Asset details reuses the Design panel controls: drag the header to float or dock on any explorer edge, resize width/height, maximize, or reset from Panel layout. Its layout is saved separately from Design panels. Opening, closing, moving and docking overlay the explorer without changing the usage graph camera. Mobile retains the Asset details drawer.

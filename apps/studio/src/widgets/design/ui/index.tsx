@@ -109,3 +109,5 @@ export { LibraryAssetPreview } from './LibraryAssetPreview.tsx'
 export { LibraryUsageList } from './LibraryUsageList.tsx'
 export { LibraryDetailsPanel } from './LibraryDetailsPanel.tsx'
 export { LibraryUsageGroup } from './LibraryUsageGroup.tsx'
+
+export { LibraryExplorer } from './LibraryExplorer.tsx'

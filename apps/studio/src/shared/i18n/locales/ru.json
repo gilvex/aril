@@ -1181,5 +1181,8 @@
   "Leave empty to use the component silhouette. Updates with its design.": "Оставьте пустым для силуэта компонента. Обновляется вместе с дизайном.",
   "Expand groups here. Drag to arrange.": "Раскрывайте группы здесь. Перетаскивайте для расположения.",
   "Expand {{name}}": "Раскрыть {{name}}",
-  "Collapse {{name}}": "Свернуть {{name}}"
+  "Collapse {{name}}": "Свернуть {{name}}",
+  "Resize {{panel}} width": "Изменить ширину: {{panel}}",
+  "Resize {{panel}} height": "Изменить высоту: {{panel}}",
+  "Resize {{panel}} width and height": "Изменить ширину и высоту: {{panel}}"
 }

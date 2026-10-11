@@ -1181,5 +1181,8 @@
   "Leave empty to use the component silhouette. Updates with its design.": "Leave empty to use the component silhouette. Updates with its design.",
   "Expand groups here. Drag to arrange.": "Expand groups here. Drag to arrange.",
   "Expand {{name}}": "Expand {{name}}",
-  "Collapse {{name}}": "Collapse {{name}}"
+  "Collapse {{name}}": "Collapse {{name}}",
+  "Resize {{panel}} width": "Resize {{panel}} width",
+  "Resize {{panel}} height": "Resize {{panel}} height",
+  "Resize {{panel}} width and height": "Resize {{panel}} width and height"
 }

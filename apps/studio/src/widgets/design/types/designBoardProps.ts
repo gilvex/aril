@@ -5,6 +5,7 @@ import type {
   DragPosition,
 } from '@pomegranate/domain/collaboration'
 export type DesignBoardProps = {
+  panelLayoutKey?: string
   initialEditorState?: Partial<
     import('./designEditorState.ts').DesignEditorState
   >
