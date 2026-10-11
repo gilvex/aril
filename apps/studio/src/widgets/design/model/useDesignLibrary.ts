@@ -71,7 +71,7 @@ export function useDesignLibrary({
     [patch],
   )
   const createComponent = useCallback(() => {
-    if (!selected.length || Object.keys(library.components).length >= 100)
+    if (!selected.length || Object.keys(library.components).length >= 2000)
       return
     try {
       const asset = createDesignComponent(

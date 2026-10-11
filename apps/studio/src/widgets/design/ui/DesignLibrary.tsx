@@ -56,7 +56,7 @@ export function DesignLibrary({ model }: DesignEditorProps) {
                 disabled={
                   readOnly ||
                   !model.selected.length ||
-                  Object.keys(model.library.components).length >= 100
+                  Object.keys(model.library.components).length >= 2000
                 }
                 onClick={model.createComponent}
               >
@@ -79,7 +79,7 @@ export function DesignLibrary({ model }: DesignEditorProps) {
                 variant="ghost"
                 disabled={
                   readOnly ||
-                  Object.keys(model.library.components).length >= 100
+                  Object.keys(model.library.components).length >= 2000
                 }
                 onClick={model.example}
               >

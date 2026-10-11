@@ -7,9 +7,16 @@ const id = z
   .max(100)
   .refine((value) => !['__proto__', 'constructor', 'prototype'].includes(value))
 const value = z.union([z.string().max(12000), z.number().finite(), z.boolean()])
+const organization = z
+  .object({
+    library: z.string().trim().min(1).max(120),
+    family: z.string().trim().min(1).max(120),
+  })
+  .optional()
 const action = z.object({ variableId: id, value })
 const component = z.object({
   id,
+  organization,
   name: z.string().min(1).max(120),
   icon: z.string().max(12).optional(),
   variants: z
@@ -18,6 +25,7 @@ const component = z.object({
 })
 const variable = z.object({
   id,
+  organization,
   name: z.string().min(1).max(120),
   collectionId: id,
   type: z.enum(['color', 'number', 'string', 'boolean']),
@@ -34,6 +42,7 @@ const collection = z.object({
 })
 const machine = z.object({
   id,
+  organization,
   name: z.string().min(1).max(120),
   componentId: id.optional(),
   initial: id,
@@ -74,13 +83,13 @@ export const designLibrarySchema = z
   .object({
     components: z
       .record(id, component)
-      .refine((v) => Object.keys(v).length <= 100),
+      .refine((v) => Object.keys(v).length <= 2000),
     collections: z
       .record(id, collection)
-      .refine((v) => Object.keys(v).length <= 30),
+      .refine((v) => Object.keys(v).length <= 200),
     variables: z
       .record(id, variable)
-      .refine((v) => Object.keys(v).length <= 500),
+      .refine((v) => Object.keys(v).length <= 5000),
     machines: z.record(id, machine).refine((v) => Object.keys(v).length <= 100),
   })
   .superRefine(validateDesignLibrary)

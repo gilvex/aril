@@ -1,20 +1,28 @@
-import { useDesignUsageDetails } from '../model/useDesignUsageDetails.ts'
+import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
+import { useDesignUsageDetails } from '../model/useDesignUsageDetails.ts'
+import { LibraryAssetPreview } from './LibraryAssetPreview.tsx'
+import { LibraryUsageList } from './LibraryUsageList.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignUsageDetails({ model }: DesignEditorProps) {
-  const {
-    t,
-    readOnly,
-    kind,
-    asset,
-    uses,
-    dependencies,
-    library,
-    patch,
-    navigate,
-    edit,
-    insert,
-  } = useDesignUsageDetails(model)
+  const { t, readOnly, kind, asset, edit, insert, patch } =
+    useDesignUsageDetails(model)
+  const map = useCallback(
+    () => patch({ libraryTab: 'graph', libraryFocus: true, libraryOffset: 0 }),
+    [patch],
+  )
+  const usedBy = useCallback(
+    () => patch({ libraryDetailsTab: 'usedBy', libraryUsageLimit: 50 }),
+    [patch],
+  )
+  const uses = useCallback(
+    () => patch({ libraryDetailsTab: 'uses', libraryUsageLimit: 50 }),
+    [patch],
+  )
+  const impact = useCallback(
+    () => patch({ libraryDetailsTab: 'impact', libraryUsageLimit: 50 }),
+    [patch],
+  )
   if (!asset)
     return (
       <p className="library-usage-hint">
@@ -24,6 +32,7 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
   return (
     <section className="library-usage-details">
       <h3>{asset.name}</h3>
+      <LibraryAssetPreview model={model} />
       <div className="design-library-buttons">
         <Button className="button" size="sm" variant="outline" onClick={edit}>
           {t('Open asset')}
@@ -38,60 +47,41 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
             {t('Insert instance')}
           </Button>
         )}
+        <Button className="button" size="sm" variant="ghost" onClick={map}>
+          {t('Show in map')}
+        </Button>
       </div>
-      <h4>
-        {t('Used in')} · {uses.length}
-      </h4>
-      {!uses.length && <p>{t('No direct usages')}</p>}
-      <ul>
-        {uses.map((use, index) => (
-          <li key={index}>
-            <button onClick={() => navigate(use)}>
-              <strong>{use.ownerName}</strong>
-              <span>
-                {[
-                  use.variantId &&
-                    library.components[use.ownerId]?.variants[use.variantId]
-                      ?.name,
-                  use.nodeName,
-                  use.stateId,
-                  use.transitionId,
-                  use.property,
-                ]
-                  .filter(Boolean)
-                  .join(' / ')}
-              </span>
-            </button>
-          </li>
-        ))}
-      </ul>
-      {!!dependencies.length && (
-        <>
-          <h4>{t('Uses assets')}</h4>
-          <ul>
-            {[
-              ...new Set(
-                dependencies.map((u) => `${u.assetKind}:${u.assetId}`),
-              ),
-            ].map((key) => {
-              const use = dependencies.find(
-                (u) => `${u.assetKind}:${u.assetId}` === key,
-              )!
-              const name =
-                use.assetKind === 'component'
-                  ? library.components[use.assetId]?.name
-                  : library.variables[use.assetId]?.name
-              return (
-                <li key={key}>
-                  <button onClick={() => patch({ libraryAsset: key })}>
-                    {name || use.assetId}
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </>
-      )}
+      <div
+        className="library-detail-tabs"
+        role="group"
+        aria-label={t('Asset connections')}
+      >
+        <Button
+          size="sm"
+          variant="ghost"
+          aria-pressed={model.libraryDetailsTab === 'usedBy'}
+          onClick={usedBy}
+        >
+          {t('Used by')}
+        </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          aria-pressed={model.libraryDetailsTab === 'uses'}
+          onClick={uses}
+        >
+          {t('Uses assets')}
+        </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          aria-pressed={model.libraryDetailsTab === 'impact'}
+          onClick={impact}
+        >
+          {t('Impact')}
+        </Button>
+      </div>
+      <LibraryUsageList model={model} />
     </section>
   )
 }

@@ -12,7 +12,7 @@ export function useDesignVariables({ model }: DesignEditorProps) {
     library.collections[libraryCollectionId] ||
     Object.values(library.collections)[0]
   const pick = useCallback(
-    (e: SelectChange) => patch({ libraryCollectionId: e.target.value }),
+    (e: SelectChange) => patch({ libraryCollectionId: e.target.value, variableLimit: 50 }),
     [patch],
   )
   const mode = useCallback(

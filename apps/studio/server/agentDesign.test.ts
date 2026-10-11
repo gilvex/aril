@@ -346,6 +346,20 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
     )
     assert.equal(assets.total, 1)
     assert.equal(assets.assets[0].id, 'agent-accent')
+    const grouped = await read<{
+      total: number
+      assets: { organization: { library: string; family: string } }[]
+    }>('find_design_assets', { libraryName: 'Core UI', family: 'Components' })
+    assert.equal(grouped.total, 1)
+    assert.equal(grouped.assets[0].organization.library, 'Core UI')
+    assert.equal(
+      (
+        await read<{ total: number }>('find_design_assets', {
+          libraryName: 'Missing library',
+        })
+      ).total,
+      0,
+    )
     assert.equal(
       (await read<{ total: number }>('find_design_assets', { boardId })).total,
       0,

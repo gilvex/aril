@@ -8,16 +8,16 @@ export function DesignVariableFilters({ model }: DesignEditorProps) {
   const { patch } = model
   const search = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
-      patch({ variableQuery: e.target.value }),
+      patch({ variableQuery: e.target.value, variableLimit: 50 }),
     [patch],
   )
   const type = useCallback(
-    (e: SelectChange) => patch({ variableType: e.target.value }),
+    (e: SelectChange) => patch({ variableType: e.target.value, variableLimit: 50 }),
     [patch],
   )
   const used = useCallback(
     (e: SelectChange) =>
-      patch({ variableUsage: e.target.value as 'all' | 'used' | 'unused' }),
+      patch({ variableUsage: e.target.value as 'all' | 'used' | 'unused', variableLimit: 50 }),
     [patch],
   )
   return (

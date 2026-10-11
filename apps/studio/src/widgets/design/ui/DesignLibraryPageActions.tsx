@@ -19,7 +19,7 @@ export function DesignLibraryPageActions({ model }: DesignEditorProps) {
         className="button"
         variant="ghost"
         disabled={
-          readOnly || Object.keys(model.library.components).length >= 100
+          readOnly || Object.keys(model.library.components).length >= 2000
         }
         onClick={model.example}
       >

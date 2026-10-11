@@ -5,5 +5,6 @@ export type DesignAssetSummary = {
   icon?: string
   type?: string
   collectionId?: string
+  organization: { library: string; family: string }
   usageCount: number
 }

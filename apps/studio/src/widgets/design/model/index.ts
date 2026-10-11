@@ -28,3 +28,4 @@ export { useDesignStructureActions } from './useDesignStructureActions.ts'
 export { useDesignMachineWorkspace } from './useDesignMachineWorkspace.ts'
 
 export { useDesignVariables } from './useDesignVariables.ts'
+export { useLibraryExplorer } from './useLibraryExplorer.ts'

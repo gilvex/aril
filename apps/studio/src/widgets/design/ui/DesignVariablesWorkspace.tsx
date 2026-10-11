@@ -35,7 +35,7 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
         </StudioSelect>
         <button
           className="button"
-          disabled={readOnly || Object.keys(library.collections).length >= 30}
+          disabled={readOnly || Object.keys(library.collections).length >= 200}
           onClick={addCollection}
         >
           {t('Add collection')}
@@ -87,7 +87,7 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
               </button>
               <button
                 className="button primary"
-                disabled={Object.keys(library.variables).length >= 500}
+                disabled={Object.keys(library.variables).length >= 5000}
                 onClick={addVariable}
               >
                 {t('Add variable')}

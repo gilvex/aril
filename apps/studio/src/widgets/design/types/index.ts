@@ -49,3 +49,8 @@ export type { DesignLibraryGraphNode } from './designLibraryGraphNode.ts'
 
 export type { DesignVariableUsageProps } from './designVariableUsageProps.ts'
 export type { DesignLibraryGraphInput } from './designLibraryGraphInput.ts'
+export type { LibraryMapAsset } from './libraryMapAsset.ts'
+export type { LibraryMapNode } from './libraryMapNode.ts'
+export type { LibraryMapInput } from './libraryMapInput.ts'
+export type { LibraryExplorerProps } from './libraryExplorerProps.ts'
+export type { LibraryUsageGroupProps } from './libraryUsageGroupProps.ts'

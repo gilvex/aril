@@ -128,12 +128,14 @@ export function createMcpServer(config: AgentConfig) {
     'find_design_assets',
     {
       description:
-        'Search reusable design assets before generating layouts. Names/IDs use case-insensitive substring matching. Returns direct usage counts, custom component icons and variable types/collections, without full layer trees. Supply boardId for that board’s isolated library. Use get_design_usage for exact locations; get_design_library for definitions.',
+        'Search reusable design assets before generating layouts. Names/IDs use case-insensitive substring matching. Returns direct usage counts, custom component icons, library/family organization and variable types/collections, without full layer trees. Supply boardId for that board’s isolated library. Use get_design_usage for exact locations; get_design_library for definitions.',
       inputSchema: z.object({
         boardId: z.string().min(1).max(100).optional(),
         query: z.string().max(200).default(''),
         kind: z.enum(['component', 'variable', 'machine']).optional(),
         collectionId: z.string().max(100).optional(),
+        libraryName: z.string().max(120).optional(),
+        family: z.string().max(120).optional(),
         variableType: z
           .enum(['color', 'number', 'string', 'boolean'])
           .optional(),
@@ -148,6 +150,8 @@ export function createMcpServer(config: AgentConfig) {
       query,
       kind,
       collectionId,
+      libraryName,
+      family,
       variableType,
       usage,
       offset,
@@ -164,8 +168,12 @@ export function createMcpServer(config: AgentConfig) {
           (a) =>
             (!kind || a.kind === kind) &&
             (!collectionId || a.collectionId === collectionId) &&
+            (!libraryName || a.organization.library === libraryName) &&
+            (!family || a.organization.family === family) &&
             (!variableType || a.type === variableType) &&
-            `${a.name} ${a.id}`.toLocaleLowerCase().includes(search) &&
+            `${a.name} ${a.id} ${a.organization.library} ${a.organization.family}`
+              .toLocaleLowerCase()
+              .includes(search) &&
             (usage === 'all' || a.usageCount > 0 === (usage === 'used')),
         )
         return {

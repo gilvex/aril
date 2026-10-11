@@ -5,9 +5,21 @@ export type DesignEditorState = {
   leftTab: 'layers' | 'library'
   libraryView: 'canvas' | 'variables' | 'machine'
   libraryQuery: string
-  libraryTab: 'graph' | 'variables'
+  libraryTab: 'graph' | 'variables' | 'browse'
+  libraryPath: string[]
+  libraryUsage: 'all' | 'used' | 'unused'
+  libraryFocus: boolean
+  libraryDepth: 1 | 2
+  libraryDirection: 'both' | 'uses' | 'usedBy'
+  libraryOffset: number
+  libraryPositions: Record<string, { x: number; y: number }>
+  libraryDetailsTab: 'usedBy' | 'uses' | 'impact'
+  libraryUsageLimit: number
+  variableLimit: number
   libraryKind: 'all' | 'component' | 'variable' | 'machine' | 'page'
   libraryAsset: string | null
+  librarySelection: string[]
+  libraryDetailsOpen: boolean
   variableQuery: string
   variableType: string
   variableUsage: 'all' | 'used' | 'unused'

@@ -1,3 +1,4 @@
+import { designAssetOrganization } from './designAssetOrganization.ts'
 import type { DesignUsageInput } from '../types/designUsageInput.ts'
 import type { DesignAssetSummary } from '../types/designAssetSummary.ts'
 import { getDesignUsage } from './getDesignUsage.ts'
@@ -12,6 +13,7 @@ export function designAssetSummaries(
   return [
     ...Object.values(design.library?.components || {}).map((a) => ({
       kind: 'component' as const,
+      organization: designAssetOrganization('component', a),
       id: a.id,
       name: a.name,
       icon: a.icon,
@@ -19,6 +21,11 @@ export function designAssetSummaries(
     })),
     ...Object.values(design.library?.variables || {}).map((a) => ({
       kind: 'variable' as const,
+      organization: designAssetOrganization(
+        'variable',
+        a,
+        design.library?.collections[a.collectionId]?.name,
+      ),
       id: a.id,
       name: a.name,
       type: a.type,
@@ -27,6 +34,7 @@ export function designAssetSummaries(
     })),
     ...Object.values(design.library?.machines || {}).map((a) => ({
       kind: 'machine' as const,
+      organization: designAssetOrganization('machine', a),
       id: a.id,
       name: a.name,
       usageCount: 0,
