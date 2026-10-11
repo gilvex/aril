@@ -27,7 +27,10 @@ export function useDesignPanelDrag(
       edge: DesignDockEdge | null
       original: Pick<
         DesignEditorModel,
-        'layersDocked' | 'inspectorDocked' | 'panelPositions'
+        | 'layersDocked'
+        | 'inspectorDocked'
+        | 'panelPositions'
+        | 'libraryDockScope'
       >
     } | null = null
     const down = (event: PointerEvent) => {
@@ -46,7 +49,12 @@ export function useDesignPanelDrag(
         .closest('[data-surface-bounds]')!
         .getBoundingClientRect()
       const box = element.getBoundingClientRect()
-      const { layersDocked, inspectorDocked, panelPositions } = latest.current
+      const {
+        layersDocked,
+        inspectorDocked,
+        panelPositions,
+        libraryDockScope,
+      } = latest.current
       gesture = {
         id: event.pointerId,
         x: event.clientX,
@@ -63,7 +71,12 @@ export function useDesignPanelDrag(
         top: box.top - bounds.top,
         moved: false,
         edge: null,
-        original: { layersDocked, inspectorDocked, panelPositions },
+        original: {
+          layersDocked,
+          inspectorDocked,
+          panelPositions,
+          libraryDockScope,
+        },
       }
       event.preventDefault()
       element.setPointerCapture(event.pointerId)
@@ -86,6 +99,9 @@ export function useDesignPanelDrag(
       )
       gesture.edge = edge
       patch({
+        ...(latest.current.panelWorkspaceDock
+          ? { libraryDockScope: 'workspace' as const }
+          : {}),
         ...(side === 'left'
           ? { layersDocked: null }
           : { inspectorDocked: null }),

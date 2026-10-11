@@ -1,5 +1,6 @@
 import type { DesignElement } from '@pomegranate/domain/design'
 import type { DesignDockEdge } from './designDockEdge.ts'
+import type { DesignDockRect } from './designDockRect.ts'
 export type DesignEditorState = {
   mobileToolsTab: 'layers' | 'library' | 'properties'
   leftTab: 'layers' | 'library'
@@ -21,6 +22,10 @@ export type DesignEditorState = {
   libraryAsset: string | null
   librarySelection: string[]
   libraryDetailsOpen: boolean
+  libraryDockScope: 'graph' | 'workspace'
+  libraryPanelBounds: { workspace: DesignDockRect; graph: DesignDockRect } | null
+  panelDockBounds?: DesignDockRect
+  panelWorkspaceDock?: boolean
   variableQuery: string
   variableType: string
   variableUsage: 'all' | 'used' | 'unused'

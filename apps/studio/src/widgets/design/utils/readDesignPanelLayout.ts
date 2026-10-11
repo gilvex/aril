@@ -26,6 +26,8 @@ export function readDesignPanelLayout(raw: string | null) {
         )
     if (['split', 'tabs'].includes(value.dockMode))
       result.dockMode = value.dockMode
+    if (['graph', 'workspace'].includes(value.libraryDockScope))
+      result.libraryDockScope = value.libraryDockScope
     if (['left', 'right'].includes(value.dockActive))
       result.dockActive = value.dockActive
     for (const side of ['left', 'right'] as const) {

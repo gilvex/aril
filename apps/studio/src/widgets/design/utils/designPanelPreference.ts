@@ -12,6 +12,7 @@ export function designPanelPreference(state: DesignEditorState) {
     panelPositions,
     dockMode,
     dockActive,
+    libraryDockScope,
   } = state
   return {
     layersDocked,
@@ -25,5 +26,6 @@ export function designPanelPreference(state: DesignEditorState) {
     panelPositions,
     dockMode,
     dockActive,
+    libraryDockScope,
   }
 }

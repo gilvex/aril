@@ -32,6 +32,9 @@ export function useDesignDockMenu(
         ),
         run: () =>
           patch({
+            ...(model.panelWorkspaceDock
+              ? { libraryDockScope: 'graph' as const }
+              : {}),
             ...(side === 'left'
               ? { layersDocked: edge }
               : { inspectorDocked: edge }),
@@ -39,6 +42,24 @@ export function useDesignDockMenu(
             panelMaximized: null,
           }),
       })),
+      ...(model.panelWorkspaceDock
+        ? (['left', 'right'] as const).map((edge) => ({
+            id: `workspace-${edge}`,
+            label: t(
+              edge === 'left' ? 'Dock beside sidebar' : 'Dock to screen right',
+            ),
+            separator: edge === 'left',
+            run: () =>
+              patch({
+                libraryDockScope: 'workspace',
+                ...(side === 'left'
+                  ? { layersDocked: edge }
+                  : { inspectorDocked: edge }),
+                dockActive: side,
+                panelMaximized: null,
+              }),
+          }))
+        : []),
       {
         id: 'float',
         label: t('Undock panel'),
@@ -82,6 +103,7 @@ export function useDesignDockMenu(
       inspectorDocked,
       dockMode,
       model.panelMaximized,
+      model.panelWorkspaceDock,
     ],
   )
 }

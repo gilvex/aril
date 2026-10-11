@@ -6,6 +6,7 @@ import type { DesignDockRect } from '../types/designDockRect.ts'
 export function designDockLayout(state: DesignEditorState): DesignDockLayout {
   const width = Math.max(0, state.panelSpace),
     height = Math.max(0, state.panelVerticalSpace)
+  const bounds = state.panelDockBounds || { left: 0, top: 0, width, height }
   const edges = {
     left: state.layers && !state.compact ? state.layersDocked : null,
     right: state.inspector && !state.compact ? state.inspectorDocked : null,
@@ -31,23 +32,29 @@ export function designDockLayout(state: DesignEditorState): DesignDockLayout {
         ? state.layersDockHeight
         : state.inspectorDockHeight
     const limit = vertical
-      ? Math.min(480, Math.max(0, width - 320) / Math.max(1, verticalEdges))
-      : Math.min(480, Math.max(0, height - 240) / Math.max(1, horizontalEdges))
+      ? Math.min(
+          480,
+          Math.max(0, bounds.width - 320) / Math.max(1, verticalEdges),
+        )
+      : Math.min(
+          480,
+          Math.max(0, bounds.height - 240) / Math.max(1, horizontalEdges),
+        )
     insets[edge] = Math.max(insets[edge], clamp(size, limit))
   }
   const edgeRect = (edge: DesignDockEdge): DesignDockRect => {
     if (edge === 'top' || edge === 'bottom')
       return {
-        left: 0,
-        top: edge === 'top' ? 0 : height - insets.bottom,
-        width,
+        left: bounds.left,
+        top: bounds.top + (edge === 'top' ? 0 : bounds.height - insets.bottom),
+        width: bounds.width,
         height: insets[edge],
       }
     return {
-      left: edge === 'left' ? 0 : width - insets.right,
-      top: insets.top,
+      left: bounds.left + (edge === 'left' ? 0 : bounds.width - insets.right),
+      top: bounds.top + insets.top,
       width: insets[edge],
-      height: height - insets.top - insets.bottom,
+      height: bounds.height - insets.top - insets.bottom,
     }
   }
   const groupEdge = edges.left && edges.left === edges.right ? edges.left : null

@@ -111,3 +111,4 @@ export { LibraryDetailsPanel } from './LibraryDetailsPanel.tsx'
 export { LibraryUsageGroup } from './LibraryUsageGroup.tsx'
 
 export { LibraryExplorer } from './LibraryExplorer.tsx'
+export { LibraryPanelSurface } from './LibraryPanelSurface.tsx'

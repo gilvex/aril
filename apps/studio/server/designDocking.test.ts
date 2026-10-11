@@ -160,3 +160,53 @@ test('compact layout keeps desktop docking preferences but gives drawers the ful
   assert.equal(state.layersDocked, 'left')
   assert.equal(designDockLayout(state).group, null)
 })
+
+test('library panels dock inside the explorer or across the workspace without restricting floating positions', () => {
+  const state = {
+    ...createDesignEditorState(),
+    inspector: true,
+    panelSpace: 1200,
+    panelVerticalSpace: 900,
+    panelDockBounds: { left: 20, top: 180, width: 1160, height: 700 },
+  }
+  for (const edge of ['left', 'right', 'top', 'bottom'] as const) {
+    const rect = designDockLayout({ ...state, inspectorDocked: edge }).panels
+      .right
+    assert.ok(rect.left >= 20 && rect.top >= 180)
+    assert.ok(rect.left + rect.width <= 1180)
+    assert.ok(rect.top + rect.height <= 880)
+  }
+  const floating = designDockLayout({
+    ...state,
+    panelPositions: { left: null, right: { x: 10, y: 10 } },
+  }).panels.right
+  assert.equal(floating.left, 10)
+  assert.equal(floating.top, 10)
+  for (const edge of ['left', 'right'] as const) {
+    const rect = designDockLayout({
+      ...state,
+      panelDockBounds: undefined,
+      inspectorDocked: edge,
+    }).panels.right
+    assert.equal(rect.top, 0)
+    assert.equal(rect.height, 900)
+    assert.equal(
+      edge === 'left' ? rect.left : rect.left + rect.width,
+      edge === 'left' ? 0 : 1200,
+    )
+  }
+  const preference = designPanelPreference({
+    ...state,
+    libraryDockScope: 'workspace',
+  })
+  assert.equal(
+    readDesignPanelLayout(JSON.stringify(preference)).libraryDockScope,
+    'workspace',
+  )
+  assert.equal(
+    readDesignPanelLayout('{"libraryDockScope":"invalid"}').libraryDockScope,
+    'graph',
+  )
+  assert.equal('panelDockBounds' in preference, false)
+  assert.equal('libraryPanelBounds' in preference, false)
+})

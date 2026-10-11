@@ -21,7 +21,7 @@ export function useDesignPanel(
     edge
       ? Math.min(
           480,
-          (model.panelSpace - 320) /
+          ((model.panelDockBounds?.width ?? model.panelSpace) - 320) /
             (layout.insets.left && layout.insets.right ? 2 : 1),
         )
       : Math.min(800, model.panelSpace - 16),
@@ -31,7 +31,7 @@ export function useDesignPanel(
     edge
       ? Math.min(
           480,
-          (model.panelVerticalSpace - 240) /
+          ((model.panelDockBounds?.height ?? model.panelVerticalSpace) - 240) /
             (layout.insets.top && layout.insets.bottom ? 2 : 1),
         )
       : model.panelVerticalSpace - 16,

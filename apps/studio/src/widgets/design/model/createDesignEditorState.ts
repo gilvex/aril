@@ -21,6 +21,8 @@ export function createDesignEditorState(): DesignEditorState {
     libraryAsset: null,
     librarySelection: [],
     libraryDetailsOpen: false,
+    libraryDockScope: 'graph',
+    libraryPanelBounds: null,
     variableQuery: '',
     variableType: 'all',
     variableUsage: 'all',

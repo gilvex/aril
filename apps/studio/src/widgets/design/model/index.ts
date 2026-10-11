@@ -31,3 +31,4 @@ export { useDesignVariables } from './useDesignVariables.ts'
 export { useLibraryExplorer } from './useLibraryExplorer.ts'
 
 export { useLibraryMapControls } from './useLibraryMapControls.ts'
+export { useLibraryPanelBounds } from './useLibraryPanelBounds.ts'

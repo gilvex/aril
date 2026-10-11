@@ -1,6 +1,13 @@
-/* Panels overlay the explorer so opening/docking never shifts the graph. */
-.library-page-explorer { position: relative; isolation: isolate; }
-.library-page-explorer .design-panel > .library-page-details {
+/* The workspace overlay never resizes or moves the graph underneath it. */
+.library-panel-surface {
+  position: fixed;
+  z-index: 35;
+  pointer-events: none;
+}
+.library-panel-surface > .design-panel {
+  pointer-events: auto;
+}
+.library-panel-surface .design-panel > .library-page-details {
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -13,7 +20,9 @@
   gap: 8px;
   border-bottom: 1px solid var(--line);
 }
-.library-details-heading > strong { flex: 1; }
+.library-details-heading > strong {
+  flex: 1;
+}
 .library-details-body {
   display: flex;
   flex-direction: column;
@@ -23,16 +32,22 @@
   overscroll-behavior: contain;
   padding: 16px;
 }
-.library-details-drawer .library-details-body { overflow: visible; padding: 0; }
-.library-page-explorer .design-panel[data-horizontal] .library-details-body {
+.library-details-drawer .library-details-body {
+  overflow: visible;
+  padding: 0;
+}
+.library-panel-surface .design-panel[data-horizontal] .library-details-body {
   flex-direction: row;
   align-items: flex-start;
 }
-.library-page-explorer .design-panel[data-horizontal] .library-details-body > * {
+.library-panel-surface
+  .design-panel[data-horizontal]
+  .library-details-body
+  > * {
   flex: 1 0 260px;
   min-width: 0;
 }
-.library-page-explorer .design-panel-right > .design-panel-corner-resize {
+.library-panel-surface .design-panel-right > .design-panel-corner-resize {
   left: 0;
   bottom: 0;
 }

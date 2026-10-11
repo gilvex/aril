@@ -131,4 +131,6 @@ Library graph groups now expand in place through their plus/minus control (or by
 
 ### Library asset details panel
 
-Desktop Asset details reuses the Design panel controls: drag the header to float or dock on any explorer edge, resize width/height, maximize, or reset from Panel layout. Its layout is saved separately from Design panels. Opening, closing, moving and docking overlay the explorer without changing the usage graph camera. Mobile retains the Asset details drawer.
+Desktop Asset details reuses the Design panel controls: drag the header to float or dock, resize width/height, maximize, or reset from Panel layout. Its layout is saved separately from Design panels. Opening, closing, moving and docking overlay the workspace without changing the usage graph camera.
+
+Asset details can float across the entire Library workspace, including above its heading, filters, and catalog. Dragging to a workspace edge docks it there; the layout menu also offers explicit docking beside the app sidebar or at the screen’s right edge. The original four explorer-edge docking options remain available. The saved layout includes the docking scope, while measured bounds are transient. Sidebar resizing updates the panel bounds without changing the usage graph viewport. Compact screens continue to use a drawer.
