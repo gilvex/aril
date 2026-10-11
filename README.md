@@ -13,6 +13,24 @@ The pnpm monorepo contains:
 
 See [Monorepo layout and commands](docs/monorepo.md) for package boundaries and deployment details.
 
+## See it in action
+
+[Open the studio](https://www.aril.studio) · [Try the account-free demo](https://www.aril.studio/?demo=1) · [Changelog](https://www.aril.studio/changelog)
+
+Plan the architecture on **Canvas**, build editable interfaces in **Design**, and trace components and variables through **Library**.
+
+![Aril demo walkthrough: inspect a board, open Design, and explore Library assets](apps/studio/public/changelog/studio-tour.gif)
+
+_An animated sequence captured from the local demo. Teammates and service data are simulated; Aril does not execute deployments. Static screenshots below provide an alternative to the animation._
+
+| Architecture and collaboration                                              | Editable interface design                                               |
+| --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| ![Canvas with connected services](apps/studio/public/changelog/canvas.webp) | ![Desktop and mobile designs](apps/studio/public/changelog/design.webp) |
+
+![Library asset details with a component preview, properties and bound variables](apps/studio/public/changelog/asset-details.webp)
+
+Read [the illustrated release notes](https://www.aril.studio/changelog) for recent changes. Contributors: follow the [changelog and media guide](docs/changelog.md) when shipping updates.
+
 ## Run
 
 Requires Node.js 24+ and pnpm 11.
@@ -110,7 +128,6 @@ New boards start with Blueprint, Wireframes, or Design. Use the + beside their s
 Press `/` on a canvas to type a temporary cursor message (or use the message icon on touch devices). Enter sends it, Escape cancels it, and it disappears after six seconds. Messages travel in presence and are not saved in history. Loading screens use indeterminate progress bars; Notes uses a left-aligned reading column.
 
 Design layers support nested groups and frames. Select sibling layers and use the layer context menu (or ellipsis) to **Group selection**, **Frame selection**, or **Use as mask**. Ctrl/Cmd+G groups; Ctrl/Cmd+Shift+G ungroups. Group resizing scales descendants, and ungrouping preserves canvas positions. Masks use the lowest selected rectangle or ellipse as a geometric clip; **Release mask** keeps all layers. Frames have a **Clip content** checkbox. The parent selector can move layers between containers while preserving their absolute position. Undo, collaboration, export and MCP share this hierarchy.
-
 
 ### Scope
 

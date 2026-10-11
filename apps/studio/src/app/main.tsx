@@ -1,3 +1,4 @@
+import { ChangelogPage } from '@/pages/changelog/index.ts'
 import { App } from '@/app/ui/App.tsx'
 import { initializeLanguage } from '@/shared/i18n/index.ts'
 import { initializeTheme } from '@/shared/utils/initializeTheme.ts'
@@ -27,6 +28,10 @@ if (isDemoMode()) {
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    {window.location.pathname.replace(/\/$/, '') === '/changelog' ? (
+      <ChangelogPage />
+    ) : (
+      <App />
+    )}
   </React.StrictMode>,
 )
