@@ -1,4 +1,10 @@
 {
+  "Mouse selection leaves no lingering focus outline; keyboard navigation keeps a visible focus indicator.": "Mouse selection leaves no lingering focus outline; keyboard navigation keeps a visible focus indicator.",
+  "Choose language": "Choose language",
+  "A simpler language menu": "A simpler language menu",
+  "Switch between English and Russian from a compact globe button.": "Switch between English and Russian from a compact globe button.",
+  "Native language names and a checkmark make the current language clear. Keyboard navigation, saved preferences, and a 44px button work across the studio.": "Native language names and a checkmark make the current language clear. Keyboard navigation, saved preferences, and a 44px button work across the studio.",
+  "Aril home page with the globe language menu open, showing English and Русский.": "Aril home page with the globe language menu open, showing English and Русский.",
   "Engineering notes and repeatable checks": "Engineering notes and repeatable checks",
   "Explore the studio’s engineering decisions, current access model, and reproducible verification.": "Explore the studio’s engineering decisions, current access model, and reproducible verification.",
   "A shorter README links to the studio guide, a collaboration case study, and backup and rollback procedures.": "A shorter README links to the studio guide, a collaboration case study, and backup and rollback procedures.",

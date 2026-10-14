@@ -3,6 +3,18 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-14-language',
+    date: '2026-10-14',
+    title: 'A simpler language menu',
+    summary: 'Switch between English and Russian from a compact globe button.',
+    changes: [
+      'Native language names and a checkmark make the current language clear. Keyboard navigation, saved preferences, and a 44px button work across the studio.',
+      'Mouse selection leaves no lingering focus outline; keyboard navigation keeps a visible focus indicator.',
+    ],
+    image: '/changelog/language-menu.webp',
+    imageAlt: 'Aril home page with the globe language menu open, showing English and Русский.',
+  },
+  {
     id: '2026-10-14-home',
     date: '2026-10-14',
     title: 'A clearer introduction to Aril',

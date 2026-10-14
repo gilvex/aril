@@ -1,4 +1,10 @@
 {
+  "Mouse selection leaves no lingering focus outline; keyboard navigation keeps a visible focus indicator.": "После выбора мышью рамка фокуса не остаётся; при управлении с клавиатуры индикатор фокуса сохраняется.",
+  "Choose language": "Выбрать язык",
+  "A simpler language menu": "Компактное меню выбора языка",
+  "Switch between English and Russian from a compact globe button.": "Переключайте английский и русский язык с помощью компактной кнопки с глобусом.",
+  "Native language names and a checkmark make the current language clear. Keyboard navigation, saved preferences, and a 44px button work across the studio.": "Названия языков и галочка показывают текущий выбор. Во всей студии доступны управление с клавиатуры, сохранение выбора и кнопка размером 44 пикселя.",
+  "Aril home page with the globe language menu open, showing English and Русский.": "Главная страница Aril с открытым меню выбора языка: English и Русский.",
   "Engineering notes and repeatable checks": "Инженерные заметки и воспроизводимые проверки",
   "Explore the studio’s engineering decisions, current access model, and reproducible verification.": "Узнайте об инженерных решениях студии, актуальной модели доступа и воспроизводимых проверках.",
   "A shorter README links to the studio guide, a collaboration case study, and backup and rollback procedures.": "В кратком README появились ссылки на руководство по студии, разбор совместного редактирования и процедуры резервного копирования и отката.",
