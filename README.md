@@ -1,148 +1,84 @@
 # Aril Planning Studio
 
-A persistent, collaborative planning space for Aril: a future self-hostable, open-source deployment platform with a managed SaaS offering. Previously named Pomegranate.
+A collaborative workspace for architecture diagrams, interface design, requirements, and notes. Built with React, TypeScript, and Express, with SQLite for single-process hosting and Postgres for shared deployments.
 
-The product uses the Aril name and seed logo. Existing package names, environment variables, storage/session keys, database schema and MCP identifiers retain `pomegranate` for compatibility. Existing workspace names and user-authored documents are preserved. The Vercel project is `arilapp`, at https://arilapp.vercel.app. The custom domain https://aril.studio redirects to https://www.aril.studio; https://aril.gilgil.co is also supported. Sign in with your linked Google account when moving to a new domain.
+[Try the account-free demo](https://www.aril.studio/?demo=1) · [Open Aril](https://www.aril.studio) · [Engineering case study](docs/engineering-case-study.md) · [Changelog](https://www.aril.studio/changelog)
 
-The pnpm monorepo contains:
+[![Verify](https://github.com/gilvex/aril/actions/workflows/ci.yml/badge.svg)](https://github.com/gilvex/aril/actions/workflows/ci.yml)
 
-- `apps/studio` — React frontend and HTTP API.
-- `packages/domain` — shared schemas and collaboration operations.
-- `packages/mcp` — MCP server and connection setup.
-- `packages/studio-skill` — companion skill and installer.
+![Aril demo: architecture, interface design, and reusable assets](apps/studio/public/changelog/studio-tour.gif)
 
-See [Monorepo layout and commands](docs/monorepo.md) for package boundaries and deployment details.
+The recording uses editable demo fixtures and simulated teammates. Aril is a planning studio; it does not execute deployments. [Watch with playback controls](https://www.aril.studio/changelog#2026-10-11-changelog).
 
-## See it in action
-
-[Open the studio](https://www.aril.studio) · [Try the account-free demo](https://www.aril.studio/?demo=1) · [Changelog](https://www.aril.studio/changelog)
-
-Plan the architecture on **Canvas**, build editable interfaces in **Design**, and trace components and variables through **Library**.
-
-![Aril demo walkthrough: inspect a board, open Design, and explore Library assets](apps/studio/public/changelog/studio-tour.gif)
-
-[Watch the full-quality recording](https://www.aril.studio/changelog#2026-10-11-changelog) · [MP4](apps/studio/public/changelog/studio-tour.mp4)
-
-_A continuous Playwright screen recording of the local demo, converted to a GIF. Teammates and service data are simulated; Aril does not execute deployments. Static screenshots below provide an alternative to the animation._
-
-| Architecture and collaboration                                              | Editable interface design                                               |
+| Architecture and collaboration                                              | Interface design                                                        |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | ![Canvas with connected services](apps/studio/public/changelog/canvas.webp) | ![Desktop and mobile designs](apps/studio/public/changelog/design.webp) |
 
-![Library asset details with a component preview, properties and bound variables](apps/studio/public/changelog/asset-details.webp)
+## What it does
 
-Read [the illustrated release notes](https://www.aril.studio/changelog) for recent changes. Contributors: follow the [changelog and media guide](docs/changelog.md) when shipping updates.
+- **Canvas and Design:** connected architecture boards, editable interface layers, nested frames, and dockable inspectors.
+- **Library:** reusable components and variables with dependency/usage inspection.
+- **Scope and Notes:** requirements, decisions, Markdown documents, and saved comments. Notes support concurrent text editing with Yjs.
+- **Collaboration:** live cursors, selections, following, and previews; persistent edits use revision checks and recoverable conflict handling.
+- **Access and recovery:** owner/editor/viewer permissions, expiring guest links, scoped agent credentials, personal undo, JSON export, and bounded saved revision history.
 
-## Run
+See the [studio guide](docs/studio-guide.md) for controls and recovery behavior.
 
-Requires Node.js 24+ and pnpm 11.
+## Engineering decisions
+
+| Problem                                                 | Approach                                                                                      | Evidence                                                                                                                 |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Concurrent edits must not silently overwrite work       | Revision-checked operations, field preconditions, atomic saves, and preserved recovery drafts | [Collaboration tests](apps/studio/server/collaboration.test.ts), [freshness tests](apps/studio/server/freshness.test.ts) |
+| Multiple API instances share one document               | Postgres row locking, atomic history/receipts, and revision conflict handling                 | [Two-instance integration test](apps/studio/server/postgres.test.ts)                                                     |
+| Cursor traffic should not become durable writes         | Transient presence, separated from authoritative document saves                               | [Architecture](docs/architecture.md), [hosting](docs/accounts-and-deployment.md)                                         |
+| Browser and automation edits need the same access rules | Workspace-scoped agent credentials and shared validation/save paths                           | [Agent integration](docs/agent-integration.md), [access tests](apps/studio/server/workspaceAccess.test.ts)               |
+
+[Case study: preserving edits across collaborators and storage backends](docs/engineering-case-study.md) explains the trade-offs, verification, and remaining limits. [Operations](docs/operations.md) covers health checks, backups, restore drills, and rollback.
+
+## Run locally
+
+Requires Node.js 24+ and the pnpm version pinned in `package.json`.
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open http://127.0.0.1:5173. The local API runs on port 4317. For a built application:
+Open http://127.0.0.1:5173; the API runs on port 4317. A fresh checkout without cloud configuration uses SQLite. See [hosting and accounts](docs/accounts-and-deployment.md) for Google sign-in and Postgres configuration.
 
 ```sh
 pnpm build
 pnpm start
 ```
 
-Then open http://127.0.0.1:4317. Run commands from this repository's root.
+The built application is served at http://127.0.0.1:4317. Run commands from the repository root.
 
-## What works
-
-- **Try demo** on the sign-in page opens `/?demo=1`: an editable, account-free sample project with four boards, varied requirements, desktop/mobile server dashboard designs and Markdown documents. Design opens with editable frames, text, shapes, cards and buttons. Existing demo tabs gain the example only if saved design pages are absent; custom or deliberately cleared pages are preserved. Demo edits/history stay in this tab's session storage; Reset demo restores the examples. Named simulated teammates demonstrate cursors, selections and following. Invitations, account linking and agent credentials require a real workspace.
-
-- Four editable starter diagrams: deployment blueprint, platform architecture, first deployment, and product structure.
-- Boards offer Blueprint and Design sections. Wireframes is retired from navigation; saved legacy content remains in documents, MCP reads, and exports. Old Wireframes URLs open Design.
-- Drag nodes, connect handles, label connections, create boards, duplicate/delete nodes, and attach requirements.
-- Fifteen requirements derived from the product brief, with compact list/status/priority views, on-demand search and filters, removable filter chips, and links back to boards. Cards support drag-and-drop or a keyboard/touch Move to control; bulk edits stay in a separate bottom bar and identify selections hidden by filters. Details include acceptance criteria and live collaborator activity.
-- A design canvas with saved pages, collapsible frame/layer trees, desktop/mobile frames, editable text, shapes, buttons and HTTPS images. Move, resize, duplicate, hide, lock and reorder layers; double-click text to edit it directly. Optional desktop/mobile dashboard templates become ordinary editable layers. Defaults and direction notes are preserved; autosave, undo/history, live cursors, selections, drag previews and following use the existing workspace services.
-- A searchable notebook with Markdown editing, split/reading views, heading outline, and links to boards and requirements. Live pointers and text selections show collaborators in each note; saved comments can quote selected text and be resolved or reopened. Existing project notes remain the first document. Autosave, undo/redo, JSON import/export, and restoration of the last 30 saved revisions cover every document.
-- Responsive navigation and canvas controls, labeled inputs, keyboard focus handling, and reduced-motion support.
-- Open-workspace tabs retain opened editors in memory, including selections, camera and undo history. Returning to a tab reconnects collaboration and refreshes server data in the background. Closing a tab releases its editor; logout or account changes clear the cache. Paths such as `/w/default/canvas/layers` restore the same location on refresh (older query links still work). A collapsible sidebar orders Canvas, Design, Requirements, then Notes. Design supports canvas/page/layer context menus (also available through ellipsis buttons), a resizable Pages/Layers split, and a compact properties inspector with alignment controls.
-- Installable PWA with standalone mobile windows, home-screen icons and an offline reconnect screen. Use **Install app** in the workspace menu for browser-specific instructions. Opening and syncing workspaces requires a connection; shared documents and authenticated requests are never cached by the service worker.
-- Invite-only multiplayer: editable names and pictures, live cursors and selections, shared edits, and a durable team activity feed.
-- Create and switch between private workspaces; accept invitations into an existing profile. Documents, history and live presence are isolated per workspace.
-- Google-first sign-in creates a linked profile, then permanent invitation redemption grants workspace access. Temporary guest links provide expiring access without Google. Returning users keep access across devices; existing guest profiles can link Google without losing memberships.
-
-Select a node to edit it. Drag from its right handle to another node's left handle to connect them. Use the canvas controls to zoom or fit the diagram. Ctrl/Cmd+Z undoes a change; Ctrl/Cmd+Shift+Z redoes it. Ctrl/Cmd+S saves immediately when focus is outside a text field.
-
-On the Design canvas, Layers and Properties can float or dock to any canvas edge. Drag a panel by its header/grip toward an edge to preview the destination, then drop to dock; drag away to float again. The panel layout menu also provides all four docking commands, Undock and Reset panel layout. Panels on the same edge can be split or grouped as tabs. Left/right docks resize horizontally; top/bottom docks resize vertically and arrange property sections horizontally. Floating panels retain width/height and corner resizing. Resize handles support arrow keys and double-click reset; a focused grip supports arrow keys to move and Home to reset position. Layout, dimensions and floating positions are saved in this browser. The layout reserves canvas space and clamps panels after viewport changes. Selecting layers does not dismiss the Layers panel. Mobile keeps one drawer at a time and retains the desktop layout for returning to a larger screen.
-
-Hold **Ctrl** (or **Cmd** on macOS) and click nodes to add/remove them from the selection. Drag any selected node to move the whole group. **Shift + drag** selects an area. The group inspector can change the selected nodes' type or decision together, or delete them and their attached connections. Each group operation can be undone.
-
-Use **Fullscreen** beside Add node to expand the canvas. **Exit fullscreen** or **Esc** returns to the workspace. Fullscreen stays active when switching boards, switching between Blueprint and Design, or opening board dialogs. The editor keeps the same graph, selection, and zoom when entering or leaving fullscreen; browsers that disallow native fullscreen use an expanded viewport instead.
-
-**Library** is a dedicated workspace page at `/w/:workspaceId/library`, accessible from the sidebar, mobile workspace menu, and Design's Layers/tools panel. Its spatial map groups components, variables and pages into libraries and families, with search and bounded pagination. Browse supports bulk organization; asset details show direct usages, dependencies and indirect impact. Search/filter assets and open a usage to select its layer in Design. The source picker separates workspace Design from each board's library (`?libraryBoard=:boardId`). **Variables** has a full-width editing view with search, type and used/unused filters. Components support custom emoji/symbol icons; edit their definitions and variants in Design. On phones, asset details open in a drawer.
-
-Use **Appearance** in the desktop workspace actions menu (…), mobile **More** sheet, or workspace chooser to select **Light**, **Dark** or **System**. New browsers start with a neutral charcoal theme; saved Light, Dark and System choices remain respected. The top bar, sidebar and canvas use distinct tones. Your choice stays in this browser, including across refreshes and tabs; System follows your device appearance. Canvas, wireframe and design tool docks use icons with named hover tooltips and accessible labels.
-
-## Storage and recovery
-
-The authoritative workspace lives in **`data/studio.sqlite`**, created on first start. It survives browser and server restarts. Each browser tab retains a recovery draft for edits awaiting a successful save. Independent changes merge by field; competing edits to the same field stop with an export/reload recovery prompt instead of silently overwriting work. Cameras and undo history are personal to each tab.
-
-Use **Export** for a portable JSON backup: download it, copy it, or select the visible JSON directly. **Import** validates the entire graph before asking to replace the workspace. Revision history and Undo can recover replacements. Undo history lasts for the current page session; saved revisions survive restarts.
-
-For a complete database backup, stop the server before copying the `data` directory (SQLite uses WAL files while running). Do not commit workspace data. `POMEGRANATE_DATA_DIR` overrides the storage directory; `PORT` overrides the production/API port. Development expects API port 4317 unless the Vite proxy is also changed.
-
-## Scope
-
-This is the first planning deliverable, with separate workspaces for invited collaborators. It does not execute deployments or manage actual containers. Design-board service states are labeled sample data. All members can edit and invite others within their workspaces; there are no granular roles, account passwords, or member-revocation controls yet.
-
-See [workspaces, Google accounts and hosting](docs/accounts-and-deployment.md). Google requires host configuration. Vercel uses the Postgres backend and shared presence; self-hosted installations can continue using SQLite. Set `POMEGRANATE_STORAGE=postgres` locally to share the cloud database.
-
-Click your profile at the top right to change your name or picture. Open **People → Create invite link** to invite someone; each link works once and expires after 24 hours. Profiles persist in this browser for 30 days. Both servers bind to loopback by default, so another device needs a hosted studio address. See [collaboration and hosting](docs/collaboration.md) for setup and recovery.
-
-React + TypeScript + Vite support the interactive editor; React Flow provides the canvas; Express and Node's native SQLite provide local persistence. This choice is for the studio. The deployment product's backend, orchestration engine, and final framework remain open decisions.
-
-## Checks
+## Verify
 
 ```sh
 pnpm lint
 pnpm test
 pnpm build
+pnpm benchmark:collaboration
+pnpm verify:recovery
 ```
 
-Integration tests exercise real HTTP requests, two live event streams, and temporary SQLite databases: invite/session checks, independent edits, conflicts, profiles, cursors, activity, reconnects, persistence, invalid graphs, origin restrictions, and history. See [verification notes](docs/verification.md).
+CI runs lint, fixture-based tests, and all package builds on Node 24. A separate job runs the two-instance Postgres integration test against a disposable PostgreSQL service. The local default test run skips that test unless `POSTGRES_TEST_URL` is provided. See [verification](docs/verification.md) for commands and the distinction between automated checks and historical manual observations.
 
-## Project documents
+## Repository map
 
-- [Product brief and next milestones](docs/product-brief.md)
-- [Studio architecture](docs/architecture.md)
-- [Design direction](docs/design.md)
-- [Installed skills and provenance](docs/skills.md)
+- `apps/studio` — React editor and HTTP API.
+- `packages/domain` — schemas and collaboration operations.
+- `packages/mcp` — stdio MCP bridge.
+- `packages/studio-skill` — companion integration skill.
+- `docs` — architecture, operation, and contributor documentation.
 
-The project-local Juxtopposed-inspired skill is unofficial; it is not a skill authored or endorsed by Juxtopposed. The open-source license for Pomegranate is still to be selected.
+[Contributing](CONTRIBUTING.md) · [Architecture](docs/architecture.md) · [Code conventions](docs/code-rules.md) · [Monorepo](docs/monorepo.md)
 
-## MCP and companion skill
+## Scope and limitations
 
-Other chats can read and edit boards, requirements, notes, and saved design pages/layers through the local MCP server and companion studio skill. `get_design_page` reads a complete design page; `apply_changes` makes targeted, revision-checked edits. Open **Settings → Agent access** to create a scoped credential, then follow [Agent integration](docs/agent-integration.md). Agent edits use the same freshness checks, history, and live updates as browser edits.
+Aril is the planning deliverable for a future deployment platform. Container execution, infrastructure reconciliation, enterprise SSO, and resource-level deployment permissions remain future work. The installable app provides an offline reconnect screen, not offline workspace editing. History is bounded and does not replace database backups. Performance experiments use local fixtures, not production traffic or an availability guarantee.
 
-Code structure and state conventions: [Code rules](docs/code-rules.md) · [Architecture](docs/architecture.md). `pnpm lint` enforces the FSD boundaries and file conventions through `pnpm check:architecture`.
+Previously named Pomegranate: package names, environment variables, storage keys, and MCP identifiers retain `pomegranate` for compatibility. The current public address is https://www.aril.studio. Existing user documents are preserved.
 
-### Board sections and quick collaboration
-
-New boards start with Blueprint, Wireframes, or Design. Use the + beside their section tabs to add another type. Board designs have independent pages and layers; the existing workspace Design area is preserved. Navbar + opens a workspace picker without leaving the editor. Team Activity opens as a modal; Profile and People are compact shortcuts to Settings.
-
-Press `/` on a canvas to type a temporary cursor message (or use the message icon on touch devices). Enter sends it, Escape cancels it, and it disappears after six seconds. Messages travel in presence and are not saved in history. Loading screens use indeterminate progress bars; Notes uses a left-aligned reading column.
-
-Design layers support nested groups and frames. Select sibling layers and use the layer context menu (or ellipsis) to **Group selection**, **Frame selection**, or **Use as mask**. Ctrl/Cmd+G groups; Ctrl/Cmd+Shift+G ungroups. Group resizing scales descendants, and ungrouping preserves canvas positions. Masks use the lowest selected rectangle or ellipse as a geometric clip; **Release mask** keeps all layers. Frames have a **Clip content** checkbox. The parent selector can move layers between containers while preserving their absolute position. Undo, collaboration, export and MCP share this hierarchy.
-
-### Scope
-
-Requirements now appear as **Scope**: outcomes grouped by board, a workspace-wide group, and unlinked items. The single toolbar filters by board, with search and secondary delivery-status/priority/area filters. Quick filters show all items, those needing a decision, or unlinked work. A readable detail panel includes the problem, acceptance criteria, Proposed/Agreed/Deferred decisions, resolvable questions, and connections to blueprint sections, wireframe sections and design pages. Compact screens use the shared Vagabond drawer. The board overview also includes requirements connected at board level and workspace-wide outcomes.
-
-Existing requirements, node associations and delivery statuses are preserved. Agreement is separate from implementation status; missing decisions display as Proposed. Connections to deleted work can be removed. New fields use the existing revision-checked save/history/undo path and are available through MCP and JSON export. No database migration or starter-data reset is required.
-
-Agent design tools include `find_design_assets`, `get_design_usage`, and `validate_design_changes` for scoped discovery, impact inspection, and revision-checked dry runs before saving. See [the companion skill](packages/studio-skill/SKILL.md).
-
-### Library map and icons
-
-The usage map uses compact symbols, consistent spacing and curved links anchored outside node bounds. Focus arranges dependencies to the left and usages to the right. Selecting an asset dims unrelated nodes to 10% without rearranging the map; entering a scope fits the view with a short reduced-motion-aware transition. Search, cluster drill-down and bounded pagination remain available for large libraries.
-
-Component icons default to a miniature outline derived from the first variant’s visible geometry. Set the component `icon` to an emoji or short symbol to override it, or clear it to restore automatic shape rendering. The Library details panel offers both choices. State machines and the Behaviors group no longer appear in Library, Design modes, asset search or active usage counts. Historical machine records remain stored for export/round-trip compatibility and no longer constrain edits to active assets.
-
-Library graph groups now expand in place through their plus/minus control (or by clicking the group). External groups reveal only assets connected to the visible graph, not their entire library. Each expansion starts with 12 assets; Show more reveals another 12. Existing nodes and the camera stay in place while new nodes use nearby free space. Collapse restores aggregate connections. Library/family browsing remains available in the catalog. These expansion preferences are local editor state and do not modify shared documents.
+An open-source license has not yet been selected. Installed design skills and their attribution are documented in [skills and provenance](docs/skills.md).

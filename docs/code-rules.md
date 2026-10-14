@@ -1,5 +1,15 @@
 # Code rules
 
+## Why these conventions
+
+The FSD dependency direction and public slice APIs make ownership/import boundaries mechanically checkable. Scoped Redux models and Saga lifecycles keep pending writes, cancellation, and editor cleanup explicit. The save/recovery invariants are correctness requirements, not formatting preferences.
+
+One-function/type-per-file and the 125-line component limit are this project's chosen navigation/review conventions, not universal measures of code quality. They trade smaller review units for more files and indirection. The limits do not prove maintainability or performance. Keep closely scoped closures with their owner, avoid empty segments, and use the documented rendering-handle/private-secret exceptions rather than forcing non-serializable values into Redux.
+
+When a convention creates unnecessary indirection, propose a focused change with a concrete example, effects on imports/lifecycle/review, and the corresponding architecture-check update. Do not bypass checks or silently introduce new exceptions. Claims that the conventions improve onboarding or delivery speed require measurement; none is established here.
+
+## Enforced rules
+
 These project conventions were requested on 2026-10-06. They take precedence over conflicting recommendations in the official Feature-Sliced Design skill.
 
 - Use camelCase file and folder names. React component files and components use PascalCase. Runtime entrypoints, CLI commands, package names, URLs, and tool-required configuration filenames retain their integration names.

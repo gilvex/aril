@@ -30,26 +30,26 @@ Both stores hold isolated workspaces and up to 30 prior revisions each, plus pro
 
 The current schema includes boards, node positions and metadata, edges, canvas viewports, requirements, notes, and design preferences. Each board can additionally contain a `wireframe` graph with sized blocks, optional screen parents, and labeled interaction edges. Its schema is optional for backward-compatible old documents and snapshots. The collaboration document normalizes missing wireframes into empty node/edge maps so two first-time edits merge by block. Only top-level screen parents are allowed; dangling edges, invalid sizes, and duplicate IDs are rejected. Both canvas viewports stay local. Imports use the same schema. The format carries `schemaVersion: 1`; incompatible format changes need explicit migration.
 
-Server-sent events carry authoritative snapshots, transient presence, and the latest 50 activity entries. Authenticated fetch streaming supports a session header as well as cookies. Reconnects receive a fresh snapshot. SQLite presence is held in memory. Hosted presence uses transient Supabase WebSocket channels; saved document events use revision polling. Presence disappears on disconnect or expiry. Canvas coordinates are world coordinates; cameras remain local. Undo applies inverse local operations with preconditions, preserving unrelated collaborator edits. Text is merged per field, not per character; this is not a collaborative rich-text editor. Large documents and production deployment state need further architecture work.
+Server-sent events carry authoritative snapshots and the latest 50 activity entries, plus transient presence for SQLite. Authenticated fetch streaming supports bearer sessions as well as cookies. Reconnects receive a fresh snapshot. SQLite presence is held in memory. Hosted presence uses transient Supabase WebSocket channels; saved document events use revision polling. Presence disappears on disconnect or expiry. Canvas coordinates are world coordinates; cameras remain local. Undo applies inverse local operations with preconditions, preserving unrelated collaborator edits. Notes bodies merge concurrent character edits with Yjs and persist plain Markdown plus CRDT metadata. Ordinary fields and legacy whole-body replacements retain conflict checks. Large documents and production deployment state need further architecture work.
 
 ## Local API
 
-| Method | Route                       | Contract                                                                      |
-| ------ | --------------------------- | ----------------------------------------------------------------------------- |
-| GET    | `/api/health`               | Health response.                                                              |
-| GET    | `/api/session`              | Current profile; first local visit creates the initial profile.               |
-| POST   | `/api/join`                 | `{ token, name }`; consumes a single-use invite and creates a session.        |
-| POST   | `/api/invites`              | Creates an invite valid for 24 hours.                                         |
-| PUT    | `/api/profile`              | `{ name, avatar }`; PNG/JPEG/WebP data URL or empty avatar.                   |
-| GET    | `/api/events?clientId=UUID` | Authenticated event stream, up to 64 simultaneous connections.                |
-| POST   | `/api/presence`             | Board, view, world cursor, and selected node IDs; identity is server-derived. |
-| PATCH  | `/api/workspace`            | `{ requestId, operations: [{ path, before?, after? }] }`; 409 on conflict.    |
-| GET    | `/api/workspace`            | `{ workspace, revision, savedAt }`.                                           |
-| PUT    | `/api/workspace`            | `{ workspace, revision }`; returns updated envelope; 400 invalid, 409 stale.  |
-| GET    | `/api/history`              | Available previous revision numbers and timestamps.                           |
-| GET    | `/api/history/:revision`    | Workspace snapshot; 404 if absent.                                            |
+| Method | Route                       | Contract                                                                                                   |
+| ------ | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| GET    | `/api/health`               | Health response.                                                                                           |
+| GET    | `/api/session`              | Current profile; first local visit creates the initial profile.                                            |
+| POST   | `/api/join`                 | `{ token, name }`; consumes a single-use invite and creates a session.                                     |
+| POST   | `/api/invites`              | Creates an invite valid for 24 hours.                                                                      |
+| PUT    | `/api/profile`              | `{ name, avatar }`; PNG/JPEG/WebP data URL or empty avatar.                                                |
+| GET    | `/api/events?clientId=UUID` | Authenticated event stream, up to 64 simultaneous connections.                                             |
+| POST   | `/api/presence`             | Board, view, world cursor, and selected node IDs; identity is server-derived.                              |
+| PATCH  | `/api/workspace`            | `{ requestId, baseRevision, operations: [{ path, before?, after? }] }`; 409 on stale revision or conflict. |
+| GET    | `/api/workspace`            | `{ workspace, revision, savedAt }`.                                                                        |
+| PUT    | `/api/workspace`            | `{ workspace, revision }`; returns updated envelope; 400 invalid, 409 stale.                               |
+| GET    | `/api/history`              | Available previous revision numbers and timestamps.                                                        |
+| GET    | `/api/history/:revision`    | Workspace snapshot; 404 if absent.                                                                         |
 
-The server restricts API hostnames and browser origins to loopback plus an explicitly configured public origin, rejects oversized JSON, and disables API caching. Except health, session lookup, and joining, API routes require an invited session. All members have equal studio access. These endpoints are not the future deployment API promised by requirement R10.
+The server restricts API hostnames and browser origins to loopback plus explicitly configured origins, rejects oversized JSON, and disables API caching. Protected workspace routes require an authenticated membership. Owners manage invitations, guest links, editor/viewer roles, and non-owner removal; viewers cannot write. Temporary guests have bounded editing access. Writes also require the current editor protocol header. See [collaboration and access](collaboration.md#file-permissions-and-settings) for revocation behavior. These endpoints are not the future deployment API promised by requirement R10.
 
 ## Operational behavior
 

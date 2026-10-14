@@ -2,7 +2,7 @@
 
 The first visitor on loopback receives an initial profile only when the database has no profiles. Change its name and picture from the top-right profile button. Pictures are cropped to a 192-pixel square locally; accepted uploads are PNG, JPEG, or WebP up to 5 MB. The server stores the resized image in the configured database.
 
-Open People and choose Create invite link. Each link grants edit-and-invite access to the current workspace, works once, and expires after 24 hours. Recipients first sign in with Google, then redeem the invitation into that linked profile. Signing in alone grants no workspace access. Existing guest profiles must connect Google before redeeming another invitation. No email is sent. Every member has edit/invite permissions within that workspace; member removal and a device/session management dashboard are not implemented. Current-browser logout and account switching are available from the profile panel. The home screen lists accessible workspaces and lets members create new ones. See [Google account linking and deployment](accounts-and-deployment.md).
+Workspace owners can open People and choose Create invite link. Each permanent link grants Editor access to the current workspace, works once, and expires after 24 hours. Recipients first sign in with Google, then redeem the invitation into that linked profile. Signing in alone grants no workspace access. Existing unlinked permanent profiles must connect Google before redeeming another invitation; temporary guest links have separate expiry rules. No email is sent. Owners can assign Editor/Viewer roles and remove non-owner members in Settings. A device/session management dashboard is not implemented; current-browser logout and account switching are available from the profile panel. The home screen lists accessible workspaces. See [Google account linking and deployment](accounts-and-deployment.md).
 
 Names, pictures, cursors, selected nodes, and saved changes appear live. The activity panel shows who edited nodes, boards, connections, requirements, notes, and design direction. Pan and zoom are shared only as transient presence; they never enter document history. Open People and click a member to follow that specific browser session. Following mirrors their board/section, canvas center and zoom, while their live cursor and selection remain attributed to them. Different screen sizes retain the same canvas center. Click, pan, use the keyboard, press Escape, or choose Stop following to regain control. Opening `/` cursor chat and typing or dismissing its composer keeps follow active. Follow ends when that session leaves or starts following someone else, preventing follow loops. Requirements navigation follows the selected requirement; other pages follow the active section, without mirroring page scrolling or private form contents. Following is never persisted across refreshes. Unrelated edits merge automatically. If two people change the same field or delete an item another person is editing, the affected browser preserves its draft and offers export/reload recovery. Undo affects local edits and refuses to overwrite conflicting collaborator work.
 
@@ -47,7 +47,7 @@ Sessions last 30 days. The server stores hashed opaque tokens, with an HttpOnly 
 
 SQLite additions preserve existing workspace data. Back up the complete data directory while the server is stopped. Live presence is transient; saved documents, profiles, and activity survive restart. Pending edits use per-tab sessionStorage and survive reload, but not closing that tab. Export a pending or conflicting draft before closing it. Existing older drafts are explicitly offered for download before continuing with the saved workspace.
 
-SQLite supports one process and up to 64 live connections. Vercel uses Postgres for saved documents and private Supabase WebSocket channels for transient presence, so collaborators can connect to different function instances without writing cursor rows. See accounts-and-deployment.md for authorization, reconnects, and setup. This is a trusted-team planning studio; deployment permissions, enterprise tenants, SSO and revocation remain separate work.
+SQLite supports one process and up to 64 live connections. Vercel uses Postgres for saved documents and private Supabase WebSocket channels for transient presence, so collaborators can connect to different function instances without writing cursor rows. See accounts-and-deployment.md for authorization, reconnects, and setup. Workspace roles and member/guest revocation are implemented; resource-level deployment permissions, enterprise tenancy, and SSO remain separate work.
 
 ### Notebook collaboration
 
@@ -71,7 +71,6 @@ The Comments panel saves `noteComments` by ID through normal revision-checked op
 
 The existing temporary cursor-chat button and `/` shortcut also work in Notes (the shortcut does not intercept typing inside text inputs). Peers in the same note see these six-second messages beside the collaborator's name. They are distinct from saved Comments. On compact layouts, saved comments use the shared Vagabond drawer.
 
-
 ## Live note text
 
 The Notes editor broadcasts incremental Yjs text updates on the existing private WebSocket channel, separately from cursor presence. Peers apply them immediately; no per-keystroke database writes are added. Background workspace saves still persist plain Markdown and optional `noteStates` metadata together through revision-checked operations. The self-hosted single-process fallback uses authenticated POST/SSE messages in memory. Viewers may request and receive text state but cannot publish changes or snapshots. Hosted broadcasts carry an Ed25519 signature, a current workspace membership certificate with edit permission, and a bounded timestamp.
@@ -81,7 +80,6 @@ Updates are idempotent and order-independent. Periodic state-vector exchange rep
 `noteStates` is managed metadata, not a second editable body. Its entries contain the original seed text and base64url Yjs updates. `noteText/<noteId>` operations atomically merge this state and update the readable body. Tools that edit plain `notes` or `documents/<id>/body` remain compatible; they must still read the current revision and compare the prior body. Stored comments and quotes remain separate from temporary chat and live selection highlights.
 
 Boards, Design and Notes use the same arrow, avatar and colored cursor label. Temporary chat extends that label as `Name: message`, with no duration helper block. It expires through presence and never enters workspace history.
-
 
 ## Live shared fields and control presence
 

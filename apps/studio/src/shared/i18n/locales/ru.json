@@ -1,4 +1,9 @@
 {
+  "Engineering notes and repeatable checks": "Инженерные заметки и воспроизводимые проверки",
+  "Explore the studio’s engineering decisions, current access model, and reproducible verification.": "Узнайте об инженерных решениях студии, актуальной модели доступа и воспроизводимых проверках.",
+  "A shorter README links to the studio guide, a collaboration case study, and backup and rollback procedures.": "В кратком README появились ссылки на руководство по студии, разбор совместного редактирования и процедуры резервного копирования и отката.",
+  "Automated checks now include a disposable Postgres job, a local contention benchmark, and a SQLite restore drill.": "Автоматические проверки теперь включают отдельную временную базу Postgres, локальный тест конкурентных записей и проверку восстановления SQLite.",
+  "Access and collaboration documentation now reflects viewer roles, member removal, and live note editing.": "Документация по доступу и совместной работе обновлена: роли наблюдателей, удаление участников и совместное редактирование заметок.",
   "Hand-drawn": "Рисование",
   "Shapes": "Фигуры",
   "Dev mode": "Режим разработчика",
