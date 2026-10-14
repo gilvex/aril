@@ -1,0 +1,151 @@
+.landing-backdrop {
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.landing-backdrop > svg {
+  display: block;
+  width: max(100%, 1440px);
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* Only the ribbon mask moves: the halftone grid stays crisp and stationary. */
+.landing-wave {
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+  transform-origin: center;
+}
+.landing-backdrop[data-playing='true'] .landing-wave {
+  animation-play-state: running;
+}
+.landing-wave-left {
+  animation-name: landing-wave-left;
+  animation-duration: 18s;
+  animation-delay: -4s;
+}
+.landing-wave-right {
+  animation-name: landing-wave-right;
+  animation-duration: 22s;
+  animation-delay: -9s;
+}
+.landing-wave-left-trail {
+  animation-name: landing-wave-trail;
+  animation-duration: 15s;
+  animation-delay: -6s;
+}
+.landing-wave-right-trail {
+  animation-name: landing-wave-trail;
+  animation-duration: 20s;
+  animation-delay: -2s;
+  animation-direction: reverse;
+}
+.landing-motion-control {
+  position: absolute;
+  top: 18px;
+  right: max(24px, calc((100% - 1184px) / 2));
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--home-line);
+  border-radius: 50%;
+  color: var(--home-muted);
+  background: #18181ad9;
+  cursor: pointer;
+}
+.landing-motion-control:hover {
+  color: var(--home-text);
+  border-color: var(--home-accent);
+}
+@keyframes landing-wave-left {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate(28px, -55px) rotate(3deg);
+  }
+}
+@keyframes landing-wave-right {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(2deg);
+  }
+  50% {
+    transform: translate(-38px, -65px) rotate(-3deg);
+  }
+}
+@keyframes landing-wave-trail {
+  0%,
+  100% {
+    transform: translate(0, 18px) scale(1);
+  }
+  50% {
+    transform: translate(18px, -65px) scale(1.035, 0.96);
+  }
+}
+/* Morph the curves where CSS path interpolation is supported; drift remains the fallback. */
+@supports (d: path('M0 0C0 0 0 0 0 0')) {
+  .landing-wave-left {
+    animation-name: landing-wave-left, landing-ribbon-left;
+  }
+  .landing-wave-right {
+    animation-name: landing-wave-right, landing-ribbon-right;
+  }
+}
+@keyframes landing-ribbon-left {
+  0%,
+  100% {
+    d: path(
+      'M-290 810C650 340-320 20 50-140C400-280 620 40 230 200C-160 360 30 540-180 690'
+    );
+  }
+  50% {
+    d: path(
+      'M-290 810C500 460-120 80 110-140C480-210 500 160 290 250C-70 410-80 470-180 690'
+    );
+  }
+}
+@keyframes landing-ribbon-right {
+  0%,
+  100% {
+    d: path(
+      'M1840-110C1120 0 1660 360 1310 490C1000 610 1300 930 1710 660C2070 420 1610 230 1740 90'
+    );
+  }
+  50% {
+    d: path(
+      'M1840-110C1300 80 1450 300 1250 540C1120 750 1430 850 1690 610C1900 400 1530 210 1740 90'
+    );
+  }
+}
+@media (max-width: 760px) {
+  .landing-backdrop {
+    opacity: 0.65;
+  }
+  .landing-backdrop > svg {
+    width: 900px;
+    left: -100px;
+    transform: none;
+  }
+  .landing-motion-control {
+    width: 44px;
+    height: 44px;
+    top: 8px;
+    right: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-wave {
+    animation: none;
+  }
+  .landing-motion-control {
+    display: none;
+  }
+}

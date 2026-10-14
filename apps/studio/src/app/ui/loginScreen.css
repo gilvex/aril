@@ -15,7 +15,7 @@
 .login-preferences :is(select, .studio-select) { background: transparent; min-height: 36px; }
 .login-layout { flex: 1; display: grid; grid-template-columns: minmax(320px, 400px) minmax(420px, 650px); justify-content: space-between; align-items: center; gap: clamp(40px, 7vw, 100px); width: 100%; max-width: 1180px; margin: auto; padding: 48px 0; }
 .login-auth { min-width: 0; }
-.login-auth h1 { font-family: var(--heading); font-size: clamp(28px, 2.8vw, 36px); line-height: 1.22; letter-spacing: -1.1px; font-weight: 700; margin: 0 0 16px; }
+.login-auth :is(h1, h2) { font-family: var(--heading); font-size: clamp(28px, 2.8vw, 36px); line-height: 1.22; letter-spacing: -1.1px; font-weight: 700; margin: 0 0 16px; }
 .login-description { color: var(--text-secondary, #746c7e); font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
 .login-auth .google-signin { max-width: 400px; margin-top: 0; }
 .login-auth .google-signin p { margin: 0 0 12px; }
@@ -67,7 +67,7 @@
   .login-preferences :is(select, .studio-select) { min-width: 0; padding: 7px; max-width: 100px; }
   .login-layout { display: flex; max-width: 400px; align-items: center; padding: 44px 0; }
   .login-auth { width: 100%; }
-  .login-auth h1 { font-size: 32px; }
+  .login-auth :is(h1, h2) { font-size: 32px; }
   .login-blueprint { display: none; }
   .login-invitation input { font-size: 16px; }
   .login-footer { max-width: 400px; margin: 0 auto; padding-bottom: max(24px, env(safe-area-inset-bottom)); }

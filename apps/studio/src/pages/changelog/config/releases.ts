@@ -3,6 +3,23 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-14-home',
+    date: '2026-10-14',
+    title: 'A clearer introduction to Aril',
+    summary:
+      'Explore the studio, try the demo, and sign in from the new home page.',
+    changes: [
+      'A charcoal and berry home page with original halftone artwork, studio previews, and a playable demo tour.',
+      'The berry halftone ribbons now flow in gentle waves. Pause the background at any time; reduced-motion preferences keep it still.',
+      'Explore Canvas and Design without an account, or jump straight to Google sign-in. Invitation and account-switching links still open their focused forms.',
+      'Responsive layouts, English and Russian copy, keyboard navigation, and reduced-motion support.',
+      'Specific descriptions replace generic slogans. Home-page text, including captions, sign-in help, and preference menus, is at least 14px.',
+    ],
+    image: '/changelog/home-readable.webp',
+    imageAlt:
+      'Aril home page with direct product descriptions, readable navigation, and animated berry halftone ribbons.',
+  },
+  {
     id: '2026-10-14-account-mcp',
     date: '2026-10-14',
     title: 'One agent connection, all your files',
