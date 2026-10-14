@@ -12,6 +12,8 @@
     "build": "pnpm -r --if-present build",
     "lint": "eslint . && node scripts/checkArchitecture.mjs",
     "test": "pnpm --filter @pomegranate/studio test",
+    "benchmark:collaboration": "node scripts/benchmarkCollaboration.ts",
+    "verify:recovery": "node scripts/verifyRecovery.ts",
     "start": "pnpm --filter @pomegranate/studio start",
     "invite": "node --env-file-if-exists=.env scripts/invite.ts",
     "mcp": "pnpm --filter @pomegranate/mcp start",

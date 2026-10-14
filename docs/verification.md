@@ -1,5 +1,36 @@
 # Verification
 
+## Current reproducible checks
+
+Run from the repository root with Node 24+ and the pinned pnpm version:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm lint
+pnpm test
+pnpm build
+pnpm benchmark:collaboration
+pnpm verify:recovery
+```
+
+[GitHub Actions](../.github/workflows/ci.yml) runs lint, the default fixture-based suite, package builds, the local HTTP contention harness, and the SQLite restore drill. It uploads timestamped JSON reports from `artifacts/verification`. Benchmark timing is diagnostic, not a hardware-dependent pass/fail threshold; correctness and bounded completion are asserted.
+
+The separate Postgres job starts disposable PostgreSQL 17, creates the unprivileged `anon` role used by the schema-isolation assertion, and runs `server/postgres.test.ts` and `server/guestLinks.test.ts` with `POSTGRES_TEST_URL`. This covers two-instance persistence/concurrency/access and guest expiry/revocation, not Supabase WebSocket delivery or Google sign-in. The tests generate and drop their own schemas.
+
+To reproduce that job, use a **disposable** database with schema-creation privileges and an `anon` role, set `POSTGRES_TEST_URL` to it, then run:
+
+```sh
+pnpm --filter @pomegranate/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts
+```
+
+Do not load the application's `.env` or use production credentials for these commands. The default suite skips Postgres unless the explicit test URL is present. Benchmark/recovery scripts create their own temporary SQLite fixtures and never open the application database.
+
+See the [engineering case study](engineering-case-study.md) for the dated local baseline and its limits, and [operations](operations.md) for recovery procedures.
+
+## Historical verification log
+
+The entries below record checks performed during development, not the current deployment state or test count. Later entries supersede earlier blockers. Current setup/access guidance lives in [accounts and deployment](accounts-and-deployment.md) and [collaboration](collaboration.md).
+
 Verified locally on 2026-10-05 with Node 24 and the Codex embedded browser.
 
 ## Automated checks

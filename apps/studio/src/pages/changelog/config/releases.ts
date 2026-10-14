@@ -3,6 +3,21 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-14-engineering',
+    date: '2026-10-14',
+    title: 'Engineering notes and repeatable checks',
+    summary:
+      'Explore the studio’s engineering decisions, current access model, and reproducible verification.',
+    changes: [
+      'A shorter README links to the studio guide, a collaboration case study, and backup and rollback procedures.',
+      'Automated checks now include a disposable Postgres job, a local contention benchmark, and a SQLite restore drill.',
+      'Access and collaboration documentation now reflects viewer roles, member removal, and live note editing.',
+    ],
+    image: '/changelog/canvas.webp',
+    imageAlt:
+      'Demo architecture board with connected services and live collaborator cursors.',
+  },
+  {
     id: '2026-10-11-changelog',
     date: '2026-10-11',
     title: 'A home for what’s new',
