@@ -6,6 +6,10 @@ A collaborative workspace for architecture diagrams, interface design, requireme
 
 [![Verify](https://github.com/gilvex/aril/actions/workflows/ci.yml/badge.svg)](https://github.com/gilvex/aril/actions/workflows/ci.yml)
 
+![Aril home page with readable navigation, demo entry, and animated berry ribbons](apps/studio/public/changelog/home-readable.webp)
+
+The public home introduces the studio, with a playable tour and direct access to the editable demo. Returning members can jump to sign-in; invitation links open the join form directly.
+
 ![Aril demo: architecture, interface design, and reusable assets](apps/studio/public/changelog/studio-tour.gif)
 
 The recording uses editable demo fixtures and simulated teammates. Aril is a planning studio; it does not execute deployments. [Watch with playback controls](https://www.aril.studio/changelog#2026-10-11-changelog).
