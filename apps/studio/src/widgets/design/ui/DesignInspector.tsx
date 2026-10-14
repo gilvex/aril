@@ -12,7 +12,7 @@ import { DesignTypography } from './DesignTypography.tsx'
 import { useDesignLayerActions } from '../model/useDesignLayerActions.ts'
 import { designLayerIcons } from '../config/designTools.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
-import { isDesignContainer } from '@pomegranate/domain/design'
+import { isDesignContainer } from '@aril/domain/design'
 import { DesignContainerSettings } from './DesignContainerSettings.tsx'
 export function DesignInspector({ model }: DesignEditorProps) {
   const { t } = useTranslation()

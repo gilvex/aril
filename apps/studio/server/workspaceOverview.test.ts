@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createApp } from './app.ts'
 import { sortWorkspaces } from '../src/pages/workspaces/utils/sortWorkspaces.ts'
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 
 test('workspace overviews are membership-scoped and expose bounded diagram metadata only', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'pomegranate-overviews-'))

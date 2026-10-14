@@ -1,5 +1,5 @@
 import { BoardDesignCanvas } from './BoardDesignCanvas.tsx'
-import { activeBoardSections } from '@pomegranate/domain/workspace'
+import { activeBoardSections } from '@aril/domain/workspace'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStudioCanvasHandlers } from '../model/useStudioCanvasHandlers.tsx'

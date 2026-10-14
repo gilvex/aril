@@ -1,7 +1,7 @@
 import type {
   StudioSummary,
   WorkspaceMember,
-} from '@pomegranate/domain/studios'
+} from '@aril/domain/studios'
 
 type Query = (
   sql: string,

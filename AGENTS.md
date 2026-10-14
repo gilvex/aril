@@ -1,4 +1,4 @@
-# Pomegranate
+# Aril
 
 The user intends a large React deployment platform: open-source/self-hostable plus SaaS and IaC. The explicitly accepted first deliverable is a persistent planning studio for architecture, user flows, requirements, and design exploration. It is implemented with React, TypeScript, Vite, React Flow, Express, and Node 24, using SQLite for single-process hosting or Postgres for Vercel. This does not settle the eventual deployment platform's stack.
 
@@ -21,7 +21,7 @@ See `docs/skills.md` for provenance, scope, and explicit invocation examples. Th
 
 ## Monorepo layout
 
-`apps/studio` owns the React frontend and HTTP server. `packages/domain` owns shared schemas and operations; import them through `@pomegranate/domain/*`. `packages/mcp` owns the stdio MCP bridge and setup CLI. `packages/studio-skill` owns the companion SKILL.md and installer. Use pnpm workspace dependencies rather than relative imports between packages. Root `scripts/` contains administrator utilities; root `api/` and `vercel.json` adapt the studio for the existing Vercel project. Root `.env` and `data/` retain their existing locations. Never run migration or live smoke utilities as routine package tests.
+`apps/studio` owns the React frontend and HTTP server. `packages/domain` owns shared schemas and operations; import them through `@aril/domain/*`. `packages/mcp` owns the stdio MCP bridge and setup CLI. `packages/studio-skill` owns the companion SKILL.md and installer. Use pnpm workspace dependencies rather than relative imports between packages. Root `scripts/` contains administrator utilities; root `api/` and `vercel.json` adapt the studio for the existing Vercel project. Root `.env` and `data/` retain their existing locations. Never run migration or live smoke utilities as routine package tests.
 
 ## Code conventions
 

@@ -1,13 +1,13 @@
 import { type Node } from '@xyflow/react'
 
 export type BlueprintMultiSelectionProps = {
-  selectedNodes: import('@pomegranate/domain/workspace').Idea[]
+  selectedNodes: import('@aril/domain/workspace').Idea[]
   checkpoint: () => void
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   selectedIds: Set<string>
   onDelete: ({
     nodes,

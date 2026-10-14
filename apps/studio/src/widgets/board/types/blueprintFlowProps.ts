@@ -1,4 +1,4 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import {
   type Connection,
   type Node,
@@ -8,13 +8,13 @@ import {
 
 export type BlueprintFlowProps = {
   drawing?: import('react').ReactNode
-  board: import('@pomegranate/domain/workspace').Board
-  liveNodes: import('@pomegranate/domain/workspace').Idea[]
+  board: import('@aril/domain/workspace').Board
+  liveNodes: import('@aril/domain/workspace').Idea[]
   dimensions: Record<string, { width: number; height: number }>
   selectedIds: Set<string>
   selectedEdge: string | null
-  profile: import('@pomegranate/domain/collaboration').Profile
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  profile: import('@aril/domain/collaboration').Profile
+  peers: import('@aril/domain/collaboration').Presence[]
   setFlow: import('react').Dispatch<
     import('react').SetStateAction<ReactFlowInstance<
       Node<{
@@ -79,9 +79,9 @@ export type BlueprintFlowProps = {
   editItem: (id: string, connection?: boolean) => void
   setSelected: (id: string | null) => void
   checkpoint: () => void
-  following: import('@pomegranate/domain/collaboration').Presence | null
+  following: import('@aril/domain/collaboration').Presence | null
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
 }

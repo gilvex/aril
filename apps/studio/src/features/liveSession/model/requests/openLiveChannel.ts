@@ -1,14 +1,14 @@
 import {
   liveDocumentMessageSchema,
   type LiveDocumentMessage,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 import { ApiError } from '@/shared/api/apiError.ts'
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import {
   presenceSchema,
   type Presence,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   encode64,
   publicKey,
@@ -19,7 +19,7 @@ import {
   type LiveConfig,
   type LiveState,
   type SignedCertificate,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 
 export async function openLiveChannel(
   workspaceId: string,

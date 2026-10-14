@@ -1,4 +1,4 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 import type { DesignBoardState } from './designBoardState.ts'
 export type DesignPreviewProps = DesignBoardState & {
   design: Workspace['design']

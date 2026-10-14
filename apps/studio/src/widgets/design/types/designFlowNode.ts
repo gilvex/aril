@@ -1,5 +1,5 @@
-import type { DesignElement } from '@pomegranate/domain/design'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { DesignElement } from '@aril/domain/design'
+import type { Profile } from '@aril/domain/collaboration'
 import type { Node } from '@xyflow/react'
 export type DesignFlowNode = Node<
   {

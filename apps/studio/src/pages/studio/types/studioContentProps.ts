@@ -12,7 +12,7 @@ export type StudioContentProps = {
   setNavigationCollapsed: (value: boolean) => void
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
   onWorkspaces: (
-    profile: import('@pomegranate/domain/collaboration').Profile,
+    profile: import('@aril/domain/collaboration').Profile,
   ) => void
   multiplayer: ReturnType<
     typeof import('@/features/liveSession/index.ts').useMultiplayer
@@ -24,7 +24,7 @@ export type StudioContentProps = {
           current: import('../types/studioState.ts').StudioState['notice'],
         ) => import('../types/studioState.ts').StudioState['notice']),
   ) => void
-  studio: import('@pomegranate/domain/studios').StudioSummary
+  studio: import('@aril/domain/studios').StudioSummary
   view: View
   setView: (
     value:
@@ -41,9 +41,9 @@ export type StudioContentProps = {
         ) => import('../types/studioState.ts').StudioState['requirementId']),
   ) => void
   present: (
-    | import('@pomegranate/domain/collaboration').Presence
+    | import('@aril/domain/collaboration').Presence
     | {
-        profile: import('@pomegranate/domain/collaboration').Profile
+        profile: import('@aril/domain/collaboration').Profile
         view:
           | 'canvas'
           | 'requirements'
@@ -113,10 +113,10 @@ export type StudioContentProps = {
       profile,
     }: import('../../../widgets/board/types/canvasBoardProps.ts').CanvasBoardProps) => import('react').JSX.Element
   >
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   canvasMode: 'canvas' | 'wireframes' | 'design'
-  followed: import('@pomegranate/domain/collaboration').Presence | null
-  workspace: import('@pomegranate/domain/workspace').Workspace
+  followed: import('@aril/domain/collaboration').Presence | null
+  workspace: import('@aril/domain/workspace').Workspace
   setBoardId: (
     value:
       | import('../types/studioState.ts').StudioState['boardId']
@@ -140,8 +140,8 @@ export type StudioContentProps = {
   ) => void
   change: (
     update: (
-      value: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      value: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
     record?: boolean,
   ) => void
   sendPresence: (

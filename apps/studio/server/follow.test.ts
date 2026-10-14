@@ -1,12 +1,12 @@
 import {
   diffWorkspace,
   presenceSchema,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   cameraFromViewport,
   viewportFromCamera,
-} from '@pomegranate/domain/follow'
-import { createSeed } from '@pomegranate/domain/seed'
+} from '@aril/domain/follow'
+import { createSeed } from '@aril/domain/seed'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { test } from 'node:test'

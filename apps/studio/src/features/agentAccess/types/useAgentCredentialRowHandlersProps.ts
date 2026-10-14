@@ -13,7 +13,7 @@ export type AgentCredentialRowHandlersProps = {
           current: import('../types/agentAccessState.ts').AgentAccessState['error'],
         ) => import('../types/agentAccessState.ts').AgentAccessState['error']),
   ) => void
-  credential: import('@pomegranate/domain/agentAccess').AgentCredential
+  credential: import('@aril/domain/agentAccess').AgentCredential
   workspaceId: string
   setCredentials: (
     value:

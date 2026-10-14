@@ -1,6 +1,6 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { icons } from '@/widgets/board/config/wireframeBoardIcons.ts'
-import { wireKinds, wireLabels } from '@pomegranate/domain/wireframe'
+import { wireKinds, wireLabels } from '@aril/domain/wireframe'
 import { useMemo } from 'react'
 
 import type { WireframeInsertMenuHandlersProps } from '../types/useWireframeInsertMenuHandlersProps.ts'

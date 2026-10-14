@@ -7,9 +7,9 @@ import {
   applyOperations,
   diffWorkspace,
   MergeConflict,
-} from '@pomegranate/domain/collaboration'
-import { canRebaseOperations } from '@pomegranate/domain/freshness'
-import type { Envelope } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { canRebaseOperations } from '@aril/domain/freshness'
+import type { Envelope } from '@aril/domain/workspace'
 import type { SagaIterator } from 'redux-saga'
 import { call } from 'redux-saga/effects'
 export function* flushWorkspace(

@@ -4,7 +4,7 @@ import {
   groupDesignElements,
   ungroupDesignElements,
   type DesignElement,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 export function useDesignStructureActions(
   nodes: DesignElement[],
   selection: string[],

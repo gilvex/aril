@@ -1,4 +1,4 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 import { requirementOptions } from '../config/requirementOptions.ts'
 export function moveRequirements(
   workspace: Workspace,

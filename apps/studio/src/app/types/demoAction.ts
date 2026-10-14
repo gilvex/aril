@@ -1,4 +1,4 @@
-import type { Operation, Presence } from '@pomegranate/domain/collaboration'
+import type { Operation, Presence } from '@aril/domain/collaboration'
 import type { DemoMotion } from './demoMotion.ts'
 
 export type DemoAction = {

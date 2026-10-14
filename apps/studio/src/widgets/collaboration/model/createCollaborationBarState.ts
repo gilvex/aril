@@ -1,4 +1,4 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 export function createCollaborationBarState(profile: Profile) {
   const name: string = profile.name
   const avatar: string = profile.avatar

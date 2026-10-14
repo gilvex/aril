@@ -1,12 +1,12 @@
 export type WorkspaceHistoryDialogProps = {
   historyLoading: boolean
   snapshots: { revision: number; savedAt: string }[]
-  studio: import('@pomegranate/domain/studios').StudioSummary
+  studio: import('@aril/domain/studios').StudioSummary
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
   change: (
     update: (
-      value: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      value: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
     record?: boolean,
   ) => void
   setModal: (

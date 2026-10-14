@@ -1,8 +1,8 @@
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 
 export type RequirementClassificationProps = {
   fieldProps: (
-    name: import('@pomegranate/domain/collaboration').RequirementField,
+    name: import('@aril/domain/collaboration').RequirementField,
   ) => {
     onFocus: () => void
     onBlur: () => void
@@ -20,6 +20,6 @@ export type RequirementClassificationProps = {
   }
   update: (patch: Partial<Requirement>) => void
   fieldHint: (
-    name: import('@pomegranate/domain/collaboration').RequirementField,
+    name: import('@aril/domain/collaboration').RequirementField,
   ) => import('react').JSX.Element | null
 }

@@ -1,5 +1,5 @@
 import { useCallback, useSyncExternalStore } from 'react'
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import './cursorMessage.css'
 export function CursorMessage({ chat }: Pick<Presence, 'chat'>) {
   const expires = chat?.expiresAt || 0

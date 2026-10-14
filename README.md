@@ -31,7 +31,7 @@ See the [studio guide](docs/studio-guide.md) for controls and recovery behavior.
 | Concurrent edits must not silently overwrite work       | Revision-checked operations, field preconditions, atomic saves, and preserved recovery drafts | [Collaboration tests](apps/studio/server/collaboration.test.ts), [freshness tests](apps/studio/server/freshness.test.ts) |
 | Multiple API instances share one document               | Postgres row locking, atomic history/receipts, and revision conflict handling                 | [Two-instance integration test](apps/studio/server/postgres.test.ts)                                                     |
 | Cursor traffic should not become durable writes         | Transient presence, separated from authoritative document saves                               | [Architecture](docs/architecture.md), [hosting](docs/accounts-and-deployment.md)                                         |
-| Browser and automation edits need the same access rules | Workspace-scoped agent credentials and shared validation/save paths                           | [Agent integration](docs/agent-integration.md), [access tests](apps/studio/server/workspaceAccess.test.ts)               |
+| Browser and automation edits need the same access rules | Account or file-scoped agent credentials and shared validation/save paths                           | [Agent integration](docs/agent-integration.md), [access tests](apps/studio/server/workspaceAccess.test.ts)               |
 
 [Case study: preserving edits across collaborators and storage backends](docs/engineering-case-study.md) explains the trade-offs, verification, and remaining limits. [Operations](docs/operations.md) covers health checks, backups, restore drills, and rollback.
 
@@ -79,6 +79,6 @@ CI runs lint, fixture-based tests, and all package builds on Node 24. A separate
 
 Aril is the planning deliverable for a future deployment platform. Container execution, infrastructure reconciliation, enterprise SSO, and resource-level deployment permissions remain future work. The installable app provides an offline reconnect screen, not offline workspace editing. History is bounded and does not replace database backups. Performance experiments use local fixtures, not production traffic or an availability guarantee.
 
-Previously named Pomegranate: package names, environment variables, storage keys, and MCP identifiers retain `pomegranate` for compatibility. The current public address is https://www.aril.studio. Existing user documents are preserved.
+Packages now use `@aril/*`, the MCP connection is `aril`, and the companion skill is `aril-studio`. One account credential can access your files without reconnecting; file-only credentials remain available. New configuration uses `ARIL_*`; legacy environment aliases and saved MCP configuration remain readable. Existing database schemas, browser storage keys, and user documents are preserved. See the [agent setup and upgrade guide](docs/agent-integration.md).
 
 An open-source license has not yet been selected. Installed design skills and their attribution are documented in [skills and provenance](docs/skills.md).

@@ -4,7 +4,7 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceTabs } from '../model/useWorkspaceTabs.ts'
 import { focusWorkspaceTab } from '../utils/index.ts'
 import type { StudioHeaderProps } from '../types/studioHeaderProps.ts'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 export function StudioWorkspaceTabs(props: StudioHeaderProps) {
   const { t } = useTranslation()
   const { tabs, close } = useWorkspaceTabs(

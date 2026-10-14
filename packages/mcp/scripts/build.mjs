@@ -10,10 +10,10 @@ await build({
   outfile: 'dist/index.mjs',
   bundle: true,
   external: Object.keys(manifest.dependencies).filter(
-    (name) => name !== '@pomegranate/domain',
+    (name) => name !== '@aril/domain',
   ),
   alias: {
-    '@pomegranate/domain': fileURLToPath(
+    '@aril/domain': fileURLToPath(
       new URL('../../domain/src', import.meta.url),
     ),
   },

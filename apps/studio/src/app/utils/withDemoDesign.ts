@@ -1,5 +1,5 @@
-import { createDesignTemplate } from '@pomegranate/domain/design'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import { createDesignTemplate } from '@aril/domain/design'
+import type { Workspace } from '@aril/domain/workspace'
 
 export function withDemoDesign(workspace: Workspace): Workspace {
   // An explicit empty collection means the visitor deliberately removed pages.

@@ -3,12 +3,12 @@ import {
   type Wireframe,
   type WireKind,
   type WireNode,
-} from '@pomegranate/domain/wireframe'
+} from '@aril/domain/wireframe'
 
 export type WireframeInspectorProps = {
   preview: boolean
-  selected: import('@pomegranate/domain/wireframe').WireNode[]
-  node: import('@pomegranate/domain/wireframe').WireNode | undefined
+  selected: import('@aril/domain/wireframe').WireNode[]
+  node: import('@aril/domain/wireframe').WireNode | undefined
   edge:
     | {
         id: string
@@ -27,7 +27,7 @@ export type WireframeInspectorProps = {
   ) => void
   inspectorToggle: import('react').RefObject<HTMLButtonElement | null>
   previewMessage: string
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   focus: (id: string) => void
   setPreviewMessage: (
     value:
@@ -52,7 +52,7 @@ export type WireframeInspectorProps = {
   editField: import('react').RefObject<HTMLInputElement | null>
   editData: (changes: Partial<WireNode['data']>) => void
   editNode: (changes: Partial<WireNode>) => void
-  screens: import('@pomegranate/domain/wireframe').WireNode[]
+  screens: import('@aril/domain/wireframe').WireNode[]
   trigger: string
   setTrigger: (
     value:

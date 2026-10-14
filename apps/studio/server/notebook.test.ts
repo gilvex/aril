@@ -3,9 +3,9 @@ import { test } from 'node:test'
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { createSeed } from '@aril/domain/seed'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { noteDocuments } from '../src/widgets/notes/utils/noteDocuments.ts'
 import { updateNote } from '../src/widgets/notes/utils/updateNote.ts'
 import { noteHeadings } from '../src/widgets/notes/utils/noteHeadings.ts'

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { designPosition } from '@pomegranate/domain/design'
+import { designPosition } from '@aril/domain/design'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useLibraryAssetPreview } from '../model/useLibraryAssetPreview.ts'
 import { LibraryAssetBindings } from './LibraryAssetBindings.tsx'

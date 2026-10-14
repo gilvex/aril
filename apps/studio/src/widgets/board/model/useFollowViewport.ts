@@ -1,11 +1,11 @@
 import type {
   CameraPresence,
   Presence,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   cameraFromViewport,
   viewportFromCamera,
-} from '@pomegranate/domain/follow'
+} from '@aril/domain/follow'
 import type { ReactFlowInstance, Viewport } from '@xyflow/react'
 import { useCallback, useEffect, useRef, type RefObject } from 'react'
 

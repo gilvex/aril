@@ -1,5 +1,5 @@
 import { isDeepStrictEqual } from 'node:util'
-import type { Operation } from '@pomegranate/domain/collaboration'
+import type { Operation } from '@aril/domain/collaboration'
 /** Retired definitions can round-trip or be removed, but cannot be created or edited. */
 export function rejectRetiredMachineChanges(operations: Operation[]) {
   const changed = (

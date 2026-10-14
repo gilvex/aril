@@ -1,5 +1,5 @@
 import { icons } from '@/widgets/board/config/wireframeBoardIcons.ts'
-import { wireKinds, wireLabels } from '@pomegranate/domain/wireframe'
+import { wireKinds, wireLabels } from '@aril/domain/wireframe'
 import { Plus, X } from 'lucide-react'
 
 import type { WireframePaletteProps } from '../types/wireframePaletteProps.ts'

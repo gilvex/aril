@@ -2,10 +2,17 @@ import { access } from 'node:fs/promises'
 import { createInterface } from 'node:readline/promises'
 import { Writable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
-import { defaultConfigPath,saveConfig,validateConfig } from '../src/config/index.ts'
+import {
+  defaultConfigPath,
+  saveConfig,
+  validateConfig,
+} from '../src/config/index.ts'
 import { createAgentClient } from '../src/server/index.ts'
 
-const path = process.env.POMEGRANATE_MCP_CONFIG || defaultConfigPath()
+const path =
+  process.env.ARIL_MCP_CONFIG ||
+  process.env.POMEGRANATE_MCP_CONFIG ||
+  defaultConfigPath()
 const input = createInterface({ input: process.stdin, output: process.stdout })
 let origin: string
 try {
@@ -13,9 +20,7 @@ try {
     await access(path)
     if (
       (
-        await input.question(
-          'Replace the existing Aril MCP connection? [y/N] ',
-        )
+        await input.question('Replace the existing Aril MCP connection? [y/N] ')
       ).toLowerCase() !== 'y'
     )
       process.exit(0)
@@ -24,8 +29,8 @@ try {
   }
   origin =
     (
-      await input.question('Studio address [https://arilapp.vercel.app]: ')
-    ).trim() || 'https://arilapp.vercel.app'
+      await input.question('Studio address [https://www.aril.studio]: ')
+    ).trim() || 'https://www.aril.studio'
 } finally {
   input.close()
 }
@@ -48,11 +53,11 @@ try {
 }
 try {
   const config = validateConfig({ origin, token })
-  await createAgentClient(config)('workspace')
+  await createAgentClient(config)('workspaces')
   await saveConfig(config, path)
   console.log('Connection verified and saved. Register it in Codex:')
   console.log(
-    `codex mcp add pomegranate -- "${process.execPath}" "${fileURLToPath(new URL('../src/index.ts', import.meta.url))}"`,
+    `codex mcp add aril -- "${process.execPath}" "${fileURLToPath(new URL('../src/index.ts', import.meta.url))}"`,
   )
   console.log(
     'Then run pnpm skill:install and start a new chat. Revoke or renew the credential from Agent access in the studio.',

@@ -16,6 +16,7 @@ export type CreateAgentCredentialFormHandlersProps = {
   setSecret: import('react').Dispatch<import('react').SetStateAction<string>>
   workspaceId: string
   name: string
+  target: 'account' | 'workspace'
   scope: 'read' | 'write'
   days: number
   setCredentials: (

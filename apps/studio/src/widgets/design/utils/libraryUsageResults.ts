@@ -1,7 +1,7 @@
 import type {
   DesignLibrary,
   DesignUsage,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 import { libraryIndirectUsage } from './libraryIndirectUsage.ts'
 export function libraryUsageResults(
   usage: DesignUsage[],

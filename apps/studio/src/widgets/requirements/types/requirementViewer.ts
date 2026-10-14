@@ -1,7 +1,7 @@
 import type {
   Profile,
   RequirementPresence,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 
 export type RequirementViewer = {
   profile: Profile

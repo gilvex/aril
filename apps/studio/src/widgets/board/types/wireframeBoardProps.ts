@@ -4,8 +4,8 @@ import type {
   DragPosition,
   Presence,
   Profile,
-} from '@pomegranate/domain/collaboration'
-import type { Board } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import type { Board } from '@aril/domain/workspace'
 import type { ReactNode } from 'react'
 
 export type WireframeBoardProps = {

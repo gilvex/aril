@@ -1,4 +1,4 @@
-import { agentAccessInput } from '@pomegranate/domain/agentAccess'
+import { agentAccessInput } from '@aril/domain/agentAccess'
 import { Router, type Express } from 'express'
 import type { Store } from '../storeContract.ts'
 export function installAgentManagement(app: Express, store: Store) {
@@ -23,8 +23,15 @@ export function installAgentManagement(app: Express, store: Store) {
       res.status(400).json({ error: 'Choose a name, permission, and expiry.' })
       return
     }
-    const { name, scope, days } = parsed.data
+    const { name, scope, days, target } = parsed.data
+    if (res.locals.profile.guestExpiresAt) {
+      res
+        .status(403)
+        .json({ error: 'Temporary guests cannot create agent credentials.' })
+      return
+    }
     if (
+      target === 'workspace' &&
       scope === 'write' &&
       (await store.access.role(
         res.locals.profile.id,
@@ -55,6 +62,7 @@ export function installAgentManagement(app: Express, store: Store) {
           name,
           scope,
           days,
+          target,
         ),
       )
   })

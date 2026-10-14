@@ -23,7 +23,7 @@ export function useStudioCanvasHandlers({
   )
   const updateBoard = useCallback<
     (
-      next: import('@pomegranate/domain/workspace').Board,
+      next: import('@aril/domain/workspace').Board,
       record: boolean | undefined,
     ) => void
   >(

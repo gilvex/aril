@@ -1,5 +1,5 @@
-import { writeVersion, writeVersionHeader } from '@pomegranate/domain/freshness'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { writeVersion, writeVersionHeader } from '@aril/domain/freshness'
+import { workspaceSchema } from '@aril/domain/workspace'
 import express from 'express'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'

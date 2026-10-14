@@ -19,9 +19,9 @@ export type CollaborationPopoverProps = {
         ) => import('../types/collaborationBarState.ts').CollaborationBarState['error']),
   ) => void
   onProfile: (
-    profile: import('@pomegranate/domain/collaboration').Profile,
+    profile: import('@aril/domain/collaboration').Profile,
   ) => void
-  profile: import('@pomegranate/domain/collaboration').Profile
+  profile: import('@aril/domain/collaboration').Profile
   name: string
   setAvatar: (
     value:
@@ -39,7 +39,7 @@ export type CollaborationPopoverProps = {
         ) => import('../types/collaborationBarState.ts').CollaborationBarState['name']),
   ) => void
   busy: boolean
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  peers: import('@aril/domain/collaboration').Presence[]
   connected: boolean
   followId: string | null
   onFollow: (id: string | null) => void
@@ -60,6 +60,6 @@ export type CollaborationPopoverProps = {
   ) => void
   invite: string
   copied: boolean
-  activity: import('@pomegranate/domain/collaboration').Activity[]
+  activity: import('@aril/domain/collaboration').Activity[]
   error: string
 }

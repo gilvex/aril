@@ -4,7 +4,9 @@ export async function initialize() {
   const store = await openPostgres()
   const { app } = createApplication(
     store,
-    process.env.POMEGRANATE_ORIGIN || 'https://arilapp.vercel.app',
+    process.env.ARIL_ORIGIN ||
+      process.env.POMEGRANATE_ORIGIN ||
+      'https://arilapp.vercel.app',
     [
       'https://aril.studio',
       'https://www.aril.studio',
@@ -12,7 +14,11 @@ export async function initialize() {
       'https://aril.gilgil.co',
       'https://pomegranate.gilgil.co',
       'https://pomegrenate.vercel.app',
-      ...(process.env.POMEGRANATE_ADDITIONAL_ORIGINS || '')
+      ...(
+        process.env.ARIL_ADDITIONAL_ORIGINS ||
+        process.env.POMEGRANATE_ADDITIONAL_ORIGINS ||
+        ''
+      )
         .split(',')
         .filter(Boolean),
     ],

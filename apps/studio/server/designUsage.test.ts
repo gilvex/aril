@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { makeDesignElement } from '@pomegranate/domain/design'
-import { activeBoardSections } from '@pomegranate/domain/workspace'
+import { makeDesignElement } from '@aril/domain/design'
+import { activeBoardSections } from '@aril/domain/workspace'
 import {
   createExampleDesignLibrary,
   designLibrarySchema,
@@ -9,7 +9,7 @@ import {
   designAssetSummaries,
   instantiateDesignComponent,
   createDesignComponent,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 import { designLibraryGraph } from '../src/widgets/design/utils/designLibraryGraph.ts'
 
 test('usage tracks instance roots once and every bound property and machine reference', () => {

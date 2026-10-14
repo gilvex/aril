@@ -1,10 +1,10 @@
-import type { DragPosition } from '@pomegranate/domain/collaboration'
+import type { DragPosition } from '@aril/domain/collaboration'
 export type UseWireframeControllerProps = {
-  board: import('@pomegranate/domain/workspace').Board
-  following: import('@pomegranate/domain/collaboration').Presence | null
+  board: import('@aril/domain/workspace').Board
+  following: import('@aril/domain/collaboration').Presence | null
   sendPresence: (
     changes: {
-      camera?: import('@pomegranate/domain/collaboration').CameraPresence | null
+      camera?: import('@aril/domain/collaboration').CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]
@@ -12,9 +12,9 @@ export type UseWireframeControllerProps = {
     },
     force?: boolean,
   ) => void
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  peers: import('@aril/domain/collaboration').Presence[]
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
   saveState: 'error' | 'saved' | 'pending' | 'saving'

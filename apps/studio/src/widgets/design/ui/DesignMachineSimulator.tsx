@@ -1,6 +1,6 @@
 import { useCallback, useMemo, type MouseEvent } from 'react'
 import { X } from 'lucide-react'
-import { resolveDesignBindings } from '@pomegranate/domain/designLibrary'
+import { resolveDesignBindings } from '@aril/domain/designLibrary'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { DesignMiniPreview } from './DesignMiniPreview.tsx'

@@ -1,5 +1,5 @@
 export type FollowStatusProps = {
-  followed: import('@pomegranate/domain/collaboration').Presence
+  followed: import('@aril/domain/collaboration').Presence
   setFollowId: (
     value:
       | import('../types/studioState.ts').StudioState['followId']

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { resolveDesignBindings } from '@pomegranate/domain/designLibrary'
+import { resolveDesignBindings } from '@aril/domain/designLibrary'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 export function useLibraryAssetPreview(model: DesignEditorModel) {
   const { library, pages, libraryAsset, libraryPreviewVariant, variableModes } =

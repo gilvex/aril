@@ -1,6 +1,6 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
-import type { DesignElement } from '@pomegranate/domain/design'
+import type { DesignElement } from '@aril/domain/design'
 import { DesignNumberInput } from './DesignNumberInput.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 export function DesignTypography({ model }: DesignEditorProps) {

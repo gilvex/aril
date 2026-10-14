@@ -1,5 +1,5 @@
-import type { Requirement, Workspace } from '@pomegranate/domain/workspace'
-import { activeBoardSections } from '@pomegranate/domain/workspace'
+import type { Requirement, Workspace } from '@aril/domain/workspace'
+import { activeBoardSections } from '@aril/domain/workspace'
 export function scopeBoards(workspace: Workspace, requirement: Requirement) {
   return workspace.boards.filter(
     (board) =>

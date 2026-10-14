@@ -1,4 +1,4 @@
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import { noteTextRange } from './noteTextRange.ts'
 import { noteBodyKey } from './noteBodyKey.ts'
 

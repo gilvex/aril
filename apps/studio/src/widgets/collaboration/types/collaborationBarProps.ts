@@ -3,7 +3,7 @@ import type {
   Activity,
   Presence,
   Profile,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 export type CollaborationBarProps = {
   onSettings?: (section: 'file' | 'user') => void
   beforeLeave: () => Promise<boolean>

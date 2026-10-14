@@ -1,12 +1,12 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
-import type { Presence, Profile } from '@pomegranate/domain/collaboration'
+import type { Workspace } from '@aril/domain/workspace'
+import type { Presence, Profile } from '@aril/domain/collaboration'
 export type NotesProps = {
   changeText: (
     id: string,
-    before: import('@pomegranate/domain/noteText').NoteTextState,
-    after: import('@pomegranate/domain/noteText').NoteTextState,
+    before: import('@aril/domain/noteText').NoteTextState,
+    after: import('@aril/domain/noteText').NoteTextState,
   ) => void
-  noteText: import('@pomegranate/domain/noteText').NoteTextChannel
+  noteText: import('@aril/domain/noteText').NoteTextChannel
   workspace: Workspace
   workspaceId: string
   profile: Profile

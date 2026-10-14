@@ -1,9 +1,9 @@
 export type BlueprintEdgeDetailsHandlersProps = {
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   edge: {
     id: string
     source: string

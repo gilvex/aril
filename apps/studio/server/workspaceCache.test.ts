@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import { appSlice } from '../src/app/model/slices/appSlice.ts'
 import type { AppState } from '../src/app/types/appState.ts'
 

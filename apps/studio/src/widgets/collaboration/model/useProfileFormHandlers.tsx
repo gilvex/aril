@@ -1,6 +1,6 @@
 import { request } from '@/shared/api/request.ts'
 import { avatarFrom } from '@/widgets/collaboration/utils/avatarFrom.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import { useCallback } from 'react'
 
 import type { ProfileFormHandlersProps } from '../types/useProfileFormHandlersProps.ts'

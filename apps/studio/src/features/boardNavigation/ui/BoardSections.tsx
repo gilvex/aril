@@ -1,6 +1,6 @@
 import { useRef, useCallback, type MouseEvent } from 'react'
 import { Workflow, PenTool, Plus } from 'lucide-react'
-import { activeBoardSections } from '@pomegranate/domain/workspace'
+import { activeBoardSections } from '@aril/domain/workspace'
 import { PresenceAvatars } from '@/entities/collaboration/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'

@@ -1,11 +1,11 @@
 export type BlueprintFlowHandlersProps = {
-  liveNodes: import('@pomegranate/domain/workspace').Idea[]
+  liveNodes: import('@aril/domain/workspace').Idea[]
   dimensions: Record<string, { width: number; height: number }>
   selectedIds: Set<string>
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   selectedEdge: string | null
-  profile: import('@pomegranate/domain/collaboration').Profile
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  profile: import('@aril/domain/collaboration').Profile
+  peers: import('@aril/domain/collaboration').Presence[]
   flow:
     | import('@xyflow/react').ReactFlowInstance<
         import('@xyflow/react').Node<{
@@ -50,9 +50,9 @@ export type BlueprintFlowHandlersProps = {
   editItem: (id: string, connection?: boolean) => void
   setSelected: (id: string | null) => void
   checkpoint: () => void
-  following: import('@pomegranate/domain/collaboration').Presence | null
+  following: import('@aril/domain/collaboration').Presence | null
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
 }

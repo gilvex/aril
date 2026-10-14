@@ -1,5 +1,5 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Workspace } from '@aril/domain/workspace'
+import type { Profile } from '@aril/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 

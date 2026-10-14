@@ -1,4 +1,4 @@
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { workspaceSchema } from '@aril/domain/workspace'
 import type { DemoState } from '../types/demoState.ts'
 import { demoStorageKey } from '../config/demoStorageKey.ts'
 import { createDemoWorkspace } from './createDemoWorkspace.ts'

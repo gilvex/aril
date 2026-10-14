@@ -1,9 +1,9 @@
 export type WireframeEdgeDetailsHandlersProps = {
   save: (
-    next: import('@pomegranate/domain/wireframe').Wireframe,
+    next: import('@aril/domain/wireframe').Wireframe,
     record?: boolean,
   ) => void
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   edge: {
     id: string
     source: string

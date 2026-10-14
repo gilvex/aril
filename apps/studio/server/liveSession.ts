@@ -1,5 +1,5 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
-import type { LiveConfig } from '@pomegranate/domain/liveSession'
+import type { Profile } from '@aril/domain/collaboration'
+import type { LiveConfig } from '@aril/domain/liveSession'
 import {
   createHash,
   createHmac,

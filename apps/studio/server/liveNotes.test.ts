@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   writeNoteText,
   readNoteText,
@@ -15,7 +15,7 @@ import {
   setNoteText,
   mapNoteSelection,
   noteTextSnapshot,
-} from '@pomegranate/domain/noteText'
+} from '@aril/domain/noteText'
 
 test('concurrent same-note typing converges and duplicate deltas are harmless', () => {
   const base = { seed: 'Hello world', update: '' }

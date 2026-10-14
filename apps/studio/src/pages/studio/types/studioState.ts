@@ -1,6 +1,6 @@
 import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 import type { StudioView as View } from '@/shared/types/studioView.ts'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 export type StudioState = {
   library: import('./libraryNavigationState.ts').LibraryNavigationState
   initialRoute: StudioRoute

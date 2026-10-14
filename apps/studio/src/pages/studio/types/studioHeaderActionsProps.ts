@@ -16,9 +16,9 @@ export type StudioHeaderActionsProps = {
           current: import('../types/studioState.ts').StudioState['collaborationPanel'],
         ) => import('../types/studioState.ts').StudioState['collaborationPanel']),
   ) => void
-  studio: import('@pomegranate/domain/studios').StudioSummary
+  studio: import('@aril/domain/studios').StudioSummary
   multiplayer: {
-    profile: import('@pomegranate/domain/collaboration').Profile
+    profile: import('@aril/domain/collaboration').Profile
     setProfile: (
       value:
         | import('../../../features/liveSession/types/multiplayerState.ts').MultiplayerState['profile']
@@ -26,8 +26,8 @@ export type StudioHeaderActionsProps = {
             current: import('../../../features/liveSession/types/multiplayerState.ts').MultiplayerState['profile'],
           ) => import('../../../features/liveSession/types/multiplayerState.ts').MultiplayerState['profile']),
     ) => void
-    peers: import('@pomegranate/domain/collaboration').Presence[]
-    activity: import('@pomegranate/domain/collaboration').Activity[]
+    peers: import('@aril/domain/collaboration').Presence[]
+    activity: import('@aril/domain/collaboration').Activity[]
     connected: boolean
     clientId: `${string}-${string}-${string}-${string}-${string}`
     sendPresence: (

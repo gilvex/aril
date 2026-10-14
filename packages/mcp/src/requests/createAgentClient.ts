@@ -6,6 +6,7 @@ export function createAgentClient(config: AgentConfig) {
     path: string,
     method = 'GET',
     body?: unknown,
+    workspaceId?: string,
   ): Promise<T> {
     let response: Response
     try {
@@ -16,6 +17,7 @@ export function createAgentClient(config: AgentConfig) {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
+          ...(workspaceId ? { 'x-workspace-id': workspaceId } : {}),
         },
         body: body === undefined ? undefined : JSON.stringify(body),
       })

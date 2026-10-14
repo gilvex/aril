@@ -1,5 +1,5 @@
 export type WireframeEdgeDetailsProps = {
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   edge: {
     id: string
     source: string
@@ -9,7 +9,7 @@ export type WireframeEdgeDetailsProps = {
   }
   editField: import('react').RefObject<HTMLInputElement | null>
   save: (
-    next: import('@pomegranate/domain/wireframe').Wireframe,
+    next: import('@aril/domain/wireframe').Wireframe,
     record?: boolean,
   ) => void
   focus: (id: string) => void

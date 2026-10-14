@@ -1,4 +1,4 @@
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 import type { RequirementsState } from '../types/requirementsState.ts'
 export function filterRequirements(
   items: Requirement[],

@@ -1,16 +1,16 @@
 import type { WireFlowNode } from '@/widgets/board/types/wireFlowNode.ts'
-import { type Wireframe, type WireNode } from '@pomegranate/domain/wireframe'
+import { type Wireframe, type WireNode } from '@aril/domain/wireframe'
 import { type NodeChange, type ReactFlowInstance } from '@xyflow/react'
 import type * as React from 'react'
 
 export type WireframeFlowProps = {
   drawing?: import('react').ReactNode
-  liveNodes: import('@pomegranate/domain/wireframe').WireNode[]
+  liveNodes: import('@aril/domain/wireframe').WireNode[]
   selection: Set<string>
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   follow: (id: string) => void
-  profile: import('@pomegranate/domain/collaboration').Profile
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  profile: import('@aril/domain/collaboration').Profile
+  peers: import('@aril/domain/collaboration').Presence[]
   edgeId: string | null
   preview: boolean
   routes: Map<string, import('../types/wireRoute.ts').WireRoute>
@@ -55,10 +55,10 @@ export type WireframeFlowProps = {
   connect: (source: string, target: string, label?: string) => void
   checkpoint: () => void
   save: (next: Wireframe, record?: boolean) => void
-  board: import('@pomegranate/domain/workspace').Board
-  following: import('@pomegranate/domain/collaboration').Presence | null
+  board: import('@aril/domain/workspace').Board
+  following: import('@aril/domain/collaboration').Presence | null
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
 }

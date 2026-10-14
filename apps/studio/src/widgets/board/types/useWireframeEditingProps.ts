@@ -1,4 +1,4 @@
-import { type Wireframe } from '@pomegranate/domain/wireframe'
+import { type Wireframe } from '@aril/domain/wireframe'
 export type UseWireframeEditingProps = {
   setSelection: (
     value: Set<string> | ((current: Set<string>) => Set<string>),
@@ -10,7 +10,7 @@ export type UseWireframeEditingProps = {
           current: import('../types/wireframeBoardState.ts').WireframeBoardState['edgeId'],
         ) => import('../types/wireframeBoardState.ts').WireframeBoardState['edgeId']),
   ) => void
-  node: import('@pomegranate/domain/wireframe').WireNode | undefined
+  node: import('@aril/domain/wireframe').WireNode | undefined
   save: (next: Wireframe, record?: boolean) => void
   graph: {
     nodes: {

@@ -8,7 +8,7 @@ import {
   isDesignContainer,
   designDescendants,
   reparentDesignElement,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 export function DesignGeometry({ model }: DesignEditorProps) {
   const { t } = useTranslation()
   const node = model.selected[0]

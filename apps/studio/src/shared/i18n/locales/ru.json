@@ -1254,5 +1254,19 @@
   "Watch the studio workflow: Canvas, Design, and Library.": "Работа в студии: Холст, Дизайн и Библиотека.",
   "Watch asset details move, resize, preview variants and filter usages.": "Перемещение и размер сведений о ресурсе, предпросмотр вариантов и поиск использований.",
   "Watch a library group expand directly in the graph.": "Раскрытие группы библиотеки прямо на графе.",
-  "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.": "Вместо одних снимков в обновлениях доступны видеозаписи экрана. GIF в README теперь показывает непрерывную работу в браузере."
+  "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.": "Вместо одних снимков в обновлениях доступны видеозаписи экрана. GIF в README теперь показывает непрерывную работу в браузере.",
+  "Connect to": "Подключить к",
+  "My account — all accessible files": "Мой аккаунт — все доступные файлы",
+  "This file only": "Только этот файл",
+  "Includes current and future files you can access. File permissions still apply; viewers cannot edit.": "Включает текущие и будущие доступные файлы. Права каждого файла сохраняются: наблюдатели не могут редактировать.",
+  "This connection can only access the current file.": "Это подключение имеет доступ только к текущему файлу.",
+  "Account access": "Доступ к аккаунту",
+  "Connect Codex or another MCP client to your account or one file. Edits appear in revision history and team activity.": "Подключите Codex или другой MCP-клиент к аккаунту или одному файлу. Правки отображаются в истории версий и активности команды.",
+  "One agent connection, all your files": "Одно подключение агента для всех ваших файлов",
+  "Connect an MCP client to your account and switch files without reconnecting.": "Подключите MCP-клиент к аккаунту и переключайте файлы без повторного подключения.",
+  "Agent access now offers account-wide or single-file credentials. Every file keeps its own editor and viewer permissions.": "В доступе для агентов можно выбрать аккаунт или отдельный файл. Права редактора и наблюдателя сохраняются для каждого файла.",
+  "MCP can list accessible files and target each read or edit explicitly, keeping simultaneous requests separate.": "MCP показывает доступные файлы и явно указывает цель каждого чтения или изменения, разделяя одновременные запросы.",
+  "The MCP server, companion skill, packages and new configuration now use Aril names. Older credentials and configuration remain compatible.": "MCP-сервер, сопутствующий навык, пакеты и новая конфигурация используют имя Aril. Старые ключи и конфигурация совместимы.",
+  "Existing file credentials stay file-only. Create an account credential and run setup once to enable access across files.": "Существующие ключи файлов остаются ограниченными одним файлом. Для доступа к разным файлам создайте ключ аккаунта и один раз запустите настройку.",
+  "Agent access settings in the isolated demo, showing account or single-file access, permissions and expiry.": "Настройки доступа агента в изолированном демо: аккаунт или отдельный файл, права и срок действия."
 }

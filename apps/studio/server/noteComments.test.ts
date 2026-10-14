@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import {
   applyOperations,
   diffWorkspace,
   presenceSchema,
-} from '@pomegranate/domain/collaboration'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { noteBodyKey } from '../src/widgets/notes/utils/noteBodyKey.ts'
 
 test('independent note comments merge by ID, survive body edits, and retain conflict protection', () => {

@@ -1,4 +1,4 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { isDemoPlacementClear } from './isDemoPlacementClear.ts'
 import { demoNodeBounds } from './demoNodeBounds.ts'
 

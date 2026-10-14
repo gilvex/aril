@@ -1,4 +1,4 @@
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 
 export type WorkspaceHomeState = {
   search: string

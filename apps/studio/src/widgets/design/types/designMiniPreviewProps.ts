@@ -1,2 +1,2 @@
-import type { DesignElement } from '@pomegranate/domain/design'
+import type { DesignElement } from '@aril/domain/design'
 export type DesignMiniPreviewProps = { nodes: DesignElement[] }

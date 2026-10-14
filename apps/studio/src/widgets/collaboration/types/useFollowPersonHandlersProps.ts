@@ -2,9 +2,9 @@ export type FollowPersonHandlersProps = {
   onFollow: (id: string | null) => void
   followId: string | null
   person:
-    | import('@pomegranate/domain/collaboration').Presence
+    | import('@aril/domain/collaboration').Presence
     | {
-        profile: import('@pomegranate/domain/collaboration').Profile
+        profile: import('@aril/domain/collaboration').Profile
         clientId: string
         view: string
         following: null

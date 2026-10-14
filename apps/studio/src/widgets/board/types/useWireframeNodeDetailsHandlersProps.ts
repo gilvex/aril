@@ -1,12 +1,12 @@
-import { type WireNode } from '@pomegranate/domain/wireframe'
+import { type WireNode } from '@aril/domain/wireframe'
 export type WireframeNodeDetailsHandlersProps = {
-  screens: import('@pomegranate/domain/wireframe').WireNode[]
-  node: import('@pomegranate/domain/wireframe').WireNode
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  screens: import('@aril/domain/wireframe').WireNode[]
+  node: import('@aril/domain/wireframe').WireNode
+  graph: import('@aril/domain/wireframe').Wireframe
   editNode: (changes: Partial<WireNode>) => void
   editData: (changes: Partial<WireNode['data']>) => void
   save: (
-    next: import('@pomegranate/domain/wireframe').Wireframe,
+    next: import('@aril/domain/wireframe').Wireframe,
     record?: boolean,
   ) => void
   selection: Set<string>

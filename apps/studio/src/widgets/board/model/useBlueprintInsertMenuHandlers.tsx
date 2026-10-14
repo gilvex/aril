@@ -1,7 +1,7 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '@/widgets/board/config/kindIcons.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
-import { nodeKinds } from '@pomegranate/domain/workspace'
+import { nodeKinds } from '@aril/domain/workspace'
 import { useMemo } from 'react'
 
 import type { BlueprintInsertMenuHandlersProps } from '../types/useBlueprintInsertMenuHandlersProps.ts'

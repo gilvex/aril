@@ -1,5 +1,5 @@
-import { applyOperations } from '@pomegranate/domain/collaboration'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { applyOperations } from '@aril/domain/collaboration'
+import { workspaceSchema } from '@aril/domain/workspace'
 import type { DemoState } from '../types/demoState.ts'
 import { planDemoAction } from './planDemoAction.ts'
 import { sampleDemoPlannerPresence } from './sampleDemoPlannerPresence.ts'

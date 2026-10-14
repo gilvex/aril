@@ -2,15 +2,15 @@ import {
   applyOperations,
   diffWorkspace,
   presenceSchema,
-} from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
+} from '@aril/domain/collaboration'
+import { createSeed } from '@aril/domain/seed'
 import {
   makeWireNode,
   removeWireNodes,
   wireframeSchema,
   wirePosition,
-} from '@pomegranate/domain/wireframe'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+} from '@aril/domain/wireframe'
+import { workspaceSchema } from '@aril/domain/workspace'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { test } from 'node:test'

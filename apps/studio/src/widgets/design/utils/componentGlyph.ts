@@ -1,5 +1,5 @@
-import { designPosition } from '@pomegranate/domain/design'
-import type { DesignComponent } from '@pomegranate/domain/designLibrary'
+import { designPosition } from '@aril/domain/design'
+import type { DesignComponent } from '@aril/domain/designLibrary'
 import type { ComponentGlyph } from '../types/componentGlyph.ts'
 /** A bounded monochrome silhouette, derived from actual geometry rather than names. */
 export function componentGlyph(component: DesignComponent): ComponentGlyph {

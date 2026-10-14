@@ -1,4 +1,4 @@
-import type { WorkspaceMember } from '@pomegranate/domain/studios'
+import type { WorkspaceMember } from '@aril/domain/studios'
 import type { useSettings } from '../model/useSettings.ts'
 export type SettingsMemberProps = {
   member: WorkspaceMember

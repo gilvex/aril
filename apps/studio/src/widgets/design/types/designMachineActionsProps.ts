@@ -1,7 +1,7 @@
 import type {
   DesignLibrary,
   DesignMachine,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 export type DesignMachineActionsProps = {
   label: string
   actions: DesignMachine['transitions'][string]['actions']

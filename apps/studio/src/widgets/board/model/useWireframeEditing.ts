@@ -1,4 +1,4 @@
-import { type WireNode } from '@pomegranate/domain/wireframe'
+import { type WireNode } from '@aril/domain/wireframe'
 import { useCallback } from 'react'
 import type { UseWireframeEditingProps } from '../types/useWireframeEditingProps.ts'
 export function useWireframeEditing({

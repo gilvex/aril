@@ -1,12 +1,12 @@
 import {
   createExampleDesignLibrary,
   type DesignLibrary,
-} from '@pomegranate/domain/designLibrary'
-import { documentOf } from '@pomegranate/domain/collaboration'
+} from '@aril/domain/designLibrary'
+import { documentOf } from '@aril/domain/collaboration'
 import { Client } from '@modelcontextprotocol/client'
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio'
-import { makeDesignElement, type DesignPage } from '@pomegranate/domain/design'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import { makeDesignElement, type DesignPage } from '@aril/domain/design'
+import type { Envelope } from '@aril/domain/workspace'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { mkdtemp, rm } from 'node:fs/promises'
@@ -35,7 +35,7 @@ test('MCP discovers and safely edits design pages in legacy workspaces', async (
     await client.connect(
       new StdioClientTransport({
         command: process.execPath,
-        args: [fileURLToPath(import.meta.resolve('@pomegranate/mcp/index'))],
+        args: [fileURLToPath(import.meta.resolve('@aril/mcp/index'))],
         env: {
           POMEGRANATE_AGENT_ORIGIN: origin,
           POMEGRANATE_AGENT_TOKEN: credential.token,

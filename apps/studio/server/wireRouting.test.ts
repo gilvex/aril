@@ -2,7 +2,7 @@ import {
   makeWireNode,
   type Wireframe,
   type WireNode,
-} from '@pomegranate/domain/wireframe'
+} from '@aril/domain/wireframe'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import {

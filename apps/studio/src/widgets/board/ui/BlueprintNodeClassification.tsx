@@ -1,6 +1,6 @@
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { nodeKinds, statuses } from '@pomegranate/domain/workspace'
+import { nodeKinds, statuses } from '@aril/domain/workspace'
 import { kindLabels } from '../config/kindLabels.ts'
 import type { BlueprintNodeClassificationProps } from '../types/blueprintNodeClassificationProps.ts'
 export function BlueprintNodeClassification({

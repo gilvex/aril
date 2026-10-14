@@ -1,4 +1,4 @@
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 export type ControlMarker = {
   peer: Presence
   pointer: { x: number; y: number } | null

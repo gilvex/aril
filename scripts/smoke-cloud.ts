@@ -2,16 +2,16 @@
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { openPostgres } from '../apps/studio/server/postgres.ts'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import { makeWireNode } from '@pomegranate/domain/wireframe'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import { diffWorkspace } from '@aril/domain/collaboration'
+import { makeWireNode } from '@aril/domain/wireframe'
+import type { Envelope } from '@aril/domain/workspace'
 import { RealtimeClient } from '@supabase/realtime-js'
 import {
   encode64,
   publicKey,
   verifyCertificate,
   type LiveConfig,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 
 const origin = process.env.SMOKE_ORIGIN
 if (!origin) throw new Error('Set SMOKE_ORIGIN to the deployment being tested.')

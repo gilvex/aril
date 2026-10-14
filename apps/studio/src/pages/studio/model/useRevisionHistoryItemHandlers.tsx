@@ -1,6 +1,6 @@
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { useCallback } from 'react'
 
 import type { RevisionHistoryItemHandlersProps } from '../types/useRevisionHistoryItemHandlersProps.ts'

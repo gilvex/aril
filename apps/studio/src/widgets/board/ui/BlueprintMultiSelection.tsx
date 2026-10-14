@@ -1,7 +1,7 @@
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
-import { nodeKinds, statuses } from '@pomegranate/domain/workspace'
+import { nodeKinds, statuses } from '@aril/domain/workspace'
 import { Trash2 } from 'lucide-react'
 import { useBlueprintMultiSelectionHandlers } from '../model/useBlueprintMultiSelectionHandlers.tsx'
 

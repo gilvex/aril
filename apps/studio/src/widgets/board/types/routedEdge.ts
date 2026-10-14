@@ -1,5 +1,5 @@
 import type { WireRoute } from '@/widgets/board/types/wireRoute.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import { type Edge } from '@xyflow/react'
 
 export type RoutedEdge = Edge<

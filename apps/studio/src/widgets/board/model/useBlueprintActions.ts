@@ -1,5 +1,5 @@
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { type Node } from '@xyflow/react'
 import { useCallback } from 'react'
 import type { UseBlueprintActionsProps } from '../types/useBlueprintActionsProps.ts'

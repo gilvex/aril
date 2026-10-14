@@ -1,12 +1,12 @@
 import { projectLiveFields } from '../utils/projectLiveFields.ts'
 import { editLiveFields } from '../utils/editLiveFields.ts'
 import { workspaceSlice } from './slices/workspaceSlice.ts'
-import type { LiveFieldsMessage } from '@pomegranate/domain/liveSession'
-import { setNoteText, type NoteTextState } from '@pomegranate/domain/noteText'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
+import type { LiveFieldsMessage } from '@aril/domain/liveSession'
+import { setNoteText, type NoteTextState } from '@aril/domain/noteText'
+import { diffWorkspace } from '@aril/domain/collaboration'
 import { createWorkspaceSession } from '@/entities/workspace/model/createWorkspaceSession.ts'
 import type { Recovery } from '@/entities/workspace/types/recovery.ts'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import type { Envelope } from '@aril/domain/workspace'
 import {
   useCallback,
   useEffect,

@@ -1,4 +1,4 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 export function noteDocuments(workspace: Workspace, defaultTitle: string) {
   return [
     {

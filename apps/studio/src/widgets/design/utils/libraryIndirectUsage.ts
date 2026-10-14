@@ -1,4 +1,4 @@
-import type { DesignUsage } from '@pomegranate/domain/designLibrary'
+import type { DesignUsage } from '@aril/domain/designLibrary'
 export function libraryIndirectUsage(
   usage: DesignUsage[],
   selected: string | null,

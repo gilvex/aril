@@ -1,4 +1,4 @@
-import type { Wireframe, WireNode } from '@pomegranate/domain/wireframe'
+import type { Wireframe, WireNode } from '@aril/domain/wireframe'
 
 export function createDemoWireframe(): Wireframe {
   const nodes: WireNode[] = []

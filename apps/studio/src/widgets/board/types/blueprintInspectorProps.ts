@@ -1,12 +1,12 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { type Node } from '@xyflow/react'
 
 export type BlueprintInspectorProps = {
   focusNode: (id: string) => void
   fitBoard: () => void
   addNode: (kind: Idea['data']['kind']) => void
-  selectedNodes: import('@pomegranate/domain/workspace').Idea[]
-  node: import('@pomegranate/domain/workspace').Idea | undefined
+  selectedNodes: import('@aril/domain/workspace').Idea[]
+  node: import('@aril/domain/workspace').Idea | undefined
   edge:
     | {
         id: string
@@ -26,10 +26,10 @@ export type BlueprintInspectorProps = {
   inspectorToggle: import('react').RefObject<HTMLButtonElement | null>
   checkpoint: () => void
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   selectedIds: Set<string>
   onDelete: ({
     nodes,

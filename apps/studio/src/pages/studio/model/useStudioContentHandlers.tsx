@@ -1,5 +1,5 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { useCallback } from 'react'
 
 import type { StudioContentHandlersProps } from '../types/useStudioContentHandlersProps.ts'

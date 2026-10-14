@@ -15,11 +15,11 @@ export type StudioCanvasHandlersProps = {
   ) => void
   change: (
     update: (
-      value: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      value: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   setRequirementId: (
     value:
       | import('../types/studioState.ts').StudioState['requirementId']

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 import { createSettingsModel } from './createSettingsModel.ts'
 export function useSettings(studio: StudioSummary, active: boolean) {
   const ref = useRef<ReturnType<typeof createSettingsModel> | null>(null)

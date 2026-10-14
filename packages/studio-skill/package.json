@@ -5,8 +5,8 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "name": "@pomegranate/studio-skill",
-  "description": "Companion skill for working with the Pomegranate planning studio",
+  "name": "@aril/studio-skill",
+  "description": "Companion skill for working with the Aril planning studio",
   "files": [
     "SKILL.md",
     "scripts/install.mjs"

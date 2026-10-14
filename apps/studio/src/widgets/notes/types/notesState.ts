@@ -2,9 +2,9 @@ export type NotesState = {
   composition: {
     id: string
     body: string
-    base: import('@pomegranate/domain/noteText').NoteTextState
+    base: import('@aril/domain/noteText').NoteTextState
   } | null
-  liveText: Record<string, import('@pomegranate/domain/noteText').NoteTextState>
+  liveText: Record<string, import('@aril/domain/noteText').NoteTextState>
 
   comments: boolean
   commentDraft: string

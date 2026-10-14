@@ -1,4 +1,4 @@
-import type { Workspace, Requirement } from '@pomegranate/domain/workspace'
+import type { Workspace, Requirement } from '@aril/domain/workspace'
 import { scopeBoards } from './scopeBoards.ts'
 import { scopeTargets } from './scopeTargets.ts'
 import { scopeTargetKey } from './scopeTargetKey.ts'

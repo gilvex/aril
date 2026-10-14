@@ -20,9 +20,12 @@ export function agentCredentials(query: Query) {
       name: string,
       scope: 'read' | 'write',
       days: number,
+      target: 'account' | 'workspace' = 'workspace',
     ) {
+      // '*' is reserved for account grants; existing rows remain workspace grants.
+      const grantWorkspace = target === 'account' ? '*' : workspaceId
       const id = randomUUID(),
-        token = `pome_agent_${randomBytes(32).toString('base64url')}`
+        token = `aril_agent_${randomBytes(32).toString('base64url')}`
       const createdAt = Date.now(),
         expiresAt = createdAt + days * 86400000
       await query(
@@ -31,7 +34,7 @@ export function agentCredentials(query: Query) {
           id,
           digest(token),
           userId,
-          workspaceId,
+          grantWorkspace,
           name,
           scope,
           createdAt,
@@ -40,9 +43,10 @@ export function agentCredentials(query: Query) {
       )
       return {
         credential: {
+          target,
           id,
           userId,
-          workspaceId,
+          workspaceId: grantWorkspace,
           name,
           scope,
           createdAt,
@@ -54,23 +58,25 @@ export function agentCredentials(query: Query) {
     async list(userId: string, workspaceId: string) {
       return (
         await query(
-          'SELECT * FROM studio.agent_credentials WHERE user_id=$1 AND workspace_id=$2 ORDER BY created_at DESC',
+          `SELECT * FROM studio.agent_credentials WHERE user_id=$1 AND (workspace_id=$2 OR workspace_id='*') ORDER BY created_at DESC`,
           [userId, workspaceId],
         )
       ).map(publicCredential)
     },
     async revoke(id: string, userId: string, workspaceId: string) {
       await query(
-        'DELETE FROM studio.agent_credentials WHERE id=$1 AND user_id=$2 AND workspace_id=$3',
+        `DELETE FROM studio.agent_credentials WHERE id=$1 AND user_id=$2 AND (workspace_id=$3 OR workspace_id='*')`,
         [id, userId, workspaceId],
       )
     },
     async authenticate(token: string) {
-      if (!/^pome_agent_[\w-]{43}$/.test(token)) return undefined
+      if (!/^(?:aril|pome)_agent_[\w-]{43}$/.test(token)) return undefined
       const rows = await query(
         `SELECT a.* FROM studio.agent_credentials a
-        JOIN studio.members m ON m.user_id=a.user_id AND m.workspace_id=a.workspace_id
-        WHERE a.token_hash=$1 AND a.expires_at>$2`,
+        JOIN studio.profiles p ON p.id=a.user_id
+        WHERE a.token_hash=$1 AND a.expires_at>$2
+        AND (a.workspace_id='*' OR EXISTS (SELECT 1 FROM studio.members m
+          WHERE m.user_id=a.user_id AND m.workspace_id=a.workspace_id))`,
         [digest(token), Date.now()],
       )
       return rows[0] ? publicCredential(rows[0]) : undefined

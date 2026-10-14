@@ -1,3 +1,3 @@
-import { type RecoveryDraft } from '@pomegranate/domain/freshness'
+import { type RecoveryDraft } from '@aril/domain/freshness'
 
 export type Recovery = RecoveryDraft

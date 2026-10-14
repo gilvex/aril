@@ -1,4 +1,4 @@
-import { writeVersion } from '@pomegranate/domain/freshness'
+import { writeVersion } from '@aril/domain/freshness'
 import assert from 'node:assert/strict'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'

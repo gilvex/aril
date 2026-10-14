@@ -1,5 +1,5 @@
-import type { StudioSummary } from '@pomegranate/domain/studios'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import type { StudioSummary } from '@aril/domain/studios'
+import type { Envelope } from '@aril/domain/workspace'
 
 export type AgentWorkspace = Envelope & {
   studio: StudioSummary

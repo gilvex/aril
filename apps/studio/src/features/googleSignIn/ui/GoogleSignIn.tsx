@@ -8,7 +8,7 @@ import type { GoogleSignInProps } from '@/features/googleSignIn/types/googleSign
 import { loadGoogle } from '@/features/googleSignIn/utils/loadGoogle.ts'
 import { request } from '@/shared/api/request.ts'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import { useEffect, useRef } from 'react'
 import { renderResponsiveGoogleButton } from '../utils/renderResponsiveGoogleButton.ts'
 

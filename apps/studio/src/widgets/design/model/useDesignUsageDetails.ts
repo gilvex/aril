@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
-import type { DesignUsage } from '@pomegranate/domain/designLibrary'
+import type { DesignUsage } from '@aril/domain/designLibrary'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 export function useDesignUsageDetails(model: DesignEditorModel) {
   const { t } = useTranslation()

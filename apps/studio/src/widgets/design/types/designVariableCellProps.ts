@@ -1,4 +1,4 @@
-import type { DesignVariable } from '@pomegranate/domain/designLibrary'
+import type { DesignVariable } from '@aril/domain/designLibrary'
 export type DesignVariableCellProps = {
   variable: DesignVariable
   mode: string

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { CanvasDrawing } from '@/features/canvasTools/index.ts'
-import type { CanvasStrokes } from '@pomegranate/domain/drawing'
+import type { CanvasStrokes } from '@aril/domain/drawing'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 export function DesignDrawing({ model }: { model: DesignEditorModel }) {
   const save = useCallback(

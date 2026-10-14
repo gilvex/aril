@@ -4,7 +4,7 @@ import {
   presenceSchema,
   type Presence,
   type RequirementDisclosure,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import { createRequirementsModel } from '../src/widgets/requirements/model/createRequirementsModel.ts'
 import { createRequirementsState } from '../src/widgets/requirements/model/createRequirementsState.ts'
 import { latestRequirementDisclosure } from '../src/widgets/requirements/utils/latestRequirementDisclosure.ts'

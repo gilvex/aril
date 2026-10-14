@@ -1,7 +1,7 @@
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 
 export type StaleDraftScreenProps = {
-  legacy: import('@pomegranate/domain/workspace').Workspace
+  legacy: import('@aril/domain/workspace').Workspace
   staleDraftKey: string | null
   setStaleDraftKey: (
     value:

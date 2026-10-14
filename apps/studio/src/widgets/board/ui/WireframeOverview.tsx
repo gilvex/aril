@@ -1,6 +1,6 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { icons } from '@/widgets/board/config/wireframeBoardIcons.ts'
-import { wireKinds, wireLabels } from '@pomegranate/domain/wireframe'
+import { wireKinds, wireLabels } from '@aril/domain/wireframe'
 import { AppWindow, ArrowRight, Plus } from 'lucide-react'
 
 import type { WireframeOverviewProps } from '../types/wireframeOverviewProps.ts'

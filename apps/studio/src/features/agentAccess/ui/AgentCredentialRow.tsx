@@ -25,8 +25,11 @@ export function AgentCredentialRow({
       <span>
         <strong>{credential.name}</strong>
         <small>
-          {credential.scope === 'write' ? t('Read and edit') : t('Read only')} ·{' '}
-          {credential.expiresAt <= Date.now() ? t('Expired') : t('Expires')}{' '}
+          {credential.target === 'account'
+            ? t('Account access')
+            : t('This file only')}{' '}
+          · {credential.scope === 'write' ? t('Read and edit') : t('Read only')}{' '}
+          · {credential.expiresAt <= Date.now() ? t('Expired') : t('Expires')}{' '}
           {new Date(credential.expiresAt).toLocaleDateString()}
         </small>
       </span>

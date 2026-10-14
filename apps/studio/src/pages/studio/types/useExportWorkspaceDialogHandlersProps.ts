@@ -1,5 +1,5 @@
 export type ExportWorkspaceDialogHandlersProps = {
-  workspace: import('@pomegranate/domain/workspace').Workspace
+  workspace: import('@aril/domain/workspace').Workspace
   setNotice: (
     value:
       | import('../types/studioState.ts').StudioState['notice']

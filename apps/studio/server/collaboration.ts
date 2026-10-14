@@ -1,4 +1,4 @@
-import { liveDocumentMessageSchema } from '@pomegranate/domain/liveSession'
+import { liveDocumentMessageSchema } from '@aril/domain/liveSession'
 import { installWorkspaceAccess } from './utils/installWorkspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import {
@@ -9,8 +9,8 @@ import {
   presenceSchema,
   type Presence,
   type Profile,
-} from '@pomegranate/domain/collaboration'
-import { liveJoinSchema } from '@pomegranate/domain/liveSession'
+} from '@aril/domain/collaboration'
+import { liveJoinSchema } from '@aril/domain/liveSession'
 import type { Express, Request, Response } from 'express'
 import { z } from 'zod'
 import { installGuestJoin } from './utils/installGuestJoin.ts'
@@ -78,7 +78,10 @@ export function installCollaboration(
   app.get('/api/auth/config', async (_req, res) =>
     res.json({
       googleClientId: process.env.GOOGLE_CLIENT_ID || null,
-      hostedOrigin: process.env.POMEGRANATE_CLOUD_ORIGIN || null,
+      hostedOrigin:
+        process.env.ARIL_CLOUD_ORIGIN ||
+        process.env.POMEGRANATE_CLOUD_ORIGIN ||
+        null,
     }),
   )
   app.post('/api/auth/logout', async (req, res) => {
@@ -343,7 +346,8 @@ export function installCollaboration(
     res.json(await store.studioOverviews((res.locals.profile as Profile).id)),
   )
   app.post('/api/hosted-access', async (req, res) => {
-    const origin = process.env.POMEGRANATE_CLOUD_ORIGIN
+    const origin =
+      process.env.ARIL_CLOUD_ORIGIN || process.env.POMEGRANATE_CLOUD_ORIGIN
     if (
       !origin ||
       !['localhost', '127.0.0.1', '[::1]'].includes(req.hostname)

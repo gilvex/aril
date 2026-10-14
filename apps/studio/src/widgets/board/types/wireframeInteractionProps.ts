@@ -15,8 +15,8 @@ export type WireframeInteractionProps = {
           current: import('../types/wireframeBoardState.ts').WireframeBoardState['targetId'],
         ) => import('../types/wireframeBoardState.ts').WireframeBoardState['targetId']),
   ) => void
-  graph: import('@pomegranate/domain/wireframe').Wireframe
-  node: import('@pomegranate/domain/wireframe').WireNode
+  graph: import('@aril/domain/wireframe').Wireframe
+  node: import('@aril/domain/wireframe').WireNode
   connect: (source: string, target: string, label?: string) => void
   setEdgeId: (
     value:

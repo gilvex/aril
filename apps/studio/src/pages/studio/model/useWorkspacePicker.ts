@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useSyncExternalStore } from 'react'
 import { configureStore } from '@reduxjs/toolkit'
 import { request } from '@/shared/api/request.ts'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 import { workspacePickerSlice } from './slices/workspacePickerSlice.ts'
 export function useWorkspacePicker(current: StudioSummary) {
   const model = useMemo(() => {

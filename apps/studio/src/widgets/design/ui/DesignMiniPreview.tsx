@@ -1,4 +1,4 @@
-import { designPosition, isDesignContainer } from '@pomegranate/domain/design'
+import { designPosition, isDesignContainer } from '@aril/domain/design'
 import type { DesignMiniPreviewProps } from '../types/designMiniPreviewProps.ts'
 export function DesignMiniPreview({ nodes }: DesignMiniPreviewProps) {
   const positions = nodes.map((node) => ({

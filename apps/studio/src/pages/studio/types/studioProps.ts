@@ -1,7 +1,7 @@
 import type { Recovery } from '@/entities/workspace/index.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
-import type { StudioSummary } from '@pomegranate/domain/studios'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import type { Profile } from '@aril/domain/collaboration'
+import type { StudioSummary } from '@aril/domain/studios'
+import type { Envelope } from '@aril/domain/workspace'
 export type StudioProps = {
   active?: boolean
   onCloseWorkspace?: (id: string) => void

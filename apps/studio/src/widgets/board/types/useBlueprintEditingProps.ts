@@ -44,7 +44,7 @@ export type UseBlueprintEditingProps = {
   ) => void
   editField: import('react').RefObject<HTMLInputElement | null>
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
   board: {

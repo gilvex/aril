@@ -1,7 +1,7 @@
 import type {
   Presence,
   RequirementDisclosure,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 
 export function latestRequirementDisclosure(
   requirementId: string | null,

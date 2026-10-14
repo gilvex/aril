@@ -1,4 +1,4 @@
-import type { DesignLibrary } from '@pomegranate/domain/designLibrary'
+import type { DesignLibrary } from '@aril/domain/designLibrary'
 export function designLibrarySummary(library?: DesignLibrary) {
   return library
     ? {

@@ -1,4 +1,4 @@
-import type { DesignElement } from '@pomegranate/domain/design'
+import type { DesignElement } from '@aril/domain/design'
 export function designTreeRows(
   nodes: DesignElement[],
   collapsed: string[] = [],

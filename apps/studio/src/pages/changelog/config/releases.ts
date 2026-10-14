@@ -3,6 +3,22 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-14-account-mcp',
+    date: '2026-10-14',
+    title: 'One agent connection, all your files',
+    summary:
+      'Connect an MCP client to your account and switch files without reconnecting.',
+    changes: [
+      'Agent access now offers account-wide or single-file credentials. Every file keeps its own editor and viewer permissions.',
+      'MCP can list accessible files and target each read or edit explicitly, keeping simultaneous requests separate.',
+      'The MCP server, companion skill, packages and new configuration now use Aril names. Older credentials and configuration remain compatible.',
+      'Existing file credentials stay file-only. Create an account credential and run setup once to enable access across files.',
+    ],
+    image: '/changelog/account-agent-access.png',
+    imageAlt:
+      'Agent access settings in the isolated demo, showing account or single-file access, permissions and expiry.',
+  },
+  {
     id: '2026-10-14-engineering',
     date: '2026-10-14',
     title: 'Engineering notes and repeatable checks',

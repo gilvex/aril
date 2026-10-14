@@ -1,5 +1,5 @@
-import type { Idea } from '@pomegranate/domain/workspace'
-import type { CameraPresence } from '@pomegranate/domain/collaboration'
+import type { Idea } from '@aril/domain/workspace'
+import type { CameraPresence } from '@aril/domain/collaboration'
 import type { DemoAction } from './demoAction.ts'
 
 export type DemoPlanner = {

@@ -17,7 +17,7 @@ export function validateConfig(value: AgentConfig): AgentConfig {
       'Studio address must be an HTTPS origin, or loopback HTTP for development.',
     )
   }
-  if (!/^pome_agent_[\w-]{43}$/.test(value.token))
+  if (!/^(?:aril|pome)_agent_[\w-]{43}$/.test(value.token))
     throw new Error('A valid studio agent credential is required.')
   return { origin: url.origin, token: value.token }
 }

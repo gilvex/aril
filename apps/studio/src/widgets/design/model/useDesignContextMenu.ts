@@ -9,7 +9,7 @@ import {
   designPosition,
   isDesignContainer,
   designAncestors,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 export function useDesignContextMenu(model: DesignEditorModel) {
   const { t } = useTranslation()
   const flow = useReactFlow()

@@ -9,7 +9,7 @@ import { NodeResizer, type NodeProps } from '@xyflow/react'
 import { Image } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignFlowNode } from '../types/designFlowNode.ts'
-import { isDesignContainer } from '@pomegranate/domain/design'
+import { isDesignContainer } from '@aril/domain/design'
 import { DesignNodeClips } from './DesignNodeClips.tsx'
 
 export function DesignElementNode({

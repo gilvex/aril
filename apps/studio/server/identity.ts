@@ -1,4 +1,4 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import { randomBytes, randomUUID } from 'node:crypto'
 import type { DatabaseSync } from 'node:sqlite'
 import { guestTables } from './guestLinks.ts'

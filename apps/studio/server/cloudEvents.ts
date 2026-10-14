@@ -1,4 +1,4 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import type { Request, Response } from 'express'
 import type { Store } from './storeContract.ts'
 

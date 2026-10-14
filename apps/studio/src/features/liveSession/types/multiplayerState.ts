@@ -2,7 +2,7 @@ import type {
   Activity,
   Presence,
   Profile,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 
 export type MultiplayerState = {
   profile: Profile

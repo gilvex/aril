@@ -7,11 +7,11 @@ export type WireframeSurfaceProps = {
   ) => void
   sendPresence: (
     changes: {
-      camera?: import('@pomegranate/domain/collaboration').CameraPresence | null
+      camera?: import('@aril/domain/collaboration').CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]
-      dragging?: import('@pomegranate/domain/collaboration').DragPosition[]
+      dragging?: import('@aril/domain/collaboration').DragPosition[]
     },
     force?: boolean,
   ) => void
@@ -58,18 +58,18 @@ export type WireframeSurfaceProps = {
         ) => import('../types/wireframeBoardState.ts').WireframeBoardState['palette']),
   ) => void
   palette: boolean
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   add: (
-    kind: import('@pomegranate/domain/wireframe').WireKind,
+    kind: import('@aril/domain/wireframe').WireKind,
     at?: import('../types/canvasInsertPoint.ts').CanvasInsertPoint,
   ) => void
-  screens: import('@pomegranate/domain/wireframe').WireNode[]
+  screens: import('@aril/domain/wireframe').WireNode[]
   compact: boolean
-  liveNodes: import('@pomegranate/domain/wireframe').WireNode[]
+  liveNodes: import('@aril/domain/wireframe').WireNode[]
   selection: Set<string>
   follow: (id: string) => void
-  profile: import('@pomegranate/domain/collaboration').Profile
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  profile: import('@aril/domain/collaboration').Profile
+  peers: import('@aril/domain/collaboration').Presence[]
   edgeId: string | null
   routes: Map<string, import('../types/wireRoute.ts').WireRoute>
   setEdgeId: (
@@ -94,7 +94,7 @@ export type WireframeSurfaceProps = {
   openInsertMenu: (
     event: React.MouseEvent | MouseEvent,
     target?: Pick<
-      import('@pomegranate/domain/wireframe').WireNode,
+      import('@aril/domain/wireframe').WireNode,
       'id' | 'data' | 'parentId'
     >,
   ) => void
@@ -115,13 +115,13 @@ export type WireframeSurfaceProps = {
   connect: (source: string, target: string, label?: string) => void
   checkpoint: () => void
   save: (
-    next: import('@pomegranate/domain/wireframe').Wireframe,
+    next: import('@aril/domain/wireframe').Wireframe,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
-  following: import('@pomegranate/domain/collaboration').Presence | null
+  board: import('@aril/domain/workspace').Board
+  following: import('@aril/domain/collaboration').Presence | null
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
   insertPoint: import('../types/canvasInsertPoint.ts').CanvasInsertPoint | null

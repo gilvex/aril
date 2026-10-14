@@ -14,7 +14,7 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.12.0(supports-color@7.2.0))
-      '@pomegranate/domain':
+      '@aril/domain':
         specifier: workspace:*
         version: link:packages/domain
       '@supabase/realtime-js':
@@ -53,7 +53,7 @@ importers:
       '@fontsource-variable/manrope':
         specifier: ^5.3.0
         version: 5.3.0
-      '@pomegranate/domain':
+      '@aril/domain':
         specifier: workspace:*
         version: link:../../packages/domain
       '@reduxjs/toolkit':
@@ -114,7 +114,7 @@ importers:
       '@modelcontextprotocol/client':
         specifier: 2.3.1
         version: 2.3.1
-      '@pomegranate/mcp':
+      '@aril/mcp':
         specifier: workspace:*
         version: link:../../packages/mcp
       '@types/express':
@@ -153,7 +153,7 @@ importers:
       '@modelcontextprotocol/server':
         specifier: 2.3.1
         version: 2.3.1
-      '@pomegranate/domain':
+      '@aril/domain':
         specifier: workspace:*
         version: link:../domain
       zod:

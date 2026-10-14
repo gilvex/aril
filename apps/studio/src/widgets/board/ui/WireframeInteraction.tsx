@@ -1,6 +1,6 @@
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { wireLabels } from '@pomegranate/domain/wireframe'
+import { wireLabels } from '@aril/domain/wireframe'
 import { ArrowRight, Link2 } from 'lucide-react'
 
 import type { WireframeInteractionProps } from '../types/wireframeInteractionProps.ts'

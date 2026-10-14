@@ -1,4 +1,4 @@
-import type { DesignElement } from '@pomegranate/domain/design'
+import type { DesignElement } from '@aril/domain/design'
 import type { DesignDockEdge } from './designDockEdge.ts'
 import type { DesignDockRect } from './designDockRect.ts'
 export type DesignEditorState = {
@@ -44,7 +44,7 @@ export type DesignEditorState = {
   libraryModeDraft: string
   libraryError: string
   simulation:
-    import('@pomegranate/domain/designLibrary').DesignSimulation | null
+    import('@aril/domain/designLibrary').DesignSimulation | null
   panelPositions: {
     left: { x: number; y: number } | null
     right: { x: number; y: number } | null

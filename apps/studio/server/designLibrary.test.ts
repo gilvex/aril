@@ -1,15 +1,15 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import {
   makeDesignElement,
   designPageSchema,
   duplicateDesignElements,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   createDesignComponent,
   createExampleDesignLibrary,
@@ -19,7 +19,7 @@ import {
   markDesignOverrides,
   resolveDesignBindings,
   stepDesignMachine,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 
 test('library validates typed variables, references, and legacy designs', () => {
   const library = createExampleDesignLibrary('test')

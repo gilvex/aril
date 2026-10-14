@@ -1,4 +1,4 @@
-import type { Board } from '@pomegranate/domain/workspace'
+import type { Board } from '@aril/domain/workspace'
 export function createCanvasNavigationState(board: Board) {
   const open: boolean = false
   const renaming: boolean = false

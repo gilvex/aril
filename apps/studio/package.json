@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "name": "@pomegranate/studio",
+  "name": "@aril/studio",
   "scripts": {
     "dev": "node --env-file-if-exists=../../.env scripts/dev.mjs",
     "build": "tsc -b && vite build && node scripts/build-server.mjs",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",
     "@fontsource-variable/manrope": "^5.3.0",
-    "@pomegranate/domain": "workspace:*",
+    "@aril/domain": "workspace:*",
     "@reduxjs/toolkit": "^2.13.0",
     "@supabase/realtime-js": "^2.117.2",
     "@xyflow/react": "^12.12.0",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@modelcontextprotocol/client": "2.3.1",
-    "@pomegranate/mcp": "workspace:*",
+    "@aril/mcp": "workspace:*",
     "@types/express": "^5.0.6",
     "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",

@@ -1,10 +1,10 @@
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 export type RequirementDetailsHandlersProps = {
   update: (patch: Partial<Requirement>) => void
   change: (
     fn: (
-      w: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      w: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
   ) => void
   current: {
     id: string

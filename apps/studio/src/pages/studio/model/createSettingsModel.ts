@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 import type { SettingsState } from '../types/settingsState.ts'
 import { settingsSlice } from './slices/settingsSlice.ts'
 import { settingsSaga } from './saga/settingsSaga.ts'

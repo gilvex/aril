@@ -7,7 +7,7 @@ const source = fileURLToPath(new URL('../SKILL.md', import.meta.url))
 const destination = join(
   process.env.CODEX_HOME || join(homedir(), '.codex'),
   'skills',
-  'pomegranate-studio',
+  'aril-studio',
 )
 const target = join(destination, 'SKILL.md')
 let exists = false

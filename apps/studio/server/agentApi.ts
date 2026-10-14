@@ -1,12 +1,12 @@
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
-import { type AgentCredential } from '@pomegranate/domain/agentAccess'
+import { type AgentCredential } from '@aril/domain/agentAccess'
 import {
   applyOperations,
   describeOperations,
   MergeConflict,
   operationsSchema,
-} from '@pomegranate/domain/collaboration'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { Router, type Express } from 'express'
 import { z } from 'zod'
 import type { Store } from './storeContract.ts'
@@ -20,7 +20,7 @@ export function installAgentApi(
   api.use(async (req, res, next) => {
     const token = req
       .get('authorization')
-      ?.match(/^Bearer (pome_agent_[\w-]{43})$/)?.[1]
+      ?.match(/^Bearer ((?:aril|pome)_agent_[\w-]{43})$/)?.[1]
     const credential = token
       ? await store.agents.authenticate(token)
       : undefined
@@ -30,27 +30,64 @@ export function installAgentApi(
         .json({ error: 'Agent credential is invalid, expired, or revoked.' })
       return
     }
+    res.locals.agent = credential
+    next()
+  })
+  api.get('/workspaces', async (_req, res) => {
+    const agent = res.locals.agent as AgentCredential
+    const studios = await store.studios(agent.userId)
+    const workspaces = []
+    for (const studio of studios) {
+      if (agent.target !== 'account' && studio.id !== agent.workspaceId)
+        continue
+      const role = await store.access.role(agent.userId, studio.id)
+      if (!role || (agent.target === 'account' && role === 'guest')) continue
+      workspaces.push({
+        ...studio,
+        role,
+        scope: role === 'viewer' ? 'read' : agent.scope,
+      })
+    }
+    res.json({ target: agent.target, workspaces })
+  })
+  api.get('/schema', (_req, res) => res.json(z.toJSONSchema(workspaceSchema)))
+  api.use(async (req, res, next) => {
+    const credential = res.locals.agent as AgentCredential
+    const workspaceId =
+      req.get('x-workspace-id') ||
+      (credential.target === 'workspace' ? credential.workspaceId : '')
+    if (!workspaceId) {
+      res
+        .status(400)
+        .json({
+          error:
+            'Account credentials require x-workspace-id. List /api/agent/workspaces first.',
+        })
+      return
+    }
     if (
-      req.get('x-workspace-id') &&
-      req.get('x-workspace-id') !== credential.workspaceId
+      credential.target !== 'account' &&
+      workspaceId !== credential.workspaceId
     ) {
       res
         .status(403)
         .json({ error: 'This credential belongs to another workspace.' })
       return
     }
-    const role = await store.access.role(
-      credential.userId,
-      credential.workspaceId,
-    )
-    if (!role || (req.method !== 'GET' && role === 'viewer')) {
+    const role = await store.access.role(credential.userId, workspaceId)
+    if (
+      !role ||
+      (credential.target === 'account' && role === 'guest') ||
+      (req.method !== 'GET' && role === 'viewer')
+    ) {
       res
         .status(403)
         .json({ error: 'This workspace is view-only or no longer available.' })
       return
     }
     res.locals.workspaceRole = role
-    res.locals.agent = credential
+    // Per-request resolution; never mutate the credential or a shared active workspace.
+    res.locals.agent = { ...credential, workspaceId }
     next()
   })
   api.get('/workspace', async (_req, res) => {
@@ -64,7 +101,6 @@ export function installAgentApi(
       ...(await store.read(agent.workspaceId)),
     })
   })
-  api.get('/schema', (_req, res) => res.json(z.toJSONSchema(workspaceSchema)))
   api.get('/history', async (_req, res) => {
     const id = (res.locals.agent as AgentCredential).workspaceId
     res.json({

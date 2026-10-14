@@ -5,7 +5,7 @@ import {
   removeWireNodes,
   wireLabels,
   wirePosition,
-} from '@pomegranate/domain/wireframe'
+} from '@aril/domain/wireframe'
 import { MarkerType } from '@xyflow/react'
 import type { CSSProperties } from 'react'
 import { useCallback, useMemo } from 'react'

@@ -1,4 +1,4 @@
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
 export function NoteViewer({ peer }: { peer: Presence }) {

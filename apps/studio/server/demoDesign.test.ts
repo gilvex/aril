@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
+import { diffWorkspace } from '@aril/domain/collaboration'
 import {
   workspaceSchema,
   type Envelope,
   type Workspace,
-} from '@pomegranate/domain/workspace'
+} from '@aril/domain/workspace'
 import { createDemoWorkspace } from '../src/app/utils/createDemoWorkspace.ts'
 import { createDemoState } from '../src/app/utils/createDemoState.ts'
 import { createDemoTransport } from '../src/app/utils/createDemoTransport.ts'

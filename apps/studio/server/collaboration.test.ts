@@ -1,12 +1,12 @@
-import { writeVersion } from '@pomegranate/domain/freshness'
+import { writeVersion } from '@aril/domain/freshness'
 import {
   applyOperations,
   diffWorkspace,
   type Operation,
-} from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
-import { makeWireNode } from '@pomegranate/domain/wireframe'
-import type { Envelope } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { createSeed } from '@aril/domain/seed'
+import { makeWireNode } from '@aril/domain/wireframe'
+import type { Envelope } from '@aril/domain/workspace'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { mkdtempSync, rmSync } from 'node:fs'

@@ -13,7 +13,7 @@ export function useAppHandlers({
   setProfile,
 }: AppHandlersProps) {
   const openWorkspace = useCallback<
-    (value: import('@pomegranate/domain/studios').StudioSummary) => void
+    (value: import('@aril/domain/studios').StudioSummary) => void
   >(
     (value) => {
       setStudio(value)
@@ -44,7 +44,7 @@ export function useAppHandlers({
     [sessions, setInitial, setRecovery, setError, setRouteNotice, setStudio],
   )
   const returnToWorkspaces = useCallback<
-    (value: import('@pomegranate/domain/collaboration').Profile) => void
+    (value: import('@aril/domain/collaboration').Profile) => void
   >(
     (value) => {
       saveStudioRoute(null)

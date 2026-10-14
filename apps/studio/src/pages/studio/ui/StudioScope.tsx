@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import type { RequirementLink } from '@pomegranate/domain/workspace'
+import type { RequirementLink } from '@aril/domain/workspace'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 import { Requirements } from './Requirements.tsx'
 export function StudioScope(props: StudioContentProps) {

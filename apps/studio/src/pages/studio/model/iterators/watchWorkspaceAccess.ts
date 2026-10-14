@@ -1,6 +1,6 @@
 import { call, delay, put } from 'redux-saga/effects'
 import type { SagaIterator } from 'redux-saga'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 import { request, ApiError, workspaceHeaders } from '@/shared/api/index.ts'
 import { settingsSlice } from '../slices/settingsSlice.ts'
 export function* watchWorkspaceAccess(workspaceId: string): SagaIterator {

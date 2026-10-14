@@ -2,10 +2,10 @@ import {
   noteTextSnapshot,
   writeNoteText,
   setNoteText,
-} from '@pomegranate/domain/noteText'
-import { applyOperations } from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
-import type { Envelope } from '@pomegranate/domain/workspace'
+} from '@aril/domain/noteText'
+import { applyOperations } from '@aril/domain/collaboration'
+import { createSeed } from '@aril/domain/seed'
+import type { Envelope } from '@aril/domain/workspace'
 import assert from 'node:assert/strict'
 import { afterEach, beforeEach, test } from 'node:test'
 import { setTimeout as sleep } from 'node:timers/promises'

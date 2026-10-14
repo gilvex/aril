@@ -1,5 +1,5 @@
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 import { useCallback } from 'react'
 
 import type { RequirementDetailsHandlersProps } from '../types/useRequirementDetailsHandlersProps.ts'

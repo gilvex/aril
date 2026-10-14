@@ -12,6 +12,9 @@ export function createAgentAccessModel(initial: AgentAccessState) {
   })
   const getSnapshot = () => selectAgentAccess(store.getState())
   const actions = {
+    setTarget: (value: AgentAccessState['target']) => {
+      store.dispatch(agentAccessSlice.actions.setTarget(value))
+    },
     setCredentials: (
       value:
         | AgentAccessState['credentials']

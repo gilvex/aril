@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useRef } from 'react'
 import {
   mapNoteSelection,
   type NoteTextState,
-} from '@pomegranate/domain/noteText'
+} from '@aril/domain/noteText'
 import type { NoteSurfaceProps } from '../types/noteSurfaceProps.ts'
 export function useNoteCaret({ editor, model, surface }: NoteSurfaceProps) {
   const anchor = useRef<{

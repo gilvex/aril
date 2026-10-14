@@ -1,1 +1,1 @@
-export type {AgentCredential} from './agentCredential.ts'
+export type { AgentCredential } from './agentCredential.ts'

@@ -17,9 +17,9 @@ export type StudioBottomNavigationProps = {
         ) => import('../types/studioState.ts').StudioState['sidebarOpen']),
   ) => void
   present: (
-    | import('@pomegranate/domain/collaboration').Presence
+    | import('@aril/domain/collaboration').Presence
     | {
-        profile: import('@pomegranate/domain/collaboration').Profile
+        profile: import('@aril/domain/collaboration').Profile
         view:
           | 'canvas'
           | 'requirements'

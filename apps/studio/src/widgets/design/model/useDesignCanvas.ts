@@ -1,4 +1,4 @@
-import { resolveDesignBindings } from '@pomegranate/domain/designLibrary'
+import { resolveDesignBindings } from '@aril/domain/designLibrary'
 import {
   useCallback,
   useEffect,
@@ -12,13 +12,13 @@ import { useReactFlow, type NodeChange } from '@xyflow/react'
 import {
   cameraFromViewport,
   viewportFromCamera,
-} from '@pomegranate/domain/follow'
+} from '@aril/domain/follow'
 import {
   applyDesignChanges,
   designAncestors,
   isDesignContainer,
   type DesignElement,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 import { designTreeRows } from '../utils/designTreeRows.ts'
 import { designClipShapes } from '../utils/designClipShapes.ts'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'

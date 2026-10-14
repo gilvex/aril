@@ -1,5 +1,5 @@
-import type { DragPosition } from '@pomegranate/domain/collaboration'
-import { type Wireframe } from '@pomegranate/domain/wireframe'
+import type { DragPosition } from '@aril/domain/collaboration'
+import { type Wireframe } from '@aril/domain/wireframe'
 export type UseWireframeChangesProps = {
   setSelection: (
     value: Set<string> | ((current: Set<string>) => Set<string>),
@@ -11,7 +11,7 @@ export type UseWireframeChangesProps = {
   ) => void
   sendPresence: (
     changes: {
-      camera?: import('@pomegranate/domain/collaboration').CameraPresence | null
+      camera?: import('@aril/domain/collaboration').CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]

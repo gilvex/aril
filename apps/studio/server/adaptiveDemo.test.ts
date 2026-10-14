@@ -7,7 +7,7 @@ import { advanceDemoPlanner } from '../src/app/utils/advanceDemoPlanner.ts'
 import { sampleDemoPlannerPresence } from '../src/app/utils/sampleDemoPlannerPresence.ts'
 import { isDemoPlacementClear } from '../src/app/utils/isDemoPlacementClear.ts'
 import { commitDemoChange } from '../src/app/utils/commitDemoChange.ts'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { workspaceSchema } from '@aril/domain/workspace'
 
 test('adaptive demo evolves with varied actions and collision-free drags at bounded speed', () => {
   const state = createDemoState({ getItem: () => null })

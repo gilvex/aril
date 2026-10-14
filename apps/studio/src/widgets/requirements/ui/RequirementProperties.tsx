@@ -3,7 +3,7 @@ import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 import { requirementOptions } from '../config/requirementOptions.ts'
 import type { RequirementDetailsProps } from '../types/requirementDetailsProps.ts'
 export function RequirementProperties({

@@ -1,4 +1,4 @@
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 import type { WorkspaceSort } from '../types/workspaceSort.ts'
 
 export function sortWorkspaces(

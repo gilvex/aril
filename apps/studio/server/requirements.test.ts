@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import { createRequirementsState } from '../src/widgets/requirements/model/createRequirementsState.ts'
 import { createRequirementsModel } from '../src/widgets/requirements/model/createRequirementsModel.ts'
 import { filterRequirements } from '../src/widgets/requirements/utils/filterRequirements.ts'

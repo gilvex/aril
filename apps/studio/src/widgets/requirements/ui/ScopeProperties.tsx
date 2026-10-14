@@ -3,7 +3,7 @@ import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 import type { RequirementDetailsProps } from '../types/requirementDetailsProps.ts'
 import { RequirementProperties } from './RequirementProperties.tsx'
 export function ScopeProperties(props: RequirementDetailsProps) {

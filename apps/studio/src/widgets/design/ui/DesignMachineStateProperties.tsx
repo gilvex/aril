@@ -2,7 +2,7 @@ import { useCallback, type ChangeEvent } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import type { DesignMachine } from '@pomegranate/domain/designLibrary'
+import type { DesignMachine } from '@aril/domain/designLibrary'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { DesignMachineActions } from './DesignMachineActions.tsx'
 export function DesignMachineStateProperties({ model }: DesignEditorProps) {

@@ -1,5 +1,5 @@
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import { removeWireNodes, type WireNode } from '@pomegranate/domain/wireframe'
+import { removeWireNodes, type WireNode } from '@aril/domain/wireframe'
 import { useCallback } from 'react'
 
 import type { WireframeMultiSelectionHandlersProps } from '../types/useWireframeMultiSelectionHandlersProps.ts'

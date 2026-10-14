@@ -1,8 +1,8 @@
 import type {
   RequirementDisclosure,
   RequirementPresence,
-} from '@pomegranate/domain/collaboration'
-import type { Requirement } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import type { Requirement } from '@aril/domain/workspace'
 export type RequirementsState = {
   properties: Record<string, RequirementDisclosure>
   boardFilter: string

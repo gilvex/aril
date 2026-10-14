@@ -69,4 +69,4 @@ jobs:
           PGPASSWORD: fixture-only
         run: psql -h 127.0.0.1 -U postgres -d aril_test -v ON_ERROR_STOP=1 -c 'CREATE ROLE anon NOLOGIN;'
       - name: Verify concurrent instances and access isolation
-        run: pnpm --filter @pomegranate/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts
+        run: pnpm --filter @aril/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts

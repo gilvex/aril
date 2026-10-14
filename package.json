@@ -5,25 +5,25 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "name": "pomegranate",
+  "name": "aril",
   "packageManager": "pnpm@11.19.0",
   "scripts": {
-    "dev": "pnpm --filter @pomegranate/studio dev",
+    "dev": "pnpm --filter @aril/studio dev",
     "build": "pnpm -r --if-present build",
     "lint": "eslint . && node scripts/checkArchitecture.mjs",
-    "test": "pnpm --filter @pomegranate/studio test",
+    "test": "pnpm --filter @aril/studio test",
     "benchmark:collaboration": "node scripts/benchmarkCollaboration.ts",
     "verify:recovery": "node scripts/verifyRecovery.ts",
-    "start": "pnpm --filter @pomegranate/studio start",
+    "start": "pnpm --filter @aril/studio start",
     "invite": "node --env-file-if-exists=.env scripts/invite.ts",
-    "mcp": "pnpm --filter @pomegranate/mcp start",
-    "mcp:setup": "pnpm --filter @pomegranate/mcp setup",
-    "skill:install": "pnpm --filter @pomegranate/studio-skill install:skill",
+    "mcp": "pnpm --filter @aril/mcp start",
+    "mcp:setup": "pnpm --filter @aril/mcp setup",
+    "skill:install": "pnpm --filter @aril/studio-skill install:skill",
     "check:architecture": "node scripts/checkArchitecture.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@pomegranate/domain": "workspace:*",
+    "@aril/domain": "workspace:*",
     "@supabase/realtime-js": "^2.117.2",
     "@types/node": "^24.19.1",
     "eslint": "^10.12.0",

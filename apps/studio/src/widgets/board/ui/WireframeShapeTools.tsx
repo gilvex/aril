@@ -4,7 +4,7 @@ import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { wireKinds, wireLabels } from '@pomegranate/domain/wireframe'
+import { wireKinds, wireLabels } from '@aril/domain/wireframe'
 import { icons } from '../config/wireframeBoardIcons.ts'
 import type { WireframeToolbarProps } from '../types/wireframeToolbarProps.ts'
 export function WireframeShapeTools({

@@ -1,5 +1,5 @@
 import type { Position } from '@/widgets/board/types/position.ts'
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import { useEffect, useMemo, useRef, useState } from 'react'
 export function useLiveNodePositions<
   T extends { id: string; position: Position },

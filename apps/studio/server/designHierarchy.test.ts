@@ -11,12 +11,12 @@ import {
   reparentDesignElement,
   normalizeDesignGroups,
   applyDesignChanges,
-} from '@pomegranate/domain/design'
-import { createSeed } from '@pomegranate/domain/seed'
+} from '@aril/domain/design'
+import { createSeed } from '@aril/domain/seed'
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import { designClipShapes } from '../src/widgets/design/utils/designClipShapes.ts'
 import { designTreeRows } from '../src/widgets/design/utils/designTreeRows.ts'
 

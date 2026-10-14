@@ -1,7 +1,7 @@
 import { buffers, eventChannel, type SagaIterator } from 'redux-saga'
 import { delay, take } from 'redux-saga/effects'
-import { isLiveFieldOperation } from '@pomegranate/domain/liveSession'
-import { liveFieldsMessageSchema } from '@pomegranate/domain/liveSession'
+import { isLiveFieldOperation } from '@aril/domain/liveSession'
+import { liveFieldsMessageSchema } from '@aril/domain/liveSession'
 import type { LiveWorkspaceFieldsOptions } from '../../types/liveWorkspaceFieldsOptions.ts'
 export function* shareWorkspaceFields(
   options: LiveWorkspaceFieldsOptions,

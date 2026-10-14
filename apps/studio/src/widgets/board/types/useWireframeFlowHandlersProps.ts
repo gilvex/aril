@@ -1,12 +1,12 @@
 export type WireframeFlowHandlersProps = {
-  liveNodes: import('@pomegranate/domain/wireframe').WireNode[]
+  liveNodes: import('@aril/domain/wireframe').WireNode[]
   selection: Set<string>
   preview: boolean
   checkpoint: () => void
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   follow: (id: string) => void
-  profile: import('@pomegranate/domain/collaboration').Profile
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  profile: import('@aril/domain/collaboration').Profile
+  peers: import('@aril/domain/collaboration').Presence[]
   edgeId: string | null
   routes: Map<string, import('../types/wireRoute.ts').WireRoute>
   setEdgeId: (
@@ -31,7 +31,7 @@ export type WireframeFlowHandlersProps = {
         ) => import('../types/wireframeBoardState.ts').WireframeBoardState['palette']),
   ) => void
   save: (
-    next: import('@pomegranate/domain/wireframe').Wireframe,
+    next: import('@aril/domain/wireframe').Wireframe,
     record?: boolean,
   ) => void
 }

@@ -5,6 +5,9 @@ export const agentAccessSlice = createSlice({
   name: 'agentAccess',
   initialState: {} as AgentAccessState,
   reducers: {
+    setTarget: (state, action: PayloadAction<AgentAccessState['target']>) => {
+      state.target = action.payload
+    },
     setCredentials: (
       state,
       action: PayloadAction<AgentAccessState['credentials']>,

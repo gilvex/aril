@@ -2,11 +2,11 @@ import type {
   Presence,
   Profile,
   RequirementPresence,
-} from '@pomegranate/domain/collaboration'
-import type { Workspace } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import type { Workspace } from '@aril/domain/workspace'
 export type RequirementsProps = {
   openWork: (
-    link: import('@pomegranate/domain/workspace').RequirementLink,
+    link: import('@aril/domain/workspace').RequirementLink,
   ) => void
   workspaceId: string
   workspace: Workspace

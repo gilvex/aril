@@ -1,4 +1,4 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 export type NoteCommentProps = {
   comment: NonNullable<Workspace['noteComments']>[number]
   profileId: string

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { DesignBoard } from './DesignBoard.tsx'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 export function StudioDesign({
   studio,
   state,

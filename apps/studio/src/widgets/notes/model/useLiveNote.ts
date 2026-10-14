@@ -7,7 +7,7 @@ import {
   noteTextDelta,
   noteTextVector,
   noteTextMissing,
-} from '@pomegranate/domain/noteText'
+} from '@aril/domain/noteText'
 import { noteBodyKey } from '../utils/noteBodyKey.ts'
 import type { LiveNoteProps } from '../types/liveNoteProps.ts'
 export function useLiveNote({
@@ -96,7 +96,7 @@ export function useLiveNote({
   const editBody = useCallback(
     (
       body: string,
-      base?: import('@pomegranate/domain/noteText').NoteTextState,
+      base?: import('@aril/domain/noteText').NoteTextState,
     ) => {
       if (!canEdit) return
       const before = getState().liveText[id] || saved

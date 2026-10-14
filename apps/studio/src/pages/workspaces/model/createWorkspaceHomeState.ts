@@ -1,4 +1,4 @@
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 export function createWorkspaceHomeState() {
   const studios: StudioOverview[] | null = null
   const name: string = ''

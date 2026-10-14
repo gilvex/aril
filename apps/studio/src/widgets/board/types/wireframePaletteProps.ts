@@ -8,7 +8,7 @@ export type WireframePaletteProps = {
         ) => import('../types/wireframeBoardState.ts').WireframeBoardState['palette']),
   ) => void
   add: (
-    kind: import('@pomegranate/domain/wireframe').WireKind,
+    kind: import('@aril/domain/wireframe').WireKind,
     at?: import('../types/canvasInsertPoint.ts').CanvasInsertPoint,
   ) => void
 }

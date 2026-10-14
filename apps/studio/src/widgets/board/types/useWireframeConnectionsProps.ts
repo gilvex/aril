@@ -1,4 +1,4 @@
-import { type Wireframe } from '@pomegranate/domain/wireframe'
+import { type Wireframe } from '@aril/domain/wireframe'
 export type UseWireframeConnectionsProps = {
   graph: {
     nodes: {

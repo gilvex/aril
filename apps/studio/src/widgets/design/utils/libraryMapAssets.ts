@@ -1,4 +1,4 @@
-import { designAssetOrganization } from '@pomegranate/domain/designLibrary'
+import { designAssetOrganization } from '@aril/domain/designLibrary'
 import type { DesignLibraryGraphInput } from '../types/designLibraryGraphInput.ts'
 import type { LibraryMapAsset } from '../types/libraryMapAsset.ts'
 import { componentGlyph } from './componentGlyph.ts'

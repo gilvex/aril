@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import {
   workspaceSchema,
   requirementSchema,
-} from '@pomegranate/domain/workspace'
+} from '@aril/domain/workspace'
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import { collectScope } from '../src/widgets/requirements/utils/collectScope.ts'
 import { scopeTargets } from '../src/widgets/requirements/utils/scopeTargets.ts'
 

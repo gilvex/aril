@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
-import { makeDesignElement } from '@pomegranate/domain/design'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { createSeed } from '@aril/domain/seed'
+import { makeDesignElement } from '@aril/domain/design'
+import { workspaceSchema } from '@aril/domain/workspace'
 import {
   applyOperations,
   diffWorkspace,
   presenceSchema,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import { readStudioRoute } from '../src/shared/utils/readStudioRoute.ts'
 import { studioRouteUrl } from '../src/shared/utils/studioRouteUrl.ts'
 

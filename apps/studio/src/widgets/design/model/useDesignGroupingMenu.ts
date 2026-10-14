@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { groupDesignElements } from '@pomegranate/domain/design'
+import { groupDesignElements } from '@aril/domain/design'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 import type { EditorMenuAction } from '@/shared/types/index.ts'
 export function useDesignGroupingMenu(

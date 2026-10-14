@@ -1,1 +1,1 @@
-export {agentAccessInput} from './agentAccessInput.ts'
+export { agentAccessInput } from './agentAccessInput.ts'

@@ -20,7 +20,7 @@ The separate Postgres job starts disposable PostgreSQL 17, creates the unprivile
 To reproduce that job, use a **disposable** database with schema-creation privileges and an `anon` role, set `POSTGRES_TEST_URL` to it, then run:
 
 ```sh
-pnpm --filter @pomegranate/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts
+pnpm --filter @aril/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts
 ```
 
 Do not load the application's `.env` or use production credentials for these commands. The default suite skips Postgres unless the explicit test URL is present. Benchmark/recovery scripts create their own temporary SQLite fixtures and never open the application database.

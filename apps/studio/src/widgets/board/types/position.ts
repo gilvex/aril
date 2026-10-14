@@ -1,3 +1,3 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 
 export type Position = Idea['position']

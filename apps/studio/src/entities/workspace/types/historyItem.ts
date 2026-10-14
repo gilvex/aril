@@ -1,3 +1,3 @@
-import { type Operation } from '@pomegranate/domain/collaboration'
+import { type Operation } from '@aril/domain/collaboration'
 
 export type HistoryItem = Operation[][]

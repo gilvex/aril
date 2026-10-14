@@ -11,8 +11,8 @@ import { createDemoStream } from '../src/app/utils/createDemoStream.ts'
 import { createDemoState } from '../src/app/utils/createDemoState.ts'
 import { apiTransport } from '../src/shared/api/apiTransport.ts'
 import { request } from '../src/shared/api/request.ts'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import { workspaceSchema, type Envelope, type Workspace } from '@pomegranate/domain/workspace'
+import { diffWorkspace } from '@aril/domain/collaboration'
+import { workspaceSchema, type Envelope, type Workspace } from '@aril/domain/workspace'
 import { demoStorageKey } from '../src/app/config/demoStorageKey.ts'
 
 test('simulated edits preview drags then persist attributed revisions without replaying after refresh', () => {

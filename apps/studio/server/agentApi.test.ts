@@ -1,7 +1,7 @@
 import { Client } from '@modelcontextprotocol/client'
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio'
-import type { AgentCredential } from '@pomegranate/domain/agentAccess'
-import { validateConfig } from '@pomegranate/mcp/config'
+import type { AgentCredential } from '@aril/domain/agentAccess'
+import { validateConfig } from '@aril/mcp/config'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
@@ -149,7 +149,7 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
     await client.connect(
       new StdioClientTransport({
         command: process.execPath,
-        args: [fileURLToPath(import.meta.resolve('@pomegranate/mcp/index'))],
+        args: [fileURLToPath(import.meta.resolve('@aril/mcp/index'))],
         env: {
           POMEGRANATE_AGENT_ORIGIN: origin,
           POMEGRANATE_AGENT_TOKEN: writer.token,
@@ -168,6 +168,7 @@ test('agent credentials restrict access, expire, revoke, and safely attribute at
       'get_history',
       'get_schema',
       'get_workspace',
+      'list_workspaces',
       'validate_design_changes',
     ])
     const overview = await client.callTool({

@@ -6,7 +6,7 @@ import {
   stepDesignMachine,
   type DesignLibrary,
   type DesignMachine,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 import type { UseDesignLibraryProps } from '../types/useDesignLibraryProps.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 export function useDesignLibrary({

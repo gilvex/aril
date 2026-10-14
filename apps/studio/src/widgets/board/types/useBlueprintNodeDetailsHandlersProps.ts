@@ -1,11 +1,11 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 export type BlueprintNodeDetailsHandlersProps = {
   updateNode: (data: Partial<Idea['data']>) => void
-  node: import('@pomegranate/domain/workspace').Idea
+  node: import('@aril/domain/workspace').Idea
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   setSelected: (id: string | null) => void
 }

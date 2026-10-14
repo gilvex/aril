@@ -1,8 +1,8 @@
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
-import type { Workspace } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import type { Workspace } from '@aril/domain/workspace'
 import type { LiveFieldPreview } from '../types/liveFieldPreview.ts'
 import { projectLiveFields } from './projectLiveFields.ts'
 import { keepViews } from './keepViews.ts'

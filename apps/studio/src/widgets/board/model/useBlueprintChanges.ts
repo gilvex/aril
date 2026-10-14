@@ -1,4 +1,4 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { type Node, type NodeChange } from '@xyflow/react'
 import { useCallback } from 'react'
 import type { UseBlueprintChangesProps } from '../types/useBlueprintChangesProps.ts'

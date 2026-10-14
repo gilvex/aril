@@ -1,6 +1,6 @@
-import { writeVersion } from '@pomegranate/domain/freshness'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import { writeVersion } from '@aril/domain/freshness'
+import { diffWorkspace } from '@aril/domain/collaboration'
+import type { Envelope } from '@aril/domain/workspace'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { test } from 'node:test'
@@ -123,6 +123,39 @@ test(
       assert.equal((await a.read()).workspace.notes, 'PG agent test')
       await a.agents.revoke(agent.credential.id, owner.profile.id, 'default')
       assert.equal(await b.agents.authenticate(agent.token), undefined)
+      const accountAgent = await a.agents.create(
+        owner.profile.id,
+        'default',
+        'PG account agent',
+        'write',
+        7,
+        'account',
+      )
+      assert.equal(
+        (await b.agents.authenticate(accountAgent.token))?.target,
+        'account',
+      )
+      assert.ok(
+        (await b.agents.list(owner.profile.id, 'default')).some(
+          (item) => item.id === accountAgent.credential.id,
+        ),
+      )
+      const available = await call(
+        1,
+        '/api/agent/workspaces',
+        accountAgent.token,
+      )
+      assert.equal(available.status, 200)
+      assert.equal(
+        (await call(1, '/api/agent/workspace', accountAgent.token)).status,
+        200,
+      )
+      await a.agents.revoke(
+        accountAgent.credential.id,
+        owner.profile.id,
+        'default',
+      )
+      assert.equal(await b.agents.authenticate(accountAgent.token), undefined)
       const invitation = await a.identity.invite(owner.profile.id)
       const races = await Promise.all([
         a.identity.join(invitation.token, 'Sam'),

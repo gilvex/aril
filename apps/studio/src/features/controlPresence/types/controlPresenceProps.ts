@@ -1,6 +1,6 @@
 import type { RefObject } from 'react'
-import type { Presence } from '@pomegranate/domain/collaboration'
-import type { LiveState } from '@pomegranate/domain/liveSession'
+import type { Presence } from '@aril/domain/collaboration'
+import type { LiveState } from '@aril/domain/liveSession'
 export type ControlPresenceProps = {
   root: RefObject<HTMLDivElement | null>
   workspaceId: string

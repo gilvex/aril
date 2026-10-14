@@ -6,7 +6,7 @@ export function useAccountConnectionHandlers({
   refresh,
 }: AccountConnectionHandlersProps) {
   const handleSuccess = useCallback<
-    (profile: import('@pomegranate/domain/collaboration').Profile) => void
+    (profile: import('@aril/domain/collaboration').Profile) => void
   >(
     (profile) => {
       onProfile(profile)

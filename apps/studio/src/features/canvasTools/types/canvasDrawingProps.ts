@@ -1,4 +1,4 @@
-import type { CanvasStrokes } from '@pomegranate/domain/drawing'
+import type { CanvasStrokes } from '@aril/domain/drawing'
 export type CanvasDrawingProps = {
   scope: string
   strokes?: CanvasStrokes

@@ -7,8 +7,8 @@ import { requirementFieldLabels } from '@/widgets/requirements/config/requiremen
 import { createRequirementsState } from '@/widgets/requirements/model/createRequirementsState.ts'
 import { useRequirementsModel } from '@/widgets/requirements/model/useRequirementsModel.ts'
 import type { RequirementViewer } from '@/widgets/requirements/types/requirementViewer.ts'
-import type { RequirementField } from '@pomegranate/domain/collaboration'
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { RequirementField } from '@aril/domain/collaboration'
+import type { Requirement } from '@aril/domain/workspace'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import type { UseRequirementsControllerProps } from '../types/useRequirementsControllerProps.ts'
 export function useRequirementsController({

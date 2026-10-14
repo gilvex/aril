@@ -1,9 +1,9 @@
 import type { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
-import type { Presence } from '@pomegranate/domain/collaboration'
-import type { LiveState } from '@pomegranate/domain/liveSession'
+import type { Presence } from '@aril/domain/collaboration'
+import type { LiveState } from '@aril/domain/liveSession'
 export type LiveConnectionOptions = {
   noteText: (
-    message: import('@pomegranate/domain/liveSession').LiveDocumentMessage,
+    message: import('@aril/domain/liveSession').LiveDocumentMessage,
   ) => void
   workspaceId: string
   clientId: string

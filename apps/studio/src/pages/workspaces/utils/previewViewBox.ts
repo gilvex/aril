@@ -1,4 +1,4 @@
-import type { StudioPreviewNode } from '@pomegranate/domain/studios'
+import type { StudioPreviewNode } from '@aril/domain/studios'
 
 export function previewViewBox(nodes: StudioPreviewNode[]) {
   const left = Math.min(...nodes.map((node) => node.x)) - 48

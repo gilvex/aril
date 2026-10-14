@@ -1,4 +1,4 @@
-import type { Presence, Profile } from '@pomegranate/domain/collaboration'
+import type { Presence, Profile } from '@aril/domain/collaboration'
 export type LiveCursorsProps = {
   peers: Presence[]
   nodes: { id: string; position: { x: number; y: number } }[]

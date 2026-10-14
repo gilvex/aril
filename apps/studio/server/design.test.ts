@@ -1,18 +1,18 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import {
   makeDesignElement,
   duplicateDesignElements,
   removeDesignElements,
   designPageSchema,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 import {
   diffWorkspace,
   applyOperations,
   presenceSchema,
-} from '@pomegranate/domain/collaboration'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { workspaceSchema } from '@aril/domain/workspace'
 
 test('design layers round-trip, merge independent edits, reject conflicts, and undo removals', () => {
   const legacy = createSeed()

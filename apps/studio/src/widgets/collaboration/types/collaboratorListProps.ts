@@ -1,7 +1,7 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 
 export type CollaboratorListProps = {
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  peers: import('@aril/domain/collaboration').Presence[]
   connected: boolean
   followId: string | null
   onFollow: (id: string | null) => void

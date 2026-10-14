@@ -25,6 +25,6 @@ export type CanvasNavigationHandlersProps = {
           current: import('../types').CanvasNavigationState['name'],
         ) => import('../types').CanvasNavigationState['name']),
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   onDelete: () => void
 }

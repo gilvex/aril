@@ -1,5 +1,5 @@
 import { request } from '@/shared/api/request.ts'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 export function requestWorkspaceCreation(name: string) {
   return request<StudioSummary>('/api/studios', {
     method: 'POST',

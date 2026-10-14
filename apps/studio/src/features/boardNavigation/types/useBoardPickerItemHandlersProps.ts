@@ -67,7 +67,7 @@ export type BoardPickerItemHandlersProps = {
         ) => import('../types/canvasNavigationState.ts').CanvasNavigationState['open']),
   ) => void
   present: Pick<
-    import('@pomegranate/domain/collaboration').Presence,
+    import('@aril/domain/collaboration').Presence,
     'profile' | 'view' | 'boardId'
   >[]
 }

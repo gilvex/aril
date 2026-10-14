@@ -5,7 +5,7 @@ import { findPath } from '@/widgets/board/utils/findPath.ts'
 import { inside } from '@/widgets/board/utils/inside.ts'
 import { roundedPath } from '@/widgets/board/utils/roundedPath.ts'
 import { wireConnectionSides } from '@/widgets/board/utils/wireConnectionSides.ts'
-import { type Wireframe, type WireNode } from '@pomegranate/domain/wireframe'
+import { type Wireframe, type WireNode } from '@aril/domain/wireframe'
 export function routeWireframes(nodes: WireNode[], edges: Wireframe['edges']) {
   const byId = new Map(nodes.map((n) => [n.id, n]))
   const rects = new Map(

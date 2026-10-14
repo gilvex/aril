@@ -1,5 +1,5 @@
-import type { Workspace, RequirementLink } from '@pomegranate/domain/workspace'
-import { activeBoardSections } from '@pomegranate/domain/workspace'
+import type { Workspace, RequirementLink } from '@aril/domain/workspace'
+import { activeBoardSections } from '@aril/domain/workspace'
 import type { ScopeTarget } from '../types/scopeTarget.ts'
 import { scopeTargetKey } from './scopeTargetKey.ts'
 export function scopeTargets(workspace: Workspace): ScopeTarget[] {

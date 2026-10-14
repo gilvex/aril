@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronRight, Scan } from 'lucide-react'
-import { isDesignContainer } from '@pomegranate/domain/design'
+import { isDesignContainer } from '@aril/domain/design'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCallback, type MouseEvent } from 'react'
 import { useReactFlow } from '@xyflow/react'

@@ -1,7 +1,7 @@
 export type WireframePreviewDetailsProps = {
   previewMessage: string
-  node: import('@pomegranate/domain/wireframe').WireNode | undefined
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  node: import('@aril/domain/wireframe').WireNode | undefined
+  graph: import('@aril/domain/wireframe').Wireframe
   focus: (id: string) => void
   setPreviewMessage: (
     value:

@@ -1,5 +1,5 @@
-import { createSeed } from '@pomegranate/domain/seed'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+import { createSeed } from '@aril/domain/seed'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { createDemoWireframe } from './createDemoWireframe.ts'
 import { withDemoDesign } from './withDemoDesign.ts'
 

@@ -1,4 +1,4 @@
-import type { CanvasStrokes } from '@pomegranate/domain/drawing'
+import type { CanvasStrokes } from '@aril/domain/drawing'
 export function strokePath(stroke: CanvasStrokes[string]) {
   const points = stroke.points
   let path = `M ${points[0].x} ${points[0].y}`

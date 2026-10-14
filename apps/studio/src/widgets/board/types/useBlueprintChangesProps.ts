@@ -1,4 +1,4 @@
-import type { DragPosition } from '@pomegranate/domain/collaboration'
+import type { DragPosition } from '@aril/domain/collaboration'
 export type UseBlueprintChangesProps = {
   setSelectedIds: (
     value: Set<string> | ((current: Set<string>) => Set<string>),
@@ -76,7 +76,7 @@ export type UseBlueprintChangesProps = {
   ) => void
   sendPresence: (
     changes: {
-      camera?: import('@pomegranate/domain/collaboration').CameraPresence | null
+      camera?: import('@aril/domain/collaboration').CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]
@@ -85,7 +85,7 @@ export type UseBlueprintChangesProps = {
     force?: boolean,
   ) => void
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
 }

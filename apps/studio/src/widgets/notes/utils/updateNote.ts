@@ -1,4 +1,4 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 import type { NoteDocument } from '../types/noteDocument.ts'
 export function updateNote(
   workspace: Workspace,

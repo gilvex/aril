@@ -1,4 +1,4 @@
-import type { CameraPresence } from '@pomegranate/domain/collaboration'
+import type { CameraPresence } from '@aril/domain/collaboration'
 
 export type DemoMotion = {
   origin: { x: number; y: number }

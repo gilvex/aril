@@ -1,4 +1,4 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import type { openStore } from './store.ts'
 type MaybeAsync<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R

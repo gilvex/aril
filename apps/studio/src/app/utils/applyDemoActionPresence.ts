@@ -1,4 +1,4 @@
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { sampleDemoCurve } from './sampleDemoCurve.ts'
 

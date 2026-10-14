@@ -1,8 +1,8 @@
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 
 export type FollowPersonProps = {
   person:
-    | import('@pomegranate/domain/collaboration').Presence
+    | import('@aril/domain/collaboration').Presence
     | { profile: Profile; clientId: string; view: string; following: null }
   connected: boolean
   followId: string | null

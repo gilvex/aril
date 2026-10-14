@@ -2,9 +2,9 @@ import type {
   Activity,
   Presence,
   Profile,
-} from '@pomegranate/domain/collaboration'
-import type { StudioSummary } from '@pomegranate/domain/studios'
-import type { Envelope } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import type { StudioSummary } from '@aril/domain/studios'
+import type { Envelope } from '@aril/domain/workspace'
 import type { DemoAction } from './demoAction.ts'
 import type { DemoPlanner } from './demoPlanner.ts'
 

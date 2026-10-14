@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { MoreHorizontal, Plus } from 'lucide-react'
-import { nodeKinds } from '@pomegranate/domain/workspace'
+import { nodeKinds } from '@aril/domain/workspace'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '../config/kindLabels.ts'

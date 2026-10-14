@@ -2,8 +2,8 @@ import {
   applyOperations,
   describeOperations,
   operationsSchema,
-} from '@pomegranate/domain/collaboration'
-import { workspaceSchema } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { workspaceSchema } from '@aril/domain/workspace'
 import { commitDemoChange } from './commitDemoChange.ts'
 import { createDemoState } from './createDemoState.ts'
 import { createDemoStream } from './createDemoStream.ts'

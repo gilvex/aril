@@ -2,7 +2,7 @@ import {
   designAncestors,
   designPosition,
   type DesignElement,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 export function alignDesignLayers(
   nodes: DesignElement[],
   ids: string[],

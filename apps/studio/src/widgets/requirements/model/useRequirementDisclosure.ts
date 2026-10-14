@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import type { RequirementsState } from '../types/requirementsState.ts'
 import { latestRequirementDisclosure } from '../utils/latestRequirementDisclosure.ts'
 

@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
-import { strokesSchema } from '@pomegranate/domain/drawing'
+import { createSeed } from '@aril/domain/seed'
+import { strokesSchema } from '@aril/domain/drawing'
 import {
   diffWorkspace,
   applyOperations,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import { createCanvasToolsStore } from '../src/features/canvasTools/model/createCanvasToolsStore.ts'
 import { canvasToolsSlice } from '../src/features/canvasTools/model/slices/canvasToolsSlice.ts'
 import { strokePath } from '../src/features/canvasTools/utils/strokePath.ts'

@@ -1,5 +1,5 @@
 import { createNoteTextChannel } from '../utils/createNoteTextChannel.ts'
-import { liveDocumentMessageSchema } from '@pomegranate/domain/liveSession'
+import { liveDocumentMessageSchema } from '@aril/domain/liveSession'
 import { connectLiveSession } from '@/features/liveSession/model/iterators/connectLiveSession.ts'
 import { openLiveChannel } from '@/features/liveSession/model/requests/openLiveChannel.ts'
 import { useMultiplayerModel } from '@/features/liveSession/model/useMultiplayerModel.ts'
@@ -13,9 +13,9 @@ import type {
   Presence,
   Profile,
   RequirementPresence,
-} from '@pomegranate/domain/collaboration'
-import type { LiveState } from '@pomegranate/domain/liveSession'
-import type { Envelope } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import type { LiveState } from '@aril/domain/liveSession'
+import type { Envelope } from '@aril/domain/workspace'
 import { useCallback, useEffect, useRef, useMemo } from 'react'
 import { runSaga } from 'redux-saga'
 
@@ -47,7 +47,7 @@ export function useMultiplayer(
 
   const noteText = useMemo(createNoteTextChannel, [])
   const notesChannel = useMemo<
-    import('@pomegranate/domain/noteText').NoteTextChannel
+    import('@aril/domain/noteText').NoteTextChannel
   >(
     () => ({
       send: noteText.send,

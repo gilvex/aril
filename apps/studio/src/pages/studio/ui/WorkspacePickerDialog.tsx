@@ -3,7 +3,7 @@ import { Plus, ArrowUpRight } from 'lucide-react'
 import { request } from '@/shared/api/request.ts'
 import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 import type { WorkspacePickerDialogProps } from '../types/workspacePickerDialogProps.ts'
 import { useWorkspacePicker } from '../model/useWorkspacePicker.ts'
 export function WorkspacePickerDialog({

@@ -1,2 +1,2 @@
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 export type WorkspaceTabsState = { tabs: StudioSummary[] }

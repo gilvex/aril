@@ -5,7 +5,7 @@ import {
   designLibrarySchema,
   designAssetSummaries,
   getDesignUsage,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 import { libraryMapAssets } from '../src/widgets/design/utils/libraryMapAssets.ts'
 import { libraryMapGraph } from '../src/widgets/design/utils/libraryMapGraph.ts'
 import { libraryMapNeighborhood } from '../src/widgets/design/utils/libraryMapNeighborhood.ts'
@@ -249,7 +249,7 @@ test('compact graph routes outside nodes and focus reads dependencies to usages'
 test('automatic icons follow geometry and exclude descendants of hidden ancestors', async () => {
   const { componentGlyph } =
     await import('../src/widgets/design/utils/componentGlyph.ts')
-  const { makeDesignElement } = await import('@pomegranate/domain/design')
+  const { makeDesignElement } = await import('@aril/domain/design')
   const component =
     createExampleDesignLibrary('glyph').components['glyph-button']
   component.variants = {

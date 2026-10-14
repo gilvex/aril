@@ -1,23 +1,23 @@
 import { runSaga } from 'redux-saga'
 import { setTimeout as wait } from 'node:timers/promises'
 import { shareWorkspaceFields } from '../src/pages/studio/model/iterators/shareWorkspaceFields.ts'
-import type { LiveDocumentMessage } from '@pomegranate/domain/liveSession'
+import type { LiveDocumentMessage } from '@aril/domain/liveSession'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createSeed } from '@pomegranate/domain/seed'
+import { createSeed } from '@aril/domain/seed'
 import {
   applyOperations,
   diffWorkspace,
   presenceSchema,
   type Operation,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   liveDocumentMessageSchema,
   liveFieldsMessageSchema,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 import { projectLiveFields } from '../src/entities/workspace/utils/projectLiveFields.ts'
 import { editLiveFields } from '../src/entities/workspace/utils/editLiveFields.ts'
-import { isLiveFieldOperation } from '@pomegranate/domain/liveSession'
+import { isLiveFieldOperation } from '@aril/domain/liveSession'
 import { workspaceSlice } from '../src/entities/workspace/model/slices/workspaceSlice.ts'
 import type { WorkspaceState } from '../src/entities/workspace/types/workspaceState.ts'
 import type { LiveFieldPreview } from '../src/entities/workspace/types/liveFieldPreview.ts'

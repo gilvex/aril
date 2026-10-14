@@ -12,12 +12,12 @@ import { scopedDraftKey } from '@/entities/workspace/utils/scopedDraftKey.ts'
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import {
   canRebaseOperations,
   writeVersion,
-} from '@pomegranate/domain/freshness'
-import type { Envelope, Workspace } from '@pomegranate/domain/workspace'
+} from '@aril/domain/freshness'
+import type { Envelope, Workspace } from '@aril/domain/workspace'
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 export function createWorkspaceSession(

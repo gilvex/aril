@@ -1,4 +1,4 @@
-import type { AgentCredential } from '@pomegranate/domain/agentAccess'
+import type { AgentCredential } from '@aril/domain/agentAccess'
 
 export type AgentCredentialRowProps = {
   credential: AgentCredential

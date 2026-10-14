@@ -11,7 +11,7 @@ export type LinkedRequirementProps = {
     acceptance: string
   }[]
   updateNode: (
-    data: Partial<import('@pomegranate/domain/workspace').Idea['data']>,
+    data: Partial<import('@aril/domain/workspace').Idea['data']>,
   ) => void
-  node: import('@pomegranate/domain/workspace').Idea
+  node: import('@aril/domain/workspace').Idea
 }

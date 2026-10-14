@@ -1,4 +1,4 @@
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { Requirement } from '@aril/domain/workspace'
 export type ScopeQuestionProps = {
   question: NonNullable<Requirement['questions']>[number]
   current: Requirement

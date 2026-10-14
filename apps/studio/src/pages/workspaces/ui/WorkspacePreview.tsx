@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react'
 import { Workflow } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 import { previewViewBox } from '../utils/previewViewBox.ts'
 
 export const WorkspacePreview = memo(function WorkspacePreview({

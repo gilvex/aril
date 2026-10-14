@@ -1254,5 +1254,19 @@
   "Watch the studio workflow: Canvas, Design, and Library.": "Watch the studio workflow: Canvas, Design, and Library.",
   "Watch asset details move, resize, preview variants and filter usages.": "Watch asset details move, resize, preview variants and filter usages.",
   "Watch a library group expand directly in the graph.": "Watch a library group expand directly in the graph.",
-  "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.": "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions."
+  "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.": "Playable screen recordings replace still-only release media. The README GIF now shows continuous browser interactions.",
+  "Connect to": "Connect to",
+  "My account — all accessible files": "My account — all accessible files",
+  "This file only": "This file only",
+  "Includes current and future files you can access. File permissions still apply; viewers cannot edit.": "Includes current and future files you can access. File permissions still apply; viewers cannot edit.",
+  "This connection can only access the current file.": "This connection can only access the current file.",
+  "Account access": "Account access",
+  "Connect Codex or another MCP client to your account or one file. Edits appear in revision history and team activity.": "Connect Codex or another MCP client to your account or one file. Edits appear in revision history and team activity.",
+  "One agent connection, all your files": "One agent connection, all your files",
+  "Connect an MCP client to your account and switch files without reconnecting.": "Connect an MCP client to your account and switch files without reconnecting.",
+  "Agent access now offers account-wide or single-file credentials. Every file keeps its own editor and viewer permissions.": "Agent access now offers account-wide or single-file credentials. Every file keeps its own editor and viewer permissions.",
+  "MCP can list accessible files and target each read or edit explicitly, keeping simultaneous requests separate.": "MCP can list accessible files and target each read or edit explicitly, keeping simultaneous requests separate.",
+  "The MCP server, companion skill, packages and new configuration now use Aril names. Older credentials and configuration remain compatible.": "The MCP server, companion skill, packages and new configuration now use Aril names. Older credentials and configuration remain compatible.",
+  "Existing file credentials stay file-only. Create an account credential and run setup once to enable access across files.": "Existing file credentials stay file-only. Create an account credential and run setup once to enable access across files.",
+  "Agent access settings in the isolated demo, showing account or single-file access, permissions and expiry.": "Agent access settings in the isolated demo, showing account or single-file access, permissions and expiry."
 }

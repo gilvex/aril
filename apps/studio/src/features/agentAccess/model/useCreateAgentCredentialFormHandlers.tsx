@@ -1,7 +1,7 @@
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { AgentCredential } from '@pomegranate/domain/agentAccess'
+import type { AgentCredential } from '@aril/domain/agentAccess'
 import { useCallback } from 'react'
 
 import type { CreateAgentCredentialFormHandlersProps } from '../types/useCreateAgentCredentialFormHandlersProps.ts'
@@ -11,6 +11,7 @@ export function useCreateAgentCredentialFormHandlers({
   setSecret,
   workspaceId,
   name,
+  target,
   scope,
   days,
   setCredentials,
@@ -35,7 +36,7 @@ export function useCreateAgentCredentialFormHandlers({
             ...workspaceHeaders(workspaceId),
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ name, scope, days }),
+          body: JSON.stringify({ name, scope, days, target }),
         })
         setCredentials((items) => [result.credential, ...items])
         setSecret(result.token)
@@ -53,6 +54,7 @@ export function useCreateAgentCredentialFormHandlers({
       setSecret,
       workspaceId,
       name,
+      target,
       scope,
       days,
       setCredentials,

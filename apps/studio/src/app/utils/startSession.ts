@@ -1,6 +1,6 @@
 import { request } from '@/shared/api/request.ts'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 
 export function startSession() {
   const token = new URLSearchParams(location.hash.slice(1)).get('transfer')

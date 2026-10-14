@@ -3,7 +3,7 @@ import { test } from 'node:test'
 import {
   createExampleDesignLibrary,
   type DesignUsage,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 import { libraryUsageResults } from '../src/widgets/design/utils/libraryUsageResults.ts'
 import { createDesignEditorState } from '../src/widgets/design/model/createDesignEditorState.ts'
 import { designEditorSlice } from '../src/widgets/design/model/slices/designEditorSlice.ts'

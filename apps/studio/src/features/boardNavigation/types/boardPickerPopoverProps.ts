@@ -2,8 +2,8 @@ export type BoardPickerPopoverProps = {
   query: string
   setQuery: (value: string) => void
   t: import('i18next').TFunction<'translation', undefined>
-  boards: import('@pomegranate/domain/workspace').Board[]
-  board: import('@pomegranate/domain/workspace').Board
+  boards: import('@aril/domain/workspace').Board[]
+  board: import('@aril/domain/workspace').Board
   onBoard: (id: string) => void
   setOpen: (
     value:
@@ -13,7 +13,7 @@ export type BoardPickerPopoverProps = {
         ) => import('../types/canvasNavigationState.ts').CanvasNavigationState['open']),
   ) => void
   present: Pick<
-    import('@pomegranate/domain/collaboration').Presence,
+    import('@aril/domain/collaboration').Presence,
     'profile' | 'view' | 'boardId'
   >[]
   createBoard: () => void

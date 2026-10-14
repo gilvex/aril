@@ -1,9 +1,9 @@
-import { writeVersion } from '@pomegranate/domain/freshness'
+import { writeVersion } from '@aril/domain/freshness'
 import {
   workspaceSchema,
   type Envelope,
   type Workspace,
-} from '@pomegranate/domain/workspace'
+} from '@aril/domain/workspace'
 import assert from 'node:assert/strict'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { get } from 'node:http'

@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "name": "@pomegranate/domain",
+  "name": "@aril/domain",
   "exports": {
     "./*": "./src/*/index.ts"
   },

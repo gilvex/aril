@@ -15,7 +15,7 @@ export type UseStudioWorkspaceActionsProps = {
         ) => import('../types/studioState.ts').StudioState['sidebarOpen']),
   ) => void
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
-  workspace: import('@pomegranate/domain/workspace').Workspace
+  workspace: import('@aril/domain/workspace').Workspace
   setHistoryLoading: (
     value:
       | import('../types/studioState.ts').StudioState['historyLoading']
@@ -30,7 +30,7 @@ export type UseStudioWorkspaceActionsProps = {
           current: import('../types/studioState.ts').StudioState['snapshots'],
         ) => import('../types/studioState.ts').StudioState['snapshots']),
   ) => void
-  studio: import('@pomegranate/domain/studios').StudioSummary
+  studio: import('@aril/domain/studios').StudioSummary
   setNotice: (
     value:
       | import('../types/studioState.ts').StudioState['notice']

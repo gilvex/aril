@@ -2,7 +2,7 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeInspectorHandlers } from '../model/useWireframeInspectorHandlers.tsx'
 
 import { ResizableInspector } from '@/widgets/board/ui/ResizableInspector.tsx'
-import { wireLabels } from '@pomegranate/domain/wireframe'
+import { wireLabels } from '@aril/domain/wireframe'
 import { X } from 'lucide-react'
 
 import { WireframeEdgeDetails } from './WireframeEdgeDetails.tsx'

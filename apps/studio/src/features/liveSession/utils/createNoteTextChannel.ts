@@ -1,4 +1,4 @@
-import type { LiveDocumentMessage } from '@pomegranate/domain/liveSession'
+import type { LiveDocumentMessage } from '@aril/domain/liveSession'
 export function createNoteTextChannel() {
   const listeners = new Set<(message: LiveDocumentMessage) => void>()
   let sender: ((message: LiveDocumentMessage) => void) | null = null

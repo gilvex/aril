@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { designPosition, isDesignContainer } from '@pomegranate/domain/design'
+import { designPosition, isDesignContainer } from '@aril/domain/design'
 import type { DesignMiniPreviewProps } from '../types/designMiniPreviewProps.ts'
 export function LibraryPreviewCanvas({ nodes }: DesignMiniPreviewProps) {
   const boxes = useMemo(

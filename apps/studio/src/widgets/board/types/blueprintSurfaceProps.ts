@@ -5,11 +5,11 @@ export type BlueprintSurfaceProps = {
   ) => void
   sendPresence: (
     changes: {
-      camera?: import('@pomegranate/domain/collaboration').CameraPresence | null
+      camera?: import('@aril/domain/collaboration').CameraPresence | null
       cursor?: { x: number; y: number } | null
       selected?: string[]
       selectedEdges?: string[]
-      dragging?: import('@pomegranate/domain/collaboration').DragPosition[]
+      dragging?: import('@aril/domain/collaboration').DragPosition[]
     },
     force?: boolean,
   ) => void
@@ -51,17 +51,17 @@ export type BlueprintSurfaceProps = {
   ) => void
   palette: boolean
   addNode: (
-    kind: import('@pomegranate/domain/workspace').Idea['data']['kind'],
+    kind: import('@aril/domain/workspace').Idea['data']['kind'],
     at?: { x: number; y: number },
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   compact: boolean
-  liveNodes: import('@pomegranate/domain/workspace').Idea[]
+  liveNodes: import('@aril/domain/workspace').Idea[]
   dimensions: Record<string, { width: number; height: number }>
   selectedIds: Set<string>
   selectedEdge: string | null
-  profile: import('@pomegranate/domain/collaboration').Profile
-  peers: import('@pomegranate/domain/collaboration').Presence[]
+  profile: import('@aril/domain/collaboration').Profile
+  peers: import('@aril/domain/collaboration').Presence[]
   setFlow: import('react').Dispatch<
     import('react').SetStateAction<
       | import('@xyflow/react').ReactFlowInstance<
@@ -103,7 +103,7 @@ export type BlueprintSurfaceProps = {
   onNodesChange: (
     changes: import('@xyflow/react').NodeChange<
       import('@xyflow/react').Node<
-        import('@pomegranate/domain/workspace').Idea['data']
+        import('@aril/domain/workspace').Idea['data']
       >
     >[],
   ) => void
@@ -129,9 +129,9 @@ export type BlueprintSurfaceProps = {
   editItem: (id: string, connection?: boolean) => void
   setSelected: (id: string | null) => void
   checkpoint: () => void
-  following: import('@pomegranate/domain/collaboration').Presence | null
+  following: import('@aril/domain/collaboration').Presence | null
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
   insertPoint: import('../types/canvasInsertPoint.ts').CanvasInsertPoint | null

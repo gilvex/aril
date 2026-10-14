@@ -1,7 +1,7 @@
 import { useWorkspace } from '@/entities/workspace/index.ts'
 import { useCanvasFullscreen } from '@/features/canvasFullscreen/index.ts'
 import { useMultiplayer } from '@/features/liveSession/index.ts'
-import type { Presence } from '@pomegranate/domain/collaboration'
+import type { Presence } from '@aril/domain/collaboration'
 import type * as React from 'react'
 import { useStudioModel } from '../model/useStudioModel.ts'
 import { CanvasBoard } from '../ui/CanvasBoard.tsx'

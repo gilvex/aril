@@ -3,8 +3,8 @@ import {
   syncDesignInstances,
   markDesignOverrides,
   getDesignUsage,
-} from '@pomegranate/domain/designLibrary'
-import { designSchema } from '@pomegranate/domain/design'
+} from '@aril/domain/designLibrary'
+import { designSchema } from '@aril/domain/design'
 import { useDesignLibrary } from './useDesignLibrary.ts'
 import { useCallback, useMemo, useEffect } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -18,7 +18,7 @@ import {
   applyDesignChanges,
   isDesignContainer,
   normalizeDesignGroups,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 import { useDesignStructureActions } from './useDesignStructureActions.ts'
 import { useDesignEditorState } from './useDesignEditorState.ts'
 import type { DesignBoardProps } from '../types/designBoardProps.ts'

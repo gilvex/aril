@@ -1,4 +1,4 @@
-import { wirePosition, type WireNode } from '@pomegranate/domain/wireframe'
+import { wirePosition, type WireNode } from '@aril/domain/wireframe'
 
 export function wireConnectionSides(
   source: WireNode,

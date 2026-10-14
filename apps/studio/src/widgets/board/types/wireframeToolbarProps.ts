@@ -1,5 +1,5 @@
 import type { CanvasInsertPoint } from '@/widgets/board/types/canvasInsertPoint.ts'
-import { type WireKind } from '@pomegranate/domain/wireframe'
+import { type WireKind } from '@aril/domain/wireframe'
 
 export type WireframeToolbarProps = {
   navigation: import('react').ReactNode
@@ -45,6 +45,6 @@ export type WireframeToolbarProps = {
         ) => import('../types/wireframeBoardState.ts').WireframeBoardState['palette']),
   ) => void
   palette: boolean
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  graph: import('@aril/domain/wireframe').Wireframe
   add: (kind: WireKind, at?: CanvasInsertPoint) => void
 }

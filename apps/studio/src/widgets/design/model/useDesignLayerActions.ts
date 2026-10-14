@@ -5,7 +5,7 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 import type { EditorMenuAction } from '@/shared/types/index.ts'
 import type { DesignEditorModel } from '../types/designEditorModel.ts'
 import { useDesignGroupingMenu } from './useDesignGroupingMenu.ts'
-import { designDescendants } from '@pomegranate/domain/design'
+import { designDescendants } from '@aril/domain/design'
 export function useDesignLayerActions(
   model: DesignEditorModel,
   targetId?: string,

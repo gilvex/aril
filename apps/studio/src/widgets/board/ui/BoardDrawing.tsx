@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { CanvasDrawing } from '@/features/canvasTools/index.ts'
-import type { Board } from '@pomegranate/domain/workspace'
-import type { CanvasStrokes } from '@pomegranate/domain/drawing'
+import type { Board } from '@aril/domain/workspace'
+import type { CanvasStrokes } from '@aril/domain/drawing'
 export function BoardDrawing({
   board,
   update,

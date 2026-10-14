@@ -1,4 +1,4 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 
 export function loadViews(workspace: Workspace, viewsKey: string): Workspace {
   try {

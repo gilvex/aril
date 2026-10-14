@@ -10,8 +10,8 @@ export type CreateBoardDialogHandlersProps = {
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
   change: (
     update: (
-      value: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      value: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
     record?: boolean,
   ) => void
   boardName: string

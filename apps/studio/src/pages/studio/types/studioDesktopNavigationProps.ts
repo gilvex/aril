@@ -15,7 +15,7 @@ export type StudioDesktopNavigationProps = {
         ) => import('../types/studioState.ts').StudioState['requirementId']),
   ) => void
   present: Pick<
-    import('@pomegranate/domain/collaboration').Presence,
+    import('@aril/domain/collaboration').Presence,
     'view' | 'boardId' | 'profile'
   >[]
   actionsMenu: import('react').RefObject<HTMLDetailsElement | null>

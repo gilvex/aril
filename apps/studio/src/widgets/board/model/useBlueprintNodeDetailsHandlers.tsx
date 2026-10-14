@@ -1,5 +1,5 @@
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { useCallback } from 'react'
 
 import type { BlueprintNodeDetailsHandlersProps } from '../types/useBlueprintNodeDetailsHandlersProps.ts'

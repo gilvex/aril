@@ -3,7 +3,7 @@ import {
   removeWireNodes,
   wirePosition,
   type WireNode,
-} from '@pomegranate/domain/wireframe'
+} from '@aril/domain/wireframe'
 import { useCallback } from 'react'
 
 import type { WireframeNodeDetailsHandlersProps } from '../types/useWireframeNodeDetailsHandlersProps.ts'

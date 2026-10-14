@@ -2,7 +2,7 @@ import type { Recovery } from '@/entities/workspace/index.ts'
 import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 import type { StudioView as View } from '@/shared/types/studioView.ts'
 import { readStudioRoute } from '@/shared/utils/readStudioRoute.ts'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 export function createStudioState(
   workspace: Workspace,
   recovery: Recovery | undefined,

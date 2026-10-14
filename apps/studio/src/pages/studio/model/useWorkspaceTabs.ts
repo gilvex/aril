@@ -2,7 +2,7 @@ import { useEffect, useRef, useSyncExternalStore, useCallback } from 'react'
 import { configureStore } from '@reduxjs/toolkit'
 import { workspaceTabsSchema } from '../config/workspaceTabsSchema.ts'
 import { workspaceTabsSlice } from './slices/workspaceTabsSlice.ts'
-import type { StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioSummary } from '@aril/domain/studios'
 export function useWorkspaceTabs(
   studio: StudioSummary,
   profileId: string,

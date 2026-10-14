@@ -13,10 +13,10 @@ await build({
   // Shared workspace code is bundled here, so its private dependencies must be
   // bundled too. Only this deployable package's dependencies can stay external.
   external: Object.keys(manifest.dependencies).filter(
-    (name) => name !== '@pomegranate/domain',
+    (name) => name !== '@aril/domain',
   ),
   alias: {
-    '@pomegranate/domain': fileURLToPath(
+    '@aril/domain': fileURLToPath(
       new URL('../../../packages/domain/src', import.meta.url),
     ),
   },

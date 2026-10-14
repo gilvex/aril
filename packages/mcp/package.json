@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "name": "@pomegranate/mcp",
+  "name": "@aril/mcp",
   "exports": {
     "./config": "./src/config/index.ts",
     "./server": "./src/server/index.ts",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.3.1",
-    "@pomegranate/domain": "workspace:*",
+    "@aril/domain": "workspace:*",
     "zod": "^4.6.5"
   },
   "devDependencies": {

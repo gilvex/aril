@@ -1,8 +1,8 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import type * as React from 'react'
 
 export type BlueprintNodeDetailsProps = {
-  node: import('@pomegranate/domain/workspace').Idea
+  node: import('@aril/domain/workspace').Idea
   editField: React.RefObject<HTMLInputElement | null>
   updateNode: (data: Partial<Idea['data']>) => void
   openRequirement: (id: string) => void
@@ -16,10 +16,10 @@ export type BlueprintNodeDetailsProps = {
     acceptance: string
   }[]
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   setSelected: (id: string | null) => void
   removeNode: () => void
 }

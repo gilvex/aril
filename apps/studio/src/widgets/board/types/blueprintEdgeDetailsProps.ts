@@ -1,7 +1,7 @@
 import type * as React from 'react'
 
 export type BlueprintEdgeDetailsProps = {
-  board: import('@pomegranate/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   edge: {
     id: string
     source: string
@@ -11,7 +11,7 @@ export type BlueprintEdgeDetailsProps = {
   }
   editField: React.RefObject<HTMLInputElement | null>
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
   setSelectedEdge: (

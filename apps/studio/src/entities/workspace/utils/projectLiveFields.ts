@@ -3,11 +3,11 @@ import {
   equal,
   type Operation,
   type Json,
-} from '@pomegranate/domain/collaboration'
-import { documentOf } from '@pomegranate/domain/collaboration'
-import type { Workspace } from '@pomegranate/domain/workspace'
+} from '@aril/domain/collaboration'
+import { documentOf } from '@aril/domain/collaboration'
+import type { Workspace } from '@aril/domain/workspace'
 import type { LiveFieldPreview } from '../types/liveFieldPreview.ts'
-import { isLiveFieldOperation } from '@pomegranate/domain/liveSession'
+import { isLiveFieldOperation } from '@aril/domain/liveSession'
 import { keepViews } from './keepViews.ts'
 export function projectLiveFields(
   workspace: Workspace,

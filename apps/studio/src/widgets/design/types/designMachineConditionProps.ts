@@ -1,7 +1,7 @@
 import type {
   DesignLibrary,
   DesignMachine,
-} from '@pomegranate/domain/designLibrary'
+} from '@aril/domain/designLibrary'
 export type DesignMachineConditionProps = {
   guard: DesignMachine['transitions'][string]['guard']
   library: DesignLibrary

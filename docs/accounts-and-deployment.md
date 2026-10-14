@@ -20,9 +20,9 @@ If an old guest session has expired before Google was connected, a new invitatio
 
 ## Hosting and moving existing users online
 
-The studio supports native SQLite for a single self-hosted process and Postgres for shared/cloud deployments. Set `POMEGRANATE_STORAGE=postgres` and `POSTGRES_URL` to use Postgres locally. Vercel's `api/index.js` loads the server bundle generated in `.server/` by `pnpm build` and always uses Postgres. The public repository is [gilvex/aril](https://github.com/gilvex/aril); the current studio address is https://www.aril.studio. See [Aril domains](#aril-domains) for supported hosts and account migration behavior.
+The studio supports native SQLite for a single self-hosted process and Postgres for shared/cloud deployments. Set `ARIL_STORAGE=postgres` and `POSTGRES_URL` to use Postgres locally. Vercel's `api/index.js` loads the server bundle generated in `.server/` by `pnpm build` and always uses Postgres. The public repository is [gilvex/aril](https://github.com/gilvex/aril); the current studio address is https://www.aril.studio. See [Aril domains](#aril-domains) for supported hosts and account migration behavior.
 
-The API checks exact configured hosts and origins. Self-hosted installations set `POMEGRANATE_ORIGIN` and optionally a comma-separated `POMEGRANATE_ADDITIONAL_ORIGINS` list. Vercel includes both production domains explicitly; wildcards and untrusted request headers never add domains to the allowlist. Add every domain used for Google sign-in to the OAuth client's Authorized JavaScript origins. Sessions and browser preferences are origin-scoped: changing domains does not copy browser-local guest access. Use an existing Google link or a new invitation on the new domain.
+The API checks exact configured hosts and origins. Self-hosted installations set `ARIL_ORIGIN` and optionally a comma-separated `ARIL_ADDITIONAL_ORIGINS` list. Vercel includes both production domains explicitly; wildcards and untrusted request headers never add domains to the allowlist. Add every domain used for Google sign-in to the OAuth client's Authorized JavaScript origins. Sessions and browser preferences are origin-scoped: changing domains does not copy browser-local guest access. Use an existing Google link or a new invitation on the new domain.
 
 ## Installable app
 
@@ -44,7 +44,7 @@ Run `node --env-file=.env scripts/smoke-realtime.ts` to verify signed socket del
 
 To migrate an existing SQLite installation, stop local writes, then run `node --env-file=.env scripts/migrate-cloud.ts`. This explicit administrator command makes a local SQLite backup, validates and copies all workspaces, history, profiles, memberships, Google links, invitations and hashed sessions into one Postgres transaction. It refuses to overwrite populated cloud data or repeat a completed import. Obtain approval before transferring private local data. After verification, switch the local API to Postgres so local and hosted clients share one authoritative database.
 
-Set `POMEGRANATE_CLOUD_ORIGIN=https://www.aril.studio` on the local server to display **Open hosted studio** on the workspace list. Signed-in local users receive a single-use, two-minute access link for their own migrated profile. Its token is carried in a URL fragment, removed before exchange, stored hashed in Postgres and consumed transactionally. The hosted browser receives a new session for the same profile; no new invitation or duplicate profile is needed. Then connect Google from the hosted profile panel to retain access on future devices.
+Set `ARIL_CLOUD_ORIGIN=https://www.aril.studio` on the local server to display **Open hosted studio** on the workspace list. Signed-in local users receive a single-use, two-minute access link for their own migrated profile. Its token is carried in a URL fragment, removed before exchange, stored hashed in Postgres and consumed transactionally. The hosted browser receives a new session for the same profile; no new invitation or duplicate profile is needed. Then connect Google from the hosted profile panel to retain access on future devices.
 
 The repository is public. `.gitignore` excludes databases and backups, artifacts, environment values, pnpm cache, dependencies and Vercel local metadata. Never commit local sessions, account bindings or live planning data. `GOOGLE_CLIENT_SECRET`, database passwords and service-role keys must not be placed in frontend environment variables.
 
@@ -62,7 +62,7 @@ The existing Vercel project is now named `arilapp` (the project ID and connected
 
 Google Auth Platform must list `https://www.aril.studio`, `https://aril.studio` and `https://arilapp.vercel.app` as Authorized JavaScript origins when those addresses are used for login. Existing linked users sign in again on each new origin; guest sessions and local browser preferences do not transfer across domains. No redirect URI is required by the current Google Identity Services ID-token flow.
 
-The additional `https://aril.gilgil.co` host is also allowed. The previous domains were removed from the Vercel project during the move; old links and MCP configurations should use `https://arilapp.vercel.app` or the configured custom domain. The MCP setup default now uses the branded Vercel address.
+The additional `https://aril.gilgil.co` host is also allowed. The previous domains were removed from the Vercel project during the move; old links and MCP configurations should use `https://arilapp.vercel.app` or the configured custom domain. The MCP setup default uses `https://www.aril.studio`. New server configuration uses `ARIL_*`; the corresponding `POMEGRANATE_*` environment names remain accepted when the new name is absent.
 
 ## Temporary guests
 

@@ -28,7 +28,7 @@ export type StaleDraftScreenHandlersProps = {
           current: import('../types/appState.ts').AppState['legacy'],
         ) => import('../types/appState.ts').AppState['legacy']),
   ) => void
-  studio: import('@pomegranate/domain/studios').StudioSummary | null
+  studio: import('@aril/domain/studios').StudioSummary | null
   setError: (
     value:
       | import('../types/appState.ts').AppState['error']

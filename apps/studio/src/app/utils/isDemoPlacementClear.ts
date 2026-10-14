@@ -1,4 +1,4 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { demoNodeBounds } from './demoNodeBounds.ts'
 import { sampleDemoCurve } from './sampleDemoCurve.ts'
 

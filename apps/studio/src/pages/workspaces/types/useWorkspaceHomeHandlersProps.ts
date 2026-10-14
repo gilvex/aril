@@ -3,5 +3,5 @@ export type WorkspaceHomeHandlersProps = {
     typeof import('../model/useWorkspaceHomeModel.ts').useWorkspaceHomeModel
   >['createWorkspace']
   name: string
-  onOpen: (studio: import('@pomegranate/domain/studios').StudioSummary) => void
+  onOpen: (studio: import('@aril/domain/studios').StudioSummary) => void
 }

@@ -1,8 +1,8 @@
-import type { Operation } from '@pomegranate/domain/collaboration'
+import type { Operation } from '@aril/domain/collaboration'
 import type {
   LiveDocumentChannel,
   LiveFieldsMessage,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 export type LiveWorkspaceFieldsOptions = {
   receiveFields: (message: LiveFieldsMessage) => void
   pruneFields: () => void

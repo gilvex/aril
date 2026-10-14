@@ -1,7 +1,7 @@
 import { request } from '@/shared/api/request.ts'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
+import type { Profile } from '@aril/domain/collaboration'
 import { useCallback } from 'react'
 
 import type { JoinStudioFormHandlersProps } from '../types/useJoinStudioFormHandlersProps.ts'

@@ -1,11 +1,11 @@
 export type ImportWorkspaceDialogProps = {
-  pendingImport: import('@pomegranate/domain/workspace').Workspace
+  pendingImport: import('@aril/domain/workspace').Workspace
   exportWorkspace: () => void
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
   change: (
     update: (
-      value: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      value: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
     record?: boolean,
   ) => void
   setBoardId: (

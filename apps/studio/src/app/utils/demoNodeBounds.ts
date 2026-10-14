@@ -1,4 +1,4 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 
 export function demoNodeBounds(node: Idea) {
   // Deliberately generous for wrapped titles/descriptions, fonts and presence badges.

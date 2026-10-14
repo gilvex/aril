@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { ControlPresence } from '@pomegranate/domain/collaboration'
+import type { ControlPresence } from '@aril/domain/collaboration'
 import type { ControlPresenceProps } from '../types/controlPresenceProps.ts'
 import { controlAddress } from '../utils/controlAddress.ts'
 import { controlFingerprint } from '../utils/controlFingerprint.ts'

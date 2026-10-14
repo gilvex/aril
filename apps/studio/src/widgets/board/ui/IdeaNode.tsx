@@ -1,7 +1,7 @@
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '@/widgets/board/config/kindIcons.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import { Link2 } from 'lucide-react'
 import { memo } from 'react'

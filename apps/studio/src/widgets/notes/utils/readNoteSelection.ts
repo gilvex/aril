@@ -1,4 +1,4 @@
-import type { NotePresence } from '@pomegranate/domain/collaboration'
+import type { NotePresence } from '@aril/domain/collaboration'
 
 export function readNoteSelection(
   element: HTMLElement,

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { makeDesignElement } from '@pomegranate/domain/design'
+import { makeDesignElement } from '@aril/domain/design'
 import { alignDesignLayers } from '../src/widgets/design/utils/alignDesignLayers.ts'
 import { workspaceTabsSlice } from '../src/pages/studio/model/slices/workspaceTabsSlice.ts'
 

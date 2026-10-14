@@ -1,5 +1,5 @@
-import { designPosition } from '@pomegranate/domain/design'
-import type { Presence } from '@pomegranate/domain/collaboration'
+import { designPosition } from '@aril/domain/design'
+import type { Presence } from '@aril/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { sampleDemoCursor } from './sampleDemoCursor.ts'
 import { sampleDemoPlannerPresence } from './sampleDemoPlannerPresence.ts'

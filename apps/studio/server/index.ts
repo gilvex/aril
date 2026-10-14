@@ -3,22 +3,37 @@ import { createApp, createApplication } from './app.ts'
 import { dataDirectory } from './paths.ts'
 import { openPostgres } from './postgres.ts'
 const { app, store, collaboration } =
-  process.env.POMEGRANATE_STORAGE === 'postgres'
-    ? createApplication(await openPostgres(), process.env.POMEGRANATE_ORIGIN,
-        (process.env.POMEGRANATE_ADDITIONAL_ORIGINS || '').split(',').filter(Boolean))
+  (process.env.ARIL_STORAGE || process.env.POMEGRANATE_STORAGE) === 'postgres'
+    ? createApplication(
+        await openPostgres(),
+        process.env.ARIL_ORIGIN || process.env.POMEGRANATE_ORIGIN,
+        (
+          process.env.ARIL_ADDITIONAL_ORIGINS ||
+          process.env.POMEGRANATE_ADDITIONAL_ORIGINS ||
+          ''
+        )
+          .split(',')
+          .filter(Boolean),
+      )
     : createApp(
         resolve(dataDirectory(), 'studio.sqlite'),
-        process.env.POMEGRANATE_ORIGIN,
-        (process.env.POMEGRANATE_ADDITIONAL_ORIGINS || '').split(',').filter(Boolean),
+        process.env.ARIL_ORIGIN || process.env.POMEGRANATE_ORIGIN,
+        (
+          process.env.ARIL_ADDITIONAL_ORIGINS ||
+          process.env.POMEGRANATE_ADDITIONAL_ORIGINS ||
+          ''
+        )
+          .split(',')
+          .filter(Boolean),
       )
 const port = Number(process.env.PORT || 4317)
 const host = process.env.HOST || '127.0.0.1'
 if (
   !['127.0.0.1', 'localhost', '::1'].includes(host) &&
-  !process.env.POMEGRANATE_ORIGIN
+  !(process.env.ARIL_ORIGIN || process.env.POMEGRANATE_ORIGIN)
 )
   throw new Error(
-    'Set POMEGRANATE_ORIGIN to the shared studio URL before enabling remote access.',
+    'Set ARIL_ORIGIN to the shared studio URL before enabling remote access.',
   )
 const server = app.listen(port, host, () =>
   console.log(`Aril studio API: http://${host}:${port}`),

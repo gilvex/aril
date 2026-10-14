@@ -1,12 +1,12 @@
-import { type WireNode } from '@pomegranate/domain/wireframe'
+import { type WireNode } from '@aril/domain/wireframe'
 
 export type WireframeNodeDetailsProps = {
-  node: import('@pomegranate/domain/wireframe').WireNode
+  node: import('@aril/domain/wireframe').WireNode
   editField: import('react').RefObject<HTMLInputElement | null>
   editData: (changes: Partial<WireNode['data']>) => void
   editNode: (changes: Partial<WireNode>) => void
-  screens: import('@pomegranate/domain/wireframe').WireNode[]
-  graph: import('@pomegranate/domain/wireframe').Wireframe
+  screens: import('@aril/domain/wireframe').WireNode[]
+  graph: import('@aril/domain/wireframe').Wireframe
   trigger: string
   setTrigger: (
     value:
@@ -36,7 +36,7 @@ export type WireframeNodeDetailsProps = {
   ) => void
   duplicate: () => void
   save: (
-    next: import('@pomegranate/domain/wireframe').Wireframe,
+    next: import('@aril/domain/wireframe').Wireframe,
     record?: boolean,
   ) => void
   selection: Set<string>

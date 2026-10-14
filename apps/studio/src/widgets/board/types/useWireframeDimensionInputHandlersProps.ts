@@ -1,6 +1,6 @@
 export type WireframeDimensionInputHandlersProps = {
   dimension: 'width' | 'height'
   editNode: (
-    changes: Partial<import('@pomegranate/domain/wireframe').WireNode>,
+    changes: Partial<import('@aril/domain/wireframe').WireNode>,
   ) => void
 }

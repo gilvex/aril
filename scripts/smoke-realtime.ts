@@ -9,7 +9,7 @@ import {
   signMessage,
   verifyMessage,
   verifyCertificate,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 
 const room = 'smoke-' + randomUUID()
 const keys = await crypto.subtle.generateKey('Ed25519', true, [

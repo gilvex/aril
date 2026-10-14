@@ -9,4 +9,7 @@ export const frontendDirectory = fileURLToPath(
   new URL('../dist/', import.meta.url),
 )
 export const dataDirectory = () =>
-  resolve(repositoryRoot, process.env.POMEGRANATE_DATA_DIR || 'data')
+  resolve(
+    repositoryRoot,
+    process.env.ARIL_DATA_DIR || process.env.POMEGRANATE_DATA_DIR || 'data',
+  )

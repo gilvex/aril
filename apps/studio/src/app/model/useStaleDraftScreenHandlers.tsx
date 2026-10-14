@@ -1,6 +1,6 @@
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import type { Envelope } from '@aril/domain/workspace'
 import { useCallback } from 'react'
 
 import type { StaleDraftScreenHandlersProps } from '../types/useStaleDraftScreenHandlersProps.ts'

@@ -1,7 +1,7 @@
 export type UseStudioControllerProps = {
   active?: boolean
-  initial: import('@pomegranate/domain/workspace').Envelope
-  studio: import('@pomegranate/domain/studios').StudioSummary
-  initialProfile: import('@pomegranate/domain/collaboration').Profile
-  recovery: import('@pomegranate/domain/freshness').RecoveryDraft | undefined
+  initial: import('@aril/domain/workspace').Envelope
+  studio: import('@aril/domain/studios').StudioSummary
+  initialProfile: import('@aril/domain/collaboration').Profile
+  recovery: import('@aril/domain/freshness').RecoveryDraft | undefined
 }

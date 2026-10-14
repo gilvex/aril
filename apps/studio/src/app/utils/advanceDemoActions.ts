@@ -1,7 +1,7 @@
 import {
   applyOperations,
   diffWorkspace,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 import type { DemoState } from '../types/demoState.ts'
 import { commitDemoChange } from './commitDemoChange.ts'
 import { createDemoPeers } from './createDemoPeers.ts'

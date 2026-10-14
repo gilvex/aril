@@ -1,17 +1,17 @@
 import type { RequirementViewer } from '@/widgets/requirements/types/requirementViewer.ts'
-import type { RequirementField } from '@pomegranate/domain/collaboration'
-import type { Requirement } from '@pomegranate/domain/workspace'
+import type { RequirementField } from '@aril/domain/collaboration'
+import type { Requirement } from '@aril/domain/workspace'
 
 export type RequirementDetailsProps = {
   propertiesOpen: boolean
   toggleProperties: () => void
   current: Requirement
   openWork: (
-    link: import('@pomegranate/domain/workspace').RequirementLink,
+    link: import('@aril/domain/workspace').RequirementLink,
   ) => void
   selectRequirement: (id: string | null) => void
   peopleFor: (id: string) => RequirementViewer[]
-  profile: import('@pomegranate/domain/collaboration').Profile
+  profile: import('@aril/domain/collaboration').Profile
   fieldProps: (name: RequirementField) => {
     onFocus: () => void
     onBlur: () => void
@@ -20,11 +20,11 @@ export type RequirementDetailsProps = {
   }
   update: (patch: Partial<Requirement>) => void
   fieldHint: (name: RequirementField) => import('react').JSX.Element | null
-  workspace: import('@pomegranate/domain/workspace').Workspace
+  workspace: import('@aril/domain/workspace').Workspace
   openBoard: (id: string) => void
   change: (
     fn: (
-      w: import('@pomegranate/domain/workspace').Workspace,
-    ) => import('@pomegranate/domain/workspace').Workspace,
+      w: import('@aril/domain/workspace').Workspace,
+    ) => import('@aril/domain/workspace').Workspace,
   ) => void
 }

@@ -1,7 +1,7 @@
 import { type Node, type ReactFlowInstance } from '@xyflow/react'
 export type UseBlueprintActionsProps = {
   update: (
-    board: import('@pomegranate/domain/workspace').Board,
+    board: import('@aril/domain/workspace').Board,
     record?: boolean,
   ) => void
   board: {

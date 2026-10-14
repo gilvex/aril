@@ -1,5 +1,5 @@
 import type { WireFlowNode } from '@/widgets/board/types/wireFlowNode.ts'
-import { type Wireframe } from '@pomegranate/domain/wireframe'
+import { type Wireframe } from '@aril/domain/wireframe'
 import { type ReactFlowInstance } from '@xyflow/react'
 export type UseWireframeInsertionProps = {
   preview: boolean

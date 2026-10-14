@@ -2,7 +2,7 @@ import {
   designAncestors,
   designPosition,
   type DesignElement,
-} from '@pomegranate/domain/design'
+} from '@aril/domain/design'
 export function designClipShapes(nodes: DesignElement[], node: DesignElement) {
   const origin = designPosition(nodes, node)
   return designAncestors(nodes, node.id).flatMap((parent) => {

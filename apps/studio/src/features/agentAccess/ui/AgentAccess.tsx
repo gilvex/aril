@@ -5,7 +5,7 @@ import type { AgentAccessProps } from '@/features/agentAccess/types/agentAccessP
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { AgentCredential } from '@pomegranate/domain/agentAccess'
+import type { AgentCredential } from '@aril/domain/agentAccess'
 import { useEffect, useState } from 'react'
 import { useAgentAccessHandlers } from '../model/useAgentAccessHandlers.tsx'
 import { AgentCredentialRow } from './AgentCredentialRow.tsx'
@@ -24,6 +24,8 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
     setName,
     scope,
     setScope,
+    target,
+    setTarget,
     days,
     setDays,
     error,
@@ -64,7 +66,7 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
       <h2 id="modal-title">{t('Agent access')}</h2>
       <p>
         {t(
-          'Connect Codex or another MCP client to this workspace. Edits appear in revision history and team activity.',
+          'Connect Codex or another MCP client to your account or one file. Edits appear in revision history and team activity.',
         )}
       </p>
       <CreateAgentCredentialForm
@@ -75,6 +77,8 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
         setCredentials={setCredentials}
         name={name}
         setName={setName}
+        target={target}
+        setTarget={setTarget}
         scope={scope}
         setScope={setScope}
         days={days}

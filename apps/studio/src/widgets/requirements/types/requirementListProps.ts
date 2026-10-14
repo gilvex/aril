@@ -13,5 +13,5 @@ export type RequirementListProps = {
   selected: string | null
   selectRequirement: (id: string | null) => void
   peopleFor: (id: string) => RequirementViewer[]
-  profile: import('@pomegranate/domain/collaboration').Profile
+  profile: import('@aril/domain/collaboration').Profile
 }

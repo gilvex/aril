@@ -5,9 +5,9 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { cpus, platform, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import { writeVersion } from '@pomegranate/domain/freshness'
-import type { Envelope } from '@pomegranate/domain/workspace'
+import { diffWorkspace } from '@aril/domain/collaboration'
+import { writeVersion } from '@aril/domain/freshness'
+import type { Envelope } from '@aril/domain/workspace'
 import { createApp } from '../apps/studio/server/app.ts'
 
 // This harness always creates its own local database and ephemeral loopback server.

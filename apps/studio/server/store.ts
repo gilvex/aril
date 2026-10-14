@@ -1,11 +1,11 @@
-import type { Activity } from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
-import { blankStudio, type StudioSummary } from '@pomegranate/domain/studios'
+import type { Activity } from '@aril/domain/collaboration'
+import { createSeed } from '@aril/domain/seed'
+import { blankStudio, type StudioSummary } from '@aril/domain/studios'
 import {
   workspaceSchema,
   type Envelope,
   type Workspace,
-} from '@pomegranate/domain/workspace'
+} from '@aril/domain/workspace'
 import { randomUUID } from 'node:crypto'
 import { mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
@@ -15,7 +15,7 @@ import { workspaceAccess } from './workspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import { guestLinks } from './guestLinks.ts'
 import { identityStore } from './identity.ts'
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 import { sqliteStudioOverviews } from './utils/sqliteStudioOverviews.ts'
 
 export function openStore(path: string) {

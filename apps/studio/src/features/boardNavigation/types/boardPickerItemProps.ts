@@ -1,6 +1,6 @@
 export type BoardPickerItemProps = {
-  item: import('@pomegranate/domain/workspace').Board
-  board: import('@pomegranate/domain/workspace').Board
+  item: import('@aril/domain/workspace').Board
+  board: import('@aril/domain/workspace').Board
   onBoard: (id: string) => void
   setOpen: (
     value:
@@ -10,7 +10,7 @@ export type BoardPickerItemProps = {
         ) => import('../types/canvasNavigationState.ts').CanvasNavigationState['open']),
   ) => void
   present: Pick<
-    import('@pomegranate/domain/collaboration').Presence,
+    import('@aril/domain/collaboration').Presence,
     'profile' | 'view' | 'boardId'
   >[]
 }

@@ -1,13 +1,13 @@
 import { workspaceAccess } from './workspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
-import type { Activity, Profile } from '@pomegranate/domain/collaboration'
-import { createSeed } from '@pomegranate/domain/seed'
-import { blankStudio, type StudioSummary } from '@pomegranate/domain/studios'
+import type { Activity, Profile } from '@aril/domain/collaboration'
+import { createSeed } from '@aril/domain/seed'
+import { blankStudio, type StudioSummary } from '@aril/domain/studios'
 import {
   workspaceSchema,
   type Envelope,
   type Workspace,
-} from '@pomegranate/domain/workspace'
+} from '@aril/domain/workspace'
 import { randomBytes, randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { Pool, type PoolClient, type QueryResultRow } from 'pg'
@@ -16,7 +16,7 @@ import { agentCredentials, agentTable } from './agentCredentials.ts'
 import type { Store } from './storeContract.ts'
 import { hash } from './utils/postgresHash.ts'
 import { postgresUrl } from './utils/postgresPostgresUrl.ts'
-import type { StudioOverview } from '@pomegranate/domain/studios'
+import type { StudioOverview } from '@aril/domain/studios'
 import { postgresStudioOverviews } from './utils/postgresStudioOverviews.ts'
 
 const colors = [

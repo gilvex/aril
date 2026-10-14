@@ -1,4 +1,4 @@
-import type { Idea } from '@pomegranate/domain/workspace'
+import type { Idea } from '@aril/domain/workspace'
 import { addEdge, type Connection } from '@xyflow/react'
 import { useCallback } from 'react'
 import { flushSync } from 'react-dom'

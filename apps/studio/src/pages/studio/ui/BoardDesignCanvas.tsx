@@ -1,7 +1,7 @@
 import { useCallback, useMemo, type ReactNode } from 'react'
 import { DesignBoard } from './DesignBoard.tsx'
 import type { StudioCanvasProps } from '../types/studioCanvasProps.ts'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 export function BoardDesignCanvas({
   studio,
   board,

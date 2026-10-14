@@ -1,5 +1,5 @@
 import { controlBounds } from './controlBounds.ts'
-import type { ControlPresence } from '@pomegranate/domain/collaboration'
+import type { ControlPresence } from '@aril/domain/collaboration'
 import { controlFingerprint } from './controlFingerprint.ts'
 export function controlSelectionRects(
   element: HTMLElement,

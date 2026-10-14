@@ -3,14 +3,17 @@ import { DatabaseSync } from 'node:sqlite'
 import { openStore } from '../apps/studio/server/store.ts'
 import { openPostgres } from '../apps/studio/server/postgres.ts'
 const path = resolve(
-  process.env.POMEGRANATE_DATA_DIR || 'data',
+  process.env.ARIL_DATA_DIR || process.env.POMEGRANATE_DATA_DIR || 'data',
   'studio.sqlite',
 )
 const store =
-  process.env.POMEGRANATE_STORAGE === 'postgres'
+  (process.env.ARIL_STORAGE || process.env.POMEGRANATE_STORAGE) === 'postgres'
     ? await openPostgres()
     : openStore(path)
-const workspaceId = process.env.POMEGRANATE_WORKSPACE_ID || 'default'
+const workspaceId =
+  process.env.ARIL_WORKSPACE_ID ||
+  process.env.POMEGRANATE_WORKSPACE_ID ||
+  'default'
 try {
   await store.identity.bootstrap()
   let userId: string | undefined
@@ -34,10 +37,12 @@ try {
     }
   }
   if (!userId)
-    throw new Error('Workspace has no member. Check POMEGRANATE_WORKSPACE_ID.')
+    throw new Error('Workspace has no member. Check ARIL_WORKSPACE_ID.')
   const invite = await store.identity.invite(userId, workspaceId)
   const origin =
+    process.env.ARIL_ORIGIN ||
     process.env.POMEGRANATE_ORIGIN ||
+    process.env.ARIL_CLOUD_ORIGIN ||
     process.env.POMEGRANATE_CLOUD_ORIGIN ||
     `http://127.0.0.1:${process.env.PORT || 5173}`
   console.log(

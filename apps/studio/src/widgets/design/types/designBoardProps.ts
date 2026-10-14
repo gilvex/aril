@@ -1,9 +1,9 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 import type {
   Presence,
   CameraPresence,
   DragPosition,
-} from '@pomegranate/domain/collaboration'
+} from '@aril/domain/collaboration'
 export type DesignBoardProps = {
   panelLayoutKey?: string
   initialEditorState?: Partial<

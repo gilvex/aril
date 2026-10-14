@@ -1,5 +1,5 @@
 import { Plus, X } from 'lucide-react'
-import { nodeKinds, type Idea } from '@pomegranate/domain/workspace'
+import { nodeKinds, type Idea } from '@aril/domain/workspace'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '../config/kindIcons.ts'
 import { kindLabels } from '../config/kindLabels.ts'

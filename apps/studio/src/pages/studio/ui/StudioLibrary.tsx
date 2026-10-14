@@ -6,7 +6,7 @@ import type { SelectChange } from '@/shared/types/selectChange.ts'
 import {
   activeBoardSections,
   type Workspace,
-} from '@pomegranate/domain/workspace'
+} from '@aril/domain/workspace'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 export function StudioLibrary({
   workspace,

@@ -1,5 +1,5 @@
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import { diffWorkspace } from '@aril/domain/collaboration'
+import type { Workspace } from '@aril/domain/workspace'
 import type { DemoAction } from '../types/demoAction.ts'
 
 export function createDemoActions(seed: Workspace): DemoAction[] {

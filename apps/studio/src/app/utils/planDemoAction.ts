@@ -1,6 +1,6 @@
 import { demoTopics } from '../config/demoTopics.ts'
-import { diffWorkspace } from '@pomegranate/domain/collaboration'
-import type { Idea } from '@pomegranate/domain/workspace'
+import { diffWorkspace } from '@aril/domain/collaboration'
+import type { Idea } from '@aril/domain/workspace'
 import type { DemoAction } from '../types/demoAction.ts'
 import type { DemoState } from '../types/demoState.ts'
 import { nextDemoRandom } from './nextDemoRandom.ts'

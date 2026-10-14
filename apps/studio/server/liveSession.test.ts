@@ -4,7 +4,7 @@ import {
   signMessage,
   verifyCertificate,
   verifyMessage,
-} from '@pomegranate/domain/liveSession'
+} from '@aril/domain/liveSession'
 import assert from 'node:assert/strict'
 import { createHmac, randomUUID, type webcrypto } from 'node:crypto'
 import { mkdtempSync, rmSync } from 'node:fs'

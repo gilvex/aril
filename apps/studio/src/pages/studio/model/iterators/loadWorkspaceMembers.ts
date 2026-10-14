@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import type { SagaIterator } from 'redux-saga'
-import type { WorkspaceMember } from '@pomegranate/domain/studios'
+import type { WorkspaceMember } from '@aril/domain/studios'
 import { request, workspaceHeaders } from '@/shared/api/index.ts'
 import { settingsSlice } from '../slices/settingsSlice.ts'
 export function* loadWorkspaceMembers(workspaceId: string): SagaIterator {

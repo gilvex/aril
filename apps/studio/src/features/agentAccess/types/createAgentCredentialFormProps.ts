@@ -30,7 +30,9 @@ export type CreateAgentCredentialFormProps = {
           current: import('../types').AgentAccessState['name'],
         ) => import('../types').AgentAccessState['name']),
   ) => void
+  target: 'account' | 'workspace'
   scope: 'read' | 'write'
+  setTarget: (value: 'account' | 'workspace') => void
   setScope: (
     value:
       | import('../types').AgentAccessState['scope']

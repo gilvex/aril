@@ -2,7 +2,7 @@ import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Bold, Italic, Heading2, List, ListChecks, Link } from 'lucide-react'
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 const formats = [
   { name: 'Heading', Icon: Heading2 },
   { name: 'Bold', Icon: Bold },

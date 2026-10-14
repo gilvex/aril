@@ -1,9 +1,9 @@
-import type { Workspace } from '@pomegranate/domain/workspace'
+import type { Workspace } from '@aril/domain/workspace'
 import type {
   DesignLibrary,
   DesignComponent,
-} from '@pomegranate/domain/designLibrary'
-import type { DesignPage, DesignElement } from '@pomegranate/domain/design'
+} from '@aril/domain/designLibrary'
+import type { DesignPage, DesignElement } from '@aril/domain/design'
 import type { useDesignEditorState } from '../model/useDesignEditorState.ts'
 export type UseDesignLibraryProps = {
   navigateDesign: (

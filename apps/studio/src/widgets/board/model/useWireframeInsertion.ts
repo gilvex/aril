@@ -3,7 +3,7 @@ import {
   makeWireNode,
   type WireKind,
   type WireNode,
-} from '@pomegranate/domain/wireframe'
+} from '@aril/domain/wireframe'
 import { useCallback } from 'react'
 import type { UseWireframeInsertionProps } from '../types/useWireframeInsertionProps.ts'
 export function useWireframeInsertion({

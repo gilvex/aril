@@ -1,4 +1,4 @@
-import type { StudioOverview, StudioSummary } from '@pomegranate/domain/studios'
+import type { StudioOverview, StudioSummary } from '@aril/domain/studios'
 export type WorkspaceCardProps = {
   studio: StudioOverview
   visited?: number

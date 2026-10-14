@@ -2,9 +2,9 @@ import type { Recovery } from '@/entities/workspace/index.ts'
 import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 import { readStudioRoute } from '@/shared/utils/readStudioRoute.ts'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
-import type { Profile } from '@pomegranate/domain/collaboration'
-import type { StudioSummary } from '@pomegranate/domain/studios'
-import type { Envelope, Workspace } from '@pomegranate/domain/workspace'
+import type { Profile } from '@aril/domain/collaboration'
+import type { StudioSummary } from '@aril/domain/studios'
+import type { Envelope, Workspace } from '@aril/domain/workspace'
 export function createAppState() {
   const startupRoute: StudioRoute = (() =>
     readStudioRoute(location.pathname + location.search))()

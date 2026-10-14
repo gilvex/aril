@@ -14,6 +14,8 @@ export function CreateAgentCredentialForm({
   setName,
   scope,
   setScope,
+  target,
+  setTarget,
   days,
   setDays,
   busy,
@@ -28,6 +30,7 @@ export function CreateAgentCredentialForm({
     workspaceId,
     name,
     scope,
+    target,
     days,
     setCredentials,
   })
@@ -42,6 +45,25 @@ export function CreateAgentCredentialForm({
           onChange={(e) => setName(e.target.value)}
         />
       </label>
+      <label>
+        {t('Connect to')}
+        <StudioSelect
+          value={target}
+          onChange={(e) => setTarget(e.target.value as 'account' | 'workspace')}
+        >
+          <option value="account">
+            {t('My account — all accessible files')}
+          </option>
+          <option value="workspace">{t('This file only')}</option>
+        </StudioSelect>
+      </label>
+      <p className="muted">
+        {target === 'account'
+          ? t(
+              'Includes current and future files you can access. File permissions still apply; viewers cannot edit.',
+            )
+          : t('This connection can only access the current file.')}
+      </p>
       <div className="agent-access-options">
         <label>
           {t('Access')}

@@ -1,5 +1,5 @@
-import type { Presence } from '@pomegranate/domain/collaboration'
-import type { Board } from '@pomegranate/domain/workspace'
+import type { Presence } from '@aril/domain/collaboration'
+import type { Board } from '@aril/domain/workspace'
 export type CanvasNavigationProps = {
   board: Board
   boards: Board[]
