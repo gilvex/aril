@@ -21,6 +21,7 @@ export function useAppController() {
   const {
     sessions,
     closeWorkspace,
+    syncWorkspaces,
     getCachedWorkspace,
     startupRoute,
     restoringRoute,
@@ -39,8 +40,8 @@ export function useAppController() {
     setLegacy,
     staleDraftKey,
     setStaleDraftKey,
-    googleLinked,
-    setGoogleLinked,
+    accountLinked,
+    setAccountLinked,
     inviteRequired,
     setInviteRequired,
     token,
@@ -62,7 +63,7 @@ export function useAppController() {
       setInviteRequired(true)
       setError(
         t(
-          'Your guest access has ended. Ask for a new guest link or sign in with Google.',
+          'Your guest access has ended. Ask for a new guest link or choose a sign-in method.',
         ),
       )
     }
@@ -91,7 +92,7 @@ export function useAppController() {
       .then((result) => {
         if (result.token) localStorage.setItem(sessionTokenKey, result.token)
         if (!cancelled) {
-          setGoogleLinked(!!result.googleLinked)
+          setAccountLinked(!!result.accountLinked)
           setInviteRequired(!!result.inviteRequired)
           setProfile(result.profile)
         }
@@ -105,7 +106,7 @@ export function useAppController() {
     return () => {
       cancelled = true
     }
-  }, [setError, setInviteRequired, setProfile, setGoogleLinked])
+  }, [setError, setInviteRequired, setProfile, setAccountLinked])
   useEffect(() => {
     if (!restoringRoute || !profile || token || !startupRoute.workspaceId)
       return
@@ -237,6 +238,7 @@ export function useAppController() {
     startupRoute,
     sessions,
     closeWorkspace,
+    syncWorkspaces,
     legacy,
     staleDraftKey,
     setStaleDraftKey,
@@ -249,8 +251,8 @@ export function useAppController() {
     token,
     restoringRoute,
     initial,
-    googleLinked,
-    setGoogleLinked,
+    accountLinked,
+    setAccountLinked,
     inviteRequired,
     setBusy,
     name,

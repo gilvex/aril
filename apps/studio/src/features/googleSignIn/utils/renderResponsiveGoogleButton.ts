@@ -6,18 +6,25 @@ export function renderResponsiveGoogleButton(
   locale: string,
 ) {
   let previousWidth = 0
+  let previousTheme = ''
   let frame = 0
   const render = () => {
-    // Measure before the visual scale so repeated resizes cannot shrink the button.
+    // Measure before scaling so repeated resizes cannot shrink the button.
     const width = Math.min(400, element.clientWidth)
-    if (width < 1 || width === previousWidth) return
+    const theme =
+      document.documentElement.dataset.theme === 'dark'
+        ? 'filled_black'
+        : 'outline'
+    if (width < 1 || (width === previousWidth && theme === previousTheme))
+      return
     previousWidth = width
+    previousTheme = theme
     element.replaceChildren()
     api.accounts.id.renderButton(element, {
       type: 'standard',
-      theme: 'outline',
+      theme,
       size: 'large',
-      text: 'continue_with',
+      text: 'signin_with',
       shape: 'rectangular',
       logo_alignment: 'center',
       width: String(width),
@@ -28,10 +35,16 @@ export function renderResponsiveGoogleButton(
     cancelAnimationFrame(frame)
     frame = requestAnimationFrame(render)
   })
+  const themeObserver = new MutationObserver(render)
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
   observer.observe(element)
   render()
   return () => {
     observer.disconnect()
+    themeObserver.disconnect()
     cancelAnimationFrame(frame)
   }
 }

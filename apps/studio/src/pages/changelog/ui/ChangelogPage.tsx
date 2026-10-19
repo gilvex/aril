@@ -1,3 +1,5 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useEffect } from 'react'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -11,7 +13,7 @@ import './changelog.css'
 export function ChangelogPage() {
   const { t } = useTranslation()
   useEffect(() => {
-    document.title = `${t('Changelog')} · Aril`
+    document.title = `${t('Changelog')} · ${getProductBranding().productName}`
     if (window.location.hash)
       document.getElementById(window.location.hash.slice(1))?.scrollIntoView()
   }, [t])
@@ -21,9 +23,16 @@ export function ChangelogPage() {
         {t('Skip to updates')}
       </a>
       <header className="changelog-header">
-        <a className="changelog-brand" href="/" aria-label={t('Open Aril')}>
-          <img src="/aril.svg" alt="" width="24" height="24" />
-          Aril<span>{t('Changelog')}</span>
+        <a
+          className="changelog-brand"
+          href="/"
+          aria-label={t('Open {{product}}', {
+            product: getProductBranding().productName,
+          })}
+        >
+          <ProductLogo width="24" height="24" />
+          {getProductBranding().productName}
+          <span>{t('Changelog')}</span>
         </a>
         <Button asChild variant="outline" size="sm">
           <a href="/">

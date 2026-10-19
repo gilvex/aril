@@ -7,3 +7,9 @@ export { statuses } from './statuses.ts'
 export { workspaceSchema } from './workspaceSchema.ts'
 
 export { noteCommentSchema } from './noteCommentSchema.ts'
+
+export {networkNodeKinds} from './networkNodeKinds.ts'
+
+export {canvasClipboardSchema} from './canvasClipboardSchema.ts'
+
+export {legacyNodeIcons} from './legacyNodeIcons.ts'

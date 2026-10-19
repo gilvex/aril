@@ -1,3 +1,6 @@
+import { request } from '@/shared/api/request.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
+import { syncWorkspaceTabs } from '@/shared/utils/syncWorkspaceTabs.ts'
 import { useEffect, useRef, useSyncExternalStore, useCallback } from 'react'
 import { configureStore } from '@reduxjs/toolkit'
 import { workspaceTabsSchema } from '../config/workspaceTabsSchema.ts'
@@ -54,6 +57,39 @@ export function useWorkspaceTabs(
       /* Tabs still work in memory. */
     }
   }, [active, key, state.tabs, store])
+  useEffect(() => {
+    if (!active || isDemoMode()) return
+    const controller = new AbortController()
+    let pending = false
+    const refresh = () => {
+      if (pending || document.visibilityState === 'hidden') return
+      pending = true
+      void request<StudioSummary[]>('/api/studios', {
+        signal: controller.signal,
+      })
+        .then((available) => {
+          if (controller.signal.aborted) return
+          const tabs = syncWorkspaceTabs(profileId, available)
+          if (tabs) store.dispatch(workspaceTabsSlice.actions.replaced(tabs))
+        })
+        .catch(() => {
+          /* Offline is not evidence that a workspace was deleted. */
+        })
+        .finally(() => {
+          pending = false
+        })
+    }
+    refresh()
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    const timer = window.setInterval(refresh, 30000)
+    return () => {
+      controller.abort()
+      window.clearInterval(timer)
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+    }
+  }, [active, profileId, store])
   const close = useCallback(
     (id: string) => {
       store.dispatch(workspaceTabsSlice.actions.closed(id))

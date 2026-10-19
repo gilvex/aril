@@ -5,6 +5,15 @@ export const workspaceHomeSlice = createSlice({
   name: 'workspaceHome',
   initialState: {} as WorkspaceHomeState,
   reducers: {
+    setManagement: (
+      state,
+      action: PayloadAction<WorkspaceHomeState['management']>,
+    ) => {
+      state.management = action.payload
+      state.error = ''
+      state.name =
+        action.payload?.mode === 'rename' ? action.payload.studio.name : ''
+    },
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload
     },

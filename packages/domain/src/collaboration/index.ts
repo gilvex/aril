@@ -24,3 +24,5 @@ export type { ControlPresence } from './types/controlPresence.ts'
 export { controlPresenceSchema } from './config/controlPresenceSchema.ts'
 
 export { documentOf } from './utils/documentOf.ts'
+
+export { guestLinkNoExpiry } from './config/guestLinkNoExpiry.ts'

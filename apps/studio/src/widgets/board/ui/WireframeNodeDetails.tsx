@@ -26,7 +26,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
           ref={editField}
           value={node.data.title}
           maxLength={120}
-          onChange={(e) => editData({ title: e.target.value || 'Untitled' })}
+          onChange={(e) => editData({ title: e.target.value })}
         />
       </label>
       {node.data.kind !== 'button' && node.data.kind !== 'screen' && (

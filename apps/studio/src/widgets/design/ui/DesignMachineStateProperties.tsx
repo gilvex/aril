@@ -22,7 +22,7 @@ export function DesignMachineStateProperties({ model }: DesignEditorProps) {
   )
   const name = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.value.trim()) edit({ name: e.target.value })
+      edit({ name: e.target.value })
     },
     [edit],
   )

@@ -74,7 +74,7 @@ export function useNoteEditor({ model, workspaceId }: NoteEditorProps) {
   const rename = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       patch({ titleDraft: e.target.value })
-      if (e.target.value.trim()) edit({ title: e.target.value })
+      edit({ title: e.target.value })
     },
     [patch, edit],
   )

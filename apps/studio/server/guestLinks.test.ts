@@ -256,7 +256,7 @@ test(
         owner.profile.id,
         'default',
         'Review',
-        60,
+        null,
       )
       const guest = (await b.identity.redeemGuest(link.token, 'Guest'))!
       assert.equal(
@@ -274,6 +274,37 @@ test(
       await a.guests.revoke(link.id, 'default')
       assert.equal(await b.identity.authenticate(guest.token), undefined)
       assert.equal(await b.identity.redeemGuest(link.token, 'Late'), null)
+      const readLink = await a.guests.create(
+        owner.profile.id,
+        'default',
+        'Read review',
+        null,
+        'viewer',
+      )
+      const reader = (await b.identity.redeemGuest(readLink.token, 'Reader'))!
+      assert.equal(await b.access.role(reader.profile.id, 'default'), 'viewer')
+      assert.equal(
+        await a.access.update(
+          owner.profile.id,
+          'default',
+          reader.profile.id,
+          'member',
+        ),
+        false,
+      )
+      const saved = await b.read()
+      await assert.rejects(
+        b.save(
+          saved.workspace,
+          saved.revision,
+          undefined,
+          'default',
+          reader.profile.id,
+        ),
+      )
+      await a.guests.revoke(readLink.id, 'default')
+      assert.equal(await b.access.role(reader.profile.id, 'default'), null)
+      assert.equal(await b.identity.authenticate(reader.token), undefined)
       const expired = await a.guests.create(
         owner.profile.id,
         'default',

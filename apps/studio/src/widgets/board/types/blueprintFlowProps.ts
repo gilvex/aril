@@ -17,26 +17,12 @@ export type BlueprintFlowProps = {
   peers: import('@aril/domain/collaboration').Presence[]
   setFlow: import('react').Dispatch<
     import('react').SetStateAction<ReactFlowInstance<
-      Node<{
-        title: string
-        description: string
-        kind: 'layer' | 'service' | 'database' | 'instance' | 'person' | 'note'
-        status: 'Exploring' | 'Decided' | 'Question'
-        notes: string
-        requirements: string[]
-      }>
+      Node<import('@aril/domain/workspace').Idea['data']>
     > | null>
   >
   publishCamera: (viewport: import('@xyflow/react').Viewport) => void
   flow: ReactFlowInstance<
-    Node<{
-      title: string
-      description: string
-      kind: 'layer' | 'service' | 'database' | 'instance' | 'person' | 'note'
-      status: 'Exploring' | 'Decided' | 'Question'
-      notes: string
-      requirements: string[]
-    }>
+    Node<import('@aril/domain/workspace').Idea['data']>
   > | null
   canvasRef: import('react').RefObject<HTMLDivElement | null>
   setPalette: (

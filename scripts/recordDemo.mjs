@@ -15,6 +15,8 @@ const context = await browser.newContext({
 })
 await context.route('**/*', async (route) => {
   const url = new URL(route.request().url())
+  if (url.origin === origin && url.pathname === '/api/deployment-settings')
+    return route.fulfill({ json: { productSiteEnabled: true } })
   if (url.origin === origin && !url.pathname.startsWith('/api/'))
     return route.continue()
   if (['data:', 'blob:'].includes(url.protocol)) return route.continue()

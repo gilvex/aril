@@ -1,3 +1,4 @@
+import { isProductSiteEnabled } from '@/shared/deploymentSettings/index.ts'
 import { Panel } from '@xyflow/react'
 import { CodeXml } from 'lucide-react'
 import { projectLinks } from '../config/projectLinks.ts'
@@ -6,6 +7,7 @@ import './canvasRepositoryLink.css'
 
 export function CanvasRepositoryLink() {
   const { t } = useTranslation()
+  if (!isProductSiteEnabled()) return null
   return (
     <Panel position="bottom-right" className="canvas-repository-link">
       <a

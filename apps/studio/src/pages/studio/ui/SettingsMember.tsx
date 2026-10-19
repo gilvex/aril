@@ -42,7 +42,7 @@ export function SettingsMember({
                 ? 'Owner'
                 : member.role === 'viewer'
                   ? 'Can view and follow'
-                  : member.role === 'guest'
+                  : (member.role === 'guest' || !!member.guestExpiresAt)
                     ? 'Temporary guest'
                     : 'Can edit this file',
             )}
@@ -68,7 +68,7 @@ export function SettingsMember({
         </div>
       ) : (
         <div className="settings-member-actions">
-          {manageable && member.role !== 'guest' ? (
+          {manageable && member.role !== 'guest' && !member.guestExpiresAt ? (
             <StudioSelect
               aria-label={t('Access for {{name}}', { name: member.name })}
               value={member.role}
@@ -85,7 +85,7 @@ export function SettingsMember({
                   ? 'Owner'
                   : member.role === 'viewer'
                     ? 'Viewer'
-                    : member.role === 'guest'
+                    : (member.role === 'guest' || !!member.guestExpiresAt)
                       ? 'Guest'
                       : 'Editor',
               )}

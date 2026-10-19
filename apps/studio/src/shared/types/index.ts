@@ -18,3 +18,4 @@ export type { StudioActionBarProps } from './studioActionBarProps.ts'
 export type { CanvasViewportController } from './canvasViewportController.ts'
 
 export type { AccentPreference } from './accentPreference.ts'
+export type { ProductLogoProps } from './productLogoProps.ts'

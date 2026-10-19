@@ -69,11 +69,50 @@ test(
       assert.equal(
         (
           await call(1, '/api/studios', googleRace[0].token, 'POST', {
-            name: 'Not invited',
+            name: 'Personal workspace',
           })
         ).status,
-        403,
+        201,
       )
+      const federatedRace = await Promise.all([
+        a.identity.registerAccount(
+          'oidc',
+          'https://id.example.test',
+          'shared-subject',
+          'sso@example.test',
+          'SSO fixture',
+        ),
+        b.identity.registerAccount(
+          'oidc',
+          'https://id.example.test',
+          'shared-subject',
+          'sso@example.test',
+          'SSO fixture',
+        ),
+      ])
+      assert.equal(federatedRace[0].profile.id, federatedRace[1].profile.id)
+      assert.equal(
+        await a.identity.linkAccount(
+          owner.profile.id,
+          'yandex',
+          'https://login.yandex.ru',
+          'shared-subject',
+          'owner@example.test',
+        ),
+        true,
+      )
+      assert.equal(
+        await b.identity.linkAccount(
+          federatedRace[0].profile.id,
+          'yandex',
+          'https://login.yandex.ru',
+          'shared-subject',
+          'owner@example.test',
+        ),
+        false,
+      )
+      assert.equal((await a.identity.accounts(owner.profile.id)).length, 1)
+      assert.deepEqual(await b.studios(federatedRace[0].profile.id), [])
       const googleInvite = await a.identity.invite(owner.profile.id)
       assert.equal(
         (
@@ -83,7 +122,7 @@ test(
         ).status,
         200,
       )
-      assert.equal((await a.studios(googleRace[0].profile.id)).length, 1)
+      assert.equal((await a.studios(googleRace[0].profile.id)).length, 2)
       const agent = await a.agents.create(
         owner.profile.id,
         'default',

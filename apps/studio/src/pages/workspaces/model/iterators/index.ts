@@ -3,3 +3,5 @@ export { loadHostedOrigin } from '@/pages/workspaces/model/iterators/loadHostedO
 export { loadStudioList } from '@/pages/workspaces/model/iterators/loadStudioList.ts'
 export { loadWorkspaces } from '@/pages/workspaces/model/iterators/loadWorkspaces.ts'
 export { openHostedWorkspace } from '@/pages/workspaces/model/iterators/openHostedWorkspace.ts'
+
+export { changeWorkspace } from './changeWorkspace.ts'

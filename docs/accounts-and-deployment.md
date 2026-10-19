@@ -4,15 +4,15 @@ The home screen lists only workspaces you belong to. Create a workspace with a n
 
 Invitations grant access to exactly one workspace, expire after 24 hours and work once. Opening an invitation while signed in adds membership to your existing profile. Each workspace has separate documents, revisions, activity, receipt IDs and live collaboration streams. Browser recovery drafts and cameras are scoped to both profile and workspace.
 
-The SQLite migration retains the original tables and copies the existing Pomegranate document, snapshots and activity into the default workspace. All profiles that existed at migration time keep access. Subsequent profiles are only added by invitation or workspace creation. Owners manage permanent invitations, temporary guest links, Editor (`member`) and Viewer (`viewer`) roles, and removal of non-owner members. Editors can save; viewers cannot. See [file permissions](collaboration.md#file-permissions-and-settings) for revocation and already-open clients.
+The SQLite migration retains the original tables and copies the existing Pomegranate document, snapshots and activity into the default workspace. All profiles that existed at migration time keep access. Subsequent profiles are only added by invitation or workspace creation. Owners manage permanent invitations, guest links, Editor (`member`) and Viewer (`viewer`) roles, and removal of non-owner members. Editors can save; viewers cannot. See [file permissions](collaboration.md#file-permissions-and-settings) for revocation and already-open clients.
 
 ## Google sign-in setup
 
 1. In [Google Auth Platform](https://console.cloud.google.com/auth/clients), configure the consent screen and create a **Web application** OAuth client. Add the exact development and production URLs to **Authorized JavaScript origins** (for development, `http://127.0.0.1:5173`). If the app is in testing, add the intended users as test users.
 2. Copy `.env.example` to `.env` and set `GOOGLE_CLIENT_ID` to the web client ID. No Google client secret is used by this ID-token flow. Restart the API. The client ID is public configuration; never put a client secret in frontend variables.
-3. New users sign in with Google first. This creates a Google-linked profile without workspace membership. They then enter their invitation code (or accept the code preserved in an invitation link). There is no separate guest-account creation step.
-4. Returning Google users get their existing workspaces on any device. A profile without any memberships returns to invitation entry after refresh and cannot create a workspace until invited.
-5. Existing guest profiles keep their current sessions, data and memberships. Connect Google from the original signed-in browser using **Profile → Keep your access → Continue with Google**. Accepting further invitations also requires connecting Google first.
+3. When using Google, new users sign in with Google first. This creates a Google-linked profile without workspace membership. They can create a workspace immediately or enter an invitation code to join an existing workspace (including a code preserved in an invitation link). There is no separate guest-account creation step.
+4. Returning Google users get their existing workspaces on any device. A signed-in profile without memberships sees an empty workspace list and can create its first workspace without an invitation.
+5. Existing guest profiles keep their current sessions, data and memberships. Connect Google from the original signed-in browser using **Profile → Keep your access → Continue with Google**. Accepting further invitations requires connecting any configured sign-in provider first.
 
 The server verifies Google's JWT signature, issuer, expiration, audience, verified email and one-use nonce with the official Google library. Accounts are keyed by Google's stable subject, never automatically merged by name or email. Linking requires the existing authenticated studio session. A Google identity already connected to a different profile is rejected. Account email is only returned to that user's private account endpoint, not broadcast in presence.
 
@@ -66,8 +66,54 @@ The additional `https://aril.gilgil.co` host is also allowed. The previous domai
 
 ## Temporary guests
 
-People → Temporary guest links creates a reusable, workspace-scoped editing link. Choose a name and duration from 5 minutes to 30 days, counted from creation. Anyone holding the link enters a display name without Google. The link opens a separate temporary profile; it never grants permanent membership to an existing Google account. Tokens travel in the URL fragment and are stored only as hashes on the server. Link secrets are shown once, kept outside Redux, and never included in the management list.
+People → Guest links creates reusable, workspace-scoped links with View only or Can edit permissions. Choose a name and duration from 5 minutes to 30 days, or No expiration to keep the link valid until revoked. Individual browser sessions remain limited to 30 days; guests can reopen a valid link. Revoked links disappear from the management list. Anyone holding the link enters a display name without Google. The link opens a separate temporary profile; it never grants permanent membership to an existing Google account. Tokens travel in the URL fragment and are stored only as hashes on the server. Link secrets are shown once, kept outside Redux, and never included in the management list.
 
 Workspace owners manage guest links. Revocation invalidates both future joins and every existing guest session from that link. Every authenticated HTTP request checks the link, and session expiry cannot exceed its expiry. Open document streams recheck within 10 seconds on hosted Postgres (15 seconds on SQLite; same-process revocation disconnects immediately). Hosted live-cursor credentials last at most 30 seconds and refresh every 15 seconds, so an already-issued socket credential may remain valid for up to 30 seconds after revocation. This does not permit further document saves. Guest browsers check access every 10 seconds and return to sign-in when access ends; local recovery drafts remain available.
 
 Guests can edit, export, collaborate and update their temporary profile, but cannot invite others, manage guest links, create workspaces, issue agent credentials, transfer sessions to another host, or link Google to make access permanent. Sign out and use Google plus a permanent invitation for durable membership. Existing profiles, memberships, and normal Google-first invitations are unchanged. The additive guest_links and guest_profiles tables work on SQLite and Postgres. Tests use generated fixtures and isolated Postgres schemas.
+
+## Sign-in providers
+
+Google, Yandex ID and one confidential OIDC provider are independently optional. Configure any combination; only configured methods appear on sign-in and account linking screens. Google can be absent. Google uses `GOOGLE_CLIENT_ID`; Yandex and OIDC also require `ARIL_ORIGIN` (the exact public origin). Restart or redeploy after changing configuration.
+
+For **Yandex ID**, register an OAuth application with `login:info` and `login:email`, set `YANDEX_CLIENT_ID` and `YANDEX_CLIENT_SECRET`, and register `<ARIL_ORIGIN>/api/auth/yandex/callback` as the Redirect URI. The server exchanges the authorization code and reads identity information; provider tokens are not stored in the browser or database. See [Yandex authorization code flow](https://yandex.ru/dev/id/doc/ru/codes/code-url).
+
+For **corporate SSO**, register a confidential OpenID Connect client with authorization code flow, PKCE S256 and scopes `openid email profile`. Set `OIDC_ISSUER`, `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, and optionally `OIDC_DISPLAY_NAME` (button label, default `SSO`). Register `<ARIL_ORIGIN>/api/auth/oidc/callback`. Discovery uses `<issuer>/.well-known/openid-configuration`; the issuer must match exactly. HTTPS is required except loopback HTTP for development. Token endpoint authentication supports `client_secret_basic` and `client_secret_post`; signed ID tokens use RS256/384/512, PS256, ES256/384 or EdDSA. SAML and public clients are not supported. Signature, issuer, audience, authorized party, expiry and nonce are checked. See [OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html).
+
+Both redirect flows use a five-minute, single-use challenge, a browser-bound HttpOnly SameSite=Lax flow cookie and PKCE. Keep the same public origin throughout the flow; embedded browsers that block cookies should open the studio in a normal browser. Local Vite development must set `ARIL_ORIGIN=http://127.0.0.1:5173` and register callbacks at that origin. Production uses HTTPS. The normal studio session keeps its existing expiry and cookie policy.
+
+`accounts` stores `provider`, `issuer`, `subject`, `user_id` and `email`. The unique identity is `(provider, issuer, subject)`; a profile can link one account per provider/issuer. Email never merges profiles automatically. OIDC without a verified email is supported; only a verified email is retained for display. Existing Google identities migrate in a transaction, preserving profile IDs, sessions and memberships. SQLite replaces only the old accounts table atomically; Postgres adds columns and replaces its uniqueness constraints under the existing schema migration lock. Back up before upgrading. Older binaries are incompatible with the new accounts schema; restore a pre-upgrade backup when rolling back.
+
+Use account settings while signed in to connect another provider to the same profile. Signing in with a new identity creates a profile without workspace access; create a workspace or redeem an invitation to join an existing one. Temporary guests cannot link permanent accounts. SSO does not provision workspace memberships, change roles, or implement centralized session revocation.
+
+### Compose storage and configuration
+
+Use `docker compose up --build -d` so the Compose origin and container environment use the same file. Compose reads the same root `.env` used by local commands, and passes it at runtime. The image excludes secrets, local data, artifacts and installed skills. SQLite lives in the named `studio-data` volume and supports one process. Do not scale the service with SQLite. After sign-in, create your first workspace from the UI. Workspace owners invite collaborators from People. The administrator invite command remains available for an existing workspace with a member: `docker compose exec studio node scripts/invite.ts`. Existing invitation and role rules still apply.
+
+To use Postgres instead, set `ARIL_STORAGE=postgres`, `POSTGRES_URL` and the existing realtime configuration in `.env`. The SQLite volume is unused in this mode. A shared Postgres deployment still requires the setup documented above.
+
+## Company sign-in mode
+
+Set `ARIL_PRODUCT_SITE_ENABLED=false` in the server environment (or `.env` for Docker Compose), then restart/redeploy. The default is `true`. This is a runtime setting: the same frontend build and Docker image work in both modes.
+
+Company mode opens the shared two-column sign-in page at `/`, with configured authentication providers, the existing language/theme controls and the example blueprint shown on the standard sign-in page. It hides the product landing page, demo entry, GitHub/creator/changelog links (including Settings), and the public changelog page. `/changelog` returns to `/`; `?demo=1` cannot start a demo. Invitations, guest links, account linking, SSO, workspace routes and signed-in editing retain their access rules.
+
+The frontend reads `/api/deployment-settings` before rendering or starting the demo. If settings cannot be loaded, product content stays hidden while normal sign-in/API error handling remains available. Existing browser tabs load updated settings on reload. Static Vite previews need a fixture response for this endpoint; `scripts/recordDemo.mjs` supplies an enabled public-site fixture without contacting the backend.
+
+### Product branding
+
+Set `ARIL_PRODUCT_NAME=Company Studio` and `ARIL_PRODUCT_LOGO_URL=https://company.example/logo.svg` in the root `.env`. The logo also accepts root-relative asset paths. Only HTTP(S) URLs and root-relative paths are accepted; invalid values fall back to the built-in logo. Names are trimmed to 80 characters. Empty values use Aril and its built-in logo.
+
+Branding applies to sign-in (including OIDC SSO), invitation and loading screens, navigation/workspace logos, browser title and the install manifest. A logo that cannot load falls back to the built-in image. The same sign-in page is used for Google, Yandex ID and corporate SSO; company mode hides product links and demo while retaining the example diagram on desktop. Restart/recreate the server after changing `.env` (`docker compose up -d --force-recreate` for Compose); no frontend rebuild is needed. Existing installed apps may refresh their manifest metadata on the browser's schedule.
+
+### First workspace after sign-in
+
+Google, Yandex ID and OIDC accounts can create their first workspace without an invitation. Signing in opens the workspace list, including its empty state and **New workspace** action. **Join workspace** opens optional invitation entry; **Go to my workspaces** leaves that form without redeeming its code. Invitation links still open directly. Creation grants Owner access only to the new workspace; it grants no membership in existing workspaces. Temporary guests cannot create workspaces. This applies to SQLite and Postgres and does not change existing data or memberships.
+
+## Rename and delete a workspace
+
+On the workspace list, owners can choose **Rename** or **Delete** below a workspace card. Deletion requires typing its current name and permanently removes its documents, revision history, activity, memberships, invitations and workspace agent credentials. Guest links are revoked; other workspaces, permanent profiles and account-wide agent grants remain. Export needed data before deleting. Rename changes the workspace label without rewriting planning content. Open editors in this browser are updated or released after the list refreshes.
+
+A connected Google, Yandex or SSO account already preserves access across devices. The profile displays connected identities and offers linking only to permanent profiles without a connected account.
+
+Temporary sharing links can grant **View only** or **Can edit**. Owners may keep up to 25 active named links, each independently expiring or revocable. Links grant access to the entire workspace and all its boards, not an individual board. Existing links retain editing access; the new form defaults to viewing. Temporary viewer memberships cannot be promoted through the member-role API. Revocation and expiry invalidate sessions and realtime access for both roles.

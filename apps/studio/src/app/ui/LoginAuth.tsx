@@ -1,3 +1,8 @@
+import {
+  getProductBranding,
+  isProductSiteEnabled,
+} from '@/shared/deploymentSettings/index.ts'
+import { FederatedSignIn } from '@/features/federatedSignIn/index.ts'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { useCallback } from 'react'
 import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
@@ -11,8 +16,8 @@ import { DemoEntry } from './DemoEntry.tsx'
 export function LoginAuth(props: LoginAuthProps) {
   const Heading = props.heading || 'h1'
   const { t } = useTranslation()
-  const { inviteRequired, token, profile, error, googleLinked } = props
-  const { handleSuccess } = useJoinStudioScreenHandlers()
+  const { inviteRequired, token, profile, error, accountLinked } = props
+  const { handleSuccess, openWorkspaces } = useJoinStudioScreenHandlers(props)
   const retry = useCallback(() => location.reload(), [])
   const joining = inviteRequired || !!token
   const switching =
@@ -25,32 +30,40 @@ export function LoginAuth(props: LoginAuthProps) {
             ? 'Join your team’s studio'
             : switching
               ? 'Choose another account'
-              : 'Sign in to Aril',
+              : 'Sign in to {{product}}',
+          { product: getProductBranding().productName },
         )}
       </Heading>
       <p className="login-description">
         {t(
-          profile && googleLinked && joining
+          profile && accountLinked && joining
             ? 'Accept your invitation to add this workspace to your account.'
-            : 'Sign in with Google, then use your invitation code to join a workspace.',
+            : 'Sign in to create your own workspace or join a team with an invitation.',
         )}
       </p>
-      {joining && (!profile || !googleLinked) && (
-        <GoogleSignIn link={!!profile} onSuccess={handleSuccess} />
+      {joining && (!profile || !accountLinked) && (
+        <>
+          <GoogleSignIn link={!!profile} onSuccess={handleSuccess} />
+          <FederatedSignIn provider="yandex" link={!!profile} />
+          <FederatedSignIn provider="oidc" link={!!profile} />
+        </>
       )}
-      {joining && profile && googleLinked ? (
+      {joining && profile && accountLinked ? (
         <>
           <p className="login-help">
             {t('Signed in as {{name}}', { name: profile.name })}
           </p>
           <LoginInvitation {...props} />
+          <button className="button" onClick={openWorkspaces}>
+            {t('Go to my workspaces')}
+          </button>
         </>
       ) : !joining && !error ? (
         <LoadingStatus label={t('Opening your shared workspace…')} />
       ) : null}
       {joining && (
         <p className="login-help">
-          {t('Ask a workspace member for an invitation.')}
+          {t('An invitation is only needed to join someone else’s workspace.')}
         </p>
       )}
       {profile && joining && <AccountActions />}
@@ -64,7 +77,7 @@ export function LoginAuth(props: LoginAuthProps) {
           {t('Try again')}
         </button>
       )}
-      {!profile && <DemoEntry />}
+      {!profile && isProductSiteEnabled() && <DemoEntry />}
     </section>
   )
 }

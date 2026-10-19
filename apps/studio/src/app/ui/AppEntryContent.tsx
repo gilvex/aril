@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { WorkspaceHome } from '@/pages/workspaces/index.ts'
 import { JoinStudioScreen } from './JoinStudioScreen.tsx'
 import { StaleDraftScreen } from './StaleDraftScreen.tsx'
@@ -17,7 +18,7 @@ export function AppEntryContent({ model, onOpen }: AppEntryContentProps) {
     token,
     restoringRoute,
     initial,
-    googleLinked,
+    accountLinked,
     inviteRequired,
     setBusy,
     name,
@@ -29,6 +30,10 @@ export function AppEntryContent({ model, onOpen }: AppEntryContentProps) {
     error,
     routeNotice,
   } = model
+  const openInvitation = useCallback(
+    () => setInviteRequired(true),
+    [setInviteRequired],
+  )
   if (legacy)
     return (
       <StaleDraftScreen
@@ -51,7 +56,7 @@ export function AppEntryContent({ model, onOpen }: AppEntryContentProps) {
   )
     return (
       <JoinStudioScreen
-        googleLinked={googleLinked}
+        accountLinked={accountLinked}
         inviteRequired={inviteRequired}
         token={token}
         setBusy={setBusy}
@@ -73,6 +78,8 @@ export function AppEntryContent({ model, onOpen }: AppEntryContentProps) {
         profile={profile}
         notice={routeNotice}
         onOpen={onOpen}
+        onJoin={openInvitation}
+        onStudiosChanged={model.syncWorkspaces}
       />
     )
   return null

@@ -25,7 +25,7 @@ export function DesignVariableRow({
   )
   const name = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.value.trim()) save({ ...variable, name: e.target.value })
+      save({ ...variable, name: e.target.value })
     },
     [variable, save],
   )

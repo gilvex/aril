@@ -9,7 +9,7 @@ export const wireNode = z.object({
   parentId: z.string().min(1).max(100).optional(),
   data: z.object({
     kind: z.enum(wireKinds),
-    title: z.string().min(1).max(120),
+    title: z.string().max(120),
     content: z.string().max(2000),
     tone: z.enum(['plain', 'soft', 'accent']),
   }),

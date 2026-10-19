@@ -5,7 +5,7 @@ export const sessionRequestState: {
     | Promise<{
         profile: Profile
         token?: string
-        googleLinked?: boolean
+        accountLinked?: boolean
         inviteRequired?: boolean
       }>
     | undefined

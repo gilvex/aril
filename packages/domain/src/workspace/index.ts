@@ -9,3 +9,8 @@ export type { Requirement } from './types/requirement.ts'
 export type { Workspace } from './types/workspace.ts'
 export type { RequirementLink } from './types/requirementLink.ts'
 export { activeBoardSections } from './utils/activeBoardSections.ts'
+
+export {networkNodeKinds} from './config/networkNodeKinds.ts'
+
+export {canvasClipboardSchema} from './config/canvasClipboardSchema.ts'
+export {pasteCanvasNodes} from './utils/pasteCanvasNodes.ts'

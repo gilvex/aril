@@ -9,3 +9,5 @@ export { media } from '@/shared/config/themeMedia.ts'
 export { accentOptions } from './accentOptions.ts'
 export { accentKey } from './accentKey.ts'
 export { projectLinks } from './projectLinks.ts'
+
+export { productVersion } from './productVersion.ts'

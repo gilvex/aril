@@ -27,6 +27,8 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node --test scripts/signIn.browser.test.mjs scripts/firstWorkspace.browser.test.mjs scripts/networkCanvas.browser.test.mjs scripts/sharing.browser.test.mjs
       - run: pnpm verify:recovery
       - run: pnpm benchmark:collaboration
       - uses: actions/upload-artifact@v4

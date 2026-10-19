@@ -1,3 +1,4 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { LandingBackdrop } from './LandingBackdrop.tsx'
 
@@ -15,7 +16,8 @@ export function LandingHero() {
         </h1>
         <p>
           {t(
-            'Aril brings diagrams, interface design, requirements, and notes into a shared workspace for your team.',
+            '{{product}} brings diagrams, interface design, requirements, and notes into a shared workspace for your team.',
+            { product: getProductBranding().productName },
           )}
         </p>
         <div className="landing-hero-actions">

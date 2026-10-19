@@ -1,3 +1,4 @@
+import { sqliteStudioManagement } from './utils/sqliteStudioManagement.ts'
 import type { Activity } from '@aril/domain/collaboration'
 import { createSeed } from '@aril/domain/seed'
 import { blankStudio, type StudioSummary } from '@aril/domain/studios'
@@ -195,7 +196,7 @@ export function openStore(path: string) {
     member: (userId: string, workspaceId: string) =>
       !!db
         .prepare(
-          `SELECT 1 FROM members m WHERE m.user_id=? AND m.workspace_id=? AND (m.role!='guest' OR EXISTS (SELECT 1 FROM guest_profiles gp JOIN guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>?))`,
+          `SELECT 1 FROM members m WHERE m.user_id=? AND m.workspace_id=? AND (NOT EXISTS (SELECT 1 FROM guest_profiles guest_identity WHERE guest_identity.user_id=m.user_id) OR EXISTS (SELECT 1 FROM guest_profiles gp JOIN guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>?))`,
         )
         .get(userId, workspaceId, Date.now()),
     studios: (userId: string) =>
@@ -214,6 +215,7 @@ export function openStore(path: string) {
           edges: JSON.parse(String(row.edges)),
           members: JSON.parse(String(row.members)),
         })) as StudioOverview[],
+    ...sqliteStudioManagement(db),
     createStudio: (userId: string, name: string) => {
       const id = randomUUID(),
         createdAt = new Date().toISOString()

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { i18n } from '@/shared/i18n/config/i18n.ts'
@@ -10,7 +11,10 @@ test('language switching loads Russian and applies its plural rules', async () =
   assert.equal(i18n.t('boardCount', { count: 2 }), '2 доски')
   assert.equal(i18n.t('boardCount', { count: 5 }), '5 досок')
   assert.equal(i18n.t('boardCount', { count: 21 }), '21 доска')
-  assert.equal(i18n.t('Editing {{field}}', { field: 'Recipe <alpha>' }), 'Редактирует поле «Recipe <alpha>»')
+  assert.equal(
+    i18n.t('Editing {{field}}', { field: 'Recipe <alpha>' }),
+    'Редактирует поле «Recipe <alpha>»',
+  )
   assert.equal(i18n.t('Untranslated server error'), 'Untranslated server error')
   await i18n.changeLanguage('en')
   assert.equal(i18n.t('boardCount', { count: 1 }), '1 board')
@@ -21,6 +25,29 @@ test('locale catalogs contain matching messages and interpolation variables', ()
   assert.deepEqual(Object.keys(ru).sort(), Object.keys(en).sort())
   for (const key of Object.keys(en) as (keyof typeof en)[]) {
     assert.ok(ru[key].trim(), `${key} has an empty translation`)
-    assert.deepEqual(ru[key].match(/{{[^}]+}}/g)?.sort(), en[key].match(/{{[^}]+}}/g)?.sort(), key)
+    assert.deepEqual(
+      ru[key].match(/{{[^}]+}}/g)?.sort(),
+      en[key].match(/{{[^}]+}}/g)?.sort(),
+      key,
+    )
+  }
+})
+
+test('sign-in and example diagram messages exist in both catalogs', () => {
+  for (const file of ['LoginBlueprint.tsx', 'LoginAuth.tsx']) {
+    const source = readFileSync(
+      new URL('../src/app/ui/' + file, import.meta.url),
+      'utf8',
+    )
+    for (const match of source.matchAll(/\bt\(\s*'([^']+)'/g)) {
+      assert.ok(
+        Object.hasOwn(en, match[1]),
+        `${file}: missing English message ${match[1]}`,
+      )
+      assert.ok(
+        Object.hasOwn(ru, match[1]),
+        `${file}: missing Russian message ${match[1]}`,
+      )
+    }
   }
 })

@@ -14,6 +14,7 @@ export function WorkspaceToolbar({
   onSearch,
   onSort,
   onCreate,
+  onJoin,
 }: WorkspaceToolbarProps) {
   const { t } = useTranslation()
   const changeSearch = useCallback(
@@ -57,6 +58,11 @@ export function WorkspaceToolbar({
         <option value="recent">{t('Last opened')}</option>
         <option value="name">{t('Name')}</option>
       </StudioSelect>
+      {onJoin && (
+        <button className="button workspace-join" onClick={onJoin}>
+          {t('Join workspace')}
+        </button>
+      )}
       {canCreate && (
         <button
           className="button primary workspace-create-desktop"

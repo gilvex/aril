@@ -24,8 +24,9 @@ export function BlueprintEdgeDetails({
       </div>
       <h2>{board.nodes.find((n) => n.id === edge.source)?.data.title}</h2>
       <p className="muted">
-        {t('connects to')}
-        {board.nodes.find((n) => n.id === edge.target)?.data.title}
+        {t('Connects to {{name}}', {
+          name: board.nodes.find((n) => n.id === edge.target)?.data.title || '',
+        })}
       </p>
       <label>
         {t('Connection label')}

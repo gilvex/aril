@@ -21,22 +21,28 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
   useEffect(() => {
     callback.current = onSuccess
   }, [onSuccess])
-  const { error, setError, status, setStatus, retry, setRetry } =
-    useGoogleSignInModel(() => createGoogleSignInState())
+  const {
+    configured,
+    setConfigured,
+    error,
+    setError,
+    status,
+    setStatus,
+    retry,
+    setRetry,
+  } = useGoogleSignInModel(() => createGoogleSignInState())
 
   useEffect(() => {
     let active = true
     let stopResize: (() => void) | undefined
-    setStatus('Loading Google sign-in…')
     const mount = async () => {
       const config = await request<{ googleClientId: string | null }>(
         '/api/auth/config',
       )
       if (!active) return
+      setConfigured(!!config.googleClientId)
       if (!config.googleClientId) {
-        setStatus(
-          'Google sign-in is not configured. Contact the studio host to continue.',
-        )
+        setStatus('')
         return
       }
       const challenge = await request<{ challenge: string; nonce: string }>(
@@ -80,9 +86,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
           } catch (err) {
             if (active) {
               setStatus('')
-              setError(
-                err instanceof Error ? err.message : t('Sign-in failed.'),
-              )
+              setError(err instanceof Error ? err.message : 'Sign-in failed.')
             }
           }
         },
@@ -108,11 +112,14 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
       active = false
       stopResize?.()
     }
-  }, [link, retry, setError, setStatus, t, locale])
+  }, [link, retry, setConfigured, setError, setStatus, locale])
 
   const { handleClick } = useGoogleSignInHandlers({ setError, setRetry })
   return (
-    <div className="google-signin">
+    <div
+      className="google-signin"
+      hidden={configured === false || (configured === null && !error)}
+    >
       <GoogleSignInStatus status={status} error={error} />
       <div className="google-signin-control">
         <div ref={root} className="google-signin-button" />
@@ -120,7 +127,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
       {error && (
         <>
           <p className="form-error" role="alert">
-            {error}
+            {t(error)}
           </p>
           <button type="button" className="button" onClick={handleClick}>
             {t('Try Google again')}

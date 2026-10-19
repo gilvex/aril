@@ -1,0 +1,33 @@
+services:
+  studio:
+    build: .
+    restart: unless-stopped
+    init: true
+    ports:
+      - '127.0.0.1:4317:4317'
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4317
+      ARIL_STORAGE: ${ARIL_STORAGE:-sqlite}
+      ARIL_DATA_DIR: /app/data
+      ARIL_ORIGIN: ${ARIL_ORIGIN:-http://localhost:4317}
+    volumes:
+      - studio-data:/app/data
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:4317/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    stop_grace_period: 30s
+volumes:
+  studio-data:

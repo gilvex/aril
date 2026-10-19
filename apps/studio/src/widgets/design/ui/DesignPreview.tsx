@@ -1,3 +1,4 @@
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { type CSSProperties } from 'react'
 import { DesignSampleServers } from './DesignSampleServers.tsx'
@@ -31,7 +32,7 @@ export function DesignPreview(props: DesignPreviewProps) {
     >
       <header className="design-sample-brand">
         <span>
-          <img src="/aril.svg" alt="" />
+          <ProductLogo />
           aril
         </span>
         <span className="design-sample-avatar">JD</span>

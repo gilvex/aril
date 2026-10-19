@@ -12,12 +12,14 @@ export function createAppModel(initial: AppState) {
   })
   const getSnapshot = () => selectApp(store.getState())
   const actions = {
+    syncWorkspaces: (studios: import('@aril/domain/studios').StudioSummary[]) =>
+      store.dispatch(appSlice.actions.syncWorkspaces(studios)),
     getCachedWorkspace: (id: string) =>
       getSnapshot().sessions.find((entry) => entry.studio.id === id),
     closeWorkspace: (id: string) =>
       store.dispatch(appSlice.actions.closeWorkspace(id)),
-    setGoogleLinked: (value: boolean) =>
-      store.dispatch(appSlice.actions.setGoogleLinked(value)),
+    setAccountLinked: (value: boolean) =>
+      store.dispatch(appSlice.actions.setAccountLinked(value)),
     setRestoringRoute: (
       value:
         | AppState['restoringRoute']

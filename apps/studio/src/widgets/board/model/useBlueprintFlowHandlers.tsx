@@ -91,14 +91,9 @@ export function useBlueprintFlowHandlers({
   const handleNodeClick = useCallback<
     (
       event: import('react').MouseEvent<Element, MouseEvent>,
-      clickedNode: import('@xyflow/react').Node<{
-        title: string
-        description: string
-        kind: 'layer' | 'service' | 'database' | 'instance' | 'person' | 'note'
-        status: 'Exploring' | 'Decided' | 'Question'
-        notes: string
-        requirements: string[]
-      }>,
+      clickedNode: import('@xyflow/react').Node<
+        import('@aril/domain/workspace').Idea['data']
+      >,
     ) => void
   >(
     (event, clickedNode) => {
@@ -121,14 +116,9 @@ export function useBlueprintFlowHandlers({
   const handleNodeDoubleClick = useCallback<
     (
       event: import('react').MouseEvent<Element, MouseEvent>,
-      clickedNode: import('@xyflow/react').Node<{
-        title: string
-        description: string
-        kind: 'layer' | 'service' | 'database' | 'instance' | 'person' | 'note'
-        status: 'Exploring' | 'Decided' | 'Question'
-        notes: string
-        requirements: string[]
-      }>,
+      clickedNode: import('@xyflow/react').Node<
+        import('@aril/domain/workspace').Idea['data']
+      >,
     ) => void
   >(
     (event, clickedNode) => {

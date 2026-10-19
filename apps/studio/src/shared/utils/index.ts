@@ -19,3 +19,5 @@ export { isAccentPreference } from './isAccentPreference.ts'
 export { readAccentPreference } from './readAccentPreference.ts'
 export { setAccentPreference } from './setAccentPreference.ts'
 export { initializeAccent } from './initializeAccent.ts'
+
+export {syncWorkspaceTabs} from './syncWorkspaceTabs.ts'

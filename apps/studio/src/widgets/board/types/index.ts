@@ -81,3 +81,8 @@ export * from './wireRoutingRect.ts'
 export type { BlueprintNodeClassificationProps } from './blueprintNodeClassificationProps.ts'
 export type { BoardOverviewActionsProps } from './boardOverviewActionsProps.ts'
 export type { BoardScopeProps } from './boardScopeProps.ts'
+
+
+export type {BlueprintIconPickerProps} from './blueprintIconPickerProps.ts'
+
+export type {CanvasClipboardProps} from './canvasClipboardProps.ts'

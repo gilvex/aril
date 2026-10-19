@@ -1,3 +1,4 @@
+import { BlueprintIconPicker } from './BlueprintIconPicker.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -47,7 +48,7 @@ export function BlueprintNodeDetails({
           ref={editField}
           value={node.data.title}
           maxLength={120}
-          onChange={(e) => updateNode({ title: e.target.value || 'Untitled' })}
+          onChange={(e) => updateNode({ title: e.target.value })}
         />
       </label>
       <label>
@@ -61,6 +62,11 @@ export function BlueprintNodeDetails({
           onChange={(e) => updateNode({ description: e.target.value })}
         />
       </label>
+      <BlueprintIconPicker
+        node={node}
+        readOnly={readOnly}
+        updateNode={updateNode}
+      />
       <BlueprintNodeClassification
         node={node}
         readOnly={readOnly}

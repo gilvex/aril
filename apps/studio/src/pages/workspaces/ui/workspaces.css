@@ -99,3 +99,17 @@
   .workspace-sort { grid-row: 2; width: 112px; padding-left: 8px; padding-right: 20px; }
 }
 
+
+.workspace-toolbar .workspace-sort { width: auto; flex-shrink: 0; }
+.workspace-toolbar .workspace-join { min-width: 0; white-space: normal; }
+@media (max-width: 760px) { .workspace-toolbar h1 { min-width: 0; white-space: normal; } }
+
+.workspace-card-shell { min-width: 0; }
+.workspace-card-shell > .workspace-card { width: 100%; }
+.workspace-card-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 0; }
+.workspace-delete { color: var(--danger, #c84464); }
+.workspace-manage-dialog { width: min(480px, calc(100vw - 32px)); }
+.workspace-manage-dialog form, .workspace-manage-dialog label { display: grid; gap: 14px; }
+.workspace-manage-dialog p { font-family: inherit; font-size: 14px; font-weight: 400; color: var(--text-secondary, #77717f); line-height: 1.6; }
+.workspace-manage-dialog input { width: 100%; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: inherit; }
+.workspace-manage-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }

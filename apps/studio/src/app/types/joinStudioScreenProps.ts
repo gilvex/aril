@@ -1,7 +1,7 @@
 import type { Profile } from '@aril/domain/collaboration'
 
 export type JoinStudioScreenProps = {
-  googleLinked: boolean
+  accountLinked: boolean
   inviteRequired: boolean
   token: string
   setBusy: (

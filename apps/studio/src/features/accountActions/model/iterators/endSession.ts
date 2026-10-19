@@ -1,3 +1,4 @@
+import type { LinkedAccount } from '@aril/domain/accounts'
 import type { SagaIterator } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 import { request } from '@/shared/api/request.ts'
@@ -15,11 +16,11 @@ export function* endSession(
     if (!confirmed) {
       let linked = false
       try {
-        const account: { google: { email: string } | null } = yield call(
-          request,
-          '/api/account',
-        )
-        linked = !!account.google
+        const account: {
+          google: { email: string } | null
+          accounts?: LinkedAccount[]
+        } = yield call(request, '/api/account')
+        linked = !!(account.google || account.accounts?.length)
       } catch (error) {
         if (!(error instanceof ApiError && error.status === 401)) throw error
         linked = true

@@ -1,3 +1,6 @@
+import { installStudioManagement } from './utils/installStudioManagement.ts'
+import { authProviders } from './utils/authProviders.ts'
+import { installFederatedAuth } from './utils/installFederatedAuth.ts'
 import { liveDocumentMessageSchema } from '@aril/domain/liveSession'
 import { installWorkspaceAccess } from './utils/installWorkspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
@@ -75,9 +78,10 @@ export function installCollaboration(
       path: '/',
     })
   installGuestJoin(app, store, setSession)
+  installFederatedAuth(app, store, cookieProfile, setSession, publicOrigin)
   app.get('/api/auth/config', async (_req, res) =>
     res.json({
-      googleClientId: process.env.GOOGLE_CLIENT_ID || null,
+      ...authProviders(publicOrigin),
       hostedOrigin:
         process.env.ARIL_CLOUD_ORIGIN ||
         process.env.POMEGRANATE_CLOUD_ORIGIN ||
@@ -184,7 +188,7 @@ export function installCollaboration(
       if (input.data.link) {
         if (!current) {
           res.status(401).json({
-            error: 'Sign in with Google before accepting an invitation.',
+            error: 'Sign in with an account before accepting an invitation.',
           })
           return
         }
@@ -228,8 +232,9 @@ export function installCollaboration(
     if (profile) {
       res.json({
         profile,
+        accountLinked: (await store.identity.accounts(profile.id)).length > 0,
         googleLinked: !!(await store.identity.account(profile.id)),
-        inviteRequired: (await store.studios(profile.id)).length === 0,
+        inviteRequired: false,
       })
       return
     }
@@ -238,7 +243,10 @@ export function installCollaboration(
         req.socket.remoteAddress || '',
       ) && ['127.0.0.1', 'localhost', '[::1]'].includes(req.hostname)
     const first =
-      loopback && !process.env.GOOGLE_CLIENT_ID
+      loopback &&
+      !process.env.GOOGLE_CLIENT_ID &&
+      !process.env.YANDEX_CLIENT_ID &&
+      !process.env.OIDC_CLIENT_ID
         ? await store.identity.bootstrap()
         : null
     if (first) {
@@ -254,10 +262,10 @@ export function installCollaboration(
   const joinAttempts = new Map<string, { count: number; until: number }>()
   app.post('/api/join', async (req, res) => {
     const current = await cookieProfile(req)
-    if (!current || !(await store.identity.account(current.id))) {
-      res
-        .status(401)
-        .json({ error: 'Sign in with Google before accepting an invitation.' })
+    if (!current || !(await store.identity.accounts(current.id)).length) {
+      res.status(401).json({
+        error: 'Sign in with an account before accepting an invitation.',
+      })
       return
     }
     const key = req.socket.remoteAddress || 'unknown'
@@ -339,6 +347,13 @@ export function installCollaboration(
       }
     presenceChanged(workspaceId)
   })
+  installStudioManagement(app, store, (id) => {
+    for (const [key, client] of clients)
+      if (client.workspaceId === id) {
+        client.res.end()
+        clients.delete(key)
+      }
+  })
   app.get('/api/studios', async (_req, res) =>
     res.json(await store.studios((res.locals.profile as Profile).id)),
   )
@@ -374,18 +389,15 @@ export function installCollaboration(
   app.get('/api/account', async (_req, res) =>
     res.json({
       guestExpiresAt: res.locals.profile.guestExpiresAt || null,
+      accounts: await store.identity.accounts(
+        (res.locals.profile as Profile).id,
+      ),
       google:
         (await store.identity.account((res.locals.profile as Profile).id)) ||
         null,
     }),
   )
   app.post('/api/studios', async (req, res) => {
-    if (!(await store.studios((res.locals.profile as Profile).id)).length) {
-      res.status(403).json({
-        error: 'Accept a workspace invitation before creating a workspace.',
-      })
-      return
-    }
     const input = z
       .object({ name: z.string().trim().min(1).max(100) })
       .safeParse(req.body)

@@ -12,7 +12,7 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
     model
   const rename = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (!component || !variant || !e.target.value.trim()) return
+      if (!component || !variant) return
       saveLibrary({
         ...library,
         components: {

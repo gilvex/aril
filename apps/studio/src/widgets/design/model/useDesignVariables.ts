@@ -26,7 +26,7 @@ export function useDesignVariables({ model }: DesignEditorProps) {
   )
   const rename = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (collection && e.target.value.trim())
+      if (collection)
         saveLibrary({
           ...library,
           collections: {

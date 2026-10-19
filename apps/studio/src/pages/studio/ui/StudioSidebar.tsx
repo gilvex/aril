@@ -1,3 +1,4 @@
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioDesktopNavigation } from './StudioDesktopNavigation.tsx'
@@ -10,7 +11,7 @@ export function StudioSidebar(props: StudioContentProps) {
       aria-label={t('Workspace navigation')}
     >
       <header>
-        <img src="/aril.svg" alt="" />
+        <ProductLogo />
         <strong title={props.studio.name}>{props.studio.name}</strong>
       </header>
       <StudioDesktopNavigation {...props} />

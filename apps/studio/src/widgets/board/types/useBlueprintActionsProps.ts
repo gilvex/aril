@@ -12,14 +12,7 @@ export type UseBlueprintActionsProps = {
       id: string
       type: 'idea'
       position: { x: number; y: number }
-      data: {
-        title: string
-        description: string
-        kind: 'note' | 'layer' | 'service' | 'database' | 'instance' | 'person'
-        status: 'Exploring' | 'Decided' | 'Question'
-        notes: string
-        requirements: string[]
-      }
+      data: import('@aril/domain/workspace').Idea['data']
     }[]
     edges: {
       id: string
@@ -72,14 +65,7 @@ export type UseBlueprintActionsProps = {
         ) => import('../types/canvasBoardState.ts').CanvasBoardState['selectedEdge']),
   ) => void
   flow: ReactFlowInstance<
-    Node<{
-      title: string
-      description: string
-      kind: 'note' | 'layer' | 'service' | 'database' | 'instance' | 'person'
-      status: 'Exploring' | 'Decided' | 'Question'
-      notes: string
-      requirements: string[]
-    }>
+    Node<import('@aril/domain/workspace').Idea['data']>
   > | null
   setPalette: (
     value:
@@ -93,15 +79,7 @@ export type UseBlueprintActionsProps = {
         id: string
         type: 'idea'
         position: { x: number; y: number }
-        data: {
-          title: string
-          description: string
-          kind:
-            'note' | 'layer' | 'service' | 'database' | 'instance' | 'person'
-          status: 'Exploring' | 'Decided' | 'Question'
-          notes: string
-          requirements: string[]
-        }
+        data: import('@aril/domain/workspace').Idea['data']
       }
     | undefined
 }

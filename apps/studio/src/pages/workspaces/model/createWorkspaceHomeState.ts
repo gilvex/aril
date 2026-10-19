@@ -7,6 +7,8 @@ export function createWorkspaceHomeState() {
   const error: string = ''
   const hostedOrigin: string | null = null
   return {
+    management: null as
+      import('../types/workspaceManagement.ts').WorkspaceManagement | null,
     studios,
     name,
     creating,

@@ -1,3 +1,6 @@
+import { guestLinkNoExpiry } from '@aril/domain/collaboration'
+import type { LinkedAccount } from '@aril/domain/accounts'
+import { FederatedSignIn } from '@/features/federatedSignIn/index.ts'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -22,6 +25,7 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
       request<{
         guestExpiresAt?: number | null
         google: { email: string } | null
+        accounts?: LinkedAccount[]
       }>('/api/account')
         .then(setAccount)
         .catch((err) => setError(String(err))),
@@ -32,6 +36,17 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
   }, [refresh])
 
   const { handleSuccess } = useAccountConnectionHandlers({ onProfile, refresh })
+  const linkedAccounts = account?.accounts?.length
+    ? account.accounts
+    : account?.google
+      ? [
+          {
+            provider: 'google',
+            issuer: 'https://accounts.google.com',
+            email: account.google.email,
+          },
+        ]
+      : []
   if (isDemoMode())
     return (
       <p className="collaboration-hint">
@@ -43,26 +58,48 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
   if (account?.guestExpiresAt)
     return (
       <p className="collaboration-hint">
-        {t('Guest access expires {{time}}', {
-          time: new Date(account.guestExpiresAt).toLocaleString(i18n.language),
-        })}
+        {account.guestExpiresAt === guestLinkNoExpiry
+          ? t('Guest access lasts until the link is revoked.')
+          : t('Guest access expires {{time}}', {
+              time: new Date(account.guestExpiresAt).toLocaleString(
+                i18n.language,
+              ),
+            })}
       </p>
     )
   return (
     <section className="account-connection">
-      <strong>{t('Keep your access')}</strong>
+      <strong>
+        {t(linkedAccounts.length ? 'Account access' : 'Keep your access')}
+      </strong>
       {error && <p className="form-error">{error}</p>}
-      {account?.google ? (
+      {linkedAccounts.map((item) => (
+        <p key={item.provider + item.issuer}>
+          {t('Connected to {{provider}}', {
+            provider:
+              item.provider === 'google'
+                ? 'Google'
+                : item.provider === 'yandex'
+                  ? t('Yandex ID')
+                  : 'SSO',
+          })}{' '}
+          <b>{item.email || item.issuer}</b>
+        </p>
+      ))}
+      {linkedAccounts.length ? (
         <p>
-          {t('Connected to Google as')} <b>{account.google.email}</b>
           {t(
-            '. Sign in with this account to open your workspaces on another device.',
+            'Sign in with a connected account to open your workspaces on another device.',
           )}
         </p>
       ) : account ? (
-        <GoogleSignIn link onSuccess={handleSuccess} />
+        <>
+          <GoogleSignIn link onSuccess={handleSuccess} />
+          <FederatedSignIn provider="yandex" link />
+          <FederatedSignIn provider="oidc" link />
+        </>
       ) : !error ? (
-        <LoadingStatus label={t('Loading account…')} />
+        <LoadingStatus label={t('Loading accountâ€¦')} />
       ) : null}
     </section>
   )

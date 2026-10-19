@@ -101,15 +101,7 @@ export type UseStudioFollowingProps = {
         id: string
         type: 'idea'
         position: { x: number; y: number }
-        data: {
-          title: string
-          description: string
-          kind:
-            'layer' | 'service' | 'database' | 'instance' | 'person' | 'note'
-          status: 'Exploring' | 'Decided' | 'Question'
-          notes: string
-          requirements: string[]
-        }
+        data: import('@aril/domain/workspace').Idea['data']
       }[]
       edges: {
         id: string

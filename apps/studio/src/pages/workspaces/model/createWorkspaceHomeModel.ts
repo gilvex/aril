@@ -1,3 +1,4 @@
+import { changeWorkspace } from './iterators/changeWorkspace.ts'
 import { createWorkspace } from '@/pages/workspaces/model/iterators/createWorkspace.ts'
 import { openHostedWorkspace } from '@/pages/workspaces/model/iterators/openHostedWorkspace.ts'
 import { workspaceHomeSaga } from '@/pages/workspaces/model/saga/workspaceHomeSaga.ts'
@@ -16,6 +17,14 @@ export function createWorkspaceHomeModel(initial: WorkspaceHomeState) {
   })
   const getSnapshot = () => selectWorkspaceHome(store.getState())
   const actions = {
+    setManagement: (value: WorkspaceHomeState['management']) =>
+      store.dispatch(workspaceHomeSlice.actions.setManagement(value)),
+    changeWorkspace: () => {
+      void runSaga(
+        { dispatch: store.dispatch, getState: store.getState },
+        changeWorkspace,
+      ).toPromise()
+    },
     setSearch: (value: string) =>
       store.dispatch(workspaceHomeSlice.actions.setSearch(value)),
     setSort: (value: WorkspaceHomeState['sort']) =>

@@ -1,10 +1,10 @@
+import {insertNodeKinds} from '../config/insertNodeKinds.ts'
 import { useMemo } from 'react'
 import { Plus, Link2 } from 'lucide-react'
 import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
-import { nodeKinds } from '@aril/domain/workspace'
 import { kindIcons } from '../config/kindIcons.ts'
 import { kindLabels } from '../config/kindLabels.ts'
 import type { BlueprintToolbarProps } from '../types/blueprintToolbarProps.ts'
@@ -19,7 +19,7 @@ export function BlueprintShapeTools({
   const disabled = readOnly || board.nodes.length >= 500
   const actions = useMemo(
     () =>
-      nodeKinds.map((kind) => ({
+      insertNodeKinds.map((kind) => ({
         id: kind,
         label: t(kindLabels[kind]),
         disabled,
