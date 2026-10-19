@@ -76,7 +76,7 @@ export const workspaceSchema = z
       .refine((value) => Object.keys(value).length <= 51)
       .optional(),
     notes: z.string().max(50000),
-    notesTitle: z.string().min(1).max(120).optional(),
+    notesTitle: z.string().max(120).optional(),
     documents: z
       .array(
         z.object({
@@ -85,7 +85,7 @@ export const workspaceSchema = z
             .min(1)
             .max(90)
             .refine((id) => id !== 'project-notes'),
-          title: z.string().min(1).max(120),
+          title: z.string().max(120),
           body: z.string().max(50000),
         }),
       )

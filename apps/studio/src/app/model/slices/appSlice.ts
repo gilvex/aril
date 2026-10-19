@@ -5,13 +5,40 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: {} as AppState,
   reducers: {
+    syncWorkspaces: (
+      state,
+      action: PayloadAction<import('@aril/domain/studios').StudioSummary[]>,
+    ) => {
+      const available = new Map(
+        action.payload.map((studio) => [studio.id, studio]),
+      )
+      state.sessions = state.sessions
+        .filter((entry) => available.has(entry.studio.id))
+        .map((entry) => {
+          const next = available.get(entry.studio.id)!
+          if (
+            entry.studio.name === next.name &&
+            entry.studio.role === next.role
+          )
+            return entry
+          return {
+            ...entry,
+            studio: {
+              id: next.id,
+              name: next.name,
+              role: next.role,
+              createdAt: next.createdAt,
+            },
+          }
+        })
+    },
     closeWorkspace: (state, action: PayloadAction<string>) => {
       state.sessions = state.sessions.filter(
         (entry) => entry.studio.id !== action.payload,
       )
     },
-    setGoogleLinked: (state, action: PayloadAction<boolean>) => {
-      state.googleLinked = action.payload
+    setAccountLinked: (state, action: PayloadAction<boolean>) => {
+      state.accountLinked = action.payload
     },
     setRestoringRoute: (
       state,

@@ -1,3 +1,4 @@
+import { productVersion } from '@/shared/config/index.ts'
 import { AgentAccess } from '@/features/agentAccess/index.ts'
 import { useCallback } from 'react'
 import { File, User, SlidersHorizontal, Bot } from 'lucide-react'
@@ -97,6 +98,9 @@ export function StudioSettings(props: StudioContentProps) {
                   <AccentPicker />
                   <InstallApp />
                 </section>
+                <p className="settings-product-version">
+                  {t('Version {{version}}', { version: productVersion })}
+                </p>
                 <ProjectLinks />
               </>
             )}

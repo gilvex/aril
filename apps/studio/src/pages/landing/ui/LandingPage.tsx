@@ -1,3 +1,5 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { ThemePicker } from '@/features/appearance/index.ts'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { ProjectLinks } from '@/shared/ui/index.tsx'
@@ -29,7 +31,7 @@ export function LandingPage({ children }: LandingPageProps) {
               <h2 id="access-title">{t('Work with your team')}</h2>
               <p>
                 {t(
-                  'Workspaces are invite-only. Sign in to return to your projects, or use an invitation to join your team.',
+                  'Sign in to create your own workspace, return to your projects, or accept an invitation from your team.',
                 )}
               </p>
             </div>
@@ -39,8 +41,8 @@ export function LandingPage({ children }: LandingPageProps) {
         <footer className="landing-footer">
           <div className="landing-footer-top">
             <a className="landing-brand" href="#top">
-              <img src="/aril.svg" width="28" height="28" alt="" />
-              <span>aril</span>
+              <ProductLogo width="28" height="28" />
+              <span>{getProductBranding().productName}</span>
             </a>
             <p>{t('Planning studio')}</p>
             <ProjectLinks />

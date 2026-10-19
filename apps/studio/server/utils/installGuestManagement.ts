@@ -28,7 +28,8 @@ export function installGuestManagement(
     const input = z
       .object({
         name: z.string().trim().min(1).max(60),
-        minutes: z.number().int().min(5).max(43200),
+        role: z.enum(['member', 'viewer']).default('member'),
+        minutes: z.number().int().min(5).max(43200).nullable(),
       })
       .safeParse(req.body)
     if (!input.success) {
@@ -55,6 +56,7 @@ export function installGuestManagement(
           res.locals.workspaceId,
           input.data.name,
           input.data.minutes,
+          input.data.role,
         ),
       )
   })

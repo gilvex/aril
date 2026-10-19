@@ -1,3 +1,5 @@
+import { productBranding } from './utils/productBranding.ts'
+import { productSiteEnabled } from './utils/productSiteEnabled.ts'
 import { writeVersion, writeVersionHeader } from '@aril/domain/freshness'
 import { workspaceSchema } from '@aril/domain/workspace'
 import express from 'express'
@@ -63,6 +65,46 @@ export function createApplication<T extends Store>(
         error:
           'This page is out of date. Export any unsaved edits, then reload to use the current editor. The shared workspace has not been changed.',
       })
+      return
+    }
+    next()
+  })
+  app.get('/api/manifest.webmanifest', (_req, res) => {
+    const { productName, productLogoUrl } = productBranding()
+    res.type('application/manifest+json').json({
+      id: '/',
+      name: productName,
+      short_name: productName,
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      background_color: '#19161f',
+      theme_color: '#302a3b',
+      icons:
+        productLogoUrl === '/aril.svg'
+          ? [
+              {
+                src: '/icons/aril-icon-192.png',
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'any',
+              },
+              {
+                src: '/icons/aril-icon-512.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'any',
+              },
+            ]
+          : [{ src: productLogoUrl, purpose: 'any' }],
+    })
+  })
+  app.get('/api/deployment-settings', (_req, res) => {
+    res.json({ productSiteEnabled: productSiteEnabled(), ...productBranding() })
+  })
+  app.use((req, res, next) => {
+    if (!productSiteEnabled() && /^\/changelog(?:\/|$)/.test(req.path)) {
+      res.redirect(302, '/')
       return
     }
     next()

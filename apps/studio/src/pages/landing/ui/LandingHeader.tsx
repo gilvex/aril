@@ -1,3 +1,5 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { ArrowUpRight } from 'lucide-react'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -6,9 +8,15 @@ export function LandingHeader() {
   const { t } = useTranslation()
   return (
     <header className="landing-header">
-      <a className="landing-brand" href="#top" aria-label={t('Aril home')}>
-        <img src="/aril.svg" alt="" width="30" height="30" />
-        <span>aril</span>
+      <a
+        className="landing-brand"
+        href="#top"
+        aria-label={t('{{product}} home', {
+          product: getProductBranding().productName,
+        })}
+      >
+        <ProductLogo width="30" height="30" />
+        <span>{getProductBranding().productName}</span>
       </a>
       <nav className="landing-navigation" aria-label={t('About Aril')}>
         <a href="#studio">{t('Explore the studio')}</a>

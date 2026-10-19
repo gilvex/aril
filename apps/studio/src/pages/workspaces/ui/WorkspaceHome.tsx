@@ -1,11 +1,13 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { ArrowUpRight, Plus } from 'lucide-react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { WorkspaceAccountMenu } from '@/widgets/collaboration/index.ts'
 import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import type { WorkspaceHomeProps } from '../types/workspaceHomeProps.ts'
-import { WorkspaceCard } from './WorkspaceCard.tsx'
+import { WorkspaceGrid } from './WorkspaceGrid.tsx'
+import { WorkspaceDialogs } from './WorkspaceDialogs.tsx'
 import { WorkspaceToolbar } from './WorkspaceToolbar.tsx'
-import { WorkspaceCreateDialog } from './WorkspaceCreateDialog.tsx'
 import { useWorkspaceLibrary } from '../model/useWorkspaceLibrary.ts'
 import { WorkspaceEmptyState } from './WorkspaceEmptyState.tsx'
 import './workspaces.css'
@@ -14,28 +16,25 @@ export function WorkspaceHome({
   profile,
   onProfile,
   onOpen,
+  onJoin,
+  onStudiosChanged,
   notice,
 }: WorkspaceHomeProps) {
-  const { t, state, visits, visible, handleSubmit, create, openHosted } =
-    useWorkspaceLibrary({ profile, onProfile, onOpen, notice })
-  const {
-    studios,
-    search,
-    sort,
-    creating,
-    busy,
-    error,
-    name,
-    setName,
-    setCreating,
-    hostedOrigin,
-  } = state
+  const library = useWorkspaceLibrary({
+    profile,
+    onProfile,
+    onOpen,
+    notice,
+    onStudiosChanged,
+  })
+  const { t, state, visits, visible, create, openHosted, manage } = library
+  const { studios, search, sort, creating, busy, error, hostedOrigin } = state
   return (
     <main className="workspace-home workspace-library">
       <header className="workspace-library-header">
         <a className="brand" href="/">
-          <img src="/aril.svg" alt="" />
-          <span>aril</span>
+          <ProductLogo />
+          <span>{getProductBranding().productName}</span>
         </a>
         <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
       </header>
@@ -48,6 +47,7 @@ export function WorkspaceHome({
           onSearch={state.setSearch}
           onSort={state.setSort}
           onCreate={create}
+          onJoin={!profile.guestExpiresAt ? onJoin : undefined}
         />
         {notice && (
           <p className="workspace-notice" role="status">
@@ -63,7 +63,7 @@ export function WorkspaceHome({
             </button>
           </div>
         )}
-        {error && !creating && (
+        {error && !creating && !state.management && (
           <div className="workspace-list-error" role="alert">
             <p>{error}</p>
             <button className="button" onClick={state.retry}>
@@ -77,16 +77,12 @@ export function WorkspaceHome({
             label={t('Loading your workspaces…')}
           />
         )}
-        <div className="workspace-grid">
-          {visible.map((studio) => (
-            <WorkspaceCard
-              key={studio.id}
-              studio={studio}
-              visited={visits[studio.id]}
-              onOpen={onOpen}
-            />
-          ))}
-        </div>
+        <WorkspaceGrid
+          studios={visible}
+          visits={visits}
+          onOpen={onOpen}
+          onManage={manage}
+        />
         {studios && !visible.length && (
           <WorkspaceEmptyState searching={!!search.trim()} />
         )}
@@ -103,17 +99,7 @@ export function WorkspaceHome({
           </button>
         )}
       </footer>
-      {creating && (
-        <WorkspaceCreateDialog
-          handleSubmit={handleSubmit}
-          t={t}
-          name={name}
-          setName={setName}
-          setCreating={setCreating}
-          busy={busy}
-          error={error}
-        />
-      )}
+      <WorkspaceDialogs {...library} />
     </main>
   )
 }

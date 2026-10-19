@@ -1,3 +1,4 @@
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { downloadJson } from '@/shared/api/downloadJson.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useStaleDraftScreenHandlers } from '../model/useStaleDraftScreenHandlers.tsx'
@@ -26,7 +27,7 @@ export function StaleDraftScreen({
   })
   return (
     <div className="boot-screen">
-      <img src="/aril.svg" alt="" />
+      <ProductLogo />
       <h1>{t('This draft is out of date.')}</h1>
       <p>
         {t(

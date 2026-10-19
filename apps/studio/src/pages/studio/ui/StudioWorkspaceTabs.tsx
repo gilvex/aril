@@ -1,3 +1,4 @@
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useCallback } from 'react'
 import { Plus, X, House } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -76,7 +77,7 @@ export function StudioWorkspaceTabs(props: StudioHeaderProps) {
               onClick={() => void open(tab)}
               title={tab.name}
             >
-              <img src="/aril.svg" alt="" />
+              <ProductLogo />
               <span>{tab.name}</span>
             </button>
             <button

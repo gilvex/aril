@@ -1,9 +1,10 @@
+import { guestLinkNoExpiry } from '@aril/domain/collaboration'
 import { randomBytes, randomUUID } from 'node:crypto'
 import { hash } from './utils/hash.ts'
 
 export const guestTables = `CREATE TABLE IF NOT EXISTS studio.guest_links (
   id TEXT PRIMARY KEY, token_hash TEXT NOT NULL UNIQUE, workspace_id TEXT NOT NULL,
-  created_by TEXT NOT NULL, name TEXT NOT NULL, expires_at BIGINT NOT NULL, revoked_at BIGINT);
+  created_by TEXT NOT NULL, name TEXT NOT NULL, expires_at BIGINT NOT NULL, revoked_at BIGINT, role TEXT NOT NULL DEFAULT 'member');
   CREATE TABLE IF NOT EXISTS studio.guest_profiles (user_id TEXT PRIMARY KEY, link_id TEXT NOT NULL);
   CREATE INDEX IF NOT EXISTS guest_profiles_link ON studio.guest_profiles(link_id);`
 
@@ -18,26 +19,29 @@ export function guestLinks(query: Query) {
       userId: string,
       workspaceId: string,
       name: string,
-      minutes: number,
+      minutes: number | null,
+      role: 'member' | 'viewer' = 'member',
     ) {
       const id = randomUUID(),
         token = randomBytes(32).toString('base64url')
-      const expiresAt = Date.now() + minutes * 60000
+      const expiresAt =
+        minutes === null ? guestLinkNoExpiry : Date.now() + minutes * 60000
       await query(
-        'INSERT INTO studio.guest_links (id,token_hash,workspace_id,created_by,name,expires_at) VALUES ($1,$2,$3,$4,$5,$6)',
-        [id, hash(token), workspaceId, userId, name, expiresAt],
+        'INSERT INTO studio.guest_links (id,token_hash,workspace_id,created_by,name,expires_at,role) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+        [id, hash(token), workspaceId, userId, name, expiresAt, role],
       )
-      return { id, token, name, expiresAt }
+      return { id, token, name, expiresAt, role }
     },
     async list(workspaceId: string) {
       return (
         await query(
-          `SELECT g.id,g.name,g.expires_at,g.revoked_at,
+          `SELECT g.id,g.name,g.expires_at,g.revoked_at,g.role,
         (SELECT COUNT(*) FROM studio.guest_profiles p WHERE p.link_id=g.id) AS guests
         FROM studio.guest_links g WHERE g.workspace_id=$1 ORDER BY g.expires_at DESC LIMIT 100`,
           [workspaceId],
         )
       ).map((row) => ({
+        role: row.role === 'viewer' ? ('viewer' as const) : ('member' as const),
         id: String(row.id),
         name: String(row.name),
         expiresAt: Number(row.expires_at),

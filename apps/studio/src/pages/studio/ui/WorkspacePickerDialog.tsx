@@ -1,3 +1,4 @@
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { Plus, ArrowUpRight } from 'lucide-react'
 import { request } from '@/shared/api/request.ts'
@@ -70,7 +71,7 @@ export function WorkspacePickerDialog({
               data-id={item.id}
               onClick={open}
             >
-              <img src="/aril.svg" width={22} alt="" />
+              <ProductLogo width={22} />
               <span>{item.name}</span>
               <ArrowUpRight size={16} />
             </button>

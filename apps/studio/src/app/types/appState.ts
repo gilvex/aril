@@ -15,7 +15,7 @@ export type AppState = {
   recovery: Recovery | undefined
   legacy: Workspace | null
   staleDraftKey: string | null
-  googleLinked: boolean
+  accountLinked: boolean
   inviteRequired: boolean
   token: string
   name: string

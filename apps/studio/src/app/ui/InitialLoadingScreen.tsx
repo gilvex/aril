@@ -1,3 +1,5 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
+import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { LoadingProgress, LoadingStatus } from '@/shared/ui/index.tsx'
 import type { InitialLoadingScreenProps } from '../types/initialLoadingScreenProps.ts'
@@ -17,8 +19,8 @@ export function InitialLoadingScreen({
         : t('Loading your workspace…')
   return (
     <div className="initial-loading" aria-hidden={!loading}>
-      <img src="/aril.svg" alt="" width="48" height="48" />
-      <strong>Aril</strong>
+      <ProductLogo width="48" height="48" />
+      <strong>{getProductBranding().productName}</strong>
       {total > 1 ? (
         <LoadingProgress
           label={label}

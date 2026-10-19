@@ -90,9 +90,9 @@ test('Google-first onboarding preserves invitations, gates access and restores t
     assert.deepEqual(await (await call('/api/studios', user.token)).json(), [])
     assert.equal((await call('/api/workspace', user.token)).status, 403)
     assert.equal(
-      (await call('/api/studios', user.token, { name: 'Bypass invitation' }))
+      (await call('/api/studios', user.token, { name: 'Personal workspace' }))
         .status,
-      403,
+      201,
     )
     assert.equal(
       (
@@ -100,7 +100,7 @@ test('Google-first onboarding preserves invitations, gates access and restores t
           inviteRequired: boolean
         }
       ).inviteRequired,
-      true,
+      false,
     )
     assert.equal(
       (

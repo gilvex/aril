@@ -1,3 +1,4 @@
+import { isProductSiteEnabled } from '@/shared/deploymentSettings/index.ts'
 import { CodeXml, Globe, ArrowUpRight, History } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
 import { projectLinks } from '../config/projectLinks.ts'
@@ -6,6 +7,7 @@ import './projectLinks.css'
 
 export function ProjectLinks() {
   const { t } = useTranslation()
+  if (!isProductSiteEnabled()) return null
   return (
     <nav className="project-links" aria-label={t('About Aril')}>
       <Button asChild variant="ghost" size="sm">

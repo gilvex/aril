@@ -1,3 +1,4 @@
+import { guestLinkNoExpiry } from '@aril/domain/collaboration'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { Check, Link } from 'lucide-react'
 import { Spinner } from '@/shared/ui/index.tsx'
@@ -14,11 +15,13 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
   if (props.profile.guestExpiresAt)
     return (
       <p className="collaboration-hint">
-        {t('Guest access expires {{time}}', {
-          time: new Date(props.profile.guestExpiresAt).toLocaleString(
-            i18n.language,
-          ),
-        })}
+        {props.profile.guestExpiresAt === guestLinkNoExpiry
+          ? t('Guest access lasts until the link is revoked.')
+          : t('Guest access expires {{time}}', {
+              time: new Date(props.profile.guestExpiresAt).toLocaleString(
+                i18n.language,
+              ),
+            })}
       </p>
     )
   if (role !== 'owner')
@@ -39,7 +42,7 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
       </button>
       {props.invite && (
         <label className="invite-output">
-          {t('Single-use link · expires in 24 hours')}
+          {t('Single-use link Â· expires in 24 hours')}
           <input
             aria-label={t('Invite link')}
             readOnly
@@ -56,7 +59,7 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
         {t(
           isDemoMode()
             ? 'This is a local demo. Sign in outside the demo to connect an account or invite real teammates.'
-            : 'Permanent invitations require Google sign-in. For temporary access, create a guest link below.',
+            : 'Permanent invitations require a connected sign-in account. For access without sign-in, create a guest link below.',
         )}
       </p>
       {!isDemoMode() && (

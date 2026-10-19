@@ -2805,12 +2805,13 @@ code {
 @media (max-width: 650px) { .workspace-home { padding: 24px 20px; } .workspace-home-header { margin-bottom: 40px; } .workspace-home-title { align-items: start; flex-direction: column; } }
 .account-connection { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 20px; }
 .account-connection p, .google-signin p { font-size: 12px; color: var(--text-secondary, #77717f); line-height: 1.6; overflow-wrap: anywhere; }
-.google-signin { margin-top: 16px; width: 100%; max-width: 360px; min-width: 0; flex-shrink: 0; }
+.google-signin { margin: 10px 0; width: 100%; max-width: none; min-width: 0; flex-shrink: 0; }
 .boot-screen > .google-signin { width: 340px; max-width: calc(100vw - 36px); }
-.google-signin-control { --google-button-scale: 1.2; width: 100%; min-height: 48px; }
+.google-signin-control { --google-button-scale: 1.2; width: 100%; height: 48px; border-radius: 7px; overflow: hidden; }
 .google-signin-button { width: calc(100% / var(--google-button-scale)); min-height: 40px; transform: scale(var(--google-button-scale)); transform-origin: top left; }
 /* Match Google's light document so the browser keeps its iframe padding transparent in dark mode. */
 .google-signin-button iframe { color-scheme: light; }
+.google-signin-control:focus-within { outline: 2px solid var(--accent-ink, #b34568); outline-offset: 3px; }
 .workspace-home-header .brand { color: var(--text-strong, #34313d); }
 .workspace-home-header .brand small { color: var(--text-secondary, #77717f); }
 .workspace-hosted { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding: 18px 22px; margin: -36px 0 36px; border: 1px solid var(--line, #dfccd3); background: var(--accent-light); border-radius: 14px; font-size: 14px; }
@@ -3135,3 +3136,9 @@ code {
 .agent-credentials { list-style: none; padding: 0; }
 .agent-credentials li { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .agent-credentials small { display: block; margin-top: 4px; }
+
+.node-title { min-height: 1.3em; }
+.node-palette { max-height: min(680px, calc(100dvh - 180px)); overflow-y: auto; }
+
+
+.idea-node > p, .inspector-body .muted, .board-overview p { white-space: pre-wrap; overflow-wrap: anywhere; }

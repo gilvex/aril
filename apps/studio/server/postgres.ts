@@ -1,3 +1,5 @@
+import { postgresStudioManagement } from './utils/postgresStudioManagement.ts'
+import type { LinkedAccount } from '@aril/domain/accounts'
 import { workspaceAccess } from './workspaceAccess.ts'
 import { WorkspaceAccessError } from './workspaceAccessError.ts'
 import type { Activity, Profile } from '@aril/domain/collaboration'
@@ -106,22 +108,56 @@ export async function openPostgres(
         CREATE TABLE IF NOT EXISTS studio.transfers (token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES studio.profiles(id),expires_at BIGINT NOT NULL);
 ${agentTable}
 ${guestTables}
+        ALTER TABLE studio.guest_links ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'member';
         CREATE TABLE IF NOT EXISTS studio.migrations (id TEXT PRIMARY KEY);
         CREATE INDEX IF NOT EXISTS activity_workspace ON studio.studio_activity(workspace_id,id);`,
         [],
         client,
       )
-      const now = new Date().toISOString()
-      await query(
-        'INSERT INTO studio.studios VALUES ($1,$2,$3) ON CONFLICT DO NOTHING',
-        ['default', 'Aril', now],
+      const migrated = await query(
+        "SELECT 1 FROM studio.migrations WHERE id='provider-accounts-v1'",
+        [],
         client,
       )
-      await query(
-        'INSERT INTO studio.documents VALUES ($1,1,$2,$3) ON CONFLICT DO NOTHING',
-        ['default', JSON.stringify(createSeed()), now],
-        client,
-      )
+      if (!migrated.rowCount) {
+        await query(
+          `ALTER TABLE studio.accounts ADD COLUMN provider TEXT NOT NULL DEFAULT 'google';
+          ALTER TABLE studio.accounts ADD COLUMN issuer TEXT NOT NULL DEFAULT 'https://accounts.google.com';
+          ALTER TABLE studio.accounts DROP CONSTRAINT accounts_pkey;
+          ALTER TABLE studio.accounts DROP CONSTRAINT accounts_user_id_key;
+          ALTER TABLE studio.accounts ADD PRIMARY KEY(provider,issuer,subject);
+          ALTER TABLE studio.accounts ADD UNIQUE(user_id,provider,issuer);
+          INSERT INTO studio.migrations VALUES ('provider-accounts-v1');`,
+          [],
+          client,
+        )
+      }
+      if (
+        !(
+          await query(
+            "SELECT 1 FROM studio.migrations WHERE id='initial-studio-v1'",
+            [],
+            client,
+          )
+        ).rowCount
+      ) {
+        const now = new Date().toISOString()
+        await query(
+          'INSERT INTO studio.studios VALUES ($1,$2,$3) ON CONFLICT DO NOTHING',
+          ['default', 'Aril', now],
+          client,
+        )
+        await query(
+          'INSERT INTO studio.documents VALUES ($1,1,$2,$3) ON CONFLICT DO NOTHING',
+          ['default', JSON.stringify(createSeed()), now],
+          client,
+        )
+        await query(
+          "INSERT INTO studio.migrations VALUES ('initial-studio-v1')",
+          [],
+          client,
+        )
+      }
     })
   } catch (error) {
     await pool.end()
@@ -140,7 +176,7 @@ ${guestTables}
   const member = async (id: string, workspaceId: string) =>
     !!(
       await query(
-        `SELECT 1 FROM studio.members m WHERE m.user_id=$1 AND m.workspace_id=$2 AND (m.role!='guest' OR EXISTS (SELECT 1 FROM studio.guest_profiles gp JOIN studio.guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>$3))`,
+        `SELECT 1 FROM studio.members m WHERE m.user_id=$1 AND m.workspace_id=$2 AND (NOT EXISTS (SELECT 1 FROM studio.guest_profiles guest_identity WHERE guest_identity.user_id=m.user_id) OR EXISTS (SELECT 1 FROM studio.guest_profiles gp JOIN studio.guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>$3))`,
         [id, workspaceId, Date.now()],
       )
     ).rowCount
@@ -180,6 +216,64 @@ ${guestTables}
       revision: row.revision,
       savedAt: row.saved_at,
     }
+  }
+  async function linkAccount(
+    id: string,
+    provider: string,
+    issuer: string,
+    subject: string,
+    email: string,
+  ) {
+    return transaction(async (client) => {
+      if (
+        !(await profile(id, client)) ||
+        (await profile(id, client))?.guestExpiresAt
+      )
+        return false
+      await query('LOCK TABLE studio.accounts IN EXCLUSIVE MODE', [], client)
+      const rows = (
+        await query(
+          'SELECT subject,user_id FROM studio.accounts WHERE provider=$1 AND issuer=$2 AND (subject=$3 OR user_id=$4)',
+          [provider, issuer, subject, id],
+          client,
+        )
+      ).rows
+      if (rows.some((row) => row.subject !== subject || row.user_id !== id))
+        return false
+      await query(
+        'INSERT INTO studio.accounts (provider,issuer,subject,user_id,email) VALUES ($1,$2,$3,$4,$5) ON CONFLICT(provider,issuer,subject) DO UPDATE SET email=excluded.email',
+        [provider, issuer, subject, id, email],
+        client,
+      )
+      return true
+    })
+  }
+  async function registerAccount(
+    provider: string,
+    issuer: string,
+    subject: string,
+    email: string,
+    name: string,
+  ) {
+    return transaction(async (client) => {
+      await query('LOCK TABLE studio.accounts IN EXCLUSIVE MODE', [], client)
+      const existing = (
+        await query(
+          'SELECT user_id FROM studio.accounts WHERE provider=$1 AND issuer=$2 AND subject=$3',
+          [provider, issuer, subject],
+          client,
+        )
+      ).rows[0]
+      const user = existing
+        ? await session(existing.user_id, client)
+        : await create(name.trim().slice(0, 60) || 'New collaborator', client)
+      await query(
+        'INSERT INTO studio.accounts (provider,issuer,subject,user_id,email) VALUES ($1,$2,$3,$4,$5) ON CONFLICT(provider,issuer,subject) DO UPDATE SET email=excluded.email',
+        [provider, issuer, subject, user.profile.id, email],
+        client,
+      )
+      return user
+    })
   }
   const store = {
     access: workspaceAccess(
@@ -278,6 +372,7 @@ ${guestTables}
           [id],
         )
       ).rows,
+    ...postgresStudioManagement(query, transaction),
     createStudio: async (userId: string, name: string) =>
       transaction(async (client) => {
         const id = randomUUID(),
@@ -334,7 +429,7 @@ ${guestTables}
         transaction(async (client) => {
           const link = (
             await query(
-              'UPDATE studio.guest_links SET id=id WHERE token_hash=$1 AND revoked_at IS NULL AND expires_at>$2 RETURNING id,workspace_id,expires_at',
+              'UPDATE studio.guest_links SET id=id WHERE token_hash=$1 AND revoked_at IS NULL AND expires_at>$2 RETURNING id,workspace_id,expires_at,role',
               [hash(token), Date.now()],
               client,
             )
@@ -348,12 +443,19 @@ ${guestTables}
           )
           await query(
             'INSERT INTO studio.members VALUES ($1,$2,$3)',
-            [link.workspace_id, user.profile.id, 'guest'],
+            [
+              link.workspace_id,
+              user.profile.id,
+              link.role === 'viewer' ? 'viewer' : 'guest',
+            ],
             client,
           )
           await query(
             'UPDATE studio.sessions SET expires_at=$1 WHERE token_hash=$2',
-            [link.expires_at, hash(user.token)],
+            [
+              Math.min(Number(link.expires_at), Date.now() + 30 * 86400000),
+              hash(user.token),
+            ],
             client,
           )
           return {
@@ -370,10 +472,17 @@ ${guestTables}
           hash(token),
         ])
       },
+      accounts: async (id: string) =>
+        (
+          await query<LinkedAccount>(
+            'SELECT provider,issuer,email FROM studio.accounts WHERE user_id=$1',
+            [id],
+          )
+        ).rows,
       account: async (id: string) =>
         (
           await query<{ email: string }>(
-            'SELECT email FROM studio.accounts WHERE user_id=$1',
+            "SELECT email FROM studio.accounts WHERE user_id=$1 AND provider='google'",
             [id],
           )
         ).rows[0],
@@ -474,65 +583,33 @@ ${guestTables}
           ? (row.nonce as string)
           : undefined
       },
-      linkGoogle: async (id: string, subject: string, email: string) =>
-        transaction(async (client) => {
-          if ((await profile(id, client))?.guestExpiresAt) return false
-          await query(
-            'LOCK TABLE studio.accounts IN EXCLUSIVE MODE',
-            [],
-            client,
-          )
-          const rows = (
-            await query(
-              'SELECT * FROM studio.accounts WHERE subject=$1 OR user_id=$2',
-              [subject, id],
-              client,
-            )
-          ).rows
-          if (rows.some((r) => r.subject !== subject || r.user_id !== id))
-            return false
-          await query(
-            'INSERT INTO studio.accounts VALUES ($1,$2,$3) ON CONFLICT(subject) DO UPDATE SET email=excluded.email',
-            [subject, id, email],
-            client,
-          )
-          return true
-        }),
+      linkAccount,
+      registerAccount,
+      linkGoogle: (id: string, subject: string, email: string) =>
+        linkAccount(
+          id,
+          'google',
+          'https://accounts.google.com',
+          subject,
+          email,
+        ),
+      registerGoogle: (subject: string, email: string, name: string) =>
+        registerAccount(
+          'google',
+          'https://accounts.google.com',
+          subject,
+          email,
+          name,
+        ),
       signInGoogle: async (subject: string) => {
         const row = (
-          await query('SELECT user_id FROM studio.accounts WHERE subject=$1', [
-            subject,
-          ])
+          await query(
+            "SELECT user_id FROM studio.accounts WHERE provider='google' AND subject=$1",
+            [subject],
+          )
         ).rows[0]
         return row ? session(row.user_id) : null
       },
-      registerGoogle: async (subject: string, email: string, name: string) =>
-        transaction(async (client) => {
-          await query(
-            'LOCK TABLE studio.accounts IN EXCLUSIVE MODE',
-            [],
-            client,
-          )
-          const existing = (
-            await query(
-              'SELECT user_id FROM studio.accounts WHERE subject=$1',
-              [subject],
-              client,
-            )
-          ).rows[0]
-          const user = existing
-            ? await session(existing.user_id, client)
-            : await create(
-                name.trim().slice(0, 60) || 'New collaborator',
-                client,
-              )
-          await query(
-            'INSERT INTO studio.accounts VALUES ($1,$2,$3) ON CONFLICT(subject) DO UPDATE SET email=excluded.email',
-            [subject, user.profile.id, email],
-            client,
-          )
-          return user
-        }),
     },
     cloud: {
       revision: async (workspaceId: string) =>

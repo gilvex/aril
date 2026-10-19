@@ -10,7 +10,7 @@ export function updateNote(
       ...workspace,
       ...(patch.title === undefined
         ? {}
-        : { notesTitle: patch.title || 'Untitled' }),
+        : { notesTitle: patch.title }),
       ...(patch.body === undefined ? {} : { notes: patch.body }),
     }
   return {
@@ -23,7 +23,7 @@ export function updateNote(
             title:
               patch.title === undefined
                 ? note.title
-                : patch.title || 'Untitled',
+                : patch.title,
           }
         : note,
     ),

@@ -56,10 +56,7 @@ export function DesignInspector({ model }: DesignEditorProps) {
                 aria-label={t('Layer name')}
                 value={node.name}
                 maxLength={120}
-                onChange={(event) =>
-                  event.target.value.trim() &&
-                  model.edit({ name: event.target.value })
-                }
+                onChange={(event) => model.edit({ name: event.target.value })}
               />
             )}
             <EditorActionMenu actions={actions} label={t('Layer actions')}>

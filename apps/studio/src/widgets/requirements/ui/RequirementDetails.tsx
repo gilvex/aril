@@ -24,10 +24,7 @@ export function RequirementDetails(props: RequirementDetailsProps) {
   const edit = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) =>
       update({
-        [event.target.name]:
-          event.target.name === 'title'
-            ? event.target.value || 'Untitled requirement'
-            : event.target.value,
+        [event.target.name]: event.target.value,
       }),
     [update],
   )

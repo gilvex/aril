@@ -10,3 +10,7 @@ export { edgeTypes as wireframeBoardEdgeTypes } from '@/widgets/board/config/wir
 export { empty } from '@/widgets/board/config/wireframeBoardEmpty.ts'
 export { icons } from '@/widgets/board/config/wireframeBoardIcons.ts'
 export { nodeTypes as wireframeBoardNodeTypes } from '@/widgets/board/config/wireframeBoardNodeTypes.ts'
+
+
+export {insertNodeKinds} from './insertNodeKinds.ts'
+export {nodeIconOptions} from './nodeIconOptions.ts'

@@ -6,5 +6,6 @@ export type WorkspaceToolbarProps = {
   sort: WorkspaceSort
   onSearch: (value: string) => void
   onSort: (value: WorkspaceSort) => void
+  onJoin?: () => void
   onCreate: () => void
 }

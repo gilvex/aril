@@ -17,8 +17,7 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
   const close = useCallback(() => patch({ inspector: false }), [patch])
   const name = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (machine && e.target.value.trim())
-        updateMachine({ ...machine, name: e.target.value })
+      if (machine) updateMachine({ ...machine, name: e.target.value })
     },
     [machine, updateMachine],
   )

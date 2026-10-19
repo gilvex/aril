@@ -4,5 +4,7 @@ export type WorkspaceHomeProps = {
   onProfile: (profile: Profile) => void
   profile: Profile
   onOpen: (studio: StudioSummary) => void
+  onStudiosChanged?: (studios:StudioSummary[])=>void
+  onJoin?: () => void
   notice?: string
 }

@@ -38,7 +38,7 @@ export function createAppState() {
     recovery,
     legacy,
     staleDraftKey,
-    googleLinked: false,
+    accountLinked: false,
     inviteRequired,
     token,
     name,

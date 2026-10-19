@@ -7,7 +7,7 @@ const localeBackend: BackendModule = {
   init() {},
   read(language, _namespace, callback) {
     if (language !== 'ru') return callback(null, en)
-    void import('../locales/ru.json', { with: { type: 'json' } })
+    void import('../locales/ru.ts')
       .then((module) => callback(null, module.default))
       .catch((error: Error) => callback(error, false))
   },

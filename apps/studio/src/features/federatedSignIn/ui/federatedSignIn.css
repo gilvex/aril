@@ -1,0 +1,25 @@
+.federated-signin {
+  width: 100%;
+  margin: 10px 0;
+}
+.federated-signin > .button {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 20px;
+  font-size: 14px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.federated-signin > .button:focus-visible {
+  outline: 2px solid var(--accent-ink, #b34568);
+  outline-offset: 3px;
+}
+.federated-signin > .button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.federated-signin > .form-error {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 10px;
+}

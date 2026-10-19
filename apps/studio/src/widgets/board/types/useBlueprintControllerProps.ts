@@ -1,5 +1,6 @@
 import type { DragPosition } from '@aril/domain/collaboration'
 export type UseBlueprintControllerProps = {
+  checkpoint: () => void
   board: import('@aril/domain/workspace').Board
   peers: import('@aril/domain/collaboration').Presence[]
   saveState: 'error' | 'saved' | 'pending' | 'saving'

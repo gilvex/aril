@@ -53,3 +53,17 @@ See [operations](operations.md) for database backup/restore and [verification](v
 Appearance supports Light, Dark, and System plus English/Russian interface text. Preferences are device-local; user-authored content is preserved. Controls support keyboard focus and reduced motion.
 
 On supported mobile browsers, use Install app/Add to Home Screen. The PWA caches only a public offline reconnect surface; opening and syncing shared workspaces requires a connection.
+
+## Rename and delete a workspace
+
+On the workspace list, owners can choose **Rename** or **Delete** below a workspace card. Deletion requires typing its current name and permanently removes its documents, revision history, activity, memberships, invitations and workspace agent credentials. Guest links are revoked; other workspaces, permanent profiles and account-wide agent grants remain. Export needed data before deleting. Rename changes the workspace label without rewriting planning content. Open editors in this browser are updated or released after the list refreshes.
+
+A connected Google, Yandex or SSO account already preserves access across devices. The profile displays connected identities and offers linking only to permanent profiles without a connected account.
+
+## Network diagrams and clipboard
+
+Canvas → Add node → Block creates a universal node. Choose a device, router, switch, access point, firewall, server, internet or other icon in the inspector. Record addresses, VLANs and equipment details in Description or Notes; description line breaks appear on the card. Existing equipment nodes are normalized to universal blocks with matching icons when opened, imported, restored from history or pasted. Explicit custom icons and all saved details remain intact. Normal saves persist the new representation; no database reset or bulk live migration is needed.
+
+Ctrl/Cmd+C copies selected Canvas nodes and the connections between them. Ctrl/Cmd+V inserts independent copies with new IDs and an offset; undo removes a paste as one change. Text fields keep normal text copy/paste. Viewers can copy, but cannot paste or edit.
+
+Owners can create up to 25 active guest links with separate View only or Can edit permissions. Choose 5 minutes to 30 days or No expiration. Links cover the entire workspace, including all its boards; revoke a link to end every session created through it and remove it from the list.

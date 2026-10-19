@@ -42,3 +42,5 @@ export { useWireframeNodeDetailsHandlers } from './useWireframeNodeDetailsHandle
 export { useWireframePreview } from './useWireframePreview.ts'
 export { useWireframePreviewDestinationHandlers } from './useWireframePreviewDestinationHandlers.tsx'
 export { useWireframeToolbarHandlers } from './useWireframeToolbarHandlers.tsx'
+
+export {useCanvasClipboard} from './useCanvasClipboard.ts'

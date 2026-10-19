@@ -57,7 +57,7 @@ export function GuestJoinScreen({
           <h1>{t('Join as a guest')}</h1>
           <p className="login-description">
             {t(
-              'No Google account needed. Your access ends when this link expires or is revoked.',
+              'No account needed. Your access ends when this link expires or is revoked.',
             )}
           </p>
           <form className="join-form" onSubmit={join}>
@@ -88,7 +88,7 @@ export function GuestJoinScreen({
             </p>
           )}
           <a className="login-help" href="/">
-            {t('Sign in with Google instead')}
+            {t('Choose a sign-in method instead')}
           </a>
         </section>
         <LoginBlueprint />

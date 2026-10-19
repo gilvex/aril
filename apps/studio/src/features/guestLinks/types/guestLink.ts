@@ -1,4 +1,5 @@
 export type GuestLink = {
+  role: 'member' | 'viewer'
   id: string
   name: string
   expiresAt: number

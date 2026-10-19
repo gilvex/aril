@@ -1,3 +1,4 @@
+import { useCanvasClipboard } from './useCanvasClipboard.ts'
 import { useCompactLayout } from '@/shared/model/useCompactLayout.ts'
 import { createCanvasBoardState } from '@/widgets/board/model/createCanvasBoardState.ts'
 import { useCanvasBoardModel } from '@/widgets/board/model/useCanvasBoardModel.ts'
@@ -13,6 +14,7 @@ import { useBlueprintEditing } from '../model/useBlueprintEditing.ts'
 import type { UseBlueprintControllerProps } from '../types/useBlueprintControllerProps.ts'
 export function useBlueprintController({
   board,
+  checkpoint,
   peers,
   saveState,
   sendPresence,
@@ -115,6 +117,14 @@ export function useBlueprintController({
     () => board.edges.find((e) => e.id === selectedEdge),
     [board, selectedEdge],
   )
+  useCanvasClipboard({
+    board,
+    selectedIds,
+    canvasRef,
+    update,
+    setSelectedIds,
+    checkpoint,
+  })
   const { onConnect, editItem, updateNode } = useBlueprintEditing({
     setSelected,
     setSelectedEdge,

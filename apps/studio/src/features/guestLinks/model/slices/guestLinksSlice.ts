@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { GuestLinksState } from '../../types/guestLinksState.ts'
 const initialState: GuestLinksState = {
+  role: 'viewer',
   links: [],
   name: '',
   duration: 1,

@@ -1,3 +1,4 @@
+import {useTranslation} from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
 import type { Idea } from '@aril/domain/workspace'
 import { type Node } from '@xyflow/react'
@@ -12,6 +13,7 @@ export function useBlueprintActions({
   setPalette,
   node,
 }: UseBlueprintActionsProps) {
+  const {t}=useTranslation()
   const onDelete = useCallback(
     ({ nodes, edges }: { nodes: Node[]; edges: { id: string }[] }) => {
       const nodeIds = new Set(nodes.map((n) => n.id))
@@ -57,9 +59,9 @@ export function useBlueprintActions({
             type: 'idea',
             position: at || position,
             data: {
-              title: `New ${kindLabels[kind].toLowerCase()}`,
+              title: t(kindLabels[kind]),
               kind,
-              description: 'What role does this play?',
+              description: '',
               notes: '',
               status: 'Exploring',
               requirements: [],
@@ -71,7 +73,7 @@ export function useBlueprintActions({
       setSelectedEdge(null)
       setPalette(false)
     },
-    [board, flow, update, setSelected, setSelectedEdge, setPalette],
+    [board, flow, update, setSelected, setSelectedEdge, setPalette, t],
   )
   const removeNode = useCallback(() => {
     if (!node) return

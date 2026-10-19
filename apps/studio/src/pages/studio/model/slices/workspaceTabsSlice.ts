@@ -4,6 +4,12 @@ export const workspaceTabsSlice = createSlice({
   name: 'workspaceTabs',
   initialState: { tabs: [] } as WorkspaceTabsState,
   reducers: {
+    replaced: (
+      state,
+      { payload }: PayloadAction<WorkspaceTabsState['tabs']>,
+    ) => {
+      state.tabs = payload
+    },
     opened: (
       state,
       { payload }: PayloadAction<WorkspaceTabsState['tabs'][number]>,

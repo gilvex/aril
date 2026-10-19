@@ -17,7 +17,7 @@ const action = z.object({ variableId: id, value })
 const component = z.object({
   id,
   organization,
-  name: z.string().min(1).max(120),
+  name: z.string().max(120),
   icon: z.string().max(12).optional(),
   variants: z
     .record(id, designPageSchema)
@@ -26,14 +26,14 @@ const component = z.object({
 const variable = z.object({
   id,
   organization,
-  name: z.string().min(1).max(120),
+  name: z.string().max(120),
   collectionId: id,
   type: z.enum(['color', 'number', 'string', 'boolean']),
   values: z.record(z.string().min(1).max(80), value),
 })
 const collection = z.object({
   id,
-  name: z.string().min(1).max(120),
+  name: z.string().max(120),
   modes: z
     .array(z.string().min(1).max(80))
     .min(1)
@@ -43,7 +43,7 @@ const collection = z.object({
 const machine = z.object({
   id,
   organization,
-  name: z.string().min(1).max(120),
+  name: z.string().max(120),
   componentId: id.optional(),
   initial: id,
   states: z
@@ -51,7 +51,7 @@ const machine = z.object({
       id,
       z.object({
         id,
-        name: z.string().min(1).max(120),
+        name: z.string().max(120),
         x: z.number().finite().min(-1e6).max(1e6),
         y: z.number().finite().min(-1e6).max(1e6),
         variantId: id.optional(),

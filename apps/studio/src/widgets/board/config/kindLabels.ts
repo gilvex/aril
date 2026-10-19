@@ -5,4 +5,13 @@ export const kindLabels = {
   instance: 'Instance',
   person: 'User / team',
   note: 'Decision',
+  block: 'Block',
+  device: 'Device',
+  server: 'Server',
+  router: 'Router',
+  switch: 'Network switch',
+  firewall: 'Firewall',
+  accessPoint: 'Wi-Fi access point',
+  network: 'Network / subnet',
+  internet: 'Internet',
 }

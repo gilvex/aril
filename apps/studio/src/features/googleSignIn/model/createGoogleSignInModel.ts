@@ -12,6 +12,9 @@ export function createGoogleSignInModel(initial: GoogleSignInState) {
   })
   const getSnapshot = () => selectGoogleSignIn(store.getState())
   const actions = {
+    setConfigured: (value: boolean) => {
+      store.dispatch(googleSignInSlice.actions.setConfigured(value))
+    },
     setError: (
       value:
         | GoogleSignInState['error']

@@ -9,7 +9,7 @@ export function startSession() {
     return request<{
       profile: Profile
       token?: string
-      googleLinked?: boolean
+      accountLinked?: boolean
       inviteRequired?: boolean
     }>('/api/auth/transfer', {
       method: 'POST',
@@ -23,7 +23,7 @@ export function startSession() {
   return request<{
     profile: Profile
     token?: string
-    googleLinked?: boolean
+    accountLinked?: boolean
     inviteRequired?: boolean
   }>('/api/session')
 }

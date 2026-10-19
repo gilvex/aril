@@ -10,67 +10,96 @@ export const WorkspaceCard = memo(function WorkspaceCard({
   studio,
   visited,
   onOpen,
+  onManage,
 }: WorkspaceCardProps) {
   const { t, i18n } = useTranslation()
   const open = useCallback(() => onOpen(studio), [onOpen, studio])
+  const rename = useCallback(
+    () => onManage?.(studio, 'rename'),
+    [onManage, studio],
+  )
+  const remove = useCallback(
+    () => onManage?.(studio, 'delete'),
+    [onManage, studio],
+  )
   return (
-    <button
-      className="workspace-card"
-      onClick={open}
-      aria-label={t('Open {{name}}', { name: studio.name })}
-    >
-      <WorkspacePreview studio={studio} />
-      <div className="workspace-card-content">
-        <div className="workspace-card-title">
-          <h2>{studio.name}</h2>
-          <span className={`workspace-role role-${studio.role}`}>
-            {t(
-              studio.role === 'owner'
-                ? 'Owner'
-                : studio.role === 'viewer'
-                  ? 'Viewer'
-                  : studio.role === 'guest'
-                    ? 'Guest'
-                    : 'Editor',
-            )}
-          </span>
-          <ArrowUpRight size={16} className="workspace-open-icon" />
+    <div className="workspace-card-shell">
+      <button
+        className="workspace-card"
+        onClick={open}
+        aria-label={t('Open {{name}}', { name: studio.name })}
+      >
+        <WorkspacePreview studio={studio} />
+        <div className="workspace-card-content">
+          <div className="workspace-card-title">
+            <h2>{studio.name}</h2>
+            <span className={`workspace-role role-${studio.role}`}>
+              {t(
+                studio.role === 'owner'
+                  ? 'Owner'
+                  : studio.role === 'viewer'
+                    ? 'Viewer'
+                    : studio.role === 'guest'
+                      ? 'Guest'
+                      : 'Editor',
+              )}
+            </span>
+            <ArrowUpRight size={16} className="workspace-open-icon" />
+          </div>
+          <div className="workspace-card-meta">
+            <span
+              title={
+                visited
+                  ? new Date(visited).toLocaleString(i18n.resolvedLanguage)
+                  : undefined
+              }
+            >
+              {visited
+                ? t('Opened {{time}}', {
+                    time: formatWorkspaceVisit(
+                      visited,
+                      i18n.resolvedLanguage || 'en',
+                    ),
+                  })
+                : t('Not opened on this device')}
+            </span>
+            <span
+              className="workspace-members"
+              aria-label={t('{{count}} workspace members', {
+                count: studio.memberCount,
+              })}
+              title={studio.members.map((member) => member.name).join(', ')}
+            >
+              {studio.members.map((member) => (
+                <Avatar key={member.id} profile={member} />
+              ))}
+              {studio.memberCount > 3 && (
+                <span className="workspace-member-more">
+                  +{studio.memberCount - 3}
+                </span>
+              )}
+            </span>
+          </div>
         </div>
-        <div className="workspace-card-meta">
-          <span
-            title={
-              visited
-                ? new Date(visited).toLocaleString(i18n.resolvedLanguage)
-                : undefined
-            }
+      </button>
+      {studio.role === 'owner' && onManage && (
+        <div className="workspace-card-actions">
+          <button
+            className="button"
+            onClick={rename}
+            aria-label={t('Rename {{name}}', { name: studio.name })}
           >
-            {visited
-              ? t('Opened {{time}}', {
-                  time: formatWorkspaceVisit(
-                    visited,
-                    i18n.resolvedLanguage || 'en',
-                  ),
-                })
-              : t('Not opened on this device')}
-          </span>
-          <span
-            className="workspace-members"
-            aria-label={t('{{count}} workspace members', {
-              count: studio.memberCount,
-            })}
-            title={studio.members.map((member) => member.name).join(', ')}
+            {t('Rename')}
+          </button>
+          <button
+            className="button workspace-delete"
+            onClick={remove}
+            aria-label={t('Delete {{name}}', { name: studio.name })}
           >
-            {studio.members.map((member) => (
-              <Avatar key={member.id} profile={member} />
-            ))}
-            {studio.memberCount > 3 && (
-              <span className="workspace-member-more">
-                +{studio.memberCount - 3}
-              </span>
-            )}
-          </span>
+            {t('Delete')}
+          </button>
         </div>
-      </div>
-    </button>
+      )}
+    </div>
   )
 })

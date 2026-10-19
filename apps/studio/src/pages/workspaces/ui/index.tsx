@@ -5,3 +5,8 @@ export { WorkspacePreview } from './WorkspacePreview.tsx'
 export { WorkspaceToolbar } from './WorkspaceToolbar.tsx'
 export { WorkspaceCreateDialog } from './WorkspaceCreateDialog.tsx'
 export { WorkspaceEmptyState } from './WorkspaceEmptyState.tsx'
+
+export { WorkspaceManageDialog } from './WorkspaceManageDialog.tsx'
+export { WorkspaceGrid } from './WorkspaceGrid.tsx'
+
+export {WorkspaceDialogs} from './WorkspaceDialogs.tsx'

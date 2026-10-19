@@ -5,4 +5,5 @@ export const nodeKinds = [
   'instance',
   'person',
   'note',
+  'block',
 ] as const

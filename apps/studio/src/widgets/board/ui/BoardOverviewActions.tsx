@@ -1,6 +1,6 @@
+import {insertNodeKinds} from '../config/insertNodeKinds.ts'
 import { useMemo, useRef } from 'react'
 import { MoreHorizontal, Plus } from 'lucide-react'
-import { nodeKinds } from '@aril/domain/workspace'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '../config/kindLabels.ts'
@@ -17,7 +17,7 @@ export function BoardOverviewActions({
   const focusAfterClose = useRef<HTMLInputElement | null>(null)
   const insert = useMemo(
     () =>
-      nodeKinds.map((kind) => ({
+      insertNodeKinds.map((kind) => ({
         id: kind,
         label: t(kindLabels[kind]),
         run: () => addNode(kind),

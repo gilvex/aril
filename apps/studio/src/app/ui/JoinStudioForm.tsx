@@ -1,3 +1,4 @@
+import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useJoinStudioFormHandlers } from '../model/useJoinStudioFormHandlers.tsx'
@@ -28,7 +29,11 @@ export function JoinStudioForm({
   })
   return (
     <form className="join-form" onSubmit={handleSubmit}>
-      <p>{t('Join Aril with an invitation from someone in the studio.')}</p>
+      <p>
+        {t('Join {{product}} with an invitation from someone in the studio.', {
+          product: getProductBranding().productName,
+        })}
+      </p>
       <label>
         {t('Invite code')}
         <input

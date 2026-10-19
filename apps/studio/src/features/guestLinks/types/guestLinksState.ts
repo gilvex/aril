@@ -1,5 +1,6 @@
 import type { GuestLink } from './guestLink.ts'
 export type GuestLinksState = {
+  role: 'member' | 'viewer'
   links: GuestLink[]
   name: string
   duration: number

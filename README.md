@@ -8,7 +8,7 @@ A collaborative workspace for architecture diagrams, interface design, requireme
 
 ![Aril home page with readable navigation, demo entry, and animated berry ribbons](apps/studio/public/changelog/home-readable.webp)
 
-The public home introduces the studio, with a playable tour and direct access to the editable demo. Returning members can jump to sign-in; invitation links open the join form directly.
+The public home introduces the studio, with a playable tour and direct access to the editable demo. Sign in to create your own workspace without a code, or use an invitation link to join an existing team.
 
 ![Aril demo: architecture, interface design, and reusable assets](apps/studio/public/changelog/studio-tour.gif)
 
@@ -20,7 +20,7 @@ The recording uses editable demo fixtures and simulated teammates. Aril is a pla
 
 ## What it does
 
-- **Canvas and Design:** connected architecture boards, editable interface layers, nested frames, and dockable inspectors.
+- **Canvas and Design:** connected architecture and network diagrams, universal blocks with selectable device/network icons, editable interface layers, nested frames, and dockable inspectors.
 - **Library:** reusable components and variables with dependency/usage inspection.
 - **Scope and Notes:** requirements, decisions, Markdown documents, and saved comments. Notes support concurrent text editing with Yjs.
 - **Collaboration:** live cursors, selections, following, and previews; persistent edits use revision checks and recoverable conflict handling.
@@ -48,7 +48,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open http://127.0.0.1:5173; the API runs on port 4317. A fresh checkout without cloud configuration uses SQLite. See [hosting and accounts](docs/accounts-and-deployment.md) for Google sign-in and Postgres configuration.
+Open http://127.0.0.1:5173; the API runs on port 4317. A fresh checkout without cloud configuration uses SQLite. See [hosting and accounts](docs/accounts-and-deployment.md) for Google, Yandex ID, corporate OIDC sign-in and Postgres configuration.
 
 ```sh
 pnpm build
@@ -56,6 +56,20 @@ pnpm start
 ```
 
 The built application is served at http://127.0.0.1:4317. Run commands from the repository root.
+
+![Sign-in with configured Yandex ID and corporate SSO providers](apps/studio/public/changelog/sso-sign-in.png)
+
+## Docker Compose
+
+Copy `.env.example` to `.env`, set the public `ARIL_ORIGIN` and the desired sign-in providers, then run:
+
+```sh
+docker compose up --build -d
+```
+
+Open the studio, sign in with a configured provider and choose **New workspace**; no invitation is needed to create your own. With `ARIL_STORAGE=sqlite` (the default), containers use a persistent `studio-data` SQLite volume; your local SQLite file is not imported. Set `ARIL_STORAGE=postgres` in `.env` to use your configured Postgres backend. The service listens on `127.0.0.1:4317`; put an HTTPS reverse proxy in front for remote access and preserve streaming responses. Root `.env` and local data are excluded from the image. Rebuilds preserve the volume; `docker compose down -v` deletes it. See [hosting and SSO setup](docs/accounts-and-deployment.md#sign-in-providers).
+
+For company installations, set `ARIL_PRODUCT_SITE_ENABLED=false` to show the shared sign-in page with its example diagram and hide the product home, changelog, demo and promotional links. Set `ARIL_PRODUCT_NAME` and `ARIL_PRODUCT_LOGO_URL` in the same `.env` to customize its branding. Restart the server to apply; no frontend rebuild is needed. [Company mode](docs/accounts-and-deployment.md#company-sign-in-mode).
 
 ## Verify
 
@@ -81,7 +95,7 @@ CI runs lint, fixture-based tests, and all package builds on Node 24. A separate
 
 ## Scope and limitations
 
-Aril is the planning deliverable for a future deployment platform. Container execution, infrastructure reconciliation, enterprise SSO, and resource-level deployment permissions remain future work. The installable app provides an offline reconnect screen, not offline workspace editing. History is bounded and does not replace database backups. Performance experiments use local fixtures, not production traffic or an availability guarantee.
+Aril is the planning deliverable for a future deployment platform. Container execution, infrastructure reconciliation, SAML SSO, and resource-level deployment permissions remain future work. The installable app provides an offline reconnect screen, not offline workspace editing. History is bounded and does not replace database backups. Performance experiments use local fixtures, not production traffic or an availability guarantee.
 
 Packages now use `@aril/*`, the MCP connection is `aril`, and the companion skill is `aril-studio`. One account credential can access your files without reconnecting; file-only credentials remain available. New configuration uses `ARIL_*`; legacy environment aliases and saved MCP configuration remain readable. Existing database schemas, browser storage keys, and user documents are preserved. See the [agent setup and upgrade guide](docs/agent-integration.md).
 

@@ -6,7 +6,7 @@ import { isDesignContainer } from '../utils/isDesignContainer.ts'
 export const designPageSchema = z
   .object({
     id: z.string().min(1).max(100),
-    name: z.string().min(1).max(120),
+    name: z.string().max(120),
     strokes: strokesSchema.optional(),
     nodes: z.array(designElementSchema).max(500),
   })

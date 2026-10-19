@@ -72,3 +72,8 @@
   .login-invitation input { font-size: 16px; }
   .login-footer { max-width: 400px; margin: 0 auto; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
 }
+
+.login-brand { min-width: 0; }
+.login-brand img { flex-shrink: 0; }
+.login-brand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.login-preferences { flex-shrink: 0; }

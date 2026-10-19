@@ -3,6 +3,100 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-19-product-version',
+    date: '2026-10-19',
+    title: 'Product version in settings',
+    summary:
+      'See the installed product version in Settings → App, including self-hosted company installations.',
+    changes: [
+      'The version comes from the application package at build time and updates with each release.',
+    ],
+    image: '/changelog/product-version.png',
+    imageAlt: 'Application preferences with the installed product version.',
+  },
+  {
+    id: '2026-10-19-guest-links',
+    date: '2026-10-19',
+    title: 'Guest links without an expiration',
+    summary:
+      'Share a workspace until you revoke access, with clear permissions and a simpler link list.',
+    changes: [
+      'Choose No expiration for viewing or editing links; access lasts until the owner revokes the link.',
+      'Revoked links disappear immediately and end access for every guest who used them. Other links keep working.',
+      'Guest link descriptions and form typography are clearer; revoking an older link keeps the latest created link available to copy.',
+    ],
+    image: '/changelog/guest-links.png',
+    imageAlt:
+      'Guest link form showing unlimited viewing access and a separate editing link.',
+  },
+  {
+    id: '2026-10-19-network-canvas',
+    date: '2026-10-19',
+    title: 'Flexible Canvas blocks and sharing',
+    summary:
+      'Choose a block icon, copy connected nodes, and share your workspace with separate view or edit links.',
+    changes: [
+      'Existing equipment nodes automatically become universal blocks with matching icons; titles, positions, connections and saved details are preserved.',
+      'A universal block replaces the long equipment menu. Choose an icon and describe devices in the description or notes; description line breaks stay visible.',
+      'Ctrl/Cmd+C and Ctrl/Cmd+V copy selected Canvas nodes with their internal connections; repeated pastes get new IDs and positions and support undo.',
+      'Create multiple independent temporary links with View only or Can edit permissions. Viewing links cannot save changes, invite others or grant access.',
+      'Clearing a title no longer inserts Untitled in Canvas, wireframe blocks, requirements or notes; empty titles can be saved and edited again.',
+    ],
+    image: '/changelog/network-canvas.png',
+    imageAlt:
+      'Example network built with universal icon blocks, multiline descriptions and the icon picker.',
+  },
+  {
+    id: '2026-10-19-workspace-management',
+    date: '2026-10-19',
+    title: 'Manage your workspaces and account access',
+    summary:
+      'Rename a workspace or delete it as its owner, and see the account that already keeps your access.',
+    changes: [
+      'Workspace cards offer Rename and Delete to owners; deletion requires typing the current name and permanently removes documents, history and access.',
+      'Deleted or unavailable workspaces are removed from saved open tabs; returning to an editor refreshes access and workspace names.',
+      'Workspace management uses consistent form typography and translated action labels.',
+      'Linked accounts no longer ask you to connect another provider; account recovery instructions match your connected Google, Yandex or SSO identity.',
+    ],
+    image: '/changelog/workspace-management.png',
+    imageAlt:
+      'Russian workspace deletion dialog with a warning and name confirmation.',
+  },
+  {
+    id: '2026-10-19-first-workspace',
+    date: '2026-10-19',
+    title: 'Create your first workspace without an invitation',
+    summary:
+      'After signing in with Google, Yandex ID or SSO, create your own workspace or join someone else’s with an invitation.',
+    changes: [
+      'New accounts can create an isolated workspace immediately and become its owner; existing workspace memberships remain unchanged.',
+      'The workspace list offers optional invitation entry, and invitation screens let signed-in users return to their own workspaces.',
+    ],
+    image: '/changelog/first-workspace.png',
+    imageAlt:
+      'Empty workspace list for a newly signed-in fixture account, with create and join actions.',
+  },
+  {
+    id: '2026-10-19-yandex-compose',
+    date: '2026-10-19',
+    title: 'SSO and self-hosted company studios',
+    summary:
+      'Choose Google, Yandex ID or corporate SSO, and customize your own installation.',
+    changes: [
+      'Google, Yandex ID and corporate SSO are optional; the sign-in screen shows configured providers only.',
+      'Accounts share one provider-aware table; existing Google identities, profiles and memberships are preserved.',
+      'Customize the product name and logo through ARIL_PRODUCT_NAME and ARIL_PRODUCT_LOGO_URL in the same .env used by Docker Compose.',
+      'Set ARIL_PRODUCT_SITE_ENABLED=false to hide the landing page, changelog, demo and product links.',
+      'Corporate SSO uses the shared sign-in page with its example diagram; product pages, demo and promotional links remain hidden in company mode.',
+      'Google sign-in follows the app theme and uses the same full-width, 48-pixel control layout as the other providers.',
+      'Language switching preserves the form without flashing a disabled Google sign-in control.',
+      'Failed or cancelled SSO retains the invitation link; OIDC authorization endpoint parameters are preserved.',
+    ],
+    image: '/changelog/sso-sign-in.png',
+    imageAlt:
+      'Company sign-in screen with custom product branding, fixture SSO and an example diagram.',
+  },
+  {
     id: '2026-10-14-home',
     date: '2026-10-14',
     title: 'A clearer introduction to Aril',

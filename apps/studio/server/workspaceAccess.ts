@@ -1,7 +1,4 @@
-import type {
-  StudioSummary,
-  WorkspaceMember,
-} from '@aril/domain/studios'
+import type { StudioSummary, WorkspaceMember } from '@aril/domain/studios'
 
 type Query = (
   sql: string,
@@ -15,7 +12,7 @@ export function workspaceAccess(query: Query) {
     ): Promise<StudioSummary['role'] | null> {
       const rows = await query(
         `SELECT role FROM studio.members m WHERE user_id=$1 AND workspace_id=$2
-        AND (role!='guest' OR EXISTS (SELECT 1 FROM studio.guest_profiles gp JOIN studio.guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>$3))`,
+        AND (NOT EXISTS (SELECT 1 FROM studio.guest_profiles guest_identity WHERE guest_identity.user_id=m.user_id) OR EXISTS (SELECT 1 FROM studio.guest_profiles gp JOIN studio.guest_links g ON g.id=gp.link_id WHERE gp.user_id=m.user_id AND g.workspace_id=m.workspace_id AND g.revoked_at IS NULL AND g.expires_at>$3))`,
         [userId, workspaceId, Date.now()],
       )
       return (rows[0]?.role as StudioSummary['role']) || null
@@ -44,6 +41,7 @@ export function workspaceAccess(query: Query) {
         (
           await query(
             `UPDATE studio.members SET role=$1 WHERE workspace_id=$2 AND user_id=$3 AND role IN ('member','viewer')
+        AND NOT EXISTS (SELECT 1 FROM studio.guest_profiles guest_identity WHERE guest_identity.user_id=studio.members.user_id)
         AND EXISTS (SELECT 1 FROM studio.members owner WHERE owner.workspace_id=$4 AND owner.user_id=$5 AND owner.role='owner') RETURNING user_id`,
             [role, workspaceId, userId, workspaceId, actorId],
           )

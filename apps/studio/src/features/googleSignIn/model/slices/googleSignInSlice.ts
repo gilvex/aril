@@ -5,6 +5,9 @@ export const googleSignInSlice = createSlice({
   name: 'googleSignIn',
   initialState: {} as GoogleSignInState,
   reducers: {
+    setConfigured: (state, action: PayloadAction<boolean>) => {
+      state.configured = action.payload
+    },
     setError: (state, action: PayloadAction<GoogleSignInState['error']>) => {
       state.error = action.payload
     },

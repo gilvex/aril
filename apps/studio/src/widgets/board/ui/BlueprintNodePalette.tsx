@@ -1,5 +1,6 @@
+import {insertNodeKinds} from '../config/insertNodeKinds.ts'
 import { Plus, X } from 'lucide-react'
-import { nodeKinds, type Idea } from '@aril/domain/workspace'
+import { type Idea } from '@aril/domain/workspace'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '../config/kindIcons.ts'
 import { kindLabels } from '../config/kindLabels.ts'
@@ -23,7 +24,7 @@ export function BlueprintNodePalette({
           <X size={14} />
         </button>
       </div>
-      {nodeKinds.map((kind) => {
+      {insertNodeKinds.map((kind) => {
         const Icon = kindIcons[kind]
         return (
           <button key={kind} onClick={() => add(kind)}>
