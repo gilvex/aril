@@ -3,6 +3,20 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-19-google-button',
+    date: '2026-10-19',
+    title: 'Consistent Google sign-in button',
+    summary:
+      'Google sign-in now matches the other provider buttons in both themes.',
+    changes: [
+      'A product-rendered button replaces the visible SDK styling, with a full-width click target, keyboard focus and localized text.',
+      'Google Identity Services continues to handle sign-in and credential verification.',
+    ],
+    image: '/changelog/google-button.png',
+    imageAlt:
+      'Google and Yandex sign-in controls with matching dark theme styling.',
+  },
+  {
     id: '2026-10-19-product-version',
     date: '2026-10-19',
     title: 'Product version in settings',

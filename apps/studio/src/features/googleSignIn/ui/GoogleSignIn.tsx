@@ -1,3 +1,4 @@
+import { GoogleSignInControl } from './GoogleSignInControl.tsx'
 import { GoogleSignInStatus } from './GoogleSignInStatus.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useGoogleSignInHandlers } from '../model/useGoogleSignInHandlers.tsx'
@@ -121,9 +122,7 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
       hidden={configured === false || (configured === null && !error)}
     >
       <GoogleSignInStatus status={status} error={error} />
-      <div className="google-signin-control">
-        <div ref={root} className="google-signin-button" />
-      </div>
+      <GoogleSignInControl root={root} link={link} />
       {error && (
         <>
           <p className="form-error" role="alert">
