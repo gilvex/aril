@@ -214,7 +214,7 @@ test(
           ) {
             return route.fulfill({
               contentType: 'text/javascript',
-              body: `window.google={accounts:{id:{initialize:()=>{},renderButton:(root,options)=>{const button=document.createElement('button');button.dataset.googleTheme=options.theme;button.textContent=options.locale==='ru'?'Войти через Google':'Sign in with Google';root.append(button)}}}}`,
+              body: `window.googleClicks=0;window.google={accounts:{id:{initialize:(options)=>{window.googleCredential=options.callback},renderButton:(root,options)=>{const button=document.createElement('button');button.style.cssText='width:'+options.width+'px;height:40px;background:white;color:black';button.textContent=options.locale==='ru'?'Войти через Google':'Sign in with Google';button.onclick=()=>window.googleClicks++;root.append(button)}}}}`,
             })
           }
           if (url.origin !== origin) return route.abort()
@@ -224,7 +224,7 @@ test(
             return route.fulfill({
               json: {
                 googleClientId: 'fixture-client',
-                yandexEnabled: false,
+                yandexEnabled: true,
                 oidcEnabled: false,
               },
             })
@@ -259,17 +259,99 @@ test(
           .getByRole('button', { name: 'Войти через Google', exact: true })
           .waitFor()
         assert.ok(await googlePage.locator('.google-signin').isVisible())
-        for (const [theme, expected] of [
-          ['dark', 'filled_black'],
-          ['light', 'outline'],
-        ]) {
+        const control = googlePage.locator('.google-signin-control')
+        const sdkButton = googlePage.getByRole('button', {
+          name: 'Войти через Google',
+          exact: true,
+        })
+        const yandex = googlePage.getByRole('button', {
+          name: 'Войти через Яндекс ID',
+          exact: true,
+        })
+        for (const theme of ['dark', 'light']) {
           await googlePage.evaluate((value) => {
             document.documentElement.dataset.theme = value
           }, theme)
-          await googlePage
-            .locator(`[data-google-theme="${expected}"]`)
-            .waitFor()
+          await googlePage.evaluate(async () => {
+            await Promise.all(
+              document
+                .getAnimations()
+                .map((animation) => animation.finished.catch(() => {})),
+            )
+          })
+          const styles = await googlePage.evaluate(() => {
+            const google = getComputedStyle(
+              document.querySelector('.google-signin-face'),
+            )
+            const yandex = getComputedStyle(
+              document.querySelector('.federated-signin > .button'),
+            )
+            return [
+              'backgroundColor',
+              'borderRadius',
+              'fontSize',
+              'fontWeight',
+              'height',
+            ].map((key) => [google[key], yandex[key]])
+          })
+          for (const [google, other] of styles) assert.equal(google, other)
+          assert.equal(
+            (await control.boundingBox()).width,
+            (await yandex.boundingBox()).width,
+          )
         }
+        for (const width of [1440, 390]) {
+          await googlePage.setViewportSize({ width, height: 900 })
+          const box = await control.boundingBox()
+          await googlePage.mouse.click(box.x + 5, box.y + 24)
+          await googlePage.mouse.click(box.x + box.width - 5, box.y + 24)
+          assert.ok(
+            await googlePage.evaluate(
+              () => document.documentElement.scrollWidth <= innerWidth,
+            ),
+          )
+        }
+        await sdkButton.focus()
+        assert.equal(
+          await control.evaluate(
+            (element) => getComputedStyle(element).outlineStyle,
+          ),
+          'solid',
+        )
+        await googlePage.keyboard.press('Enter')
+        assert.equal(await googlePage.evaluate(() => window.googleClicks), 5)
+        await googlePage.setViewportSize({ width: 1440, height: 900 })
+        await googlePage.evaluate(() => {
+          document.documentElement.dataset.theme = 'dark'
+        })
+        if (process.env.ARIL_CAPTURE_GOOGLE === '1' && mode === 'production') {
+          await googlePage.locator('.login-auth').screenshot({
+            path: fileURLToPath(
+              new URL(
+                '../apps/studio/public/changelog/google-button.png',
+                import.meta.url,
+              ),
+            ),
+          })
+        }
+        await googlePage.route('**/api/auth/google', async (route) => {
+          assert.deepEqual(route.request().postDataJSON(), {
+            credential: 'fixture-credential',
+            challenge: 'a'.repeat(43),
+            link: false,
+          })
+          await route.fulfill({
+            status: 401,
+            json: { error: 'Sign-in failed.' },
+          })
+        })
+        await googlePage.evaluate(() =>
+          window.googleCredential({ credential: 'fixture-credential' }),
+        )
+        await googlePage
+          .getByRole('alert')
+          .filter({ hasText: 'Не удалось войти' })
+          .waitFor()
         await googleContext.close()
       })
     }

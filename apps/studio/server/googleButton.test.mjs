@@ -6,15 +6,10 @@ test('Google button follows available width without repeated shrink renders and 
   let frame
   let disconnected = false
   let width = 0
-  let themeChanged = () => {}
-  let themeDisconnected = false
-  const root = { dataset: { theme: 'light' } }
   const themes = []
   const widths = []
   const originals = [
     'ResizeObserver',
-    'MutationObserver',
-    'document',
     'requestAnimationFrame',
     'cancelAnimationFrame',
   ].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)])
@@ -25,22 +20,6 @@ test('Google button follows available width without repeated shrink renders and 
     }
   })
   Object.defineProperties(globalThis, {
-    document: { configurable: true, value: { documentElement: root } },
-    MutationObserver: {
-      configurable: true,
-      value: class {
-        constructor(callback) {
-          themeChanged = callback
-        }
-        observe(element, options) {
-          assert.equal(element, root)
-          assert.deepEqual(options.attributeFilter, ['data-theme'])
-        }
-        disconnect() {
-          themeDisconnected = true
-        }
-      },
-    },
     ResizeObserver: {
       configurable: true,
       value: class {
@@ -72,6 +51,12 @@ test('Google button follows available width without repeated shrink renders and 
       return Math.floor(width)
     },
     getBoundingClientRect: () => ({ width: width * 1.2 }),
+    style: {
+      setProperty: (key, value) => {
+        assert.equal(key, '--google-sdk-scale-x')
+        assert.ok(Number(value) >= 1)
+      },
+    },
     replaceChildren() {},
   }
   const api = {
@@ -104,17 +89,11 @@ test('Google button follows available width without repeated shrink renders and 
   resize()
   frame?.()
   assert.deepEqual(widths, ['400', '342'])
-  root.dataset.theme = 'dark'
-  themeChanged()
-  themeChanged()
-  root.dataset.theme = 'light'
-  themeChanged()
-  assert.deepEqual(themes, ['outline', 'outline', 'filled_black', 'outline'])
-  assert.deepEqual(widths, ['400', '342', '342', '342'])
+  assert.deepEqual(themes, ['outline', 'outline'])
+  assert.deepEqual(widths, ['400', '342'])
   width = 280
   resize()
   stop()
   assert.equal(frame, undefined)
   assert.equal(disconnected, true)
-  assert.equal(themeDisconnected, true)
 })

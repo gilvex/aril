@@ -1437,5 +1437,10 @@
   "Product version in settings": "Версия продукта в настройках",
   "See the installed product version in Settings → App, including self-hosted company installations.": "Версия установленного продукта отображается в разделе «Настройки → Приложение», в том числе в корпоративных установках.",
   "The version comes from the application package at build time and updates with each release.": "Номер версии берётся из пакета приложения при сборке и обновляется вместе с выпуском.",
-  "Application preferences with the installed product version.": "Настройки приложения с номером установленной версии продукта."
+  "Application preferences with the installed product version.": "Настройки приложения с номером установленной версии продукта.",
+  "Consistent Google sign-in button": "Единый стиль кнопки входа через Google",
+  "Google sign-in now matches the other provider buttons in both themes.": "Кнопка входа через Google соответствует остальным провайдерам в обеих темах.",
+  "A product-rendered button replaces the visible SDK styling, with a full-width click target, keyboard focus and localized text.": "Собственная отрисовка заменяет видимое оформление SDK: вся кнопка доступна для нажатия, поддерживаются фокус клавиатуры и перевод текста.",
+  "Google Identity Services continues to handle sign-in and credential verification.": "Вход и проверка учётных данных по-прежнему выполняются через Google Identity Services.",
+  "Google and Yandex sign-in controls with matching dark theme styling.": "Кнопки входа через Google и Яндекс с единым оформлением в тёмной теме."
 }

@@ -1437,5 +1437,10 @@
   "Product version in settings": "Product version in settings",
   "See the installed product version in Settings → App, including self-hosted company installations.": "See the installed product version in Settings → App, including self-hosted company installations.",
   "The version comes from the application package at build time and updates with each release.": "The version comes from the application package at build time and updates with each release.",
-  "Application preferences with the installed product version.": "Application preferences with the installed product version."
+  "Application preferences with the installed product version.": "Application preferences with the installed product version.",
+  "Consistent Google sign-in button": "Consistent Google sign-in button",
+  "Google sign-in now matches the other provider buttons in both themes.": "Google sign-in now matches the other provider buttons in both themes.",
+  "A product-rendered button replaces the visible SDK styling, with a full-width click target, keyboard focus and localized text.": "A product-rendered button replaces the visible SDK styling, with a full-width click target, keyboard focus and localized text.",
+  "Google Identity Services continues to handle sign-in and credential verification.": "Google Identity Services continues to handle sign-in and credential verification.",
+  "Google and Yandex sign-in controls with matching dark theme styling.": "Google and Yandex sign-in controls with matching dark theme styling."
 }
