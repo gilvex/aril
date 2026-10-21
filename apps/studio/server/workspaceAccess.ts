@@ -63,6 +63,11 @@ export function workspaceAccess(query: Query) {
           [userId, workspaceId],
         )
         await query(
+          `UPDATE studio.account_invitations SET status='revoked' WHERE workspace_id=$1 AND status='pending'
+          AND (created_by=$2 OR recipient_id=$3 OR (recipient_id IS NULL AND email IN (SELECT lower(email) FROM studio.accounts WHERE user_id=$4))) RETURNING id`,
+          [workspaceId, userId, userId, userId],
+        )
+        await query(
           'UPDATE studio.invites SET used=1 WHERE created_by=$1 AND workspace_id=$2 RETURNING token_hash',
           [userId, workspaceId],
         )

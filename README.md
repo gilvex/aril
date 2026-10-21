@@ -27,6 +27,21 @@ The recording uses editable demo fixtures and simulated teammates. Aril is a pla
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | ![Canvas with connected services](apps/studio/public/changelog/canvas.webp) | ![Desktop and mobile designs](apps/studio/public/changelog/design.webp) |
 
+### Invite your team
+
+Open **Notifications** to accept or decline invitations. Workspace owners can invite by email or username in **Settings → File** and choose Editor or Viewer. **Join workspace** opens an invite-link dialog. Change your username in your account menu or User settings.
+
+![Workspace invitation inbox using generated demo accounts](apps/studio/public/changelog/account-invitations.png)
+
+<details>
+<summary>Watch invitations and username editing (continuous fixture recording)</summary>
+
+![Real browser interactions with invitation notifications, the join dialog and user lookup](apps/studio/public/changelog/account-invitations.gif)
+
+</details>
+
+Email delivery is optional and requires a verified Resend sender. [Set up invitation emails](docs/collaboration.md#optional-resend-setup).
+
 ## What it does
 
 - **Canvas and Design:** connected architecture and network diagrams, universal blocks with selectable device/network icons, editable interface layers, nested frames, and dockable inspectors.

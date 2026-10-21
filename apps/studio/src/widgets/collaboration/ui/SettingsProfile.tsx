@@ -1,3 +1,4 @@
+import { UsernameEditor } from '@/features/invitations/index.ts'
 import { useCallback, useRef } from 'react'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -19,6 +20,7 @@ export function SettingsProfile(props: SettingsProfileProps) {
       {model.error && <p role="alert">{t(model.error)}</p>}
       <div className="settings-account">
         <h3>{t('Account')}</h3>
+        <UsernameEditor profile={props.profile} onProfile={props.onProfile} />
         <AccountConnection onProfile={props.onProfile} />
         <AccountActions beforeLeave={props.beforeLeave} />
       </div>

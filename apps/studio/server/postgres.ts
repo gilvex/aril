@@ -1,3 +1,6 @@
+import { invitationTables } from './config/invitationTables.ts'
+import { invitationEligibility } from './config/invitationEligibility.ts'
+import { accountInvitations } from './accountInvitations.ts'
 import { postgresStudioManagement } from './utils/postgresStudioManagement.ts'
 import type { LinkedAccount } from '@aril/domain/accounts'
 import { workspaceAccess } from './workspaceAccess.ts'
@@ -108,6 +111,7 @@ export async function openPostgres(
         CREATE TABLE IF NOT EXISTS studio.transfers (token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES studio.profiles(id),expires_at BIGINT NOT NULL);
 ${agentTable}
 ${guestTables}
+${invitationTables}
         ALTER TABLE studio.guest_links ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'member';
         CREATE TABLE IF NOT EXISTS studio.migrations (id TEXT PRIMARY KEY);
         CREATE INDEX IF NOT EXISTS activity_workspace ON studio.studio_activity(workspace_id,id);`,
@@ -166,7 +170,7 @@ ${guestTables}
   const profile = async (id: string, client?: PoolClient) =>
     (
       await query<Profile>(
-        `SELECT p.*,g.expires_at::float8 AS "guestExpiresAt" FROM studio.profiles p LEFT JOIN studio.guest_profiles gp ON gp.user_id=p.id LEFT JOIN studio.guest_links g ON g.id=gp.link_id WHERE p.id=$1`,
+        `SELECT p.*,COALESCE((SELECT username FROM studio.usernames u WHERE u.user_id=p.id),'user_' || replace(p.id,'-','')) AS username,g.expires_at::float8 AS "guestExpiresAt" FROM studio.profiles p LEFT JOIN studio.guest_profiles gp ON gp.user_id=p.id LEFT JOIN studio.guest_links g ON g.id=gp.link_id WHERE p.id=$1`,
         [id],
         client,
       )
@@ -424,6 +428,35 @@ ${guestTables}
       ).rows[0]
       return row ? workspaceSchema.parse(row.body) : null
     },
+    invitations: accountInvitations(
+      async (sql, values) => {
+        if (!sql.startsWith('INSERT INTO studio.account_invitations'))
+          return (await query(sql, values)).rows
+        return transaction(async (client) => {
+          await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [
+            schema + ':invitations:' + values[2],
+          ])
+          return (await query(sql, values, client)).rows
+        })
+      },
+      (userId, id) =>
+        transaction(async (client) => {
+          const row = (
+            await query(
+              `UPDATE studio.account_invitations SET status='accepted' WHERE ${invitationEligibility} AND id=$5 RETURNING workspace_id,role`,
+              [Date.now(), userId, userId, userId, id],
+              client,
+            )
+          ).rows[0]
+          if (!row) return null
+          await query(
+            'INSERT INTO studio.members(workspace_id,user_id,role) VALUES ($1,$2,$3) ON CONFLICT DO NOTHING',
+            [row.workspace_id, userId, row.role],
+            client,
+          )
+          return String(row.workspace_id)
+        }),
+    ),
     identity: {
       redeemGuest: async (token: string, name: string) =>
         transaction(async (client) => {
@@ -519,7 +552,7 @@ ${guestTables}
       update: async (id: string, name: string, avatar: string) =>
         (
           await query<Profile>(
-            'UPDATE studio.profiles SET name=$2,avatar=$3 WHERE id=$1 RETURNING *',
+            `UPDATE studio.profiles SET name=$2,avatar=$3 WHERE id=$1 RETURNING *,COALESCE((SELECT username FROM studio.usernames u WHERE u.user_id=studio.profiles.id),'user_' || replace(id,'-','')) AS username`,
             [id, name, avatar],
           )
         ).rows[0],

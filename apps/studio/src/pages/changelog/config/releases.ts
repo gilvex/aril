@@ -3,6 +3,21 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-21-invitations',
+    date: '2026-10-21',
+    title: 'Invitations, notifications and usernames',
+    summary:
+      'Invite teammates by email or username and let them accept or decline in Aril.',
+    changes: [
+      'Join workspace now opens a focused invite-link dialog. Notifications are available on the workspace home and in the editor.',
+      'Owners can invite Editors or Viewers, with username search and exact-email lookup. Invitations are bound to the recipient and expire after seven days.',
+      'Profiles get automatic usernames; change yours in account or User settings. Email delivery uses Resend when the server has a verified sender configured.',
+    ],
+    image: '/changelog/account-invitations.png',
+    imageAlt:
+      'Invitation notifications with Accept and Decline actions, captured using isolated demo accounts.',
+  },
+  {
     id: '2026-10-21-workspace-actions',
     date: '2026-10-21',
     title: 'Workspace actions in one menu',

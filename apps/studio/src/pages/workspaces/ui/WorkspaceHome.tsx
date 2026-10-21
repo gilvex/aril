@@ -1,3 +1,5 @@
+import { InvitationInbox } from '@/features/invitations/index.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { ArrowUpRight, Plus } from 'lucide-react'
@@ -16,7 +18,6 @@ export function WorkspaceHome({
   profile,
   onProfile,
   onOpen,
-  onJoin,
   onStudiosChanged,
   notice,
 }: WorkspaceHomeProps) {
@@ -36,7 +37,10 @@ export function WorkspaceHome({
           <ProductLogo />
           <span>{getProductBranding().productName}</span>
         </a>
-        <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
+        <div className="workspace-home-account">
+          {!profile.guestExpiresAt && !isDemoMode() && <InvitationInbox />}
+          <WorkspaceAccountMenu profile={profile} onProfile={onProfile} />
+        </div>
       </header>
       <div className="workspace-library-content">
         <WorkspaceToolbar
@@ -47,7 +51,6 @@ export function WorkspaceHome({
           onSearch={state.setSearch}
           onSort={state.setSort}
           onCreate={create}
-          onJoin={!profile.guestExpiresAt ? onJoin : undefined}
         />
         {notice && (
           <p className="workspace-notice" role="status">

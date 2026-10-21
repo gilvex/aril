@@ -1,3 +1,4 @@
+import { InviteUserForm } from '@/features/invitations/index.ts'
 import { guestLinkNoExpiry } from '@aril/domain/collaboration'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { Check, Link } from 'lucide-react'
@@ -32,6 +33,7 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
     )
   return (
     <>
+      {!isDemoMode() && <InviteUserForm workspaceId={props.workspaceId} />}
       <button
         className="button primary"
         disabled={props.busy || isDemoMode()}

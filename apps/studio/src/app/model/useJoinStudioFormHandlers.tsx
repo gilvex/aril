@@ -1,3 +1,4 @@
+import { readInviteLink } from '@/features/invitations/index.ts'
 import { request } from '@/shared/api/request.ts'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -32,7 +33,7 @@ export function useJoinStudioFormHandlers({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            token: token.trim(),
+            token: readInviteLink(token),
             name: profile?.name || name,
           }),
         })

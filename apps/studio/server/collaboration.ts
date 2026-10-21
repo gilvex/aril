@@ -1,3 +1,4 @@
+import { installAccountInvitations } from './installAccountInvitations.ts'
 import { installStudioManagement } from './utils/installStudioManagement.ts'
 import { authProviders } from './utils/authProviders.ts'
 import { installFederatedAuth } from './utils/installFederatedAuth.ts'
@@ -293,11 +294,12 @@ export function installCollaboration(
       res.status(400).json({ error: 'Enter a valid invite code.' })
       return
     }
-    const joined = await store.identity.join(
-      input.data.token,
-      current.name,
-      current.id,
-    )
+    const targeted = /^[0-9a-f-]{36}$/.test(input.data.token)
+      ? await store.invitations.accept(current.id, input.data.token)
+      : null
+    const joined = targeted
+      ? { profile: current, token: '', workspaceId: targeted }
+      : await store.identity.join(input.data.token, current.name, current.id)
     if (!joined) {
       res
         .status(403)
@@ -331,6 +333,7 @@ export function installCollaboration(
     }
     next()
   })
+  installAccountInvitations(app, store, publicOrigin || '')
   installGuestManagement(app, store, (ids) => {
     for (const [key, client] of clients)
       if (ids.includes(client.userId)) {
