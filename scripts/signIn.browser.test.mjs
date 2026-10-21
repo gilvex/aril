@@ -302,6 +302,12 @@ test(
         }
         for (const width of [1440, 390]) {
           await googlePage.setViewportSize({ width, height: 900 })
+          await googlePage.evaluate(
+            () =>
+              new Promise((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(resolve)),
+              ),
+          )
           const box = await control.boundingBox()
           await googlePage.mouse.click(box.x + 5, box.y + 24)
           await googlePage.mouse.click(box.x + box.width - 5, box.y + 24)
