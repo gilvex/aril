@@ -69,6 +69,7 @@ export function InviteUserForm({ workspaceId }: InviteUserFormProps) {
               type="button"
               key={user.id}
               className="invitation-result"
+              variant="ghost"
               onClick={() =>
                 set({ selected: user, value: '@' + user.username, users: [] })
               }

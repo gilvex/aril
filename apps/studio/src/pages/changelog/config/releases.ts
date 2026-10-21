@@ -3,6 +3,20 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-21-username-setup',
+    date: '2026-10-21',
+    title: 'A username that feels like you',
+    summary:
+      'Choose a username after your first sign-in, then manage it in Account settings.',
+    changes: [
+      'Accounts with an assigned username get an editable suggestion. Existing custom usernames and guest sessions are left alone; availability is checked when saving.',
+      'The account menu opens focused Account settings instead of embedding the username form. Invitation search results have spaced, neutral rows with hover and keyboard-focus highlights.',
+    ],
+    image: '/changelog/username-setup.png',
+    imageAlt:
+      'First-sign-in username suggestion with generated demo account details.',
+  },
+  {
     id: '2026-10-21-invitations',
     date: '2026-10-21',
     title: 'Invitations, notifications and usernames',

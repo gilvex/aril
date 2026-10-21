@@ -1,0 +1,51 @@
+.account-settings-dialog {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  padding: 24px;
+  background: var(--surface, #2c2c2c);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.account-settings-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.account-settings-heading h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.account-settings-trigger {
+  width: 100%;
+  justify-content: flex-start;
+}
+.account-settings-dialog .settings-profile form,
+.account-settings-dialog .settings-profile label {
+  display: grid;
+  gap: 12px;
+}
+.account-settings-dialog .settings-profile input {
+  width: 100%;
+  min-width: 0;
+}
+.account-settings-dialog .settings-account {
+  margin-top: 24px;
+}
+.account-settings-dialog .profile-picture-editor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media (max-width: 700px) {
+  .account-settings-dialog {
+    width: 100%;
+    max-height: calc(100dvh - 24px);
+    padding: 20px 20px max(20px, env(safe-area-inset-bottom));
+    border-radius: 16px 16px 0 0;
+  }
+}

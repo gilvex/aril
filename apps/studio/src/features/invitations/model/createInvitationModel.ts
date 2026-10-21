@@ -3,9 +3,10 @@ import { runSaga } from 'redux-saga'
 import type { InvitationState } from '../types/index.ts'
 import { invitationSlice } from './slices/invitationSlice.ts'
 import { submitInvitationRequest } from './iterators/submitInvitationRequest.ts'
-export function createInvitationModel() {
+export function createInvitationModel(initial: Partial<InvitationState> = {}) {
   const store = configureStore({
     reducer: invitationSlice.reducer,
+    preloadedState: { ...invitationSlice.getInitialState(), ...initial },
     devTools: false,
     middleware: (defaults) => defaults({ thunk: false }),
   })
