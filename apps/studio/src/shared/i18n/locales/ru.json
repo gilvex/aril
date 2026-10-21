@@ -1568,5 +1568,9 @@
   "selectedStrokeCount_one": "{{count}} штрих выбран",
   "selectedStrokeCount_few": "{{count}} штриха выбрано",
   "selectedStrokeCount_many": "{{count}} штрихов выбрано",
-  "selectedStrokeCount_other": "{{count}} штриха выбрано"
+  "selectedStrokeCount_other": "{{count}} штриха выбрано",
+  "Continuous demo of drawing selection, undo and redo, universal blocks and agent setup.": "Непрерывная демонстрация выбора рисунков, отмены и повтора, универсальных блоков и настройки агентов.",
+  "Connect agents step by step": "Пошаговое подключение агентов",
+  "Agent setup now separates connection permissions, terminal commands and existing connections.": "В настройке агентов отдельно показаны права доступа, команды терминала и существующие подключения.",
+  "Shared Text styles preserve semantic headings and readable labels on desktop and mobile.": "Общие стили Text сохраняют семантику заголовков и читаемость подписей на компьютере и телефоне."
 }

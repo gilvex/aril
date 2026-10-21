@@ -1568,5 +1568,9 @@
   "selectedStrokeCount_one": "{{count}} stroke selected",
   "selectedStrokeCount_few": "{{count}} strokes selected",
   "selectedStrokeCount_many": "{{count}} strokes selected",
-  "selectedStrokeCount_other": "{{count}} strokes selected"
+  "selectedStrokeCount_other": "{{count}} strokes selected",
+  "Continuous demo of drawing selection, undo and redo, universal blocks and agent setup.": "Continuous demo of drawing selection, undo and redo, universal blocks and agent setup.",
+  "Connect agents step by step": "Connect agents step by step",
+  "Agent setup now separates connection permissions, terminal commands and existing connections.": "Agent setup now separates connection permissions, terminal commands and existing connections.",
+  "Shared Text styles preserve semantic headings and readable labels on desktop and mobile.": "Shared Text styles preserve semantic headings and readable labels on desktop and mobile."
 }

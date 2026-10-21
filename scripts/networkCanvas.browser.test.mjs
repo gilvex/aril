@@ -145,7 +145,7 @@ test('canvas preserves empty titles, multiline descriptions, icons and native no
     await page
       .locator('.react-flow__node[data-id="fixture-server"] .node-kind')
       .innerText(),
-    'Block',
+    'Universal block',
   )
   await page.locator('.react-flow__node[data-id="fixture-person"]').dblclick()
   const title = page.getByRole('textbox', { name: 'Node title', exact: true })
@@ -279,14 +279,16 @@ test('canvas preserves empty titles, multiline descriptions, icons and native no
   await button('Add node').click()
   assert.ok(
     await page
-      .getByRole('menuitem', { name: 'Block', exact: true })
+      .getByRole('menuitem', { name: 'Universal block', exact: true })
       .isVisible(),
   )
   assert.equal(
     await page.getByRole('menuitem', { name: 'Router', exact: true }).count(),
     0,
   )
-  await page.getByRole('menuitem', { name: 'Block', exact: true }).click()
+  await page
+    .getByRole('menuitem', { name: 'Universal block', exact: true })
+    .click()
   await page.waitForFunction(
     () =>
       JSON.parse(

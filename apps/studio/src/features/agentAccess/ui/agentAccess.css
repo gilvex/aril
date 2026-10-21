@@ -142,3 +142,5 @@
     flex-wrap: wrap;
   }
 }
+
+.agent-setup-steps { list-style: decimal; }

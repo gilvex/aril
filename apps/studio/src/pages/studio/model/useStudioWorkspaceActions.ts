@@ -23,8 +23,13 @@ export function useStudioWorkspaceActions({
         setModal(null)
         setSidebarOpen(false)
       }
-      const target = e.target as HTMLElement
-      if (target.closest('input,textarea,select,[contenteditable]')) return
+      if (e.defaultPrevented) return
+      const target = e.target
+      if (
+        target instanceof Element &&
+        target.closest('input,textarea,select,[contenteditable]')
+      )
+        return
       if (
         (e.metaKey || e.ctrlKey) &&
         !e.altKey &&

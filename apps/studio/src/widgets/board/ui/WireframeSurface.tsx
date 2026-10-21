@@ -65,6 +65,7 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
           <BoardDrawing
             board={props.board}
             update={props.update}
+            checkpoint={props.checkpoint}
             wireframe
             disabled={preview}
           />
@@ -100,11 +101,13 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
         </div>
       )}
       <div className="canvas-tip" role="status">
-        <Text>{preview
-          ? previewMessage
-          : t(
-              'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side',
-            )}</Text>
+        <Text>
+          {preview
+            ? previewMessage
+            : t(
+                'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side',
+              )}
+        </Text>
       </div>
     </div>
   )
