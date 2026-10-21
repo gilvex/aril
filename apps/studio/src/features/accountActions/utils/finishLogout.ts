@@ -5,7 +5,7 @@ import type { AccountAction } from '../types/accountAction.ts'
 
 export function finishLogout(mode: AccountAction) {
   if (isDemoMode()) {
-    location.assign('/')
+    location.assign('/app')
     return
   }
   try {
@@ -21,5 +21,5 @@ export function finishLogout(mode: AccountAction) {
   }
   const invite = new URLSearchParams(location.hash.slice(1)).get('invite')
   const hash = invite ? `#${new URLSearchParams({ invite })}` : ''
-  location.replace(`${mode === 'switch' ? '/?account=switch' : '/'}${hash}`)
+  location.replace(`${mode === 'switch' ? '/app?account=switch' : '/app'}${hash}`)
 }

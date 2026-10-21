@@ -50,7 +50,7 @@ test('studio routes round-trip locations and preserve invitation hashes', () => 
   assert.equal(result.searchParams.get('source'), 'bookmark')
   assert.equal(
     studioRouteUrl(result.href, null),
-    '/?source=bookmark#invite=secret',
+    '/app?source=bookmark#invite=secret',
   )
 })
 

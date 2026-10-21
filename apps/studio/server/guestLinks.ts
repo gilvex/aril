@@ -37,7 +37,7 @@ export function guestLinks(query: Query) {
         await query(
           `SELECT g.id,g.name,g.expires_at,g.revoked_at,g.role,
         (SELECT COUNT(*) FROM studio.guest_profiles p WHERE p.link_id=g.id) AS guests
-        FROM studio.guest_links g WHERE g.workspace_id=$1 ORDER BY g.expires_at DESC LIMIT 100`,
+        FROM studio.guest_links g WHERE g.workspace_id=$1 AND g.revoked_at IS NULL ORDER BY g.expires_at DESC LIMIT 100`,
           [workspaceId],
         )
       ).map((row) => ({

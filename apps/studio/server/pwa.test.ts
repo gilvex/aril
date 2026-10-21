@@ -35,7 +35,7 @@ test('PWA fetch policy leaves APIs and editor bundles online and falls back only
 test('install manifest has standalone scope and correctly sized PNG icons', () => {
   const manifest = JSON.parse(readFileSync(new URL('../public/manifest.webmanifest', import.meta.url), 'utf8'))
   assert.equal(manifest.display, 'standalone')
-  assert.equal(manifest.start_url, '/')
+  assert.equal(manifest.start_url, '/app')
   assert.equal(manifest.scope, '/')
   assert.equal(manifest.id, '/')
   assert.ok(manifest.icons.some((icon: { sizes: string }) => icon.sizes === '192x192'))

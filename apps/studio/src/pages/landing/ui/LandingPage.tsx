@@ -4,13 +4,12 @@ import { ThemePicker } from '@/features/appearance/index.ts'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { ProjectLinks } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { LandingPageProps } from '../types/landingPageProps.ts'
 import { LandingHeader } from './LandingHeader.tsx'
 import { LandingHero } from './LandingHero.tsx'
 import { LandingFeatures } from './LandingFeatures.tsx'
 import './landing.css'
 
-export function LandingPage({ children }: LandingPageProps) {
+export function LandingPage() {
   const { t } = useTranslation()
   return (
     <div className="landing-page">
@@ -35,7 +34,9 @@ export function LandingPage({ children }: LandingPageProps) {
                 )}
               </p>
             </div>
-            <div className="landing-access-form">{children}</div>
+            <a className="landing-button landing-button-primary" href="/app">
+              {t('Open your workspace')}
+            </a>
           </section>
         </main>
         <footer className="landing-footer">

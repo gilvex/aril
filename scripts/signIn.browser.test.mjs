@@ -190,7 +190,7 @@ test(
           )
           if (!productSiteEnabled)
             assert.equal(
-              await page.locator('.project-links,.demo-entry').count(),
+              await page.locator('.landing-page,.demo-entry').count(),
               0,
             )
           assert.deepEqual(

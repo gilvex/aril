@@ -1442,5 +1442,15 @@
   "Google sign-in now matches the other provider buttons in both themes.": "Кнопка входа через Google соответствует остальным провайдерам в обеих темах.",
   "A product-rendered button replaces the visible SDK styling, with a full-width click target, keyboard focus and localized text.": "Собственная отрисовка заменяет видимое оформление SDK: вся кнопка доступна для нажатия, поддерживаются фокус клавиатуры и перевод текста.",
   "Google Identity Services continues to handle sign-in and credential verification.": "Вход и проверка учётных данных по-прежнему выполняются через Google Identity Services.",
-  "Google and Yandex sign-in controls with matching dark theme styling.": "Кнопки входа через Google и Яндекс с единым оформлением в тёмной теме."
+  "Google and Yandex sign-in controls with matching dark theme styling.": "Кнопки входа через Google и Яндекс с единым оформлением в тёмной теме.",
+  "Source code": "Исходный код",
+  "Source code on GitHub": "Исходный код на GitHub",
+  "Separate product home and studio entry": "Отдельные маршруты сайта и студии",
+  "The public home and the working studio now have separate routes. Self-hosted installations open the studio directly.": "Публичный сайт и рабочая студия теперь открываются по разным маршрутам. Собственные установки сразу открывают студию.",
+  "Sign in and manage workspaces at /app; the public home stays at / and editors keep their /w/... URLs. Invitations, guest access and account transfers retain their destinations.": "Вход и список проектов доступны по /app; публичный сайт остаётся на /, редакторы — на /w/.... Приглашения, гостевой доступ и перенос аккаунта сохраняют свои адреса.",
+  "Self-hosted deployments hide the landing page by default. The configured aril.studio origin enables it, with an explicit runtime override for other deployments.": "В собственных установках главная страница сайта скрыта по умолчанию. Для настроенного адреса aril.studio она включена; режим можно изменить настройкой сервера.",
+  "A persistent source-code link is available in both modes, including mobile. Installed apps open the studio directly.": "Постоянная ссылка на исходный код доступна в обоих режимах, в том числе на мобильных устройствах. Установленное приложение открывает студию.",
+  "Revoked guest links no longer hide active links from the management list. Regression checks cover entry routes, access controls and browser workflows.": "Отозванные гостевые ссылки больше не скрывают действующие ссылки в списке. Проверки охватывают маршруты входа, права доступа и сценарии в браузере.",
+  "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.": "Изолированный экран входа с настроенными провайдерами, примером схемы и постоянной ссылкой на исходный код.",
+  "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.": "Непрерывная запись тестового сценария: переход с сайта к входу в студию, смена языка и ссылка на исходный код."
 }

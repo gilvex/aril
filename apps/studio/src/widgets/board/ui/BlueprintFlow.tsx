@@ -92,7 +92,7 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
       connectionRadius={28}
     >
       <StableCanvasViewport following={!!props.following} />
-      <CanvasRepositoryLink />
+
       {props.drawing}
       <Background
         color="var(--canvas-dot, #d9d6e2)"
@@ -117,4 +117,4 @@ export function BlueprintFlow(props: BlueprintFlowProps) {
     </ReactFlow>
   )
 }
-import { CanvasRepositoryLink, StableCanvasViewport } from '@/shared/ui/index.tsx'
+import { StableCanvasViewport } from '@/shared/ui/index.tsx'

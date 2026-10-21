@@ -3,7 +3,7 @@ import type { StudioRoute } from '@/shared/types/studioRoute.ts'
 export function studioRouteUrl(href: string, route: StudioRoute | null) {
   const url = new URL(href)
   for (const key of routeKeys) url.searchParams.delete(key)
-  url.pathname = '/'
+  url.pathname = '/app'
   if (route) {
     url.pathname = `/w/${encodeURIComponent(route.workspaceId)}/${route.view}`
     if (route.boardId) {

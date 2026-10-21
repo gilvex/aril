@@ -7,7 +7,6 @@ import './projectLinks.css'
 
 export function ProjectLinks() {
   const { t } = useTranslation()
-  if (!isProductSiteEnabled()) return null
   return (
     <nav className="project-links" aria-label={t('About Aril')}>
       <Button asChild variant="ghost" size="sm">
@@ -32,13 +31,15 @@ export function ProjectLinks() {
           <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </Button>
-      <Button asChild variant="ghost" size="sm">
-        <a href="/changelog" target="_blank" rel="noopener noreferrer">
-          <History size={16} aria-hidden="true" />
-          {t('Changelog')}
-          <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
-      </Button>
+      {isProductSiteEnabled() && (
+        <Button asChild variant="ghost" size="sm">
+          <a href="/changelog" target="_blank" rel="noopener noreferrer">
+            <History size={16} aria-hidden="true" />
+            {t('Changelog')}
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+        </Button>
+      )}
     </nav>
   )
 }

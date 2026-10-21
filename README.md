@@ -2,13 +2,22 @@
 
 A collaborative workspace for architecture diagrams, interface design, requirements, and notes. Built with React, TypeScript, and Express, with SQLite for single-process hosting and Postgres for shared deployments.
 
-[Try the account-free demo](https://www.aril.studio/?demo=1) · [Open Aril](https://www.aril.studio) · [Engineering case study](docs/engineering-case-study.md) · [Changelog](https://www.aril.studio/changelog)
+[Try the account-free demo](https://www.aril.studio/?demo=1) · [Open Aril](https://www.aril.studio/app) · [Engineering case study](docs/engineering-case-study.md) · [Changelog](https://www.aril.studio/changelog)
 
 [![Verify](https://github.com/gilvex/aril/actions/workflows/ci.yml/badge.svg)](https://github.com/gilvex/aril/actions/workflows/ci.yml)
 
 ![Aril home page with readable navigation, demo entry, and animated berry ribbons](apps/studio/public/changelog/home-readable.webp)
 
-The public home introduces the studio, with a playable tour and direct access to the editable demo. Sign in to create your own workspace without a code, or use an invitation link to join an existing team.
+The public home introduces the studio, with a playable tour and direct access to the editable demo. Sign in at `/app` to create your own workspace without a code, or use an invitation link to join an existing team. Self-hosted installations go straight to the studio, without the product landing page.
+
+![Studio sign-in with configured providers and the source-code link](apps/studio/public/changelog/studio-entry.png)
+
+<details>
+<summary>Watch the new entry flow (continuous fixture recording)</summary>
+
+![Public home to studio sign-in, language selection and source link](apps/studio/public/changelog/studio-entry.gif)
+
+</details>
 
 ![Aril demo: architecture, interface design, and reusable assets](apps/studio/public/changelog/studio-tour.gif)
 
@@ -69,7 +78,7 @@ docker compose up --build -d
 
 Open the studio, sign in with a configured provider and choose **New workspace**; no invitation is needed to create your own. With `ARIL_STORAGE=sqlite` (the default), containers use a persistent `studio-data` SQLite volume; your local SQLite file is not imported. Set `ARIL_STORAGE=postgres` in `.env` to use your configured Postgres backend. The service listens on `127.0.0.1:4317`; put an HTTPS reverse proxy in front for remote access and preserve streaming responses. Root `.env` and local data are excluded from the image. Rebuilds preserve the volume; `docker compose down -v` deletes it. See [hosting and SSO setup](docs/accounts-and-deployment.md#sign-in-providers).
 
-For company installations, set `ARIL_PRODUCT_SITE_ENABLED=false` to show the shared sign-in page with its example diagram and hide the product home, changelog, demo and promotional links. Set `ARIL_PRODUCT_NAME` and `ARIL_PRODUCT_LOGO_URL` in the same `.env` to customize its branding. Restart the server to apply; no frontend rebuild is needed. [Company mode](docs/accounts-and-deployment.md#company-sign-in-mode).
+Self-hosted installations open the studio sign-in directly by default. The public product site is enabled automatically only when the configured `ARIL_ORIGIN` is `https://aril.studio` or `https://www.aril.studio`; set `ARIL_PRODUCT_SITE_ENABLED=true` to preview it elsewhere, or `false` to disable it. The public home lives at `/`, sign-in and the workspace list at `/app`, and editors at `/w/...`. Source-code links remain available in both modes. Set `ARIL_PRODUCT_NAME` and `ARIL_PRODUCT_LOGO_URL` in the same `.env` to customize its branding. Restart the server to apply; no frontend rebuild is needed. [Company mode](docs/accounts-and-deployment.md#company-sign-in-mode).
 
 ## Verify
 

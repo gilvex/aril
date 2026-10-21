@@ -1,10 +1,10 @@
+import { SourceCodeLink } from '@/shared/ui/index.tsx'
+import { resolveEntryRoute } from './utils/resolveEntryRoute.ts'
 import {
   getProductBranding,
   isProductSiteEnabled,
   loadDeploymentSettings,
 } from '@/shared/deploymentSettings/index.ts'
-import { ChangelogPage } from '@/pages/changelog/index.ts'
-import { App } from '@/app/ui/App.tsx'
 import { initializeLanguage } from '@/shared/i18n/index.ts'
 import { initializeTheme } from '@/shared/utils/initializeTheme.ts'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
@@ -37,31 +37,30 @@ const appleTitle = document.querySelector(
   'meta[name="apple-mobile-web-app-title"]',
 )
 appleTitle?.setAttribute('content', getProductBranding().productName)
-if (!isProductSiteEnabled()) {
-  const url = new URL(location.href)
-  if (url.pathname.replace(/\/$/, '') === '/changelog') {
-    url.pathname = '/'
-    url.hash = ''
-  }
-  if (url.searchParams.get('demo') === '1') {
-    for (const key of ['demo', 'workspace', 'board', 'view'])
-      url.searchParams.delete(key)
-  }
-  history.replaceState(null, '', url.pathname + url.search + url.hash)
-}
+const entry = resolveEntryRoute(location.href, isProductSiteEnabled())
+history.replaceState(history.state, '', entry.href)
+// A same-document invitation pasted on the public home must enter the studio too.
+window.addEventListener('hashchange', () => {
+  const next = resolveEntryRoute(location.href, isProductSiteEnabled())
+  if (next.href !== location.pathname + location.search + location.hash)
+    location.replace(next.href)
+})
 
 if (isDemoMode()) {
   const { initializeDemo } = await import('./utils/initializeDemo.ts')
   initializeDemo()
 }
 
+const EntryPage =
+  entry.page === 'landing'
+    ? (await import('@/pages/landing/index.ts')).LandingPage
+    : entry.page === 'changelog'
+      ? (await import('@/pages/changelog/index.ts')).ChangelogPage
+      : (await import('@/app/ui/App.tsx')).App
+
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {isProductSiteEnabled() &&
-    window.location.pathname.replace(/\/$/, '') === '/changelog' ? (
-      <ChangelogPage />
-    ) : (
-      <App />
-    )}
+    <EntryPage />
+    <SourceCodeLink />
   </React.StrictMode>,
 )

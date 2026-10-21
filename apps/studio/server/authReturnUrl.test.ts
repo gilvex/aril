@@ -16,6 +16,6 @@ test('OAuth returns stay on origin, fit the flow cookie, and preserve invitation
     '/' + 'я'.repeat(1000),
     undefined,
   ]) {
-    assert.equal(authReturnUrl(candidate, origin).href, origin + '/')
+    assert.equal(authReturnUrl(candidate, origin).href, origin + '/app')
   }
 })

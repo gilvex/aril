@@ -31,7 +31,7 @@ export function LandingHeader() {
       </nav>
       <div className="landing-header-actions">
         <LanguagePicker />
-        <a className="landing-button landing-button-small" href="#access">
+        <a className="landing-button landing-button-small" href="/app">
           {t('Sign in')}
         </a>
       </div>

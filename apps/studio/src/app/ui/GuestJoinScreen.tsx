@@ -87,7 +87,7 @@ export function GuestJoinScreen({
               {error}
             </p>
           )}
-          <a className="login-help" href="/">
+          <a className="login-help" href="/app">
             {t('Choose a sign-in method instead')}
           </a>
         </section>
