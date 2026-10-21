@@ -47,3 +47,5 @@ export { StudioMobileTools } from './StudioMobileTools.tsx'
 export { StudioDesign } from './StudioDesign.tsx'
 export { StudioLibrary } from './StudioLibrary.tsx'
 export { DesignLibraryPage } from './DesignLibraryPage.tsx'
+
+export { SettingsFileActions } from './SettingsFileActions.tsx'

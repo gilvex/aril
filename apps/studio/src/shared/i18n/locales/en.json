@@ -1454,5 +1454,12 @@
   "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.": "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.",
   "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.": "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.",
   "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.": "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.",
-  "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication.": "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication."
+  "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication.": "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication.",
+  "Workspace actions for {{name}}": "Workspace actions for {{name}}",
+  "Save your pending changes before managing this workspace.": "Save your pending changes before managing this workspace.",
+  "Workspace actions in one menu": "Workspace actions in one menu",
+  "Rename and delete workspaces from a compact menu on workspace cards and in File settings.": "Rename and delete workspaces from a compact menu on workspace cards and in File settings.",
+  "Open the ⋯ menu or right-click a workspace card. The same owner-only menu is beside the file name in Settings.": "Open the ⋯ menu or right-click a workspace card. The same owner-only menu is beside the file name in Settings.",
+  "Renaming updates the open tab. Deletion still requires the exact workspace name; settings actions wait for pending edits to save.": "Renaming updates the open tab. Deletion still requires the exact workspace name; settings actions wait for pending edits to save.",
+  "Workspace card with its Rename and Delete menu open, using isolated demo data.": "Workspace card with its Rename and Delete menu open, using isolated demo data."
 }

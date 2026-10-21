@@ -1,6 +1,7 @@
 import type { StudioView as View } from '@/shared/types/studioView.ts'
 
 export type StudioContentProps = {
+  onCloseWorkspace?: (id: string) => void
   libraryNavigation: ReturnType<
     typeof import('../model/useStudioLibraryNavigation.ts').useStudioLibraryNavigation
   >

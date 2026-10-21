@@ -1,3 +1,4 @@
+import './workspaceManagement.css'
 import {
   useCallback,
   useEffect,
@@ -39,7 +40,7 @@ export function WorkspaceManageDialog({
   return (
     <dialog
       ref={ref}
-      className="workspace-create-dialog workspace-manage-dialog"
+      className="workspace-manage-dialog"
       aria-labelledby="workspace-manage-title"
       onCancel={cancel}
     >

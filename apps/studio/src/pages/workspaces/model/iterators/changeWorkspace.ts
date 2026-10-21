@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects'
 import type { SagaIterator } from 'redux-saga'
 import type { WorkspaceHomeState } from '../../types/workspaceHomeState.ts'
 import { workspaceHomeSlice } from '../slices/workspaceHomeSlice.ts'
-import { requestWorkspaceChange } from '../requests/requestWorkspaceChange.ts'
+import { requestWorkspaceChange } from '@/entities/studio/index.ts'
 import { loadStudioList } from './loadStudioList.ts'
 export function* changeWorkspace(): SagaIterator {
   const state: WorkspaceHomeState = yield select()

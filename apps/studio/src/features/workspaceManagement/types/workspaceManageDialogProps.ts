@@ -1,4 +1,4 @@
-import type { WorkspaceManagement } from './workspaceManagement.ts'
+import type { WorkspaceManagement } from '@/entities/studio/index.ts'
 import type { SubmitEvent } from 'react'
 export type WorkspaceManageDialogProps = {
   management: WorkspaceManagement

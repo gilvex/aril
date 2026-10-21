@@ -1,3 +1,4 @@
+import { createSeed } from '@aril/domain/seed'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -45,6 +46,7 @@ test('first sign-in opens create and optional join flows without requiring an in
       },
     ],
   }
+  const workspaceFixture = createSeed()
   let failRename = false
   const studios = []
   await context.route('**/*', async (route) => {
@@ -111,6 +113,32 @@ test('first sign-in opens create and optional join flows without requiring an in
       return route.fulfill({ status: 201, json: studio })
     }
     if (url.pathname === '/api/studios') return route.fulfill({ json: studios })
+    if (url.pathname === '/api/workspace')
+      return route.fulfill({
+        json: {
+          workspace: workspaceFixture,
+          revision: 1,
+          savedAt: '2026-10-21',
+        },
+      })
+    if (url.pathname === '/api/workspace-access')
+      return route.fulfill({ json: { role: studios[0]?.role || null } })
+    if (url.pathname === '/api/members')
+      return route.fulfill({ json: [{ ...profile, role: studios[0]?.role }] })
+    if (url.pathname === '/api/events')
+      return route.fulfill({
+        contentType: 'text/event-stream',
+        body: 'event: ready\ndata: {}\n\n',
+      })
+    if (
+      [
+        '/api/presence',
+        '/api/activity',
+        '/api/history',
+        '/api/guest-links',
+      ].includes(url.pathname)
+    )
+      return route.fulfill({ json: [] })
     if (url.pathname.startsWith('/api/'))
       return route.fulfill({
         status: 503,
@@ -195,8 +223,13 @@ test('first sign-in opens create and optional join flows without requiring an in
     )
   }, studios[0])
   await page
-    .getByRole('button', { name: 'Rename My first project', exact: true })
+    .getByRole('button', {
+      name: 'Workspace actions for My first project',
+      exact: true,
+    })
     .click()
+  assert.equal(new URL(page.url()).pathname, '/app')
+  await page.getByRole('menuitem', { name: 'Rename', exact: true }).click()
   let dialog = page.getByRole('dialog', {
     name: 'Rename workspace',
     exact: true,
@@ -224,6 +257,33 @@ test('first sign-in opens create and optional join flows without requiring an in
         )[0].name,
     ),
     'Renamed project',
+  )
+  await page
+    .getByRole('button', {
+      name: 'Workspace actions for Renamed project',
+      exact: true,
+    })
+    .focus()
+  await page.keyboard.press('Enter')
+  await page.getByRole('menuitem', { name: 'Rename', exact: true }).waitFor()
+  if (process.env.ARIL_CAPTURE_WORKSPACE_ACTIONS === '1')
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../apps/studio/public/changelog/workspace-actions.png',
+          import.meta.url,
+        ),
+      ),
+      animations: 'disabled',
+    })
+  await page.keyboard.press('Escape')
+  assert.ok(
+    await page
+      .getByRole('button', {
+        name: 'Workspace actions for Renamed project',
+        exact: true,
+      })
+      .evaluate((element) => element === document.activeElement),
   )
   for (const fixture of [
     { google: { email: 'fixture@example.test' }, accounts: [] },
@@ -300,8 +360,9 @@ test('first sign-in opens create and optional join flows without requiring an in
     })
   await page.getByLabel('Your account', { exact: true }).click()
   await page
-    .getByRole('button', { name: 'Delete Renamed project', exact: true })
-    .click()
+    .getByRole('button', { name: 'Open Renamed project', exact: true })
+    .click({ button: 'right' })
+  await page.getByRole('menuitem', { name: 'Delete', exact: true }).click()
   dialog = page.getByRole('dialog', { name: 'Delete workspace', exact: true })
   assert.ok(
     await dialog
@@ -343,8 +404,14 @@ test('first sign-in opens create and optional join flows without requiring an in
     ),
   )
 
-  const renameRu = page.getByRole('button', {
-    name: 'Переименовать Renamed project',
+  await page
+    .getByRole('button', {
+      name: 'Действия с пространством Renamed project',
+      exact: true,
+    })
+    .click()
+  const renameRu = page.getByRole('menuitem', {
+    name: 'Переименовать',
     exact: true,
   })
   assert.equal(await renameRu.innerText(), 'Переименовать')
@@ -356,8 +423,12 @@ test('first sign-in opens create and optional join flows without requiring an in
   await dialog.waitFor()
   await dialog.getByRole('button', { name: 'Отмена', exact: true }).click()
   await page
-    .getByRole('button', { name: 'Удалить Renamed project', exact: true })
+    .getByRole('button', {
+      name: 'Действия с пространством Renamed project',
+      exact: true,
+    })
     .click()
+  await page.getByRole('menuitem', { name: 'Удалить', exact: true }).click()
   dialog = page.getByRole('dialog', {
     name: 'Удалить пространство',
     exact: true,
@@ -402,21 +473,98 @@ test('first sign-in opens create and optional join flows without requiring an in
     .waitFor()
   assert.equal(
     await page
-      .getByRole('button', { name: 'Delete Renamed project', exact: true })
+      .getByRole('button', {
+        name: 'Workspace actions for Renamed project',
+        exact: true,
+      })
       .count(),
     0,
   )
   assert.equal(
+    await page.getByRole('menuitem', { name: 'Rename', exact: true }).count(),
+    0,
+  )
+  studios[0].role = 'owner'
+  await page.goto(origin + '/w/fixture-project/settings')
+  await page
+    .getByRole('button', {
+      name: 'Workspace actions for Renamed project',
+      exact: true,
+    })
+    .click()
+  await page.getByRole('menuitem', { name: 'Rename', exact: true }).click()
+  dialog = page.getByRole('dialog', { name: 'Rename workspace', exact: true })
+  await dialog.getByRole('textbox').fill('Settings project')
+  await dialog.getByRole('button', { name: 'Save', exact: true }).click()
+  await page
+    .getByRole('heading', { name: 'Settings project', exact: true })
+    .waitFor()
+  assert.equal(new URL(page.url()).pathname, '/w/fixture-project/settings')
+  assert.equal(
     await page
-      .getByRole('button', { name: 'Rename Renamed project', exact: true })
+      .locator('.workspace-tabs-bar')
+      .getByText('Settings project', { exact: true })
+      .count(),
+    1,
+  )
+  assert.equal(
+    await page.evaluate(
+      () =>
+        JSON.parse(
+          sessionStorage.getItem('aril:workspaceTabs:fixture-new-member'),
+        )[0].name,
+    ),
+    'Settings project',
+  )
+  await page
+    .getByRole('button', {
+      name: 'Workspace actions for Settings project',
+      exact: true,
+    })
+    .click()
+  await page.getByRole('menuitem', { name: 'Rename', exact: true }).click()
+  dialog = page.getByRole('dialog', { name: 'Rename workspace', exact: true })
+  await dialog.getByRole('textbox').fill('Renamed project')
+  await dialog.getByRole('button', { name: 'Save', exact: true }).click()
+  await page
+    .getByRole('heading', { name: 'Renamed project', exact: true })
+    .waitFor()
+  studios[0].role = 'viewer'
+  await page.reload()
+  await page
+    .getByRole('heading', { name: 'Renamed project', exact: true })
+    .waitFor()
+  assert.equal(
+    await page
+      .getByRole('button', {
+        name: 'Workspace actions for Renamed project',
+        exact: true,
+      })
       .count(),
     0,
   )
   studios[0].role = 'owner'
   await page.reload()
   await page
-    .getByRole('button', { name: 'Delete Renamed project', exact: true })
+    .getByRole('button', {
+      name: 'Workspace actions for Renamed project',
+      exact: true,
+    })
     .click()
+  if (process.env.ARIL_CAPTURE_WORKSPACE_ACTIONS === '1') {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../artifacts/review/file-settings-actions.png',
+          import.meta.url,
+        ),
+      ),
+      animations: 'disabled',
+    })
+    await page.setViewportSize({ width: 390, height: 844 })
+  }
+  await page.getByRole('menuitem', { name: 'Delete', exact: true }).click()
   dialog = page.getByRole('dialog', { name: 'Delete workspace', exact: true })
   assert.ok(await dialog.isVisible())
   assert.ok(
