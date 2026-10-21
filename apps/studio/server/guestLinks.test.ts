@@ -327,3 +327,35 @@ test(
     }
   },
 )
+
+test('revoked unlimited links cannot crowd active guest links out of the management list', async (t) => {
+  const directory = mkdtempSync(join(tmpdir(), 'aril-link-list-'))
+  const { store, collaboration } = createApp(join(directory, 'fixture.sqlite'))
+  t.after(() => {
+    collaboration.close()
+    store.close()
+    rmSync(directory, { recursive: true, force: true })
+  })
+  const owner = store.identity.bootstrap()!
+  const active = await store.guests.create(
+    owner.profile.id,
+    'default',
+    'Active review',
+    60,
+  )
+  for (let index = 0; index < 101; index++) {
+    const link = await store.guests.create(
+      owner.profile.id,
+      'default',
+      'Revoked',
+      null,
+    )
+    await store.guests.revoke(link.id, 'default')
+  }
+  const links = await store.guests.list('default')
+  assert.deepEqual(
+    links.map((link) => link.id),
+    [active.id],
+  )
+  assert.ok(store.identity.redeemGuest(active.token, 'Reviewer'))
+})

@@ -28,7 +28,7 @@ test('company mode is runtime-configured, redirects product pages and preserves 
     assert.deepEqual(
       await (await fetch(origin + '/api/deployment-settings')).json(),
       {
-        productSiteEnabled: true,
+        productSiteEnabled: false,
         productName: 'Aril',
         productLogoUrl: '/aril.svg',
       },

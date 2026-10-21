@@ -15,6 +15,10 @@
       "destination": "/api"
     },
     {
+      "source": "/app/:path*",
+      "destination": "/index.html"
+    },
+    {
       "source": "/w/:path*",
       "destination": "/index.html"
     },

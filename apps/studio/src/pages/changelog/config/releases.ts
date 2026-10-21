@@ -3,6 +3,25 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-21-studio-entry',
+    date: '2026-10-21',
+    title: 'Separate product home and studio entry',
+    summary:
+      'The public home and the working studio now have separate routes. Self-hosted installations open the studio directly.',
+    changes: [
+      'Sign in and manage workspaces at /app; the public home stays at / and editors keep their /w/... URLs. Invitations, guest access and account transfers retain their destinations.',
+      'Self-hosted deployments hide the landing page by default. The configured aril.studio origin enables it, with an explicit runtime override for other deployments.',
+      'A persistent source-code link is available in both modes, including mobile. Installed apps open the studio directly.',
+      'Revoked guest links no longer hide active links from the management list. Regression checks cover entry routes, access controls and browser workflows.',
+    ],
+    image: '/changelog/studio-entry.png',
+    imageAlt:
+      'Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.',
+    video: '/changelog/studio-entry.mp4',
+    videoAlt:
+      'Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.',
+  },
+  {
     id: '2026-10-19-google-button',
     date: '2026-10-19',
     title: 'Consistent Google sign-in button',

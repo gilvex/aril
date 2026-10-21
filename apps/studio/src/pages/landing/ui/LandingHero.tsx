@@ -23,11 +23,11 @@ export function LandingHero() {
         <div className="landing-hero-actions">
           <a
             className="landing-button landing-button-primary"
-            href="/?demo=1&workspace=demo&board=layers&view=canvas"
+            href="/app?demo=1&workspace=demo&board=layers&view=canvas"
           >
             {t('Explore the demo')}
           </a>
-          <a className="landing-text-link" href="#access">
+          <a className="landing-text-link" href="/app">
             {t('Open your workspace')}
           </a>
         </div>

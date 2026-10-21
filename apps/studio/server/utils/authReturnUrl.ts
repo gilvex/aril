@@ -10,7 +10,7 @@ export function authReturnUrl(candidate: unknown, origin: string) {
     ) ||
     encodeURIComponent(candidate).length > 2000
   )
-    return new URL('/', origin)
+    return new URL('/app', origin)
   const url = new URL(candidate, origin)
-  return url.origin === new URL(origin).origin ? url : new URL('/', origin)
+  return url.origin === new URL(origin).origin ? url : new URL('/app', origin)
 }

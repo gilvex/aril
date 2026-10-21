@@ -100,7 +100,7 @@ export function WireframeFlow(props: WireframeFlowProps) {
       snapGrid={[8, 8]}
     >
       <StableCanvasViewport following={!!following} />
-      <CanvasRepositoryLink />
+
       {props.drawing}
       <Background color="var(--canvas-dot, #d7d2dd)" gap={24} size={1} />
       <LiveCursors
@@ -120,4 +120,4 @@ export function WireframeFlow(props: WireframeFlowProps) {
     </ReactFlow>
   )
 }
-import { CanvasRepositoryLink, StableCanvasViewport } from '@/shared/ui/index.tsx'
+import { StableCanvasViewport } from '@/shared/ui/index.tsx'

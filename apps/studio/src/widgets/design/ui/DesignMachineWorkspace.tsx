@@ -60,7 +60,7 @@ export function DesignMachineWorkspace({ model }: DesignEditorProps) {
             deleteKeyCode={null}
           >
             <StableCanvasViewport />
-            <CanvasRepositoryLink />
+
             <Background gap={20} color="var(--line)" />
             <Controls showInteractive={false} />
           </ReactFlow>
@@ -72,4 +72,4 @@ export function DesignMachineWorkspace({ model }: DesignEditorProps) {
     </div>
   )
 }
-import { CanvasRepositoryLink, StableCanvasViewport } from '@/shared/ui/index.tsx'
+import { StableCanvasViewport } from '@/shared/ui/index.tsx'

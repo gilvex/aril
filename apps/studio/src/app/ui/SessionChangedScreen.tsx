@@ -4,7 +4,7 @@ import { useTranslation } from '@/shared/i18n/index.ts'
 
 export function SessionChangedScreen() {
   const { t } = useTranslation()
-  const reload = useCallback(() => location.replace('/'), [])
+  const reload = useCallback(() => location.replace('/app'), [])
   return (
     <main className="boot-screen">
       <ProductLogo />

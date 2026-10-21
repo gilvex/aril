@@ -32,7 +32,7 @@ export function WorkspaceHome({
   return (
     <main className="workspace-home workspace-library">
       <header className="workspace-library-header">
-        <a className="brand" href="/">
+        <a className="brand" href="/app">
           <ProductLogo />
           <span>{getProductBranding().productName}</span>
         </a>

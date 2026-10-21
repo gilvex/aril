@@ -75,7 +75,7 @@ export function createApplication<T extends Store>(
       id: '/',
       name: productName,
       short_name: productName,
-      start_url: '/',
+      start_url: '/app',
       scope: '/',
       display: 'standalone',
       background_color: '#19161f',
@@ -100,10 +100,10 @@ export function createApplication<T extends Store>(
     })
   })
   app.get('/api/deployment-settings', (_req, res) => {
-    res.json({ productSiteEnabled: productSiteEnabled(), ...productBranding() })
+    res.json({ productSiteEnabled: productSiteEnabled(publicOrigin), ...productBranding() })
   })
   app.use((req, res, next) => {
-    if (!productSiteEnabled() && /^\/changelog(?:\/|$)/.test(req.path)) {
+    if (!productSiteEnabled(publicOrigin) && /^\/changelog(?:\/|$)/.test(req.path)) {
       res.redirect(302, '/')
       return
     }

@@ -11,7 +11,7 @@ export function AccountActions(props: AccountActionsProps) {
   const state = useAccountActions(props)
   if (isDemoMode())
     return (
-      <a className="button" href="/">
+      <a className="button" href="/app">
         {t('Exit demo')}
       </a>
     )

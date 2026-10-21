@@ -35,7 +35,7 @@ export function ChangelogPage() {
           <span>{t('Changelog')}</span>
         </a>
         <Button asChild variant="outline" size="sm">
-          <a href="/">
+          <a href="/app">
             <ArrowLeft size={16} />
             {t('Open studio')}
           </a>

@@ -2,7 +2,6 @@ import { isProductSiteEnabled } from '@/shared/deploymentSettings/index.ts'
 import { GuestJoinScreen } from './GuestJoinScreen.tsx'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { ProjectLinks } from '@/shared/ui/index.tsx'
-import { LandingPage } from '@/pages/landing/index.ts'
 import type { JoinStudioScreenProps } from '../types/joinStudioScreenProps.ts'
 import { LoginHeader } from './LoginHeader.tsx'
 import { LoginBlueprint } from './LoginBlueprint.tsx'
@@ -10,17 +9,9 @@ import { LoginAuth } from './LoginAuth.tsx'
 import './loginScreen.css'
 
 export function JoinStudioScreen(props: JoinStudioScreenProps) {
-  const { token, profile } = props
+  const { token } = props
   const productSite = isProductSiteEnabled()
-  const switching =
-    new URLSearchParams(location.search).get('account') === 'switch'
   if (token.startsWith('guest:')) return <GuestJoinScreen {...props} />
-  if (productSite && !profile && !token && !switching)
-    return (
-      <LandingPage>
-        <LoginAuth {...props} heading="h2" />
-      </LandingPage>
-    )
   return (
     <div className="login-screen">
       <LoginHeader />
@@ -28,12 +19,10 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
         <LoginAuth {...props} />
         <LoginBlueprint />
       </main>
-      {productSite && (
-        <footer className="login-footer">
-          <ProjectLinks />
-          <InstallApp />
-        </footer>
-      )}
+      <footer className="login-footer">
+        <ProjectLinks />
+        {productSite && <InstallApp />}
+      </footer>
     </div>
   )
 }
