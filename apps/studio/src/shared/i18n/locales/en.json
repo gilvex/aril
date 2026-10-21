@@ -1453,5 +1453,6 @@
   "Revoked guest links no longer hide active links from the management list. Regression checks cover entry routes, access controls and browser workflows.": "Revoked guest links no longer hide active links from the management list. Regression checks cover entry routes, access controls and browser workflows.",
   "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.": "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.",
   "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.": "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.",
-  "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.": "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race."
+  "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.": "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.",
+  "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication.": "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication."
 }
