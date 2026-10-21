@@ -3,6 +3,20 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-21-workspace-actions',
+    date: '2026-10-21',
+    title: 'Workspace actions in one menu',
+    summary:
+      'Rename and delete workspaces from a compact menu on workspace cards and in File settings.',
+    changes: [
+      'Open the ⋯ menu or right-click a workspace card. The same owner-only menu is beside the file name in Settings.',
+      'Renaming updates the open tab. Deletion still requires the exact workspace name; settings actions wait for pending edits to save.',
+    ],
+    image: '/changelog/workspace-actions.png',
+    imageAlt:
+      'Workspace card with its Rename and Delete menu open, using isolated demo data.',
+  },
+  {
     id: '2026-10-21-studio-entry',
     date: '2026-10-21',
     title: 'Separate product home and studio entry',

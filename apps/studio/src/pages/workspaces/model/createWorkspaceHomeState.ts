@@ -8,7 +8,7 @@ export function createWorkspaceHomeState() {
   const hostedOrigin: string | null = null
   return {
     management: null as
-      import('../types/workspaceManagement.ts').WorkspaceManagement | null,
+      import('@/entities/studio/index.ts').WorkspaceManagement | null,
     studios,
     name,
     creating,

@@ -1,0 +1,66 @@
+.workspace-delete {
+  color: var(--danger, #c84464);
+}
+.workspace-manage-dialog {
+  width: min(480px, calc(100vw - 32px));
+}
+.workspace-manage-dialog form,
+.workspace-manage-dialog label {
+  display: grid;
+  gap: 14px;
+}
+.workspace-manage-dialog p {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary, #77717f);
+  line-height: 1.6;
+}
+.workspace-manage-dialog input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: inherit;
+}
+.workspace-manage-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.workspace-action-trigger {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-strong);
+}
+.workspace-action-trigger:hover,
+.workspace-action-trigger[data-state='open'] {
+  background: var(--surface-muted);
+}
+.workspace-action-trigger:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.workspace-manage-dialog {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text-strong);
+}
+.workspace-manage-dialog::backdrop {
+  background: #0006;
+  backdrop-filter: blur(3px);
+}

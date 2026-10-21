@@ -275,3 +275,6 @@
   font-size: 12px;
   line-height: 1.5;
 }
+
+.settings-file-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.settings-file-title h2 { min-width: 0; overflow-wrap: anywhere; }

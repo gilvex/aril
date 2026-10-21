@@ -1454,5 +1454,12 @@
   "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.": "Изолированный экран входа с настроенными провайдерами, примером схемы и постоянной ссылкой на исходный код.",
   "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.": "Непрерывная запись тестового сценария: переход с сайта к входу в студию, смена языка и ссылка на исходный код.",
   "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.": "При изменении ширины кнопки входа через Google фокус клавиатуры сохраняется; этот сценарий проверяется в браузере.",
-  "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication.": "Предпросмотры Vercel принимают точные адреса развёртывания и ветки, сохраняя проверку хостов и авторизацию рабочих пространств."
+  "Vercel previews accept their exact deployment and branch addresses while preserving host checks and workspace authentication.": "Предпросмотры Vercel принимают точные адреса развёртывания и ветки, сохраняя проверку хостов и авторизацию рабочих пространств.",
+  "Workspace actions for {{name}}": "Действия с пространством {{name}}",
+  "Save your pending changes before managing this workspace.": "Сохраните текущие изменения перед управлением пространством.",
+  "Workspace actions in one menu": "Действия с пространством в одном меню",
+  "Rename and delete workspaces from a compact menu on workspace cards and in File settings.": "Переименовывайте и удаляйте пространства через компактное меню на карточках и в настройках файла.",
+  "Open the ⋯ menu or right-click a workspace card. The same owner-only menu is beside the file name in Settings.": "Откройте меню ⋯ или нажмите правой кнопкой на карточку пространства. Такое же меню для владельца находится рядом с именем файла в настройках.",
+  "Renaming updates the open tab. Deletion still requires the exact workspace name; settings actions wait for pending edits to save.": "Переименование обновляет открытую вкладку. Для удаления по-прежнему нужно ввести точное имя пространства; действия в настройках ждут сохранения текущих правок.",
+  "Workspace card with its Rename and Delete menu open, using isolated demo data.": "Карточка пространства с открытым меню переименования и удаления на изолированных демонстрационных данных."
 }

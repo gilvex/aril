@@ -1,22 +1,25 @@
+import { SettingsFileActions } from './SettingsFileActions.tsx'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { useEffect } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import { SettingsInvitations } from '@/widgets/collaboration/index.ts'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 import { SettingsMember } from './SettingsMember.tsx'
-export function SettingsFile({
-  settings,
-  studio,
-  multiplayer,
-  state,
-}: StudioContentProps) {
+export function SettingsFile(props: StudioContentProps) {
+  const { settings, studio, multiplayer, state } = props
   const { t } = useTranslation()
   const { load } = settings
   useEffect(() => load(), [load])
   return (
     <>
       <header className="settings-section-heading">
-        <h2>{studio.name}</h2>
+        <div className="settings-file-title">
+          <h2>{studio.name}</h2>
+          {settings.role === 'owner' && !isDemoMode() && (
+            <SettingsFileActions {...props} />
+          )}
+        </div>
         <p>{t('Control who can open and edit this file.')}</p>
       </header>
       <section className="settings-card">

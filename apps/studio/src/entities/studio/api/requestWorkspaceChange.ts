@@ -1,5 +1,5 @@
 import { request } from '@/shared/api/request.ts'
-import type { WorkspaceManagement } from '../../types/workspaceManagement.ts'
+import type { WorkspaceManagement } from '../types/workspaceManagement.ts'
 export function requestWorkspaceChange(
   management: WorkspaceManagement,
   name: string,

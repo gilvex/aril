@@ -1,3 +1,4 @@
+import { WorkspaceActions } from '@/features/workspaceManagement/index.ts'
 import { memo, useCallback } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Avatar } from '@/entities/collaboration/index.ts'
@@ -14,16 +15,8 @@ export const WorkspaceCard = memo(function WorkspaceCard({
 }: WorkspaceCardProps) {
   const { t, i18n } = useTranslation()
   const open = useCallback(() => onOpen(studio), [onOpen, studio])
-  const rename = useCallback(
-    () => onManage?.(studio, 'rename'),
-    [onManage, studio],
-  )
-  const remove = useCallback(
-    () => onManage?.(studio, 'delete'),
-    [onManage, studio],
-  )
   return (
-    <div className="workspace-card-shell">
+    <WorkspaceActions studio={studio} onManage={onManage}>
       <button
         className="workspace-card"
         onClick={open}
@@ -82,24 +75,6 @@ export const WorkspaceCard = memo(function WorkspaceCard({
           </div>
         </div>
       </button>
-      {studio.role === 'owner' && onManage && (
-        <div className="workspace-card-actions">
-          <button
-            className="button"
-            onClick={rename}
-            aria-label={t('Rename {{name}}', { name: studio.name })}
-          >
-            {t('Rename')}
-          </button>
-          <button
-            className="button workspace-delete"
-            onClick={remove}
-            aria-label={t('Delete {{name}}', { name: studio.name })}
-          >
-            {t('Delete')}
-          </button>
-        </div>
-      )}
-    </div>
+    </WorkspaceActions>
   )
 })

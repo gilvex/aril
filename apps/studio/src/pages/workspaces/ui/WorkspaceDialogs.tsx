@@ -1,4 +1,4 @@
-import { WorkspaceManageDialog } from './WorkspaceManageDialog.tsx'
+import { WorkspaceManageDialog } from '@/features/workspaceManagement/index.ts'
 import { WorkspaceCreateDialog } from './WorkspaceCreateDialog.tsx'
 import type { WorkspaceDialogsProps } from '../types/workspaceDialogsProps.ts'
 export function WorkspaceDialogs({
