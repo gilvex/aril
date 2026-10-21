@@ -1,0 +1,128 @@
+.invitation-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: min(720px, calc(100dvh - 48px));
+  overflow: auto;
+  background: var(--panel, #292929);
+  color: var(--text, #eee);
+  border: 1px solid var(--border, #444);
+  padding: 24px;
+  border-radius: 16px;
+}
+.invitation-form {
+  display: grid;
+  gap: 14px;
+  margin-block: 16px;
+  text-align: left;
+}
+.invitation-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 500;
+}
+.invitation-form input {
+  width: 100%;
+  min-height: 40px;
+}
+.invitation-form p,
+.invitation-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted, #bbb);
+  line-height: 1.5;
+}
+.invitation-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.invitation-results {
+  display: grid;
+  padding: 4px;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid var(--border, #444);
+  border-radius: 8px;
+}
+.invitation-result {
+  justify-content: flex-start;
+  gap: 10px;
+  height: auto;
+  padding: 10px;
+  text-align: left;
+}
+.invitation-result span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.invitation-result small {
+  overflow-wrap: anywhere;
+  color: var(--muted, #bbb);
+}
+.invitation-bell {
+  position: relative;
+  flex-shrink: 0;
+}
+.invitation-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 3px;
+  font-size: 10px;
+  border-radius: 10px;
+  background: var(--accent, #b34568);
+  color: white;
+}
+.invitation-inbox {
+  display: grid;
+  gap: 12px;
+  margin-block: 20px;
+}
+.invitation-card {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--border, #444);
+  border-radius: 12px;
+}
+.invitation-card small,
+.current-username {
+  color: var(--muted, #bbb);
+  overflow-wrap: anywhere;
+}
+.invite-user {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border, #444);
+}
+.username-editor {
+  border-top: 1px solid var(--border, #444);
+  padding-top: 20px;
+}
+.workspace-home-account {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.invitation-drawer-content {
+  padding: 20px;
+  max-height: calc(100dvh - 100px);
+  overflow: auto;
+}
+.invitation-drawer-content > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.invitation-drawer-content h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.invitation-drawer-content > p {
+  color: var(--muted);
+  font-size: 13px;
+}

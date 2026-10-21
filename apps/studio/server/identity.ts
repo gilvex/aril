@@ -41,6 +41,9 @@ export function identityStore(db: DatabaseSync) {
       DROP TABLE accounts_legacy;
       COMMIT;`)
   }
+  db.exec(
+    'CREATE TABLE IF NOT EXISTS usernames (user_id TEXT PRIMARY KEY, username TEXT NOT NULL UNIQUE)',
+  )
   db.exec(guestTables.replaceAll('studio.', ''))
   if (
     !db
@@ -56,7 +59,7 @@ export function identityStore(db: DatabaseSync) {
   const profile = (id: string) =>
     db
       .prepare(
-        `SELECT p.*,g.expires_at AS guestExpiresAt FROM profiles p LEFT JOIN guest_profiles gp ON gp.user_id=p.id LEFT JOIN guest_links g ON g.id=gp.link_id WHERE p.id = ?`,
+        `SELECT p.*,COALESCE((SELECT username FROM usernames u WHERE u.user_id=p.id),'user_' || replace(p.id,'-','')) AS username,g.expires_at AS guestExpiresAt FROM profiles p LEFT JOIN guest_profiles gp ON gp.user_id=p.id LEFT JOIN guest_links g ON g.id=gp.link_id WHERE p.id = ?`,
       )
       .get(id) as Profile | undefined
   function create(name = 'New collaborator') {

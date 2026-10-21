@@ -32,6 +32,11 @@ export function useWorkspaceLibrary({
       onStudiosChanged?.(studios)
     }
   }, [studios, onStudiosChanged, profile.id])
+  useEffect(() => {
+    window.addEventListener('aril:invitations-changed', state.retry)
+    return () =>
+      window.removeEventListener('aril:invitations-changed', state.retry)
+  }, [state.retry])
   const visits = useMemo(() => readWorkspaceVisits(profile.id), [profile.id])
   const visible = useMemo(
     () =>

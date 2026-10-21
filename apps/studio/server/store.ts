@@ -1,3 +1,6 @@
+import { invitationTables } from './config/invitationTables.ts'
+import { accountInvitations } from './accountInvitations.ts'
+import { sqliteAcceptInvitation } from './utils/sqliteAcceptInvitation.ts'
 import { sqliteStudioManagement } from './utils/sqliteStudioManagement.ts'
 import type { Activity } from '@aril/domain/collaboration'
 import { createSeed } from '@aril/domain/seed'
@@ -40,6 +43,7 @@ export function openStore(path: string) {
     return []
   })
   const identity = identityStore(db)
+  db.exec(invitationTables.replaceAll('studio.', ''))
   const guests = guestLinks(async (sql, values) => {
     const statement = db.prepare(
       sql.replaceAll('studio.', '').replace(/\$\d+/g, '?'),
@@ -186,6 +190,13 @@ export function openStore(path: string) {
     read,
     save,
     identity,
+    invitations: accountInvitations(
+      async (sql, values) =>
+        db
+          .prepare(sql.replaceAll('studio.', '').replace(/\$\d+/g, '?'))
+          .all(...values),
+      (userId, id) => sqliteAcceptInvitation(db, userId, id),
+    ),
     agents,
     guests,
     access: workspaceAccess(async (sql, values) =>

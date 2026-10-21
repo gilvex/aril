@@ -175,11 +175,11 @@ test('first sign-in opens create and optional join flows without requiring an in
     .getByRole('button', { name: 'Join workspace', exact: true })
     .click()
   await page
-    .getByRole('textbox', { name: 'Invite code', exact: true })
+    .getByRole('dialog')
+    .getByRole('textbox', { name: 'Invite link', exact: true })
     .waitFor()
-  await page
-    .getByRole('button', { name: 'Go to my workspaces', exact: true })
-    .click()
+  assert.ok(['/', '/app'].includes(new URL(page.url()).pathname))
+  await page.keyboard.press('Escape')
   await page
     .getByRole('heading', {
       name: 'Your first workspace starts here',
@@ -277,13 +277,10 @@ test('first sign-in opens create and optional join flows without requiring an in
       animations: 'disabled',
     })
   await page.keyboard.press('Escape')
-  assert.ok(
-    await page
-      .getByRole('button', {
-        name: 'Workspace actions for Renamed project',
-        exact: true,
-      })
-      .evaluate((element) => element === document.activeElement),
+  await page.waitForFunction(
+    () =>
+      document.activeElement?.getAttribute('aria-label') ===
+      'Workspace actions for Renamed project',
   )
   for (const fixture of [
     { google: { email: 'fixture@example.test' }, accounts: [] },

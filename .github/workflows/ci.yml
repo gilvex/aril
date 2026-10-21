@@ -28,7 +28,7 @@ jobs:
       - run: pnpm test
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
-      - run: node --test scripts/entryRoutes.browser.test.mjs scripts/signIn.browser.test.mjs scripts/firstWorkspace.browser.test.mjs scripts/networkCanvas.browser.test.mjs scripts/sharing.browser.test.mjs
+      - run: node --test scripts/entryRoutes.browser.test.mjs scripts/signIn.browser.test.mjs scripts/firstWorkspace.browser.test.mjs scripts/networkCanvas.browser.test.mjs scripts/sharing.browser.test.mjs scripts/invitations.browser.test.mjs
       - run: pnpm verify:recovery
       - run: pnpm benchmark:collaboration
       - uses: actions/upload-artifact@v4
@@ -71,4 +71,4 @@ jobs:
           PGPASSWORD: fixture-only
         run: psql -h 127.0.0.1 -U postgres -d aril_test -v ON_ERROR_STOP=1 -c 'CREATE ROLE anon NOLOGIN;'
       - name: Verify concurrent instances and access isolation
-        run: pnpm --filter @aril/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts
+        run: pnpm --filter @aril/studio exec node --import ./scripts/registerAliases.mjs --test server/postgres.test.ts server/guestLinks.test.ts server/accountInvitationsPostgres.test.ts

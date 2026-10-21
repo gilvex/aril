@@ -1,3 +1,5 @@
+import { InvitationInbox } from '@/features/invitations/index.ts'
+import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { CollaborationBarProps as Props } from '@/widgets/collaboration/types/collaborationBarProps.ts'
@@ -40,6 +42,7 @@ export function CollaborationBar({
   } = useCollaborationController({ profile, peers, panel, setPanel })
   return (
     <div className="collaboration-bar" ref={root}>
+      {!profile.guestExpiresAt && !isDemoMode() && <InvitationInbox />}
       <span
         className={`connection-dot ${connected ? 'online' : ''}`}
         title={
