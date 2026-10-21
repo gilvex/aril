@@ -318,6 +318,9 @@ test('first sign-in opens create and optional join flows without requiring an in
     accountFixture = fixture
     await page.reload()
     await page.getByLabel('Your account', { exact: true }).click()
+    await page
+      .getByRole('button', { name: 'Account settings', exact: true })
+      .click()
     await page.getByText('Account access', { exact: true }).waitFor()
     assert.equal(
       await page.getByRole('button', { name: /^Connect / }).count(),
@@ -328,6 +331,9 @@ test('first sign-in opens create and optional join flows without requiring an in
   accountFixture = { google: null, accounts: [] }
   await page.reload()
   await page.getByLabel('Your account', { exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Account settings', exact: true })
+    .click()
   await page
     .getByRole('button', { name: 'Connect Yandex ID', exact: true })
     .waitFor()
@@ -344,6 +350,9 @@ test('first sign-in opens create and optional join flows without requiring an in
   }
   await page.reload()
   await page.getByLabel('Your account', { exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Account settings', exact: true })
+    .click()
   await page.getByText('Account access', { exact: true }).waitFor()
   if (process.env.ARIL_CAPTURE_MANAGEMENT === '1')
     await page.screenshot({
@@ -355,6 +364,7 @@ test('first sign-in opens create and optional join flows without requiring an in
       ),
       animations: 'disabled',
     })
+  await page.keyboard.press('Escape')
   await page.getByLabel('Your account', { exact: true }).click()
   await page
     .getByRole('button', { name: 'Open Renamed project', exact: true })

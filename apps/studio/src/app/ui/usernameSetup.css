@@ -1,0 +1,26 @@
+.username-setup-card {
+  width: min(460px, 100%);
+  margin: auto;
+  padding: clamp(20px, 4vw, 36px);
+  background: var(--surface, #2c2c2c);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.username-setup-card h1 {
+  font-size: clamp(24px, 4vw, 30px);
+  margin: 8px 0 12px;
+}
+.username-setup-card > p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.username-setup-card .username-setup-eyebrow {
+  color: var(--accent-ink);
+  font-size: 12px;
+}
+.username-setup-card .username-editor {
+  border: 0;
+  padding: 8px 0 0;
+  margin: 24px 0;
+}

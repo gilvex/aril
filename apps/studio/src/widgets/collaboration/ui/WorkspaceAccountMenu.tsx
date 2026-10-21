@@ -1,10 +1,9 @@
-import { UsernameEditor } from '@/features/invitations/index.ts'
 import { ChevronDown } from 'lucide-react'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { LanguagePicker, ThemePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import { AccountConnection } from './AccountConnection.tsx'
+import { AccountSettingsButton } from './AccountSettingsButton.tsx'
 import type { WorkspaceAccountMenuProps } from '../types/workspaceAccountMenuProps.ts'
 
 export function WorkspaceAccountMenu({
@@ -22,8 +21,7 @@ export function WorkspaceAccountMenu({
       <div className="workspace-account-panel">
         <ThemePicker />
         <LanguagePicker />
-        <UsernameEditor profile={profile} onProfile={onProfile} />
-        <AccountConnection onProfile={onProfile} />
+        <AccountSettingsButton profile={profile} onProfile={onProfile} />
         <AccountActions />
       </div>
     </details>

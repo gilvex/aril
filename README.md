@@ -29,14 +29,16 @@ The recording uses editable demo fixtures and simulated teammates. Aril is a pla
 
 ### Invite your team
 
-Open **Notifications** to accept or decline invitations. Workspace owners can invite by email or username in **Settings → File** and choose Editor or Viewer. **Join workspace** opens an invite-link dialog. Change your username in your account menu or User settings.
+Open **Notifications** to accept or decline invitations. Workspace owners can invite by email or username in **Settings → File** and choose Editor or Viewer. **Join workspace** opens an invite-link dialog. After your first sign-in, keep the suggested username or write your own. Change it later in **Your account → Account settings**, or **Settings → User → Account** inside a workspace.
+
+![First-sign-in username suggestion using a generated account](apps/studio/public/changelog/username-setup.png)
 
 ![Workspace invitation inbox using generated demo accounts](apps/studio/public/changelog/account-invitations.png)
 
 <details>
 <summary>Watch invitations and username editing (continuous fixture recording)</summary>
 
-![Real browser interactions with invitation notifications, the join dialog and user lookup](apps/studio/public/changelog/account-invitations.gif)
+![Real browser interactions with username setup, account settings and invitation search](apps/studio/public/changelog/account-onboarding.gif)
 
 </details>
 

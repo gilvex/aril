@@ -8,6 +8,8 @@ The SQLite migration retains the original tables and copies the existing Pomegra
 
 ## Google sign-in setup
 
+After signing in, accounts still using an automatic `user_…` username choose a personal username before entering the studio. The form suggests a name, supports editing and another suggestion, and checks availability on save. Existing custom usernames and temporary guests are not prompted. Changing it later is available in **Your account → Account settings** on the workspace home or **Settings → User → Account** inside a workspace. Invitation destinations remain intact during setup.
+
 1. In [Google Auth Platform](https://console.cloud.google.com/auth/clients), configure the consent screen and create a **Web application** OAuth client. Add the exact development and production URLs to **Authorized JavaScript origins** (for development, `http://127.0.0.1:5173`). If the app is in testing, add the intended users as test users.
 2. Copy `.env.example` to `.env` and set `GOOGLE_CLIENT_ID` to the web client ID. No Google client secret is used by this ID-token flow. Restart the API. The client ID is public configuration; never put a client secret in frontend variables.
 3. When using Google, new users sign in with Google first. This creates a Google-linked profile without workspace membership. They can create a workspace immediately or enter an invitation code to join an existing workspace (including a code preserved in an invitation link). There is no separate guest-account creation step.

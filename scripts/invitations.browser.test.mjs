@@ -44,7 +44,7 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
   const profile = {
     id: '00000000-0000-4000-8000-000000000001',
     name: 'Alex Morgan',
-    username: 'alex_morgan',
+    username: 'user_00000000000040008000000000000001',
     avatar: '',
     color: '#426cbd',
   }
@@ -53,6 +53,12 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
     name: 'Maya Chen',
     username: 'maya_design',
     avatar: '',
+  }
+  const otherPerson = {
+    ...person,
+    id: 'fixture-sam',
+    name: 'Sam Rivera',
+    username: 'maya_research',
   }
   const workspace = createSeed()
   const studios = [
@@ -152,7 +158,9 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
       return json({ profile })
     }
     if (path === '/api/directory')
-      return json(url.searchParams.get('q').includes('maya') ? [person] : [])
+      return json(
+        url.searchParams.get('q').includes('maya') ? [person, otherPerson] : [],
+      )
     if (path === '/api/account-invitations') {
       requests.push(route.request().postDataJSON())
       return route.fulfill({
@@ -198,6 +206,53 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
   const errors = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto(origin + '/app')
+  await page.getByRole('heading', { name: 'Choose your username' }).waitFor()
+  const usernameInput = page.getByRole('textbox', {
+    name: 'Username',
+    exact: true,
+  })
+  assert.equal(await usernameInput.inputValue(), 'alex_morgan')
+  if (capture) await page.waitForTimeout(900)
+  if (capture)
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../apps/studio/public/changelog/username-setup.png',
+          import.meta.url,
+        ),
+      ),
+    })
+  await page
+    .getByRole('button', { name: 'Save and continue', exact: true })
+    .click()
+  await page.getByRole('alert').waitFor()
+  assert.equal(await usernameInput.inputValue(), 'alex_morgan')
+  await page.getByRole('button', { name: 'Suggest another username' }).click()
+  assert.match(await usernameInput.inputValue(), /^alex_morgan_[a-z0-9]{6}$/)
+  await usernameInput.fill('user_reserved')
+  assert.equal(
+    await page
+      .getByRole('button', { name: 'Save and continue', exact: true })
+      .isEnabled(),
+    false,
+  )
+  await usernameInput.fill('Alex_Morgan')
+  failUsername = false
+  await page
+    .getByRole('button', { name: 'Save and continue', exact: true })
+    .click()
+  await page
+    .getByRole('heading', { name: 'Choose your username' })
+    .waitFor({ state: 'hidden' })
+  assert.equal(profile.username, 'alex_morgan')
+  await page.reload()
+  await page
+    .getByRole('button', { name: 'Notifications', exact: true })
+    .waitFor()
+  assert.equal(
+    await page.getByRole('heading', { name: 'Choose your username' }).count(),
+    0,
+  )
   if (capture) await page.waitForTimeout(800)
   await page.getByRole('button', { name: 'Notifications', exact: true }).click()
   if (capture) await page.waitForTimeout(900)
@@ -253,6 +308,14 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
   await dialog.waitFor({ state: 'hidden' })
   assert.equal(requests.at(-1).token, 'fixture-valid-invitation-token')
   await page.getByLabel('Your account', { exact: true }).click()
+  assert.equal(
+    await page.getByRole('textbox', { name: 'Username', exact: true }).count(),
+    0,
+  )
+  await page
+    .getByRole('button', { name: 'Account settings', exact: true })
+    .click()
+  failUsername = true
   await page
     .getByRole('textbox', { name: 'Username', exact: true })
     .fill('new_alex')
@@ -263,11 +326,46 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
   failUsername = false
   await page.getByRole('button', { name: 'Save username', exact: true }).click()
   await page.getByText('@new_alex', { exact: true }).waitFor()
+  if (capture)
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../apps/studio/public/changelog/account-settings.png',
+          import.meta.url,
+        ),
+      ),
+    })
   if (capture) await page.waitForTimeout(900)
   await page.goto(origin + '/w/fixture/settings?board=layers')
   await page
     .getByRole('textbox', { name: 'Email or username', exact: true })
     .fill('maya')
+  const result = page.getByRole('button', { name: 'Maya Chen @maya_design' })
+  await result.waitFor()
+  const restingBackground = await result.evaluate(
+    (node) => getComputedStyle(node).backgroundColor,
+  )
+  assert.equal(restingBackground, 'rgba(0, 0, 0, 0)')
+  await result.hover()
+  await page.waitForTimeout(250)
+  assert.notEqual(
+    await result.evaluate((node) => getComputedStyle(node).backgroundColor),
+    restingBackground,
+  )
+  assert.ok(
+    await page
+      .locator('.invitation-results')
+      .evaluate((node) => parseFloat(getComputedStyle(node).rowGap) >= 6),
+  )
+  if (capture)
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../apps/studio/public/changelog/invitation-search.png',
+          import.meta.url,
+        ),
+      ),
+    })
   await page.getByRole('button', { name: 'Maya Chen @maya_design' }).click()
   await page
     .getByRole('combobox', { name: 'Invitation role', exact: true })
@@ -305,6 +403,87 @@ test('invitations: modal join, inbox decisions, searchable recipients, delivery 
       () => document.documentElement.scrollWidth > innerWidth,
     ),
     false,
+  )
+  assert.deepEqual(errors, [])
+  await page.goto(origin + '/app')
+  await page.getByLabel('Your account', { exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Account settings', exact: true })
+    .click()
+  await dialog.getByRole('textbox', { name: 'Username', exact: true }).waitFor()
+  const accountBox = await dialog.boundingBox()
+  assert.ok(accountBox.x >= 0 && accountBox.x + accountBox.width <= 391)
+  assert.equal(
+    await dialog
+      .getByRole('button', { name: 'Close dialog', exact: true })
+      .count(),
+    1,
+  )
+  await dialog
+    .getByRole('textbox', { name: 'Username', exact: true })
+    .scrollIntoViewIfNeeded()
+  assert.equal(
+    await dialog
+      .getByRole('textbox', { name: 'Username', exact: true })
+      .inputValue(),
+    'new_alex',
+  )
+  if (capture) await page.waitForTimeout(450)
+  if (capture)
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../apps/studio/public/changelog/account-settings-mobile.png',
+          import.meta.url,
+        ),
+      ),
+    })
+  await dialog
+    .getByRole('button', { name: 'Close dialog', exact: true })
+    .click()
+  profile.username = 'user_00000000000040008000000000000001'
+  profile.name = 'Алексей'
+  await page.goto(origin + '/app#invite=fixture-preserved-invitation')
+  await page.reload()
+  await page.getByRole('heading', { name: 'Choose your username' }).waitFor()
+  assert.equal(await usernameInput.inputValue(), 'member')
+  await page.getByRole('combobox', { name: 'Language', exact: true }).click()
+  await page.getByRole('option', { name: 'Русский', exact: true }).click()
+  await page
+    .getByRole('heading', { name: 'Выберите имя пользователя' })
+    .waitFor()
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > innerWidth,
+    ),
+    false,
+  )
+  if (capture)
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../apps/studio/public/changelog/username-setup-mobile.png',
+          import.meta.url,
+        ),
+      ),
+    })
+  await page
+    .getByRole('button', { name: 'Сохранить и продолжить', exact: true })
+    .click()
+  await page
+    .getByRole('heading', { name: 'Выберите имя пользователя' })
+    .waitFor({ state: 'hidden' })
+  assert.match(page.url(), /#invite=fixture-preserved-invitation$/)
+  profile.username = 'user_00000000000040008000000000000001'
+  profile.guestExpiresAt = Date.now() + 3600000
+  await page.goto(origin + '/app')
+  await page.reload()
+  await page.getByLabel('Ваш аккаунт', { exact: true }).waitFor()
+  assert.equal(
+    await page
+      .getByRole('heading', { name: 'Выберите имя пользователя' })
+      .count(),
+    0,
   )
   assert.deepEqual(errors, [])
   await context.close()

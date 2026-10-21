@@ -11,6 +11,7 @@ import { useAppHandlers } from '../model/useAppHandlers.tsx'
 import { InitialLoadingScreen } from './InitialLoadingScreen.tsx'
 import { useScrollIndicators } from '../model/useScrollIndicators.ts'
 import '../scrollbars.css'
+import { UsernameSetup } from './UsernameSetup.tsx'
 
 export function App() {
   useScrollIndicators()
@@ -35,6 +36,23 @@ export function App() {
     !inviteRequired &&
     !token &&
     (!profile || restoringRoute || !!(studio && !initial))
+  if (
+    !loading &&
+    !sessionChanged &&
+    !legacy &&
+    !isDemoMode() &&
+    model.accountLinked &&
+    profile &&
+    !profile.guestExpiresAt &&
+    profile.username?.startsWith('user_')
+  )
+    return (
+      <UsernameSetup
+        key={profile.id}
+        profile={profile}
+        onProfile={model.setProfile}
+      />
+    )
   return (
     <>
       <div
