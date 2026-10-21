@@ -6,6 +6,7 @@ export { hash as postgresHash } from './postgresHash.ts'
 export { postgresUrl } from './postgresPostgresUrl.ts'
 export { publicCredential } from './publicCredential.ts'
 export { initialize } from './vercelHandlerInitialize.ts'
+export { vercelPreviewOrigins } from './vercelPreviewOrigins.ts'
 export { sqliteStudioOverviews } from './sqliteStudioOverviews.ts'
 export { postgresStudioOverviews } from './postgresStudioOverviews.ts'
 

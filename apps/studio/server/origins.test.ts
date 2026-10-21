@@ -6,6 +6,7 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 import { createApp } from './app.ts'
 import { normalizeStudioOrigins } from './utils/normalizeStudioOrigins.ts'
+import { vercelPreviewOrigins } from './utils/vercelPreviewOrigins.ts'
 
 test('custom and legacy domains work without admitting foreign hosts or origins', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'pomegranate-origins-'))
@@ -81,4 +82,54 @@ test('origin configuration rejects credentials, paths and non-web schemes', () =
     'https://example.com#hash',
   ])
     assert.throws(() => normalizeStudioOrigins([origin]))
+})
+
+test('Vercel preview APIs allow their own hosts but still require workspace authentication', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'aril-preview-origins-'))
+  const origins = vercelPreviewOrigins({
+    VERCEL: '1',
+    VERCEL_ENV: 'preview',
+    VERCEL_URL: 'arilapp-deployment-team.vercel.app',
+    VERCEL_BRANCH_URL: 'arilapp-git-011-skaneprimes-projects.vercel.app',
+  })
+  const { app, store, collaboration } = createApp(
+    join(directory, 'test.sqlite'),
+    'https://aril.studio',
+    origins,
+  )
+  const server = app.listen(0, '127.0.0.1')
+  await new Promise<void>((resolve) => server.once('listening', resolve))
+  const port = (server.address() as { port: number }).port
+  const call = (host: string, origin?: string, path = '/api/health') =>
+    new Promise<number | undefined>((resolve, reject) => {
+      get(
+        `http://127.0.0.1:${port}${path}`,
+        {
+          headers: { Host: host, ...(origin ? { Origin: origin } : {}) },
+        },
+        (res) => {
+          res.resume()
+          resolve(res.statusCode)
+        },
+      ).on('error', reject)
+    })
+  try {
+    for (const origin of origins) {
+      const host = new URL(origin).hostname
+      assert.equal(await call(host), 200)
+      assert.equal(await call(host, origin, '/api/deployment-settings'), 200)
+      assert.equal(await call(host, origin, '/api/workspace'), 401)
+      assert.equal(await call(host, 'https://unrelated.vercel.app'), 403)
+      assert.equal(await call(host, `http://${host}`), 403)
+      assert.equal(await call(host, `${origin}:444`), 403)
+      assert.equal(await call(`${host}.evil.example`, origin), 403)
+    }
+    assert.equal(await call('unrelated.vercel.app', origins[0]), 403)
+    assert.equal(await call('arilapp-another-branch.vercel.app'), 403)
+  } finally {
+    collaboration.close()
+    await new Promise<void>((resolve) => server.close(() => resolve()))
+    await store.close()
+    rmSync(directory, { recursive: true, force: true })
+  }
 })
