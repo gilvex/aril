@@ -312,6 +312,18 @@ test(
           )
         }
         await sdkButton.focus()
+        // A resize must not replace the SDK control while the user is typing.
+        await control.evaluate(async (element) => {
+          element.style.width = '280px'
+          await new Promise((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+          )
+        })
+        assert.ok(
+          await sdkButton.evaluate(
+            (element) => element === document.activeElement,
+          ),
+        )
         assert.equal(
           await control.evaluate(
             (element) => getComputedStyle(element).outlineStyle,
@@ -319,6 +331,9 @@ test(
           'solid',
         )
         await googlePage.keyboard.press('Enter')
+        await control.evaluate((element) =>
+          element.style.removeProperty('width'),
+        )
         assert.equal(await googlePage.evaluate(() => window.googleClicks), 5)
         await googlePage.setViewportSize({ width: 1440, height: 900 })
         await googlePage.evaluate(() => {
