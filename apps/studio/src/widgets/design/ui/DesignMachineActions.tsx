@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignMachineActionsProps } from '../types/designMachineActionsProps.ts'
@@ -19,7 +20,7 @@ export function DesignMachineActions({
   }, [variable, onChange, actions])
   return (
     <div className="design-machine-actions">
-      <h4>{label}</h4>
+      <Text as="h4">{label}</Text>
       {actions.map((action, index) => (
         <DesignMachineActionRow
           key={index}
@@ -35,7 +36,7 @@ export function DesignMachineActions({
         disabled={!variable || actions.length >= 30}
         onClick={add}
       >
-        {t('Add action')}
+        <Text>{t('Add action')}</Text>
       </button>
     </div>
   )

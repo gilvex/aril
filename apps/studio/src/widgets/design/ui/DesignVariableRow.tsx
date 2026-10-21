@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { Trash2 } from 'lucide-react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -55,7 +56,7 @@ export function DesignVariableRow({
   }, [library, variable.id, saveLibrary])
   return (
     <tr data-collaboration-scope={`variable:${variable.id}`}>
-      <td>
+      <Text as="td">
         <input
           name="name"
           disabled={readOnly}
@@ -64,8 +65,8 @@ export function DesignVariableRow({
           aria-label={t('Variable name')}
           maxLength={120}
         />
-      </td>
-      <td>
+      </Text>
+      <Text as="td">
         <StudioSelect
           value={variable.type}
           onChange={type}
@@ -78,18 +79,18 @@ export function DesignVariableRow({
             </option>
           ))}
         </StudioSelect>
-      </td>
+      </Text>
       {modes.map((mode) => (
-        <td key={mode}>
+        <Text as="td" key={mode}>
           <DesignVariableCell
             variable={variable}
             mode={mode}
             save={save}
             disabled={readOnly}
           />
-        </td>
+        </Text>
       ))}
-      <td>
+      <Text as="td">
         <DesignVariableUsage model={model} variableId={variable.id} />
         <button
           className="icon-button"
@@ -99,7 +100,7 @@ export function DesignVariableRow({
         >
           <Trash2 size={15} />
         </button>
-      </td>
+      </Text>
     </tr>
   )
 }

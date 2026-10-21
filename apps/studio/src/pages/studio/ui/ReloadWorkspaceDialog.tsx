@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useReloadWorkspaceDialogHandlers } from '../model/useReloadWorkspaceDialogHandlers.tsx'
 
@@ -12,21 +13,23 @@ export function ReloadWorkspaceDialog({
   const { handleClick } = useReloadWorkspaceDialogHandlers({ state, setModal })
   return (
     <>
-      <h2 id="modal-title">{t('Reload the saved workspace?')}</h2>
-      <p>
+      <Text as="h2" id="modal-title">
+        {t('Reload the saved workspace?')}
+      </Text>
+      <Text as="p">
         {t(
           'This discards this tab’s unsaved edits and opens the latest server version. Export your edits first if you want to keep them.',
         )}
-      </p>
+      </Text>
       <div className="modal-actions">
         <button className="button" onClick={() => setModal(null)}>
-          {t('Keep editing')}
+          <Text>{t('Keep editing')}</Text>
         </button>
         <button className="button" onClick={exportWorkspace}>
-          {t('Export my edits')}
+          <Text>{t('Export my edits')}</Text>
         </button>
         <button className="button destructive" onClick={handleClick}>
-          {t('Discard edits and reload')}
+          <Text>{t('Discard edits and reload')}</Text>
         </button>
       </div>
     </>

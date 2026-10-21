@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import Markdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { NoteHeading } from './NoteHeading.tsx'
@@ -14,7 +15,7 @@ const components: Components = {
 export function NoteMarkdown({ body }: { body: string }) {
   return (
     <Markdown remarkPlugins={[remarkGfm]} components={components} skipHtml>
-      {body}
+      <Text>{body}</Text>
     </Markdown>
   )
 }

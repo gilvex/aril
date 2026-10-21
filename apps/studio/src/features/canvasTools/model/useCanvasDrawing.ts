@@ -19,7 +19,7 @@ export function useCanvasDrawing({
     role !== 'viewer' &&
     role !== null
   useEffect(() => {
-    patch({ draft: null, pointerId: null, drawing: null })
+    patch({ draft: null, pointerId: null, drawing: null, selectedStrokes: [] })
   }, [scope, disabled, role, patch])
   useEffect(() => {
     const cancel = (event: KeyboardEvent) => {

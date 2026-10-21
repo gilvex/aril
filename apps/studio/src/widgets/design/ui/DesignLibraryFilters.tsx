@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -53,9 +54,15 @@ export function DesignLibraryFilters({ model }: DesignEditorProps) {
         onValueChange={view}
         aria-label={t('Library view')}
       >
-        <ToggleGroupItem value="browse">{t('Browse')}</ToggleGroupItem>
-        <ToggleGroupItem value="variables">{t('Variables')}</ToggleGroupItem>
-        <ToggleGroupItem value="graph">{t('Map')}</ToggleGroupItem>
+        <ToggleGroupItem value="browse">
+          <Text>{t('Browse')}</Text>
+        </ToggleGroupItem>
+        <ToggleGroupItem value="variables">
+          <Text>{t('Variables')}</Text>
+        </ToggleGroupItem>
+        <ToggleGroupItem value="graph">
+          <Text>{t('Map')}</Text>
+        </ToggleGroupItem>
       </ToggleGroup>
       {libraryTab !== 'variables' && (
         <>

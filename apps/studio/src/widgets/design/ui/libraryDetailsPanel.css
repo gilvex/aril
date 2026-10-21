@@ -85,7 +85,7 @@
 .asset-identity small,
 .asset-breadcrumb {
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .asset-identity-icon {
   flex: none;
@@ -134,7 +134,7 @@
   border-radius: 4px;
   background: var(--surface);
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .asset-actions {
   flex: none;
@@ -153,7 +153,7 @@
 }
 .asset-actions > .button {
   flex-shrink: 0;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .asset-insert > span {
   display: none;
@@ -177,7 +177,7 @@
 .asset-preview-section .studio-select {
   width: 100%;
   margin-bottom: 10px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   min-width: 0;
 }
 .asset-preview-tile {
@@ -210,7 +210,7 @@
   gap: 12px;
   padding: 9px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .asset-properties dt {
   flex-shrink: 0;
@@ -264,7 +264,7 @@
 }
 .asset-binding small,
 .asset-usage-row small {
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   color: var(--text-muted);
 }
 .asset-connection {
@@ -291,7 +291,7 @@
 .asset-usage-filters > .studio-select {
   flex: 1;
   min-width: 0;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .asset-usage-search {
   position: relative;

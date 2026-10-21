@@ -46,7 +46,7 @@
   border: 0;
   color: inherit;
   text-align: left;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   padding: 8px 6px;
   cursor: pointer;
 }
@@ -72,7 +72,7 @@
 .design-page-row > input {
   width: 100%;
   min-width: 0;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   padding: 6px;
 }
 .design-pages-splitter {
@@ -152,7 +152,7 @@
   min-height: 30px;
 }
 .design-inspector-body label {
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   gap: 5px;
   margin-bottom: 0;
 }
@@ -173,7 +173,7 @@
 }
 .design-number-field > span {
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   flex-shrink: 0;
 }
 .design-inspector-body .design-number-field > input {

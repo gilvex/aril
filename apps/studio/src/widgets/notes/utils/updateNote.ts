@@ -8,9 +8,7 @@ export function updateNote(
   if (id === 'project-notes')
     return {
       ...workspace,
-      ...(patch.title === undefined
-        ? {}
-        : { notesTitle: patch.title }),
+      ...(patch.title === undefined ? {} : { notesTitle: patch.title }),
       ...(patch.body === undefined ? {} : { notes: patch.body }),
     }
   return {
@@ -20,10 +18,7 @@ export function updateNote(
         ? {
             ...note,
             ...patch,
-            title:
-              patch.title === undefined
-                ? note.title
-                : patch.title,
+            title: patch.title === undefined ? note.title : patch.title,
           }
         : note,
     ),

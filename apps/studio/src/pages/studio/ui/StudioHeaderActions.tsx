@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { CollaborationBar } from '@/widgets/collaboration/index.ts'
 import {
@@ -49,18 +50,19 @@ export function StudioHeaderActions({
         ) : (
           <LoaderCircle className="spinning" size={14} />
         )}
-        <span>
+        <Text as="span">
           {state.saveState === 'saved'
             ? t('All changes saved')
             : state.saveState === 'error'
               ? t('Not saved · retry')
               : t('Saving changes')}
-        </span>
+        </Text>
       </button>
       <span className="toolbar-divider" />
       <button
         className="icon-button"
         aria-label={t('Undo')}
+        aria-keyshortcuts="Control+z Meta+z"
         title={t('Undo (Ctrl+Z)')}
         disabled={!state.canUndo}
         onClick={state.undo}
@@ -70,7 +72,8 @@ export function StudioHeaderActions({
       <button
         className="icon-button"
         aria-label={t('Redo')}
-        title={t('Redo (Ctrl+Shift+Z)')}
+        aria-keyshortcuts="Control+Shift+z Meta+Shift+z Control+y"
+        title={t('Redo (Ctrl+Shift+Z / Ctrl+Y)')}
         disabled={!state.canRedo}
         onClick={state.redo}
       >

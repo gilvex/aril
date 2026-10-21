@@ -20,9 +20,7 @@ export function createDemoWorkspace() {
           resolved: false,
         },
       ]
-      requirement.links = [
-        { kind: 'design', boardId: workspace.boards[0].id },
-      ]
+      requirement.links = [{ kind: 'design', boardId: workspace.boards[0].id }]
     }
     requirement.status = (['Ready', 'Designing', 'Captured'] as const)[
       index % 3

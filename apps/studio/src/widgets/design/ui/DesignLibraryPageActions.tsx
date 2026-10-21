@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -15,7 +16,7 @@ export function DesignLibraryPageActions({ model }: DesignEditorProps) {
         }
         onClick={model.example}
       >
-        {t('Add example kit')}
+        <Text>{t('Add example kit')}</Text>
       </Button>
     </div>
   )

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Trash2 } from 'lucide-react'
 import { Avatar } from '@/entities/collaboration/index.ts'
@@ -32,38 +33,40 @@ export function SettingsMember({
       <div className="settings-member-identity">
         <Avatar profile={member} />
         <div>
-          <strong>
+          <Text as="strong">
             {member.name}
-            {member.id === currentUserId && <small> · {t('You')}</small>}
-          </strong>
-          <small>
+            {member.id === currentUserId && (
+              <Text as="small"> · {t('You')}</Text>
+            )}
+          </Text>
+          <Text as="small">
             {t(
               member.role === 'owner'
                 ? 'Owner'
                 : member.role === 'viewer'
                   ? 'Can view and follow'
-                  : (member.role === 'guest' || !!member.guestExpiresAt)
+                  : member.role === 'guest' || !!member.guestExpiresAt
                     ? 'Temporary guest'
                     : 'Can edit this file',
             )}
-          </small>
+          </Text>
         </div>
       </div>
       {settings.confirming === member.id ? (
         <div className="settings-remove-confirm" role="alert">
-          <span>
+          <Text as="span">
             {t('Remove {{name}} from this file?', { name: member.name })}
-          </span>
+          </Text>
           <button
             className="button danger"
             disabled={settings.busy}
             onClick={remove}
           >
             {settings.busy && <Spinner />}
-            {t('Remove')}
+            <Text>{t('Remove')}</Text>
           </button>
           <button className="button" disabled={settings.busy} onClick={cancel}>
-            {t('Cancel')}
+            <Text>{t('Cancel')}</Text>
           </button>
         </div>
       ) : (
@@ -79,17 +82,17 @@ export function SettingsMember({
               <option value="viewer">{t('Viewer')}</option>
             </StudioSelect>
           ) : (
-            <span className="settings-role">
+            <Text as="span" className="settings-role">
               {t(
                 member.role === 'owner'
                   ? 'Owner'
                   : member.role === 'viewer'
                     ? 'Viewer'
-                    : (member.role === 'guest' || !!member.guestExpiresAt)
+                    : member.role === 'guest' || !!member.guestExpiresAt
                       ? 'Guest'
                       : 'Editor',
               )}
-            </span>
+            </Text>
           )}
           {manageable && (
             <button

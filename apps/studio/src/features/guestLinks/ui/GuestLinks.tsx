@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { LoadingSkeleton, Spinner, StudioSelect } from '@/shared/ui/index.tsx'
 import { useGuestLinks } from '../model/useGuestLinks.ts'
@@ -10,14 +11,14 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
   const model = useGuestLinks(workspaceId)
   return (
     <section className="guest-links">
-      <h3>{t('Guest links')}</h3>
-      <p className="collaboration-hint">
+      <Text as="h3">{t('Guest links')}</Text>
+      <Text as="p" className="collaboration-hint">
         {t(
           'Share all boards in this workspace without requiring an account. Choose viewing or editing access for each link. Revoke a link at any time.',
         )}
-      </p>
+      </Text>
       <form onSubmit={model.create}>
-        <label>
+        <Text as="label">
           {t('Link permissions')}
           <StudioSelect
             aria-label={t('Link permissions')}
@@ -27,8 +28,8 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
             <option value="viewer">{t('View only')}</option>
             <option value="member">{t('Can edit')}</option>
           </StudioSelect>
-        </label>
-        <label>
+        </Text>
+        <Text as="label">
           {t('Link name')}
           <input
             value={model.name}
@@ -37,10 +38,11 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
             required
             placeholder={t('For example: design review')}
           />
-        </label>
-        <label>
+        </Text>
+        <Text as="label">
           {t('Access duration')}
-          <span
+          <Text
+            as="span"
             className={
               model.unit === 0
                 ? 'guest-duration guest-duration-unlimited'
@@ -69,22 +71,22 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
               <option value="60">{t('Hours')}</option>
               <option value="1440">{t('Days')}</option>
             </StudioSelect>
-          </span>
-        </label>
-        <small>
+          </Text>
+        </Text>
+        <Text as="small">
           {t(
             model.unit === 0
               ? 'Works until you revoke it.'
               : '5 minutes to 30 days, starting now.',
           )}
-        </small>
+        </Text>
         <button className="button" disabled={model.busy}>
           {model.busy && <Spinner />}
-          {t('Create guest link')}
+          <Text>{t('Create guest link')}</Text>
         </button>
       </form>
       {model.url && (
-        <label className="invite-output">
+        <Text as="label" className="invite-output">
           {t('Guest link')}
           <input
             aria-label={t('Guest link')}
@@ -93,9 +95,9 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
             onFocus={(event) => event.target.select()}
           />
           <button className="button" onClick={model.copy}>
-            {model.copied ? t('Copied') : t('Copy link')}
+            <Text>{model.copied ? t('Copied') : t('Copy link')}</Text>
           </button>
-        </label>
+        </Text>
       )}
       {model.loading && <LoadingSkeleton label={t('Loading…')} />}
       <GuestLinkList
@@ -104,9 +106,9 @@ export function GuestLinks({ workspaceId }: GuestLinksProps) {
         revoke={model.revoke}
       />
       {model.error && (
-        <p className="form-error" role="alert">
+        <Text as="p" className="form-error" role="alert">
           {model.error}
-        </p>
+        </Text>
       )}
     </section>
   )

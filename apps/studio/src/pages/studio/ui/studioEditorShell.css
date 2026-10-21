@@ -169,7 +169,10 @@
   flex-shrink: 0;
   overflow: hidden;
   white-space: nowrap;
-  transition: gap 220ms ease, padding 220ms ease, background-color 150ms ease;
+  transition:
+    gap 220ms ease,
+    padding 220ms ease,
+    background-color 150ms ease;
 }
 .studio-navigation-sidebar .desktop-page-nav > button > span {
   flex: 1;
@@ -200,7 +203,7 @@
   background: transparent;
   border: 0;
   border-top: 1px solid var(--line);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
@@ -213,7 +216,9 @@
 .studio-navigation-sidebar .sidebar-collapse-control span {
   max-width: 150px;
   opacity: 1;
-  transition: opacity 140ms ease, max-width 220ms ease;
+  transition:
+    opacity 140ms ease,
+    max-width 220ms ease;
 }
 .studio-navigation-sidebar.collapsed > header strong,
 .studio-navigation-sidebar.collapsed .desktop-page-nav > button > span,
@@ -260,7 +265,7 @@
   }
   .workspace-tab > [role='tab'] {
     padding-inline: 8px;
-    font-size: 11px;
+    font-size: var(--text-size-caption);
   }
   .studio-workspace-tabs > .icon-button {
     min-width: 32px;

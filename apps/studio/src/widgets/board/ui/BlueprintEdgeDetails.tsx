@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useBlueprintEdgeDetailsHandlers } from '../model/useBlueprintEdgeDetailsHandlers.tsx'
@@ -20,15 +21,17 @@ export function BlueprintEdgeDetails({
   return (
     <div className="inspector-body">
       <div className="detail-kind">
-        <Link2 size={16} /> {t('Relationship')}
+        <Link2 size={16} /> <Text>{t('Relationship')}</Text>
       </div>
-      <h2>{board.nodes.find((n) => n.id === edge.source)?.data.title}</h2>
-      <p className="muted">
+      <Text as="h2">
+        {board.nodes.find((n) => n.id === edge.source)?.data.title}
+      </Text>
+      <Text as="p" className="muted">
         {t('Connects to {{name}}', {
           name: board.nodes.find((n) => n.id === edge.target)?.data.title || '',
         })}
-      </p>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Connection label')}
         <input
           disabled={readOnly}
@@ -38,14 +41,14 @@ export function BlueprintEdgeDetails({
           maxLength={120}
           onChange={handleConnectionLabelChange}
         />
-      </label>
+      </Text>
       <button
         disabled={readOnly}
         className="button danger"
         onClick={handleClick}
       >
         <Unplug size={15} />
-        {t('Remove connection')}
+        <Text>{t('Remove connection')}</Text>
       </button>
     </div>
   )

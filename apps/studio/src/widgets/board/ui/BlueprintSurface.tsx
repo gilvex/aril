@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Link2, MousePointer2, Plus } from 'lucide-react'
 import { BlueprintFlow } from './BlueprintFlow.tsx'
@@ -39,13 +40,15 @@ export function BlueprintSurface(props: BlueprintSurfaceProps) {
       )}
       <div className="canvas-caption">
         <span className="small-dot" />
-        {t('nodeCount', { count: board.nodes.length })}
+        <Text>{t('nodeCount', { count: board.nodes.length })}</Text>
         <span className="caption-separator" />
-        {t('connectionCount', { count: board.edges.length })}
+        <Text>{t('connectionCount', { count: board.edges.length })}</Text>
       </div>
       {compact && touchSelection && (
         <div className="touch-selection-hint">
-          {t('Tap nodes to select. Tap Done to move them together.')}
+          <Text>
+            {t('Tap nodes to select. Tap Done to move them together.')}
+          </Text>
         </div>
       )}
       <BlueprintFlow
@@ -67,21 +70,23 @@ export function BlueprintSurface(props: BlueprintSurfaceProps) {
           <div className="empty-symbol">
             <Plus size={28} />
           </div>
-          <h2>{t('Every system starts with an idea.')}</h2>
-          <p>{t('Add your first node, then connect the pieces.')}</p>
+          <Text as="h2">{t('Every system starts with an idea.')}</Text>
+          <Text as="p">
+            {t('Add your first node, then connect the pieces.')}
+          </Text>
           <button className="button primary" onClick={() => setPalette(true)}>
-            {t('Add your first node')}
+            <Text>{t('Add your first node')}</Text>
           </button>
         </div>
       )}
       <div className="canvas-tip">
         <MousePointer2 size={13} />
-        <span>{t('Drag to move')}</span>
-        <span>·</span>
-        <span>{t('Ctrl / ⌘ + click to select more')}</span>
-        <span>·</span>
+        <Text as="span">{t('Drag to move')}</Text>
+        <Text as="span">·</Text>
+        <Text as="span">{t('Ctrl / ⌘ + click to select more')}</Text>
+        <Text as="span">·</Text>
         <Link2 size={13} />
-        <span>{t('Connect the handles')}</span>
+        <Text as="span">{t('Connect the handles')}</Text>
       </div>
     </div>
   )

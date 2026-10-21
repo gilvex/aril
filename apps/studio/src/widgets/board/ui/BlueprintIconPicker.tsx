@@ -1,40 +1,39 @@
-import { useCallback } from 'react'
-import { StudioSelect } from '@/shared/ui/index.tsx'
+import { Text } from '@/shared/ui/Text.tsx'
+import { Popover } from 'radix-ui'
+import { ChevronDown } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
-import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { nodeIconOptions } from '../config/nodeIconOptions.ts'
+import { kindIcons } from '../config/kindIcons.ts'
+import { useIconPickerModel } from '../model/useIconPickerModel.ts'
 import type { BlueprintIconPickerProps } from '../types/blueprintIconPickerProps.ts'
-export function BlueprintIconPicker({
-  node,
-  readOnly,
-  updateNode,
-}: BlueprintIconPickerProps) {
+import { IconLibrary } from './IconLibrary.tsx'
+import './iconLibrary.css'
+export function BlueprintIconPicker(props: BlueprintIconPickerProps) {
+  const { node, readOnly } = props
   const { t } = useTranslation()
-  const change = useCallback(
-    (event: SelectChange) =>
-      updateNode({
-        icon: event.target.value
-          ? (event.target.value as keyof typeof nodeIconOptions)
-          : undefined,
-      }),
-    [updateNode],
-  )
+  const model = useIconPickerModel()
+  const option = node.data.icon ? nodeIconOptions[node.data.icon] : undefined
+  const Icon = option?.icon || kindIcons[node.data.kind]
   return (
-    <label>
-      {t('Icon')}
-      <StudioSelect
-        aria-label={t('Node icon')}
-        disabled={readOnly}
-        value={node.data.icon || ''}
-        onChange={change}
-      >
-        <option value="">{t('Default icon')}</option>
-        {Object.entries(nodeIconOptions).map(([id, option]) => (
-          <option key={id} value={id}>
-            {t(option.label)}
-          </option>
-        ))}
-      </StudioSelect>
-    </label>
+    <div className="blueprint-icon-picker">
+      <Text as="span">{t('Icon')}</Text>
+      <Popover.Root open={model.open && !readOnly} onOpenChange={model.setOpen}>
+        <Popover.Trigger asChild>
+          <button
+            type="button"
+            className="icon-library-trigger"
+            aria-label={t('Node icon')}
+            disabled={readOnly}
+          >
+            <Icon size={20} aria-hidden="true" />
+            <Text as="span">{t(option?.label || 'Default icon')}</Text>
+            <ChevronDown size={14} aria-hidden="true" />
+          </button>
+        </Popover.Trigger>
+        <Popover.Portal>
+          <IconLibrary {...props} model={model} />
+        </Popover.Portal>
+      </Popover.Root>
+    </div>
   )
 }

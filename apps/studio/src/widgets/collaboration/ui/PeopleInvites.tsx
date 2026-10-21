@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { InviteUserForm } from '@/features/invitations/index.ts'
 import { guestLinkNoExpiry } from '@aril/domain/collaboration'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -15,7 +16,7 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
   const { createInvite, copyInvite } = useCollaborationPopoverHandlers(props)
   if (props.profile.guestExpiresAt)
     return (
-      <p className="collaboration-hint">
+      <Text as="p" className="collaboration-hint">
         {props.profile.guestExpiresAt === guestLinkNoExpiry
           ? t('Guest access lasts until the link is revoked.')
           : t('Guest access expires {{time}}', {
@@ -23,13 +24,13 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
                 i18n.language,
               ),
             })}
-      </p>
+      </Text>
     )
   if (role !== 'owner')
     return (
-      <p className="collaboration-hint">
+      <Text as="p" className="collaboration-hint">
         {t('Only the workspace owner can manage access.')}
-      </p>
+      </Text>
     )
   return (
     <>
@@ -40,11 +41,11 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
         onClick={createInvite}
       >
         {props.busy ? <Spinner /> : <Link size={14} />}
-        {t('Create invite link')}
+        <Text>{t('Create invite link')}</Text>
       </button>
       {props.invite && (
-        <label className="invite-output">
-          {t('Single-use link Â· expires in 24 hours')}
+        <Text as="label" className="invite-output">
+          {t('Single-use link · expires in 24 hours')}
           <input
             aria-label={t('Invite link')}
             readOnly
@@ -53,17 +54,17 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
           />
           <button className="button" onClick={copyInvite}>
             {props.copied ? <Check size={14} /> : <Link size={14} />}
-            {props.copied ? t('Copied') : t('Copy link')}
+            <Text>{props.copied ? t('Copied') : t('Copy link')}</Text>
           </button>
-        </label>
+        </Text>
       )}
-      <p className="collaboration-hint">
+      <Text as="p" className="collaboration-hint">
         {t(
           isDemoMode()
             ? 'This is a local demo. Sign in outside the demo to connect an account or invite real teammates.'
             : 'Permanent invitations require a connected sign-in account. For access without sign-in, create a guest link below.',
         )}
-      </p>
+      </Text>
       {!isDemoMode() && (
         <GuestLinks key={props.workspaceId} workspaceId={props.workspaceId} />
       )}

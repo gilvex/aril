@@ -135,7 +135,7 @@
   overflow-wrap: anywhere;
 }
 .settings-member-identity small {
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   font-weight: 400;
   display: block;
@@ -276,5 +276,13 @@
   line-height: 1.5;
 }
 
-.settings-file-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.settings-file-title h2 { min-width: 0; overflow-wrap: anywhere; }
+.settings-file-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.settings-file-title h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

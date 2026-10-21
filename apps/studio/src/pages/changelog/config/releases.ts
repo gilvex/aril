@@ -3,6 +3,47 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-21-canvas-editing',
+    date: '2026-10-21',
+    title: 'Canvas editing and readable controls',
+    summary:
+      'Add universal blocks, select freehand strokes and undo edits in either keyboard layout.',
+    changes: [
+      'Connect nodes through their handles. The toolbar now includes a universal block; only universal blocks display customizable icons.',
+      'Select drawings with a click, add strokes with Shift or Ctrl, and delete the selection. Undo with Ctrl+Z; redo with Ctrl+Shift+Z or Ctrl+Y.',
+      'Agent access has a clearer form and step-by-step MCP setup. Shared Text styles preserve semantic headings and improve small labels.',
+    ],
+    image: '/changelog/canvas-editing.png',
+    imageAlt:
+      'Selected freehand drawing and universal block tools in an isolated demo.',
+  },
+  {
+    id: '2026-10-21-icon-library',
+    date: '2026-10-21',
+    title: '0.1.2 — Visual icon library',
+    summary:
+      'Choose canvas icons by appearance, search by name and adjust preview size.',
+    changes: [
+      'The icon field opens a visual library over the canvas. Search matches English and translated names; the size slider changes library previews.',
+      'The current icon is highlighted. Choose a new icon or restore the default without leaving the canvas.',
+    ],
+    image: '/changelog/icon-library.png',
+    imageAlt:
+      'Visual icon library over an isolated demo canvas, with search and preview size controls.',
+  },
+  {
+    id: '2026-10-21-russian-interface',
+    date: '2026-10-21',
+    title: 'Russian from the first screen',
+    summary:
+      'The studio waits for the selected language before showing its interface.',
+    changes: [
+      'Completed Russian labels in workspace settings, requirements and design controls, and repaired account and invitation messages.',
+    ],
+    image: '/changelog/russian-interface.png',
+    imageAlt: 'Russian requirements filters in the isolated demo workspace.',
+  },
+  {
     id: '2026-10-21-username-setup',
     date: '2026-10-21',
     title: 'A username that feels like you',

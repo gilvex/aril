@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Plus, Waypoints } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
 import { useDesignUsageDetails } from '../model/useDesignUsageDetails.ts'
@@ -11,15 +12,17 @@ export function LibraryAssetActions({ model }: DesignEditorProps) {
   return (
     <footer className="asset-actions">
       <Button className="button primary asset-edit" size="sm" onClick={edit}>
-        {t(
-          readOnly
-            ? 'Open asset'
-            : kind === 'component'
-              ? 'Edit component'
-              : kind === 'variable'
-                ? 'Edit variable'
-                : 'Open page',
-        )}
+        <Text>
+          {t(
+            readOnly
+              ? 'Open asset'
+              : kind === 'component'
+                ? 'Edit component'
+                : kind === 'variable'
+                  ? 'Edit variable'
+                  : 'Open page',
+          )}
+        </Text>
       </Button>
       {kind === 'component' && (
         <Button
@@ -32,7 +35,7 @@ export function LibraryAssetActions({ model }: DesignEditorProps) {
           title={t('Insert instance')}
         >
           <Plus size={16} />
-          <span>{t('Insert instance')}</span>
+          <Text as="span">{t('Insert instance')}</Text>
         </Button>
       )}
       <Button

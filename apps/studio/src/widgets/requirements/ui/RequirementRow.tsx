@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementItemProps } from '../types/requirementItemProps.ts'
@@ -26,17 +27,17 @@ export function RequirementRow({ item, model }: RequirementItemProps) {
         aria-pressed={model.selected === item.id}
         onClick={() => model.selectRequirement(item.id)}
       >
-        <span className="req-title">
-          <small>{item.id}</small>
-          <span>
-            <strong>{item.title}</strong>
-            <small>{t(item.category)}</small>
-          </span>
+        <Text as="span" className="req-title">
+          <Text as="small">{item.id}</Text>
+          <Text as="span">
+            <Text as="strong">{item.title}</Text>
+            <Text as="small">{t(item.category)}</Text>
+          </Text>
           <RequirementAvatars
             people={model.peopleFor(item.id)}
             currentUserId={model.profile.id}
           />
-        </span>
+        </Text>
         <RequirementBadge value={item.priority} field="priority" />
         <RequirementBadge value={item.status} field="status" />
       </button>

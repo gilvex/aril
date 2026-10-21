@@ -1,0 +1,144 @@
+.modal:has(.agent-access) {
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.agent-access {
+  min-width: 0;
+}
+.agent-access #modal-title {
+  padding-right: 32px;
+  margin: 0 0 10px;
+}
+.agent-access .agent-introduction {
+  max-width: 65ch;
+  margin: 0 0 24px;
+}
+.agent-access .agent-section-title {
+  margin: 24px 0 12px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.agent-access form {
+  margin: 0 0 24px;
+}
+.agent-access form > p {
+  margin: -6px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.agent-access form > .button {
+  justify-self: start;
+  min-height: 40px;
+}
+.agent-access label {
+  min-width: 0;
+  font-weight: 500;
+}
+.agent-access .studio-select {
+  height: auto;
+  min-height: 40px;
+  white-space: normal;
+  text-align: left;
+}
+.agent-access .agent-setup {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+  margin: 20px 0;
+}
+.agent-access .agent-setup summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  list-style: none;
+}
+.agent-setup summary::-webkit-details-marker {
+  display: none;
+}
+.agent-setup summary > .text {
+  flex: 1;
+}
+.agent-setup[open] summary > svg:last-child {
+  transform: rotate(180deg);
+}
+.agent-setup summary:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+.agent-setup-steps {
+  margin: 20px 0;
+  padding-left: 24px;
+  display: grid;
+  gap: 20px;
+}
+.agent-setup-steps li {
+  padding-left: 6px;
+  line-height: 1.5;
+  font-size: 13px;
+}
+.agent-setup-steps li::marker {
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+}
+.agent-setup-steps strong {
+  font-weight: 600;
+}
+.agent-setup-steps p {
+  margin: 6px 0 10px;
+}
+.agent-setup-steps pre {
+  margin: 8px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--canvas);
+  color: var(--text-strong);
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.agent-origin {
+  display: block;
+  padding: 10px 14px;
+  background: var(--canvas);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.agent-guide-link {
+  font-size: 13px;
+  color: var(--accent-ink);
+  text-underline-offset: 3px;
+}
+.agent-credentials li > .text {
+  min-width: 0;
+}
+.agent-credentials li > .button {
+  flex-shrink: 0;
+}
+.agent-access .agent-secret {
+  background: var(--canvas);
+  border-color: var(--accent-ink);
+}
+.agent-access .agent-secret p {
+  line-height: 1.5;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .modal:has(.agent-access) {
+    width: 100%;
+    max-height: calc(100dvh - 80px);
+    padding: 20px;
+  }
+  .agent-access-options {
+    grid-template-columns: 1fr;
+  }
+  .agent-access .agent-credentials li {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { downloadJson } from '@/shared/api/downloadJson.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -28,12 +29,12 @@ export function StaleDraftScreen({
   return (
     <div className="boot-screen">
       <ProductLogo />
-      <h1>{t('This draft is out of date.')}</h1>
-      <p>
+      <Text as="h1">{t('This draft is out of date.')}</Text>
+      <Text as="p">
         {t(
           'These edits came from an older page or saved revision and have not been applied. Download a copy if you need them, then open the latest shared workspace.',
         )}
-      </p>
+      </Text>
       <textarea
         className="legacy-json"
         aria-label={t('Recovery draft JSON')}
@@ -46,10 +47,10 @@ export function StaleDraftScreen({
           className="button"
           onClick={() => downloadJson(legacy, 'pomegranate-recovery.json')}
         >
-          {t('Download draft')}
+          <Text>{t('Download draft')}</Text>
         </button>
         <button className="button primary" onClick={handleClick}>
-          {t('Continue with saved workspace')}
+          <Text>{t('Continue with saved workspace')}</Text>
         </button>
       </div>
     </div>

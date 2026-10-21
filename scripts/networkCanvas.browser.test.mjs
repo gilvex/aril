@@ -176,8 +176,79 @@ test('canvas preserves empty titles, multiline descriptions, icons and native no
   })
   await description.fill('Primary gateway\nIP: 192.0.2.1/24\nVLAN: 10')
   await description.press('Tab')
-  await page.getByRole('combobox', { name: 'Node icon', exact: true }).click()
-  await page.getByRole('option', { name: 'Router', exact: true }).click()
+  await button('Node icon').click()
+  const library = page.getByRole('dialog', {
+    name: 'Icon library',
+    exact: true,
+  })
+  await library.waitFor()
+  const search = library.getByRole('searchbox', {
+    name: 'Search icons by name',
+  })
+  assert.equal(
+    await search.evaluate((el) => el === document.activeElement),
+    true,
+  )
+  await search.fill('CLOUD')
+  assert.equal(await library.locator('.icon-library-grid button').count(), 1)
+  await library.getByRole('button', { name: 'Cloud', exact: true }).click()
+  await page.waitForFunction(
+    () =>
+      JSON.parse(
+        sessionStorage.getItem('aril-demo-v1'),
+      ).envelope.workspace.boards[0].nodes.find(
+        (n) => n.id === 'fixture-router',
+      ).data.icon === 'cloud',
+  )
+  await button('Node icon').click()
+  assert.equal(
+    await library
+      .getByRole('button', { name: 'Cloud', exact: true })
+      .getAttribute('aria-pressed'),
+    'true',
+  )
+  await search.fill('no-such-icon')
+  await library
+    .getByRole('status')
+    .getByText('No icons found. Try another name.')
+    .waitFor()
+  await search.fill('')
+  const size = library.getByRole('slider', { name: 'Preview size' })
+  await size.focus()
+  await size.press('End')
+  assert.equal(await size.inputValue(), '48')
+  assert.equal(
+    await library
+      .locator('.icon-library-grid button svg')
+      .first()
+      .getAttribute('width'),
+    '48',
+  )
+  if (process.env.ARIL_CAPTURE_ICONS === '1')
+    await page.screenshot({
+      path: 'apps/studio/public/changelog/icon-library.png',
+      animations: 'disabled',
+    })
+  await page.keyboard.press('Escape')
+  assert.equal(await library.count(), 0)
+  assert.equal(
+    await button('Node icon').evaluate((el) => el === document.activeElement),
+    true,
+  )
+  await button('Node icon').click()
+  await library
+    .getByRole('button', { name: 'Default icon', exact: true })
+    .click()
+  await page.waitForFunction(
+    () =>
+      !JSON.parse(
+        sessionStorage.getItem('aril-demo-v1'),
+      ).envelope.workspace.boards[0].nodes.find(
+        (n) => n.id === 'fixture-router',
+      ).data.icon,
+  )
+  await button('Node icon').click()
+  await library.getByRole('button', { name: 'Router', exact: true }).click()
   await page.waitForFunction(
     () =>
       JSON.parse(
@@ -308,6 +379,55 @@ test('canvas preserves empty titles, multiline descriptions, icons and native no
     'Primary gateway\nIP: 192.0.2.1/24\nVLAN: 10',
   )
   await page.setViewportSize({ width: 390, height: 844 })
+  await button('Node icon').click()
+  await library.waitFor()
+  await page.waitForFunction(() => {
+    const panel = document.querySelector('.icon-library')
+    if (!panel) return false
+    const rect = panel.getBoundingClientRect()
+    return (
+      rect.x >= 0 &&
+      rect.right <= innerWidth &&
+      rect.y >= 0 &&
+      rect.bottom <= innerHeight
+    )
+  })
+  const bounds = await library.boundingBox()
+  assert.ok(
+    bounds.x >= 0 && bounds.x + bounds.width <= 391,
+    JSON.stringify(bounds),
+  )
+  assert.ok(bounds.y >= 0 && bounds.y + bounds.height <= 845)
+  await search.fill('phone')
+  await library.getByRole('button', { name: 'Phone', exact: true }).click()
+  await page.waitForFunction(
+    () =>
+      JSON.parse(
+        sessionStorage.getItem('aril-demo-v1'),
+      ).envelope.workspace.boards[0].nodes.find(
+        (n) => n.id === 'fixture-router',
+      ).data.icon === 'phone',
+  )
+  await page.evaluate(() => localStorage.setItem('pomegranate-language', 'ru'))
+  await page.reload()
+  await page.locator('.react-flow__node[data-id="fixture-router"]').dblclick()
+  await page.getByRole('button', { name: 'Иконка блока', exact: true }).click()
+  const russianLibrary = page.getByRole('dialog', {
+    name: 'Библиотека иконок',
+    exact: true,
+  })
+  await russianLibrary.getByRole('searchbox').fill('облако')
+  assert.equal(
+    await russianLibrary.locator('.icon-library-grid button').count(),
+    1,
+  )
+  await russianLibrary.getByRole('searchbox').fill('cloud')
+  assert.equal(
+    await russianLibrary.locator('.icon-library-grid button').count(),
+    1,
+  )
+  if (process.env.ARIL_CAPTURE_ICONS === '1')
+    await page.screenshot({ path: 'artifacts/icon-library-mobile.png' })
   assert.ok(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

@@ -68,3 +68,7 @@
   .loading-spinner { animation: none; }
   .initial-loading, .initial-loading[aria-hidden='true'] { transition: none; }
 }
+
+.startup-ru { display: none; }
+:root[lang='ru'] .startup-en { display: none; }
+:root[lang='ru'] .startup-ru { display: inline; }

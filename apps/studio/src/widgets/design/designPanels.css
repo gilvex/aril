@@ -159,7 +159,11 @@
   background: var(--surface);
   border: 1px solid var(--line);
 }
-.design-dock-tabs button { height: 100%; flex: 1; min-width: 0; }
+.design-dock-tabs button {
+  height: 100%;
+  flex: 1;
+  min-width: 0;
+}
 .design-panel[data-horizontal] .design-inspector-body {
   display: flex;
   align-items: stretch;

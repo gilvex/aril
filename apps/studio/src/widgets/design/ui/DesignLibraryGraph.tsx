@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useEffect, useMemo, useRef, type MouseEvent } from 'react'
 import { Background, Controls, ReactFlow, useReactFlow } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -78,7 +79,9 @@ export function DesignLibraryGraph({ model }: DesignEditorProps) {
         <Controls showInteractive={false} />
       </ReactFlow>
       {!graph.nodes.length && (
-        <p className="library-graph-empty">{t('No matching assets')}</p>
+        <Text as="p" className="library-graph-empty">
+          {t('No matching assets')}
+        </Text>
       )}
     </div>
   )

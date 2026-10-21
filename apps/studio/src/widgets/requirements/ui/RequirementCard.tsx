@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { Workflow, MoreHorizontal } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -37,8 +38,8 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
           onClick={() => model.selectRequirement(item.id)}
           aria-pressed={model.selected === item.id}
         >
-          <small>{item.id}</small>
-          <strong>{item.title}</strong>
+          <Text as="small">{item.id}</Text>
+          <Text as="strong">{item.title}</Text>
         </button>
         <RequirementAvatars people={people} currentUserId={model.profile.id} />
         <input
@@ -49,15 +50,17 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
         />
       </div>
       <div className="req-card-meta">
-        <span className="req-card-category">{t(item.category)}</span>
+        <Text as="span" className="req-card-category">
+          {t(item.category)}
+        </Text>
         <RequirementBadge
           field={model.groupBy === 'status' ? 'priority' : 'status'}
           value={model.groupBy === 'status' ? item.priority : item.status}
         />
-        <span className="req-card-links">
+        <Text as="span" className="req-card-links">
           <Workflow size={12} />
           {t('boardCount', { count: links })}
-        </span>
+        </Text>
         <button
           ref={handlers.menuButton}
           className="icon-button req-card-menu-toggle"
@@ -70,12 +73,14 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
       </div>
       {!!editors.length && (
         <div className="req-card-editing">
-          {editors.map((person) => person.profile.name).join(', ')} ·{' '}
-          {t('editing')}
+          <Text>{editors.map((person) => person.profile.name).join(', ')}</Text><Text>{' '}</Text>
+          <Text>·</Text>
+          <Text> </Text>
+          <Text>{t('editing')}</Text>
         </div>
       )}
       {model.menuId === item.id && (
-        <label className="req-card-move">
+        <Text as="label" className="req-card-move">
           {t('Move to')}
           <StudioSelect
             ref={handlers.menu}
@@ -89,7 +94,7 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
               </option>
             ))}
           </StudioSelect>
-        </label>
+        </Text>
       )}
     </article>
   )

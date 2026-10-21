@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Palette, PanelRight } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -52,7 +53,7 @@ export function DesignPanelActions({
           onClick={toggleStyles}
         >
           <Palette size={18} />
-          <span>{t('Styles')}</span>
+          <Text as="span">{t('Styles')}</Text>
         </button>
       )}
       <button
@@ -63,7 +64,7 @@ export function DesignPanelActions({
         onClick={toggleProperties}
       >
         <PanelRight size={18} />
-        <span>{t('Properties')}</span>
+        <Text as="span">{t('Properties')}</Text>
       </button>
     </div>
   )

@@ -1,7 +1,4 @@
-import type {
-  StudioSummary,
-  WorkspaceMember,
-} from '@aril/domain/studios'
+import type { StudioSummary, WorkspaceMember } from '@aril/domain/studios'
 export type SettingsState = {
   section: 'file' | 'user' | 'app' | 'agents'
   role: StudioSummary['role'] | null

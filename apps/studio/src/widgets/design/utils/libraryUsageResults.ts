@@ -1,7 +1,4 @@
-import type {
-  DesignLibrary,
-  DesignUsage,
-} from '@aril/domain/designLibrary'
+import type { DesignLibrary, DesignUsage } from '@aril/domain/designLibrary'
 import { libraryIndirectUsage } from './libraryIndirectUsage.ts'
 export function libraryUsageResults(
   usage: DesignUsage[],

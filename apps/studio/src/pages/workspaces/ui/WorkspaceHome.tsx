@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { InvitationInbox } from '@/features/invitations/index.ts'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
@@ -35,7 +36,7 @@ export function WorkspaceHome({
       <header className="workspace-library-header">
         <a className="brand" href="/app">
           <ProductLogo />
-          <span>{getProductBranding().productName}</span>
+          <Text as="span">{getProductBranding().productName}</Text>
         </a>
         <div className="workspace-home-account">
           {!profile.guestExpiresAt && !isDemoMode() && <InvitationInbox />}
@@ -53,24 +54,24 @@ export function WorkspaceHome({
           onCreate={create}
         />
         {notice && (
-          <p className="workspace-notice" role="status">
+          <Text as="p" className="workspace-notice" role="status">
             {notice}
-          </p>
+          </Text>
         )}
         {hostedOrigin && !profile.guestExpiresAt && (
           <div className="workspace-hosted">
-            <span>{t('Your shared studio is ready online.')}</span>
+            <Text as="span">{t('Your shared studio is ready online.')}</Text>
             <button className="button" disabled={busy} onClick={openHosted}>
-              {t('Open hosted studio')}
+              <Text>{t('Open hosted studio')}</Text>
               <ArrowUpRight size={15} />
             </button>
           </div>
         )}
         {error && !creating && !state.management && (
           <div className="workspace-list-error" role="alert">
-            <p>{error}</p>
+            <Text as="p">{error}</Text>
             <button className="button" onClick={state.retry}>
-              {t('Try again')}
+              <Text>{t('Try again')}</Text>
             </button>
           </div>
         )}
@@ -98,7 +99,7 @@ export function WorkspaceHome({
             onClick={create}
           >
             <Plus size={18} />
-            {t('New workspace')}
+            <Text>{t('New workspace')}</Text>
           </button>
         )}
       </footer>

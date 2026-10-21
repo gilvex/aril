@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { CursorMessage } from '@/entities/collaboration/index.ts'
 import { MessageSquare } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -26,7 +27,7 @@ export function CursorChat(props: CursorChatProps) {
           className="self-cursor-message"
           style={{ left: model.x, top: model.y }}
         >
-          <strong>{props.profile.name}</strong>
+          <Text as="strong">{props.profile.name}</Text>
           <CursorMessage
             chat={{ text: model.text, expiresAt: model.expiresAt }}
           />
@@ -38,7 +39,7 @@ export function CursorChat(props: CursorChatProps) {
           className="cursor-chat-composer"
           style={{ left: model.x, top: model.y }}
         >
-          <strong>{props.profile.name}:</strong>
+          <Text as="strong">{props.profile.name}:</Text>
           <input
             autoFocus
             maxLength={160}

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { RotateCcw } from 'lucide-react'
 import { useRevisionHistoryItemHandlers } from '../model/useRevisionHistoryItemHandlers.tsx'
@@ -28,7 +29,7 @@ export function RevisionHistoryItem({
       onClick={handleClick}
     >
       <RotateCcw size={14} />
-      {t('Restore')}
+      <Text>{t('Restore')}</Text>
     </button>
   )
 }

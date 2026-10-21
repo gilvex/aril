@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { Workflow, PenTool, Check } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -31,10 +32,10 @@ export function BoardTypeChoices({
   ] as const
   return (
     <fieldset className="board-type-choices">
-      <legend>{t('Start with')}</legend>
+      <Text as="legend">{t('Start with')}</Text>
       <div className="board-type-grid">
         {choices.map(({ value, title, description, Icon }) => (
-          <label className="board-type-card" key={value}>
+          <Text as="label" className="board-type-card" key={value}>
             <input
               type="radio"
               name="boardType"
@@ -42,13 +43,13 @@ export function BoardTypeChoices({
               checked={newBoardType === value}
               onChange={choose}
             />
-            <span className="board-type-visual">
+            <Text as="span" className="board-type-visual">
               <Icon size={28} strokeWidth={1.5} />
               <Check className="board-type-check" size={14} />
-            </span>
-            <strong>{t(title)}</strong>
-            <small>{t(description)}</small>
-          </label>
+            </Text>
+            <Text as="strong">{t(title)}</Text>
+            <Text as="small">{t(description)}</Text>
+          </Text>
         ))}
       </div>
     </fieldset>

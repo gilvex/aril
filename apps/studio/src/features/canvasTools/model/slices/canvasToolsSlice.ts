@@ -4,6 +4,7 @@ import type { CanvasToolMode } from '../../types/canvasToolMode.ts'
 
 const initialState: CanvasToolsState = {
   mode: 'shapes',
+  selectedStrokes: [],
   drawing: null,
   color: '#799fee',
   width: 3,
@@ -18,6 +19,7 @@ export const canvasToolsSlice = createSlice({
   reducers: {
     mode(state, action: PayloadAction<CanvasToolMode>) {
       state.mode = action.payload
+      state.selectedStrokes = []
       state.drawing = null
       state.draft = null
       state.pointerId = null

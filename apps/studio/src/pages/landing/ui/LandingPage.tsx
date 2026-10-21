@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { ThemePicker } from '@/features/appearance/index.ts'
@@ -14,7 +15,7 @@ export function LandingPage() {
   return (
     <div className="landing-page">
       <a className="landing-skip" href="#landing-main">
-        {t('Skip to content')}
+        <Text>{t('Skip to content')}</Text>
       </a>
       <div className="landing-stage" id="top">
         <LandingHeader />
@@ -27,15 +28,17 @@ export function LandingPage() {
             aria-labelledby="access-title"
           >
             <div className="landing-access-copy">
-              <h2 id="access-title">{t('Work with your team')}</h2>
-              <p>
+              <Text as="h2" id="access-title">
+                {t('Work with your team')}
+              </Text>
+              <Text as="p">
                 {t(
                   'Sign in to create your own workspace, return to your projects, or accept an invitation from your team.',
                 )}
-              </p>
+              </Text>
             </div>
             <a className="landing-button landing-button-primary" href="/app">
-              {t('Open your workspace')}
+              <Text>{t('Open your workspace')}</Text>
             </a>
           </section>
         </main>
@@ -43,15 +46,15 @@ export function LandingPage() {
           <div className="landing-footer-top">
             <a className="landing-brand" href="#top">
               <ProductLogo width="28" height="28" />
-              <span>{getProductBranding().productName}</span>
+              <Text as="span">{getProductBranding().productName}</Text>
             </a>
-            <p>{t('Planning studio')}</p>
+            <Text as="p">{t('Planning studio')}</Text>
             <ProjectLinks />
           </div>
           <div className="landing-footer-bottom">
-            <p>
+            <Text as="p">
               {t('A planning studio. Deployment execution is not available.')}
-            </p>
+            </Text>
             <div className="landing-footer-preferences">
               <ThemePicker />
               <InstallApp />

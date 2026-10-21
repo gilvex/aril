@@ -26,3 +26,17 @@ try {
 } catch {
   document.documentElement.dataset.accent = 'berry'
 }
+
+// Localize the static loading screen before React and its dictionary arrive.
+var startupLanguage =
+  typeof navigator !== 'undefined' && navigator.language.startsWith('ru')
+    ? 'ru'
+    : 'en'
+try {
+  var savedLanguage = localStorage.getItem('pomegranate-language')
+  if (savedLanguage === 'ru' || savedLanguage === 'en')
+    startupLanguage = savedLanguage
+} catch {
+  // Browser language remains available when storage is blocked.
+}
+document.documentElement.lang = startupLanguage

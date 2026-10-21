@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Copy, Trash2 } from 'lucide-react'
@@ -21,13 +22,13 @@ export function WireframeMultiSelection({
   })
   return (
     <div className="inspector-body">
-      <h2>{t('Arrange together.')}</h2>
-      <p>
+      <Text as="h2">{t('Arrange together.')}</Text>
+      <Text as="p">
         {t(
           'Drag any selected block to move the group. Screen contents move with their frame.',
         )}
-      </p>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Appearance')}
         <StudioSelect value="" onChange={handleChange}>
           <option value="" disabled>
@@ -37,14 +38,14 @@ export function WireframeMultiSelection({
           <option value="soft">{t('Soft')}</option>
           <option value="accent">{t('Accent')}</option>
         </StudioSelect>
-      </label>
+      </Text>
       <button className="button" onClick={duplicate}>
         <Copy size={14} />
-        {t('Duplicate selection')}
+        <Text>{t('Duplicate selection')}</Text>
       </button>
       <button className="button danger" onClick={handleClick}>
         <Trash2 size={14} />
-        {t('Delete selected blocks')}
+        <Text>{t('Delete selected blocks')}</Text>
       </button>
     </div>
   )

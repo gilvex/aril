@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { JoinWorkspaceButton } from '@/features/invitations/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -28,9 +29,10 @@ export function WorkspaceToolbar({
   const clear = useCallback(() => onSearch(''), [onSearch])
   return (
     <div className="workspace-toolbar">
-      <h1>
-        {t('Workspaces')} {count !== undefined && <span>{count}</span>}
-      </h1>
+      <Text as="h1">
+        {t('Workspaces')}{' '}
+        {count !== undefined && <Text as="span">{count}</Text>}
+      </Text>
       <div className="workspace-search">
         <Search size={17} />
         <input
@@ -65,7 +67,7 @@ export function WorkspaceToolbar({
           onClick={onCreate}
         >
           <Plus size={16} />
-          {t('New workspace')}
+          <Text>{t('New workspace')}</Text>
         </button>
       )}
     </div>

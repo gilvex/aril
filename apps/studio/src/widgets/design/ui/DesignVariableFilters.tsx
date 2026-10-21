@@ -12,12 +12,16 @@ export function DesignVariableFilters({ model }: DesignEditorProps) {
     [patch],
   )
   const type = useCallback(
-    (e: SelectChange) => patch({ variableType: e.target.value, variableLimit: 50 }),
+    (e: SelectChange) =>
+      patch({ variableType: e.target.value, variableLimit: 50 }),
     [patch],
   )
   const used = useCallback(
     (e: SelectChange) =>
-      patch({ variableUsage: e.target.value as 'all' | 'used' | 'unused', variableLimit: 50 }),
+      patch({
+        variableUsage: e.target.value as 'all' | 'used' | 'unused',
+        variableLimit: 50,
+      }),
     [patch],
   )
   return (

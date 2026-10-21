@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type SubmitEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
@@ -49,7 +50,7 @@ export function UsernameEditor({
   if (profile.guestExpiresAt) return null
   return (
     <form onSubmit={submit} className="invitation-form username-editor">
-      <label>
+      <Text as="label">
         {t('Username')}
         <Input
           aria-label={t('Username')}
@@ -64,16 +65,20 @@ export function UsernameEditor({
           disabled={busy || isDemoMode()}
           maxLength={30}
         />
-      </label>
+      </Text>
       {!setup && (
-        <small className="current-username">@{profile.username}</small>
+        <Text as="small" className="current-username">
+          @{profile.username}
+        </Text>
       )}
-      <p>{t('People can find you by username or your exact email address.')}</p>
-      <p>
+      <Text as="p">
+        {t('People can find you by username or your exact email address.')}
+      </Text>
+      <Text as="p">
         {t(
           'Use 3–30 letters, numbers or underscores. Start with a letter; user_ is reserved.',
         )}
-      </p>
+      </Text>
       {setup && (
         <Button
           type="button"
@@ -82,11 +87,19 @@ export function UsernameEditor({
           disabled={busy}
           onClick={suggest}
         >
-          {t('Suggest another username')}
+          <Text>{t('Suggest another username')}</Text>
         </Button>
       )}
-      {error && <p role="alert">{t(error)}</p>}
-      {message && <p role="status">{t(message)}</p>}
+      {error && (
+        <Text as="p" role="alert">
+          {t(error)}
+        </Text>
+      )}
+      {message && (
+        <Text as="p" role="status">
+          {t(message)}
+        </Text>
+      )}
       <Button
         type="submit"
         className="button primary"
@@ -94,7 +107,9 @@ export function UsernameEditor({
           busy || !valid || username === profile.username || isDemoMode()
         }
       >
-        {t(busy ? 'Saving…' : setup ? 'Save and continue' : 'Save username')}
+        <Text>
+          {t(busy ? 'Saving…' : setup ? 'Save and continue' : 'Save username')}
+        </Text>
       </Button>
     </form>
   )

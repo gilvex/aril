@@ -1,3 +1,4 @@
+import { Text } from './Text.tsx'
 import { ContextMenu } from 'radix-ui'
 import { useCallback } from 'react'
 import type { EditorMenuProps } from '../types/editorMenuProps.ts'
@@ -39,8 +40,8 @@ export function EditorContextMenu({
               disabled={action.disabled}
               onSelect={action.run}
             >
-              <span>{action.label}</span>
-              {action.shortcut && <kbd>{action.shortcut}</kbd>}
+              <Text as="span">{action.label}</Text>
+              {action.shortcut && <Text as="kbd">{action.shortcut}</Text>}
             </ContextMenu.Item>
           ))}
         </ContextMenu.Content>

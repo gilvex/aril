@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -31,10 +32,12 @@ export function DesignVariableTable({
       <table>
         <thead>
           <tr>
-            <th>{t('Name')}</th>
-            <th>{t('Type')}</th>
+            <Text as="th">{t('Name')}</Text>
+            <Text as="th">{t('Type')}</Text>
             {collection.modes.map((m) => (
-              <th key={m}>{m}</th>
+              <Text as="th" key={m}>
+                {m}
+              </Text>
             ))}
             <th />
           </tr>
@@ -50,19 +53,19 @@ export function DesignVariableTable({
           ))}
         </tbody>
       </table>
-      <p>
+      <Text as="p">
         {t('Showing {{start}}–{{end}} of {{total}} items', {
           start: variables.length ? 1 : 0,
           end: Math.min(variableLimit, variables.length),
           total: variables.length,
         })}
-      </p>
+      </Text>
       {variables.length > variableLimit && (
         <Button variant="outline" size="sm" onClick={more}>
-          {t('Show more')}
+          <Text>{t('Show more')}</Text>
         </Button>
       )}
-      {!variables.length && <p>{t('No matching variables')}</p>}
+      {!variables.length && <Text as="p">{t('No matching variables')}</Text>}
     </div>
   )
 }

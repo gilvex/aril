@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { X } from 'lucide-react'
 import { SurfaceGrip, StudioSelect } from '@/shared/ui/index.tsx'
@@ -59,7 +60,7 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
     <aside className="design-inspector design-machine-inspector">
       <header>
         <SurfaceGrip />
-        <strong>{t('Behavior')}</strong>
+        <Text as="strong">{t('Behavior')}</Text>
         <button
           className="icon-button"
           onClick={close}
@@ -75,8 +76,8 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
           data-collaboration-scope={`machine:${machine.id}`}
         >
           <section>
-            <h3>{t('State machine')}</h3>
-            <label>
+            <Text as="h3">{t('State machine')}</Text>
+            <Text as="label">
               {t('Name')}
               <input
                 name="name"
@@ -84,8 +85,8 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
                 onChange={name}
                 maxLength={120}
               />
-            </label>
-            <label>
+            </Text>
+            <Text as="label">
               {t('Initial state')}
               <StudioSelect value={machine.initial} onChange={initial}>
                 {Object.values(machine.states).map((s) => (
@@ -94,8 +95,8 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
                   </option>
                 ))}
               </StudioSelect>
-            </label>
-            <label>
+            </Text>
+            <Text as="label">
               {t('Preview component')}
               <StudioSelect
                 value={machine.componentId || ''}
@@ -108,20 +109,25 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
                   </option>
                 ))}
               </StudioSelect>
-            </label>
+            </Text>
           </section>
           {model.machineSelection?.kind === 'state' && (
             <DesignMachineStateProperties model={model} />
-          )}{' '}
+          )}
+          <Text> </Text>
           {model.machineSelection?.kind === 'transition' && (
             <DesignMachineTransitionProperties model={model} />
           )}
           <section>
             <button className="button subtle danger" onClick={remove}>
-              {t('Delete state machine')}
+              <Text>{t('Delete state machine')}</Text>
             </button>
           </section>
-          {model.libraryError && <p role="alert">{model.libraryError}</p>}
+          {model.libraryError && (
+            <Text as="p" role="alert">
+              {model.libraryError}
+            </Text>
+          )}
         </fieldset>
       )}
     </aside>

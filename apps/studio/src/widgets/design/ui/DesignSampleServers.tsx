@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Search, Box, RotateCw } from 'lucide-react'
 import { useCallback, useMemo } from 'react'
@@ -61,7 +62,7 @@ export function DesignSampleServers({
   return (
     <>
       <div className="design-sample-tools">
-        <label>
+        <Text as="label">
           <Search size={16} />
           <input
             aria-label={t('Search sample servers')}
@@ -69,25 +70,28 @@ export function DesignSampleServers({
             value={query}
             onChange={(e) => patch({ query: e.target.value })}
           />
-        </label>
-        <span>{t('{{count}} selected', { count: selected.length })}</span>
+        </Text>
+        <Text as="span">
+          {t('{{count}} selected', { count: selected.length })}
+        </Text>
       </div>
       <div className="design-sample-table">
         <div className="design-sample-table-head">
-          <span>{t('Server')}</span>
-          <span>{t('Status')}</span>
-          <span>CPU</span>
-          <span>{t('Memory')}</span>
+          <Text as="span">{t('Server')}</Text>
+          <Text as="span">{t('Status')}</Text>
+          <Text as="span">CPU</Text>
+          <Text as="span">{t('Memory')}</Text>
         </div>
         {visible.map((server) => (
-          <label
+          <Text
+            as="label"
             key={server.name}
             className={
               'design-sample-row ' +
               (selected.includes(server.name) ? 'selected' : '')
             }
           >
-            <span className="design-sample-server">
+            <Text as="span" className="design-sample-server">
               <input
                 type="checkbox"
                 aria-label={server.name}
@@ -95,47 +99,54 @@ export function DesignSampleServers({
                 onChange={() => toggle(server.name)}
               />
               <Box size={19} />
-              <span>
-                <strong>{server.name}</strong>
-                <small>Paper 1.21 · :{server.port}</small>
-              </span>
-            </span>
-            <span
+              <Text as="span">
+                <Text as="strong">{server.name}</Text>
+                <Text as="small">Paper 1.21 · :{server.port}</Text>
+              </Text>
+            </Text>
+            <Text
+              as="span"
               className={'design-sample-status ' + server.status.toLowerCase()}
             >
               {t(server.status)}
-            </span>
-            <span className="design-sample-metric">{server.cpu}</span>
-            <span className="design-sample-metric">{server.memory}</span>
-          </label>
+            </Text>
+            <Text as="span" className="design-sample-metric">
+              {server.cpu}
+            </Text>
+            <Text as="span" className="design-sample-metric">
+              {server.memory}
+            </Text>
+          </Text>
         ))}
-        {!visible.length && <p>{t('No matching servers')}</p>}
+        {!visible.length && <Text as="p">{t('No matching servers')}</Text>}
       </div>
       {!!selected.length && (
         <div className="design-sample-batch">
-          <span>{t('{{count}} selected', { count: selected.length })}</span>
+          <Text as="span">
+            {t('{{count}} selected', { count: selected.length })}
+          </Text>
           <button onClick={restart}>
             <RotateCw size={14} />
-            {t('Restart sample')}
+            <Text>{t('Restart sample')}</Text>
           </button>
           <button onClick={() => setSelected([])}>
-            {t('Clear selection')}
+            <Text>{t('Clear selection')}</Text>
           </button>
         </div>
       )}
       {notice && (
-        <p role="status" className="design-sample-notice">
+        <Text as="p" role="status" className="design-sample-notice">
           {notice}
-        </p>
+        </Text>
       )}
       <div className="design-sample-recipe">
         <Box size={17} />
-        <span>
-          <strong>{t('Server blueprint')} v1.2</strong>
-          <small>
+        <Text as="span">
+          <Text as="strong">{t('Server blueprint')} v1.2</Text>
+          <Text as="small">
             {t('Versioned game layer')} → {t('3 instances')}
-          </small>
-        </span>
+          </Text>
+        </Text>
       </div>
     </>
   )

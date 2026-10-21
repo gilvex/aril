@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Spinner } from '@/shared/ui/index.tsx'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -34,7 +35,7 @@ export function ProfileForm({
     <form onSubmit={handleSubmit}>
       <div className="profile-picture-editor">
         <Avatar profile={{ ...profile, name: name || profile.name, avatar }} />
-        <label className="button">
+        <Text as="label" className="button">
           {t('Change picture')}
           <input
             aria-label={t('Upload profile picture')}
@@ -43,18 +44,18 @@ export function ProfileForm({
             accept="image/png,image/jpeg,image/webp"
             onChange={handleUploadProfilePictureChange}
           />
-        </label>
+        </Text>
         {avatar && (
           <button
             type="button"
             className="text-button"
             onClick={() => setAvatar('')}
           >
-            {t('Remove')}
+            <Text>{t('Remove')}</Text>
           </button>
         )}
       </div>
-      <label>
+      <Text as="label">
         {t('Display name')}
         <input
           aria-label={t('Display name')}
@@ -63,13 +64,13 @@ export function ProfileForm({
           onChange={(event) => setName(event.target.value)}
           required
         />
-      </label>
-      <p className="collaboration-hint">
+      </Text>
+      <Text as="p" className="collaboration-hint">
         {t('Your name and picture appear beside your cursor and in the team.')}
-      </p>
+      </Text>
       <button className="button primary" disabled={busy || !name.trim()}>
         {busy && <Spinner />}
-        {busy ? t('Saving…') : t('Save profile')}
+        <Text>{busy ? t('Saving…') : t('Save profile')}</Text>
       </button>
     </form>
   )

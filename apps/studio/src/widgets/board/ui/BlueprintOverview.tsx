@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { BoardScope } from './BoardScope.tsx'
 import { useCallback, useMemo, useRef, type MouseEvent } from 'react'
 import { ChevronRight, CircleHelp } from 'lucide-react'
@@ -29,7 +30,7 @@ export function BlueprintOverview(props: BlueprintOverviewProps) {
   )
   return (
     <div className="inspector-body board-overview">
-      <label>
+      <Text as="label">
         {t('Board name')}
         <input
           ref={title}
@@ -41,8 +42,8 @@ export function BlueprintOverview(props: BlueprintOverviewProps) {
               update({ ...board, name: event.target.value })
           }}
         />
-      </label>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Description')}
         <textarea
           value={board.description}
@@ -53,40 +54,42 @@ export function BlueprintOverview(props: BlueprintOverviewProps) {
             update({ ...board, description: event.target.value })
           }
         />
-      </label>
+      </Text>
       <dl className="board-overview-metrics">
         <div>
-          <dd>{board.nodes.length}</dd>
-          <dt>{t('Nodes')}</dt>
+          <Text as="dd">{board.nodes.length}</Text>
+          <Text as="dt">{t('Nodes')}</Text>
         </div>
         <div>
-          <dd>{board.edges.length}</dd>
-          <dt>{t('Connections')}</dt>
+          <Text as="dd">{board.edges.length}</Text>
+          <Text as="dt">{t('Connections')}</Text>
         </div>
         <div>
-          <dd>
+          <Text as="dd">
             {
               board.nodes.filter((node) => node.data.status === 'Decided')
                 .length
             }
-          </dd>
-          <dt>{t('Decided')}</dt>
+          </Text>
+          <Text as="dt">{t('Decided')}</Text>
         </div>
       </dl>
       <section className="board-overview-section">
-        <h3>
+        <Text as="h3">
           {t('Open questions')}
-          <span>{questions.length}</span>
-        </h3>
+          <Text as="span">{questions.length}</Text>
+        </Text>
         <div className="board-overview-list">
           {questions.map((node) => (
             <button key={node.id} data-id={node.id} onClick={selectQuestion}>
               <CircleHelp className="question-indicator" size={14} />
-              <span>{node.data.title}</span>
+              <Text as="span">{node.data.title}</Text>
               <ChevronRight size={14} />
             </button>
           ))}
-          {!questions.length && <p>{t('No open questions on this board.')}</p>}
+          {!questions.length && (
+            <Text as="p">{t('No open questions on this board.')}</Text>
+          )}
         </div>
       </section>
       <BoardScope

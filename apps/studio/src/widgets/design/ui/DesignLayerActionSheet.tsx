@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useEffect, useRef, type MouseEvent } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -59,7 +60,7 @@ export function DesignLayerActionSheet({ model }: DesignEditorProps) {
         >
           <ArrowLeft size={18} />
         </button>
-        <strong>{node?.name ?? t('Layer actions')}</strong>
+        <Text as="strong">{node?.name ?? t('Layer actions')}</Text>
       </header>
       <div className="design-layer-action-list">
         {actions.map((action) => (
@@ -70,7 +71,7 @@ export function DesignLayerActionSheet({ model }: DesignEditorProps) {
             disabled={action.disabled}
             onClick={run}
           >
-            {action.label}
+            <Text>{action.label}</Text>
           </button>
         ))}
       </div>

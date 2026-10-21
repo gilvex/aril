@@ -12,9 +12,7 @@ export type StudioContentProps = {
   navigationCollapsed: boolean
   setNavigationCollapsed: (value: boolean) => void
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
-  onWorkspaces: (
-    profile: import('@aril/domain/collaboration').Profile,
-  ) => void
+  onWorkspaces: (profile: import('@aril/domain/collaboration').Profile) => void
   multiplayer: ReturnType<
     typeof import('@/features/liveSession/index.ts').useMultiplayer
   >

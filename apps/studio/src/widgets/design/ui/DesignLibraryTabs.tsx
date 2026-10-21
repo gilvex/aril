@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -21,8 +22,12 @@ export function DesignLibraryTabs({ model }: DesignEditorProps) {
       className="design-library-tabs"
       aria-label={t('Design tools')}
     >
-      <ToggleGroupItem value="layers">{t('Layers')}</ToggleGroupItem>
-      <ToggleGroupItem value="library">{t('Library')}</ToggleGroupItem>
+      <ToggleGroupItem value="layers">
+        <Text>{t('Layers')}</Text>
+      </ToggleGroupItem>
+      <ToggleGroupItem value="library">
+        <Text>{t('Library')}</Text>
+      </ToggleGroupItem>
     </ToggleGroup>
   )
 }

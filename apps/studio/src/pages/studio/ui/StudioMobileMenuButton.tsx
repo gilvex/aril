@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Menu } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { StudioBottomNavigationProps } from '../types/studioBottomNavigationProps.ts'
@@ -19,7 +20,7 @@ export function StudioMobileMenuButton({
       onClick={() => setSidebarOpen(true)}
     >
       <Menu size={21} />
-      <span>{t('Menu')}</span>
+      <Text as="span">{t('Menu')}</Text>
     </button>
   )
 }

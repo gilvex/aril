@@ -1,8 +1,5 @@
 import type { Workspace } from '@aril/domain/workspace'
-import type {
-  DesignLibrary,
-  DesignComponent,
-} from '@aril/domain/designLibrary'
+import type { DesignLibrary, DesignComponent } from '@aril/domain/designLibrary'
 import type { DesignPage, DesignElement } from '@aril/domain/design'
 import type { useDesignEditorState } from '../model/useDesignEditorState.ts'
 export type UseDesignLibraryProps = {
