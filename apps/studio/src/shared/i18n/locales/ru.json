@@ -1452,5 +1452,6 @@
   "A persistent source-code link is available in both modes, including mobile. Installed apps open the studio directly.": "Постоянная ссылка на исходный код доступна в обоих режимах, в том числе на мобильных устройствах. Установленное приложение открывает студию.",
   "Revoked guest links no longer hide active links from the management list. Regression checks cover entry routes, access controls and browser workflows.": "Отозванные гостевые ссылки больше не скрывают действующие ссылки в списке. Проверки охватывают маршруты входа, права доступа и сценарии в браузере.",
   "Isolated studio sign-in with configured providers, an example blueprint and a persistent source-code link.": "Изолированный экран входа с настроенными провайдерами, примером схемы и постоянной ссылкой на исходный код.",
-  "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.": "Непрерывная запись тестового сценария: переход с сайта к входу в студию, смена языка и ссылка на исходный код."
+  "Continuous fixture recording moving from the public home to studio sign-in, changing language and finding the source-code link.": "Непрерывная запись тестового сценария: переход с сайта к входу в студию, смена языка и ссылка на исходный код.",
+  "Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.": "При изменении ширины кнопки входа через Google фокус клавиатуры сохраняется; этот сценарий проверяется в браузере."
 }

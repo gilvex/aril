@@ -9,6 +9,7 @@ export const releases: ReleaseEntry[] = [
     summary:
       'The public home and the working studio now have separate routes. Self-hosted installations open the studio directly.',
     changes: [
+      'Google sign-in keeps keyboard focus when its control resizes; browser checks cover the resize race.',
       'Sign in and manage workspaces at /app; the public home stays at / and editors keep their /w/... URLs. Invitations, guest access and account transfers retain their destinations.',
       'Self-hosted deployments hide the landing page by default. The configured aril.studio origin enables it, with an explicit runtime override for other deployments.',
       'A persistent source-code link is available in both modes, including mobile. Installed apps open the studio directly.',

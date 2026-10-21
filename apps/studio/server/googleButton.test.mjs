@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { renderResponsiveGoogleButton } from '../src/features/googleSignIn/utils/renderResponsiveGoogleButton.ts'
-test('Google button follows available width without repeated shrink renders and cleans up', (t) => {
+test('Google button scales its existing hit target without replacing focused SDK content and cleans up', (t) => {
   let resize = () => {}
   let frame
   let disconnected = false
   let width = 0
+  const scales = []
+  let replacements = 0
   const themes = []
   const widths = []
   const originals = [
@@ -54,10 +56,12 @@ test('Google button follows available width without repeated shrink renders and 
     style: {
       setProperty: (key, value) => {
         assert.equal(key, '--google-sdk-scale-x')
-        assert.ok(Number(value) >= 1)
+        scales.push(Number(value))
       },
     },
-    replaceChildren() {},
+    replaceChildren() {
+      replacements++
+    },
   }
   const api = {
     accounts: {
@@ -88,9 +92,14 @@ test('Google button follows available width without repeated shrink renders and 
   width = 342.8
   resize()
   frame?.()
-  assert.deepEqual(widths, ['400', '342'])
-  assert.deepEqual(themes, ['outline', 'outline'])
-  assert.deepEqual(widths, ['400', '342'])
+  assert.deepEqual(widths, ['400'])
+  assert.deepEqual(themes, ['outline'])
+  assert.equal(
+    replacements,
+    1,
+    'resizing must not detach a focused SDK element',
+  )
+  assert.deepEqual(scales, [520 / 400, 342 / 400, 342 / 400, 342 / 400])
   width = 280
   resize()
   stop()
