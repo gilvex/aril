@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
 import { designDockLayout } from '../utils/designDockLayout.ts'
@@ -14,7 +15,7 @@ export function DesignDockPreview({ model }: DesignEditorProps) {
   const rect = designDockLayout(next).panels[preview.side]
   return (
     <div className="design-dock-preview" style={rect} aria-hidden="true">
-      <span>
+      <Text as="span">
         {t(
           {
             left: 'Dock panel left',
@@ -23,7 +24,7 @@ export function DesignDockPreview({ model }: DesignEditorProps) {
             bottom: 'Dock panel bottom',
           }[preview.edge],
         )}
-      </span>
+      </Text>
     </div>
   )
 }

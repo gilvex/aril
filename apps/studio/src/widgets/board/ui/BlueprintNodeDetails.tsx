@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { BlueprintIconPicker } from './BlueprintIconPicker.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -37,10 +38,10 @@ export function BlueprintNodeDetails({
   })
   return (
     <div className="inspector-body" key={node.id}>
-      <span className={`detail-kind kind-${node.data.kind}`}>
+      <Text as="span" className={`detail-kind kind-${node.data.kind}`}>
         {t(kindLabels[node.data.kind])}
-      </span>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Title')}
         <input
           disabled={readOnly}
@@ -50,8 +51,8 @@ export function BlueprintNodeDetails({
           maxLength={120}
           onChange={(e) => updateNode({ title: e.target.value })}
         />
-      </label>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Description')}
         <textarea
           readOnly={readOnly}
@@ -61,19 +62,22 @@ export function BlueprintNodeDetails({
           rows={3}
           onChange={(e) => updateNode({ description: e.target.value })}
         />
-      </label>
-      <BlueprintIconPicker
-        node={node}
-        readOnly={readOnly}
-        updateNode={updateNode}
-      />
+      </Text>
+      {node.data.kind === 'block' && (
+        <BlueprintIconPicker
+          key={node.id}
+          node={node}
+          readOnly={readOnly}
+          updateNode={updateNode}
+        />
+      )}
       <BlueprintNodeClassification
         node={node}
         readOnly={readOnly}
         changeKind={changeKind}
         changeStatus={changeStatus}
       />
-      <label>
+      <Text as="label">
         {t('Notes')}
         <textarea
           readOnly={readOnly}
@@ -84,10 +88,10 @@ export function BlueprintNodeDetails({
           maxLength={12000}
           onChange={(e) => updateNode({ notes: e.target.value })}
         />
-      </label>
+      </Text>
       <div className="field-label">
-        {t('Linked requirements')}
-        <span>{node.data.requirements.length}</span>
+        <Text>{t('Linked requirements')}</Text>
+        <Text as="span">{node.data.requirements.length}</Text>
       </div>
       <LinkedRequirements
         node={node}
@@ -113,7 +117,7 @@ export function BlueprintNodeDetails({
       <div className="inspector-actions">
         <button disabled={readOnly} className="button" onClick={duplicateNode}>
           <Copy size={14} />
-          {t('Duplicate')}
+          <Text>{t('Duplicate')}</Text>
         </button>
         <button
           disabled={readOnly}

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasInsertMenuHandlers } from '../model/useCanvasInsertMenuHandlers.tsx'
 
@@ -57,7 +58,7 @@ export function CanvasInsertMenu({
       onContextMenu={(event) => event.preventDefault()}
       onKeyDown={handleKeyDown}
     >
-      <div className="canvas-insert-heading">{title}</div>
+      <div className="canvas-insert-heading"><Text>{title}</Text></div>
       {items.map((item) => (
         <button
           key={item.id}
@@ -69,10 +70,12 @@ export function CanvasInsertMenu({
           }}
         >
           {item.icon}
-          <span>{item.label}</span>
+          <Text as="span">{item.label}</Text>
         </button>
       ))}
-      {disabled && <p>{t('This board has reached its 500-item limit.')}</p>}
+      {disabled && (
+        <Text as="p">{t('This board has reached its 500-item limit.')}</Text>
+      )}
     </div>
   )
 }

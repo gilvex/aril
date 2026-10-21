@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import './federatedSignIn.css'
 import { useCallback, useEffect, useMemo, useSyncExternalStore } from 'react'
 import { request } from '@/shared/api/request.ts'
@@ -64,20 +65,22 @@ export function FederatedSignIn({
   return (
     <div className="federated-signin">
       <button className="button" disabled={state.pending} onClick={start}>
-        {t(
-          state.pending
-            ? 'Opening sign-in…'
-            : link
-              ? 'Connect {{provider}}'
-              : 'Sign in with {{provider}}',
-          { provider: provider === 'yandex' ? t('Yandex ID') : state.label },
-        )}
+        <Text>
+          {t(
+            state.pending
+              ? 'Opening sign-in…'
+              : link
+                ? 'Connect {{provider}}'
+                : 'Sign in with {{provider}}',
+            { provider: provider === 'yandex' ? t('Yandex ID') : state.label },
+          )}
+        </Text>
       </button>
       {(state.failed ||
         new URLSearchParams(location.search).get('authError') === provider) && (
-        <p className="form-error" role="alert">
+        <Text as="p" className="form-error" role="alert">
           {t('Could not sign in. Please try again.')}
-        </p>
+        </Text>
       )}
     </div>
   )

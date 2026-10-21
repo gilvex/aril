@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -12,7 +13,9 @@ export function StudioSidebar(props: StudioContentProps) {
     >
       <header>
         <ProductLogo />
-        <strong title={props.studio.name}>{props.studio.name}</strong>
+        <Text as="strong" title={props.studio.name}>
+          {props.studio.name}
+        </Text>
       </header>
       <StudioDesktopNavigation {...props} />
       <button
@@ -23,7 +26,7 @@ export function StudioSidebar(props: StudioContentProps) {
         onClick={() => props.setView('settings')}
       >
         <Settings size={18} />
-        <span>{t('Settings')}</span>
+        <Text as="span">{t('Settings')}</Text>
       </button>
       <button
         className="sidebar-collapse-control"
@@ -40,7 +43,7 @@ export function StudioSidebar(props: StudioContentProps) {
         ) : (
           <PanelLeftClose size={18} />
         )}
-        <span>{t('Collapse sidebar')}</span>
+        <Text as="span">{t('Collapse sidebar')}</Text>
       </button>
     </aside>
   )

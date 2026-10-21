@@ -4,3 +4,5 @@ export type { InviteUserFormProps } from './inviteUserFormProps.ts'
 export type { InvitationCardProps } from './invitationCardProps.ts'
 export type { InvitationDialogProps } from './invitationDialogProps.ts'
 export type { UsernameEditorProps } from './usernameEditorProps.ts'
+
+export type { InvitationInboxContentProps } from './invitationInboxContentProps.ts'

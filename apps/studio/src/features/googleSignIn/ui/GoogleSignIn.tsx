@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { GoogleSignInControl } from './GoogleSignInControl.tsx'
 import { GoogleSignInStatus } from './GoogleSignInStatus.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -125,11 +126,11 @@ export function GoogleSignIn({ link = false, onSuccess }: GoogleSignInProps) {
       <GoogleSignInControl root={root} link={link} />
       {error && (
         <>
-          <p className="form-error" role="alert">
+          <Text as="p" className="form-error" role="alert">
             {t(error)}
-          </p>
+          </Text>
           <button type="button" className="button" onClick={handleClick}>
-            {t('Try Google again')}
+            <Text>{t('Try Google again')}</Text>
           </button>
         </>
       )}

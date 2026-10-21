@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { type CSSProperties } from 'react'
@@ -31,19 +32,23 @@ export function DesignPreview(props: DesignPreviewProps) {
       style={style}
     >
       <header className="design-sample-brand">
-        <span>
+        <Text as="span">
           <ProductLogo />
           aril
-        </span>
-        <span className="design-sample-avatar">JD</span>
+        </Text>
+        <Text as="span" className="design-sample-avatar">
+          JD
+        </Text>
       </header>
       <div className="design-sample-body">
-        <p className="design-sample-breadcrumb">
+        <Text as="p" className="design-sample-breadcrumb">
           {t('My workspace')} / {t('Weekend servers')}
-        </p>
+        </Text>
         <div className="design-sample-heading">
-          <h2>{t(tab === 'Services' ? 'Servers' : tab)}</h2>
-          <span className="design-sample-tag">{t('Sample data')}</span>
+          <Text as="h2">{t(tab === 'Services' ? 'Servers' : tab)}</Text>
+          <Text as="span" className="design-sample-tag">
+            {t('Sample data')}
+          </Text>
         </div>
         {tab === 'Services' ? (
           <DesignSampleServers {...props} />
@@ -52,7 +57,8 @@ export function DesignPreview(props: DesignPreviewProps) {
         )}
       </div>
       <footer className="design-sample-footer">
-        {t('Preview only')} · {t('Changes here do not affect infrastructure.')}
+        <Text>{t('Preview only')}</Text> <Text>· </Text>
+        <Text>{t('Changes here do not affect infrastructure.')}</Text>
       </footer>
     </div>
   )

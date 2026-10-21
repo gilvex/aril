@@ -46,9 +46,7 @@ export function useMultiplayer(
   })
 
   const noteText = useMemo(createNoteTextChannel, [])
-  const notesChannel = useMemo<
-    import('@aril/domain/noteText').NoteTextChannel
-  >(
+  const notesChannel = useMemo<import('@aril/domain/noteText').NoteTextChannel>(
     () => ({
       send: noteText.send,
       subscribe: (listener) =>

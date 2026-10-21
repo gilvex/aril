@@ -1,6 +1,7 @@
 import type { CanvasToolMode } from './canvasToolMode.ts'
 import type { CanvasStrokes } from '@aril/domain/drawing'
 export type CanvasToolsState = {
+  selectedStrokes: string[]
   mode: CanvasToolMode
   drawing: 'pencil' | 'marker' | 'eraser' | null
   color: string

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -12,8 +13,8 @@ export function LanguagePicker() {
     [i18n],
   )
   return (
-    <label className="theme-picker">
-      <span>{t('Language')}</span>
+    <Text as="label" className="theme-picker">
+      <Text as="span">{t('Language')}</Text>
       <StudioSelect
         aria-label={t('Language')}
         value={i18n.resolvedLanguage || 'en'}
@@ -26,6 +27,6 @@ export function LanguagePicker() {
           Русский
         </option>
       </StudioSelect>
-    </label>
+    </Text>
   )
 }

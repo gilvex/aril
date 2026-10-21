@@ -24,3 +24,36 @@
 .canvas-drawing.is-erasing [data-stroke-id]:hover {
   opacity: 0.2;
 }
+
+.drawing-stroke-hit {
+  pointer-events: stroke;
+  cursor: pointer;
+}
+.drawing-stroke-hit:focus-visible {
+  outline: none;
+  stroke: var(--accent-ink);
+  stroke-opacity: 0.3;
+}
+.drawing-selection-halo {
+  stroke: var(--accent-ink);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.drawing-selection-tools {
+  position: absolute;
+  left: 50%;
+  top: 82px;
+  transform: translateX(-50%);
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-strong);
+  box-shadow: 0 4px 18px #0002;
+  font-size: 13px;
+  max-width: calc(100% - 24px);
+}

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -20,7 +21,7 @@ export function DesignVariableBindings({ model }: DesignEditorProps) {
   if (!node || !Object.keys(model.library.variables).length) return null
   return (
     <details className="design-variable-bindings">
-      <summary>{t('Variable bindings')}</summary>
+      <Text as="summary">{t('Variable bindings')}</Text>
       {Object.entries({
         fill: 'color',
         stroke: 'color',
@@ -32,7 +33,7 @@ export function DesignVariableBindings({ model }: DesignEditorProps) {
         text: 'string',
         hidden: 'boolean',
       }).map(([property, type]) => (
-        <label key={property}>
+        <Text as="label" key={property}>
           {t(
             (
               {
@@ -64,7 +65,7 @@ export function DesignVariableBindings({ model }: DesignEditorProps) {
                 </option>
               ))}
           </StudioSelect>
-        </label>
+        </Text>
       ))}
     </details>
   )

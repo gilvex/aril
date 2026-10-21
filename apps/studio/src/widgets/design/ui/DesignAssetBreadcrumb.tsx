@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ArrowLeft, Component, Workflow, Variable } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -29,8 +30,8 @@ export function DesignAssetBreadcrumb({ model }: DesignEditorProps) {
       </button>
       <Icon size={16} />
       <button onClick={open}>
-        {title}
-        {model.variant && <small> / {model.variant.name}</small>}
+        <Text>{title}</Text>
+        {model.variant && <Text as="small"> / {model.variant.name}</Text>}
       </button>
     </div>
   )

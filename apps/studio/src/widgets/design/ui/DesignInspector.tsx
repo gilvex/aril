@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { DesignInstanceControls } from './DesignInstanceControls.tsx'
 import { DesignVariableBindings } from './DesignVariableBindings.tsx'
 import { DesignImageUrl } from './DesignImageUrl.tsx'
@@ -29,7 +30,7 @@ export function DesignInspector({ model }: DesignEditorProps) {
     >
       <header>
         <SurfaceGrip />
-        <strong>{t('Design')}</strong>
+        <Text as="strong">{t('Design')}</Text>
         <button
           className="icon-button"
           aria-label={t('Close properties')}
@@ -46,11 +47,11 @@ export function DesignInspector({ model }: DesignEditorProps) {
           <div className="design-selection-heading">
             {Icon && <Icon size={16} />}
             {model.selected.length > 1 ? (
-              <strong>
+              <Text as="strong">
                 {t('{{count}} layers selected', {
                   count: model.selected.length,
                 })}
-              </strong>
+              </Text>
             ) : (
               <input
                 aria-label={t('Layer name')}
@@ -66,11 +67,11 @@ export function DesignInspector({ model }: DesignEditorProps) {
             </EditorActionMenu>
           </div>
           {model.selected.length > 1 && (
-            <p className="design-property-hint">
+            <Text as="p" className="design-property-hint">
               {t(
                 'Values show the first layer. Changes apply to all selected layers.',
               )}
-            </p>
+            </Text>
           )}
           <DesignInstanceControls model={model} />
           <DesignGeometry model={model} />
@@ -82,15 +83,15 @@ export function DesignInspector({ model }: DesignEditorProps) {
           )}
           {node.kind === 'image' && (
             <section>
-              <h3>{t('Image URL')}</h3>
+              <Text as="h3">{t('Image URL')}</Text>
               <DesignImageUrl key={node.id} model={model} />
             </section>
           )}
         </fieldset>
       ) : (
-        <p className="design-inspector-empty">
+        <Text as="p" className="design-inspector-empty">
           {t('Select a layer to edit its layout and appearance.')}
-        </p>
+        </Text>
       )}
     </aside>
   )

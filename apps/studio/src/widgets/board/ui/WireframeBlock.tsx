@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeBlockHandlers } from '../model/useWireframeBlockHandlers.tsx'
@@ -56,37 +57,43 @@ export function WireframeBlock({
       >
         {data.kind === 'screen' ? (
           <div className="wire-screen-title">
-            <span className="wire-window-dots">
+            <Text as="span" className="wire-window-dots">
               <i />
               <i />
               <i />
-            </span>
-            <span>{data.title}</span>
+            </Text>
+            <Text as="span">{data.title}</Text>
             <MoreHorizontal size={15} />
           </div>
         ) : data.kind === 'image' ? (
           <>
             <Image size={32} strokeWidth={1.2} />
-            <span>{data.title}</span>
+            <Text as="span">{data.title}</Text>
           </>
         ) : data.kind === 'navigation' ? (
           <>
             <Menu size={18} />
-            <strong>{data.title}</strong>
-            <span>{data.content || 'Overview     Activity     Settings'}</span>
+            <Text as="strong">{data.title}</Text>
+            <Text as="span">
+              {data.content || 'Overview     Activity     Settings'}
+            </Text>
             <span className="wire-avatar-dot" />
           </>
         ) : data.kind === 'input' ? (
           <>
-            <span className="wire-input-label">{data.title}</span>
-            <span className="wire-input-placeholder">
+            <Text as="span" className="wire-input-label">
+              {data.title}
+            </Text>
+            <Text as="span" className="wire-input-placeholder">
               {data.content || 'Placeholder…'}
-            </span>
+            </Text>
           </>
         ) : (
           <>
-            <strong>{data.title}</strong>
-            {data.content && data.kind !== 'button' && <p>{data.content}</p>}
+            <Text as="strong">{data.title}</Text>
+            {data.content && data.kind !== 'button' && (
+              <Text as="p">{data.content}</Text>
+            )}
             {data.kind === 'card' && !data.content && (
               <div className="wire-skeleton">
                 <i />

@@ -1,4 +1,4 @@
-import {useTranslation} from '@/shared/i18n/index.ts'
+import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
 import type { Idea } from '@aril/domain/workspace'
 import { type Node } from '@xyflow/react'
@@ -13,7 +13,7 @@ export function useBlueprintActions({
   setPalette,
   node,
 }: UseBlueprintActionsProps) {
-  const {t}=useTranslation()
+  const { t } = useTranslation()
   const onDelete = useCallback(
     ({ nodes, edges }: { nodes: Node[]; edges: { id: string }[] }) => {
       const nodeIds = new Set(nodes.map((n) => n.id))

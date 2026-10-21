@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -23,7 +24,7 @@ export function DesignVariableUsage({
   )
   return (
     <Button className="button" variant="ghost" size="sm" onClick={show}>
-      {t('{{count}} uses', { count })}
+      <Text>{t('{{count}} uses', { count })}</Text>
     </Button>
   )
 }

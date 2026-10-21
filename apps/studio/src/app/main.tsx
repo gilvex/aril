@@ -23,10 +23,10 @@ import { registerServiceWorker } from './utils/registerServiceWorker.ts'
 
 initializeTheme()
 initializeAccent()
-initializeLanguage()
+const languageReady = initializeLanguage()
 registerServiceWorker()
 
-await loadDeploymentSettings()
+await Promise.all([languageReady, loadDeploymentSettings()])
 document.title = getProductBranding().productName
 const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
 if (favicon) {

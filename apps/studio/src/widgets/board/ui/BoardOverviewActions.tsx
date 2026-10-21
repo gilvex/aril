@@ -1,4 +1,5 @@
-import {insertNodeKinds} from '../config/insertNodeKinds.ts'
+import { Text } from '@/shared/ui/Text.tsx'
+import { insertNodeKinds } from '../config/insertNodeKinds.ts'
 import { useMemo, useRef } from 'react'
 import { MoreHorizontal, Plus } from 'lucide-react'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
@@ -54,7 +55,7 @@ export function BoardOverviewActions({
         <EditorActionMenu actions={insert} label={t('Add node')}>
           <button className="button">
             <Plus size={14} />
-            {t('Add node')}
+            <Text>{t('Add node')}</Text>
           </button>
         </EditorActionMenu>
       )}
@@ -64,7 +65,7 @@ export function BoardOverviewActions({
         focusAfterClose={focusAfterClose}
       >
         <button className="button">
-          {t('Board actions')}
+          <Text>{t('Board actions')}</Text>
           <MoreHorizontal size={14} />
         </button>
       </EditorActionMenu>

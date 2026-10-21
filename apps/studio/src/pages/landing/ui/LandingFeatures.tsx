@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
 export function LandingFeatures() {
@@ -9,58 +10,60 @@ export function LandingFeatures() {
       aria-labelledby="studio-title"
     >
       <div className="landing-section-heading">
-        <h2 id="studio-title">{t('Explore the studio')}</h2>
-        <p>
+        <Text as="h2" id="studio-title">
+          {t('Explore the studio')}
+        </Text>
+        <Text as="p">
           {t(
             'Work across Canvas, Design, Library, Scope, and Notes. Invite teammates to edit together and keep decisions with the project.',
           )}
-        </p>
+        </Text>
       </div>
       <div className="landing-feature-grid">
         <article>
-          <h3>{t('Canvas')}</h3>
-          <p>
+          <Text as="h3">{t('Canvas')}</Text>
+          <Text as="p">
             {t('Map services, dependencies, and user flows on an open canvas.')}
-          </p>
+          </Text>
         </article>
         <article>
-          <h3>{t('Design')}</h3>
-          <p>
+          <Text as="h3">{t('Design')}</Text>
+          <Text as="p">
             {t(
               'Draw interface layouts with nested frames, editable layers, and shared components.',
             )}
-          </p>
+          </Text>
         </article>
         <article>
-          <h3>{t('Library')}</h3>
-          <p>
+          <Text as="h3">{t('Library')}</Text>
+          <Text as="p">
             {t(
               'Reuse components and variables. Follow where each one is used.',
             )}
-          </p>
+          </Text>
         </article>
         <article>
-          <h3>{t('Scope and Notes')}</h3>
-          <p>
+          <Text as="h3">{t('Scope and Notes')}</Text>
+          <Text as="p">
             {t(
               'Track requirements, write project notes, and record decisions with your team.',
             )}
-          </p>
+          </Text>
         </article>
       </div>
       <div className="landing-design-feature">
         <div>
-          <h2>{t('Edit desktop and mobile layouts.')}</h2>
-          <p>
+          <Text as="h2">{t('Edit desktop and mobile layouts.')}</Text>
+          <Text as="p">
             {t(
               'Arrange frames and layers on the design canvas. Reuse components and bind properties to variables from your library.',
             )}
-          </p>
+          </Text>
           <a
             className="landing-text-link"
             href="/w/demo/design?demo=1&board=layers"
           >
-            {t('Try the design canvas')}
+            <Text>{t('Try the design canvas')}</Text>
           </a>
         </div>
         <a

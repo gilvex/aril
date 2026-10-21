@@ -1,7 +1,4 @@
-import {
-  applyOperations,
-  diffWorkspace,
-} from '@aril/domain/collaboration'
+import { applyOperations, diffWorkspace } from '@aril/domain/collaboration'
 import type { Workspace } from '@aril/domain/workspace'
 import type { LiveFieldPreview } from '../types/liveFieldPreview.ts'
 import { projectLiveFields } from './projectLiveFields.ts'

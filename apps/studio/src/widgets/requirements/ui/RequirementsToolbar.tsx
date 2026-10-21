@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useScopeCollection } from '../model/useScopeCollection.ts'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -14,7 +15,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
   const controls = useRequirementsToolbar({ model })
   return (
     <header className="requirements-topbar">
-      <h1>{t('Scope')}</h1>
+      <Text as="h1">{t('Scope')}</Text>
       <div className="requirements-view-picker">
         <StudioSelect
           aria-label={t('Filter scope by board')}
@@ -31,7 +32,8 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
             </option>
           ))}
         </StudioSelect>
-        <span
+        <Text
+          as="span"
           className="requirements-view-count"
           role="status"
           aria-label={t('{{shown}} of {{total}} requirements', {
@@ -42,7 +44,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
           {visibleCount === model.workspace.requirements.length
             ? visibleCount
             : visibleCount + ' / ' + model.workspace.requirements.length}
-        </span>
+        </Text>
       </div>
       <RequirementFilterChips model={model} />
       <div className="requirements-command-group" ref={controls.root}>
@@ -54,7 +56,7 @@ export function RequirementsToolbar({ model }: RequirementsViewProps) {
           onClick={controls.addRequirement}
         >
           <Plus size={16} />
-          {t('Add')}
+          <Text>{t('Add')}</Text>
         </button>
       </div>
     </header>

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioActionBar, StudioSelect } from '@/shared/ui/index.tsx'
 import { ActionBarButton } from 'vagabond-ui/action-bar'
@@ -23,14 +24,14 @@ export function RequirementsBulkActions({ model }: RequirementsViewProps) {
       className="requirements-bulk"
       label={t('Bulk requirement actions')}
     >
-      <strong>
+      <Text as="strong">
         {t('{{count}} selected', { count: model.checkedIds.length })}
         {!!hiddenCount && (
-          <small>
+          <Text as="small">
             {t('{{count}} hidden by filters', { count: hiddenCount })}
-          </small>
+          </Text>
         )}
-      </strong>
+      </Text>
       {(['status', 'priority', 'category'] as const).map((field) => (
         <StudioSelect
           key={field}

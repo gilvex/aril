@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { wireLabels } from '@aril/domain/wireframe'
@@ -19,11 +20,11 @@ export function WireframeInteraction({
 
   return (
     <section className="wire-interaction">
-      <h3>
+      <Text as="h3">
         <Link2 size={15} />
         {t('What happens next?')}
-      </h3>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Trigger')}
         <input
           aria-label={t('Flow trigger')}
@@ -31,8 +32,8 @@ export function WireframeInteraction({
           maxLength={120}
           onChange={(e) => setTrigger(e.target.value)}
         />
-      </label>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Destination')}
         <StudioSelect
           aria-label={t('Flow destination')}
@@ -48,7 +49,7 @@ export function WireframeInteraction({
               </option>
             ))}
         </StudioSelect>
-      </label>
+      </Text>
       <button
         className="button"
         disabled={
@@ -59,7 +60,7 @@ export function WireframeInteraction({
         onClick={() => connect(node.id, targetId, trigger.trim() || 'On click')}
       >
         <ArrowRight size={14} />
-        {t('Connect flow')}
+        <Text>{t('Connect flow')}</Text>
       </button>
       {graph.edges
         .filter((e) => e.source === node.id)
@@ -72,9 +73,9 @@ export function WireframeInteraction({
               setSelection(new Set())
             }}
           >
-            {e.label}
+            <Text>{e.label}</Text>
             <ArrowRight size={12} />
-            {graph.nodes.find((n) => n.id === e.target)?.data.title}
+            <Text>{graph.nodes.find((n) => n.id === e.target)?.data.title}</Text>
           </button>
         ))}
     </section>

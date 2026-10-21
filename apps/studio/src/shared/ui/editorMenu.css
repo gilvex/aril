@@ -46,7 +46,7 @@
 .editor-menu-item kbd {
   font: inherit;
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 @media (pointer: coarse), (max-width: 1024px) {
   .editor-menu-item {

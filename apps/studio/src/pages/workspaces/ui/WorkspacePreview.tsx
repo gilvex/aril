@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { memo, useMemo } from 'react'
 import { Workflow } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -57,7 +58,7 @@ export const WorkspacePreview = memo(function WorkspacePreview({
       ) : (
         <div className="workspace-preview-empty">
           <Workflow size={28} />
-          <span>{t('Ready for your first ideas')}</span>
+          <Text as="span">{t('Ready for your first ideas')}</Text>
         </div>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { Text } from './Text.tsx'
 import { CodeXml } from 'lucide-react'
 import { projectLinks } from '../config/projectLinks.ts'
 import { useTranslation } from '../i18n/index.ts'
@@ -15,7 +16,7 @@ export function SourceCodeLink() {
       title={t('Source code on GitHub')}
     >
       <CodeXml size={14} aria-hidden="true" />
-      <span>{t('Source code')}</span>
+      <Text as="span">{t('Source code')}</Text>
     </a>
   )
 }

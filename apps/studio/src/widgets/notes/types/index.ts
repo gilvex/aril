@@ -9,3 +9,5 @@ export type { NoteSurfaceProps } from './noteSurfaceProps.ts'
 export type { NoteCommentProps } from './noteCommentProps.ts'
 
 export type { LiveNoteProps } from './liveNoteProps.ts'
+
+export type { NoteTextProps } from './noteTextProps.ts'

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -25,8 +26,10 @@ export function RequirementProperties({
   return (
     <div className="req-properties">
       {(['status', 'category'] as const).map((field) => (
-        <label key={field}>
-          <span>{t(field === 'status' ? 'Delivery status' : 'Area')}</span>
+        <Text as="label" key={field}>
+          <Text as="span">
+            {t(field === 'status' ? 'Delivery status' : 'Area')}
+          </Text>
           <StudioSelect
             disabled={readOnly}
             name={field}
@@ -44,7 +47,7 @@ export function RequirementProperties({
             ))}
           </StudioSelect>
           {fieldHint(field)}
-        </label>
+        </Text>
       ))}
     </div>
   )

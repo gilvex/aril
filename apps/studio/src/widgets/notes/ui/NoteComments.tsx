@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import type { ChangeEvent } from 'react'
 import { X } from 'lucide-react'
@@ -27,9 +28,9 @@ export function NoteComments(props: NoteEditorProps) {
   return (
     <aside className="note-comments" aria-label={t('Note comments')}>
       <header className="notebook-panel-heading">
-        <strong>
+        <Text as="strong">
           {t('Comments')} · {comments.filter((c) => !c.resolved).length}
-        </strong>
+        </Text>
         <button
           className="icon-button"
           aria-label={t('Close comments')}
@@ -38,14 +39,14 @@ export function NoteComments(props: NoteEditorProps) {
           <X size={16} />
         </button>
       </header>
-      <label className="note-comments-filter">
+      <Text as="label" className="note-comments-filter">
         <input
           type="checkbox"
           checked={state.showResolved}
           onChange={toggleResolved}
         />
         {t('Show resolved')}
-      </label>
+      </Text>
       <div className="note-comments-list">
         {comments
           .filter((comment) => state.showResolved || !comment.resolved)
@@ -62,16 +63,16 @@ export function NoteComments(props: NoteEditorProps) {
         {!comments.some(
           (comment) => state.showResolved || !comment.resolved,
         ) && (
-          <p className="empty-message">
+          <Text as="p" className="empty-message">
             {t('No comments yet. Select text to quote it in a comment.')}
-          </p>
+          </Text>
         )}
       </div>
       {!readOnly && (
         <form className="note-comment-compose" onSubmit={post}>
           {state.commentQuote && (
             <div className="note-comment-quote">
-              <blockquote>{state.commentQuote}</blockquote>
+              <blockquote><Text>{state.commentQuote}</Text></blockquote>
               <button
                 className="icon-button"
                 type="button"
@@ -97,10 +98,10 @@ export function NoteComments(props: NoteEditorProps) {
               (workspace.noteComments?.length || 0) >= 1000
             }
           >
-            {t('Post comment')}
+            <Text>{t('Post comment')}</Text>
           </button>
           {(workspace.noteComments?.length || 0) >= 1000 && (
-            <small>{t('Comment limit reached')}</small>
+            <Text as="small">{t('Comment limit reached')}</Text>
           )}
         </form>
       )}

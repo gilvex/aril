@@ -101,7 +101,7 @@
 }
 .library-usage-details li span {
   color: var(--text-muted, #6f6879);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .design-library .design-library-workspace {
   position: static;

@@ -1,4 +1,6 @@
-.design-library-tabs { min-width: 0; }
+.design-library-tabs {
+  min-width: 0;
+}
 .design-library-body {
   flex: 1;
   min-height: 0;
@@ -238,7 +240,7 @@
 }
 .design-machine-simulator pre {
   white-space: pre-wrap;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--text-muted);
 }
 .design-machine-action-row {
@@ -325,7 +327,7 @@
   color: var(--text-muted);
 }
 .design-simulation-content ol {
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--text-muted);
   padding-left: 16px;
 }

@@ -5,7 +5,7 @@ export const kindLabels = {
   instance: 'Instance',
   person: 'User / team',
   note: 'Decision',
-  block: 'Block',
+  block: 'Universal block',
   device: 'Device',
   server: 'Server',
   router: 'Router',

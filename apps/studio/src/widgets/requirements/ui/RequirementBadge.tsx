@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { CheckCircle2, Circle, CircleDashed, Flag } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementBadgeProps } from '../types/requirementBadgeProps.ts'
@@ -20,9 +21,9 @@ export function RequirementBadge({ value, field }: RequirementBadgeProps) {
           ? 'must'
           : 'quiet'
   return (
-    <span className={`req-badge req-tone-${tone}`}>
+    <Text as="span" className={`req-badge req-tone-${tone}`}>
       <Icon size={14} />
       {t(value)}
-    </span>
+    </Text>
   )
 }

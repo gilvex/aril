@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { FlaskConical, RotateCcw, LogOut } from 'lucide-react'
 import { scopedDraftKey } from '@/entities/workspace/index.ts'
@@ -23,20 +24,20 @@ export function DemoBanner() {
   }, [t])
   return (
     <aside className="demo-banner" aria-label={t('Demo workspace')}>
-      <span className="demo-banner-label">
+      <Text as="span" className="demo-banner-label">
         <FlaskConical size={16} />
-        <strong>{t('Demo')}</strong>
-        <span>{t('Saved in this tab · simulated teammates')}</span>
-      </span>
+        <Text as="strong">{t('Demo')}</Text>
+        <Text as="span">{t('Saved in this tab · simulated teammates')}</Text>
+      </Text>
       <div className="demo-banner-actions">
         <DemoGuide />
         <button onClick={reset} title={t('Reset demo')}>
           <RotateCcw size={14} />
-          <span>{t('Reset demo')}</span>
+          <Text as="span">{t('Reset demo')}</Text>
         </button>
         <a href="/" title={t('Exit demo')}>
           <LogOut size={14} />
-          <span>{t('Exit demo')}</span>
+          <Text as="span">{t('Exit demo')}</Text>
         </a>
       </div>
     </aside>

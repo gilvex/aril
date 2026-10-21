@@ -1,4 +1,5 @@
-import { InvitationCard } from './InvitationCard.tsx'
+import { Text } from '@/shared/ui/Text.tsx'
+import { InvitationInboxContent } from './InvitationInboxContent.tsx'
 import { useCallback, useEffect, useRef } from 'react'
 import { Bell } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -97,7 +98,9 @@ export function InvitationInbox() {
       >
         <Bell size={18} />
         {invitations.length > 0 && (
-          <span className="invitation-count">{invitations.length}</span>
+          <Text as="span" className="invitation-count">
+            {invitations.length}
+          </Text>
         )}
       </Button>
       <InvitationDialog
@@ -106,22 +109,14 @@ export function InvitationInbox() {
         title={t('Notifications')}
         description={t('Workspace invitations for your account.')}
       >
-        <div className="invitation-inbox">
-          {!loaded && <p>{t('Loading invitations…')}</p>}
-          {loaded && !invitations.length && !error && (
-            <p>{t('You are all caught up.')}</p>
-          )}
-          {invitations.map((item) => (
-            <InvitationCard
-              key={item.id}
-              item={item}
-              busy={busy}
-              onDecision={decide}
-            />
-          ))}
-        </div>
-        {error && <p role="alert">{t(error)}</p>}
-        {message && <p role="status">{t(message)}</p>}
+        <InvitationInboxContent
+          invitations={invitations}
+          busy={busy}
+          error={error}
+          message={message}
+          loaded={loaded}
+          decide={decide}
+        />
       </InvitationDialog>
     </>
   )

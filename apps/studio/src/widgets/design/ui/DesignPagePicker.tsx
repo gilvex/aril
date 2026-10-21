@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Popover } from 'radix-ui'
 import { useCallback } from 'react'
 import { File, ChevronDown } from 'lucide-react'
@@ -24,9 +25,11 @@ export function DesignPagePicker({ model }: DesignEditorProps) {
           aria-label={t('Choose page: {{name}}', { name: model.page.name })}
         >
           <File size={15} />
-          <span>{t('Pages')}</span>
-          <span className="design-nav-divider">/</span>
-          <strong>{model.page.name}</strong>
+          <Text as="span">{t('Pages')}</Text>
+          <Text as="span" className="design-nav-divider">
+            /
+          </Text>
+          <Text as="strong">{model.page.name}</Text>
           <ChevronDown size={14} />
         </button>
       </Popover.Trigger>

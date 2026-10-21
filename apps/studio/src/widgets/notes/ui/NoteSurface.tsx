@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useNoteInput } from '../model/useNoteInput.ts'
 import { useNoteCaret } from '../model/useNoteCaret.ts'
 import { useCallback } from 'react'
@@ -65,7 +66,9 @@ export function NoteSurface(props: NoteSurfaceProps) {
         >
           <NoteMarkdown body={model.note.body} />
           {!model.note.body && (
-            <p className="empty-message">{t('Empty note')}</p>
+            <Text as="p" className="empty-message">
+              {t('Empty note')}
+            </Text>
           )}
         </div>
       )}

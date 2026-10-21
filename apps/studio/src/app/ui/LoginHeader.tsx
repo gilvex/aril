@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { LanguagePicker, ThemePicker } from '@/features/appearance/index.ts'
@@ -7,7 +8,7 @@ export function LoginHeader() {
     <header className="login-header">
       <div className="login-brand" title={getProductBranding().productName}>
         <ProductLogo />
-        <span>{getProductBranding().productName}</span>
+        <Text as="span">{getProductBranding().productName}</Text>
       </div>
       <div className="login-preferences">
         <LanguagePicker />

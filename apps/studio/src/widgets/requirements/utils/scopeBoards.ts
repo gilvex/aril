@@ -9,7 +9,9 @@ export function scopeBoards(workspace: Workspace, requirement: Requirement) {
       requirement.links?.some(
         (link) =>
           link.boardId === board.id &&
-          activeBoardSections(board).includes(link.kind === 'wireframes' ? 'design' : link.kind) &&
+          activeBoardSections(board).includes(
+            link.kind === 'wireframes' ? 'design' : link.kind,
+          ) &&
           (link.kind !== 'design' ||
             !link.pageId ||
             board.design?.pages?.some((page) => page.id === link.pageId)),

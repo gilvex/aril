@@ -1,8 +1,6 @@
 export type StudioHeaderHandlersProps = {
   state: ReturnType<typeof import('@/entities/workspace/index.ts').useWorkspace>
-  onWorkspaces: (
-    profile: import('@aril/domain/collaboration').Profile,
-  ) => void
+  onWorkspaces: (profile: import('@aril/domain/collaboration').Profile) => void
   multiplayer: {
     profile: import('@aril/domain/collaboration').Profile
     setProfile: (

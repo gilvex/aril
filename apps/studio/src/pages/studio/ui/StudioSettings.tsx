@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { productVersion } from '@/shared/config/index.ts'
 import { AgentAccess } from '@/features/agentAccess/index.ts'
 import { useCallback } from 'react'
@@ -27,7 +28,7 @@ export function StudioSettings(props: StudioContentProps) {
       <div className="settings-layout">
         <aside className="settings-sidebar">
           <header className="settings-heading">
-            <h1>{t('Settings')}</h1>
+            <Text as="h1">{t('Settings')}</Text>
           </header>
           <nav
             className="settings-navigation"
@@ -38,28 +39,28 @@ export function StudioSettings(props: StudioContentProps) {
               onClick={file}
             >
               <File size={18} />
-              {t('File')}
+              <Text>{t('File')}</Text>
             </button>
             <button
               aria-current={settings.section === 'user' ? 'page' : undefined}
               onClick={user}
             >
               <User size={18} />
-              {t('User')}
+              <Text>{t('User')}</Text>
             </button>
             <button
               aria-current={settings.section === 'app' ? 'page' : undefined}
               onClick={app}
             >
               <SlidersHorizontal size={18} />
-              {t('App')}
+              <Text>{t('App')}</Text>
             </button>
             <button
               aria-current={settings.section === 'agents' ? 'page' : undefined}
               onClick={agents}
             >
               <Bot size={18} />
-              {t('Agent access')}
+              <Text>{t('Agent access')}</Text>
             </button>
           </nav>
         </aside>
@@ -74,8 +75,10 @@ export function StudioSettings(props: StudioContentProps) {
             {settings.section === 'user' && (
               <>
                 <header className="settings-section-heading">
-                  <h2>{t('Your profile')}</h2>
-                  <p>{t('This profile is shared across your workspaces.')}</p>
+                  <Text as="h2">{t('Your profile')}</Text>
+                  <Text as="p">
+                    {t('This profile is shared across your workspaces.')}
+                  </Text>
                 </header>
                 <section className="settings-card">
                   <SettingsProfile
@@ -89,8 +92,8 @@ export function StudioSettings(props: StudioContentProps) {
             {settings.section === 'app' && (
               <>
                 <header className="settings-section-heading">
-                  <h2>{t('App preferences')}</h2>
-                  <p>{t('Saved on this device.')}</p>
+                  <Text as="h2">{t('App preferences')}</Text>
+                  <Text as="p">{t('Saved on this device.')}</Text>
                 </header>
                 <section className="settings-card settings-preferences">
                   <ThemePicker />
@@ -98,9 +101,9 @@ export function StudioSettings(props: StudioContentProps) {
                   <AccentPicker />
                   <InstallApp />
                 </section>
-                <p className="settings-product-version">
+                <Text as="p" className="settings-product-version">
                   {t('Version {{version}}', { version: productVersion })}
-                </p>
+                </Text>
                 <ProjectLinks />
               </>
             )}

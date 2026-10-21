@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { ArrowLeft, Check, Trash2, X } from 'lucide-react'
 import { useCallback, type ChangeEvent } from 'react'
@@ -39,9 +40,9 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           onClick={() => selectRequirement(null)}
         >
           <ArrowLeft size={16} />
-          {t('Back to requirements')}
+          <Text>{t('Back to requirements')}</Text>
         </button>
-        <span>{current.id}</span>
+        <Text as="span">{current.id}</Text>
         <RequirementAvatars
           people={peopleFor(current.id)}
           currentUserId={profile.id}
@@ -54,8 +55,8 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           <X size={17} />
         </button>
       </header>
-      <label className="req-document-title">
-        <span className="visually-hidden">{t('Requirement title')}</span>
+      <Text as="label" className="req-document-title">
+        <Text as="span" className="visually-hidden">{t('Requirement title')}</Text>
         <textarea
           readOnly={readOnly}
           name="title"
@@ -67,10 +68,10 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           onChange={edit}
         />
         {fieldHint('title')}
-      </label>
+      </Text>
       <ScopeProperties {...props} />
-      <label className="req-document-field">
-        <span>{t('Why it matters')}</span>
+      <Text as="label" className="req-document-field">
+        <Text as="span">{t('Why it matters')}</Text>
         {fieldHint('description')}
         <textarea
           readOnly={readOnly}
@@ -83,9 +84,9 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           placeholder={t('Describe the problem this solves…')}
           onChange={edit}
         />
-      </label>
-      <label className="req-document-field">
-        <span>{t('Acceptance criteria')}</span>
+      </Text>
+      <Text as="label" className="req-document-field">
+        <Text as="span">{t('Acceptance criteria')}</Text>
         {fieldHint('acceptance')}
         <textarea
           readOnly={readOnly}
@@ -98,14 +99,14 @@ export function RequirementDetails(props: RequirementDetailsProps) {
           placeholder={t('Describe the outcomes needed to call this ready…')}
           onChange={edit}
         />
-      </label>
+      </Text>
       <ScopeQuestions {...props} />
       <RequirementLinks {...props} />
       <footer className="req-document-footer">
-        <span>
+        <Text as="span">
           <Check size={14} />
           {t('Changes save automatically')}
-        </span>
+        </Text>
         <button
           className="icon-button"
           aria-label={t('Delete requirement')}
