@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useWireframeInspectorHandlers } from '../model/useWireframeInspectorHandlers.tsx'
 
@@ -54,7 +53,7 @@ export function WireframeInspector({
       scope={`wireframe:${[...selection].sort().join(',')}:${edge?.id || ''}`}
     >
       <div className="inspector-heading">
-        <Text as="span">
+        <span>
           {preview
             ? t('Follow the flow')
             : selected.length > 1
@@ -66,7 +65,7 @@ export function WireframeInspector({
                 : edge
                   ? t('Interaction')
                   : t('Wireframe kit')}
-        </Text>
+        </span>
         <button
           className="icon-button"
           aria-label={t('Close wireframe details')}

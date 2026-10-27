@@ -240,7 +240,7 @@
 }
 .design-machine-simulator pre {
   white-space: pre-wrap;
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   color: var(--text-muted);
 }
 .design-machine-action-row {
@@ -327,7 +327,7 @@
   color: var(--text-muted);
 }
 .design-simulation-content ol {
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   color: var(--text-muted);
   padding-left: 16px;
 }

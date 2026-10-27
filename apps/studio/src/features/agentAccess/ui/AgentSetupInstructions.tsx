@@ -1,44 +1,37 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ChevronDown, Terminal } from 'lucide-react'
 import type { AgentSetupInstructionsProps } from '../types/agentSetupInstructionsProps.ts'
 export function AgentSetupInstructions({ t }: AgentSetupInstructionsProps) {
   return (
     <details className="agent-setup" open>
-      <Text as="summary">
+      <summary>
         <Terminal size={18} aria-hidden="true" />
-        <Text>{t('Connect your MCP client')}</Text>
+        {t('Connect your MCP client')}
         <ChevronDown size={16} aria-hidden="true" />
-      </Text>
+      </summary>
       <ol className="agent-setup-steps">
         <li>
-          <Text as="strong">{t('Run setup in your local Aril checkout')}</Text>
+          <strong>{t('Run setup in your local Aril checkout')}</strong>
           <pre>
-            <Text as="code" translate="no">
-              pnpm mcp:setup
-            </Text>
+            <code translate="no">pnpm mcp:setup</code>
           </pre>
         </li>
         <li>
-          <Text as="strong">
-            {t('Enter the studio address and your credential')}
-          </Text>
-          <Text as="p" variant="caption" tone="muted">
+          <strong>{t('Enter the studio address and your credential')}</strong>
+          <p>
             {t(
               'Paste the credential into the terminal prompt. Setup stores it in your user configuration folder and prints the command for your MCP client.',
             )}
-          </Text>
-          <Text as="code" className="agent-origin" translate="no">
+          </p>
+          <code className="agent-origin" translate="no">
             {location.origin}
-          </Text>
+          </code>
         </li>
         <li>
-          <Text as="strong">
+          <strong>
             {t('Install the companion skill and open a new chat')}
-          </Text>
+          </strong>
           <pre>
-            <Text as="code" translate="no">
-              pnpm skill:install
-            </Text>
+            <code translate="no">pnpm skill:install</code>
           </pre>
         </li>
       </ol>
@@ -48,7 +41,7 @@ export function AgentSetupInstructions({ t }: AgentSetupInstructionsProps) {
         target="_blank"
         rel="noreferrer"
       >
-        <Text>{t('Agent setup guide')}</Text>
+        {t('Agent setup guide')}
       </a>
     </details>
   )

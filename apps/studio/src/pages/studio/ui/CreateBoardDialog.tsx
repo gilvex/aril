@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCreateBoardDialogHandlers } from '../model/useCreateBoardDialogHandlers.tsx'
 
@@ -37,15 +36,13 @@ export function CreateBoardDialog({
       <div className="modal-symbol">
         <Workflow size={25} />
       </div>
-      <Text as="h2" id="modal-title">
-        {t('Room for another idea.')}
-      </Text>
-      <Text as="p">
+      <h2 id="modal-title">{t('Room for another idea.')}</h2>
+      <p>
         {t(
           'Create a board for a user flow, a system, or something you haven’t quite figured out yet.',
         )}
-      </Text>
-      <Text as="label">
+      </p>
+      <label>
         {t('Board name')}
         <input
           autoFocus
@@ -55,21 +52,21 @@ export function CreateBoardDialog({
           value={boardName}
           onChange={(e) => setBoardName(e.target.value)}
         />
-      </Text>
+      </label>
       <BoardTypeChoices
         newBoardType={newBoardType}
         setNewBoardType={setNewBoardType}
       />
-      <Text as="p">{t('You can add other sections later.')}</Text>
+      <p>{t('You can add other sections later.')}</p>
       <div className="modal-actions">
         <button className="button" type="button" onClick={() => setModal(null)}>
-          <Text>{t('Cancel')}</Text>
+          {t('Cancel')}
         </button>
         <button
           className="button primary"
           disabled={!boardName.trim() || workspace.boards.length >= 50}
         >
-          <Text>{t('Create board')}</Text>
+          {t('Create board')}
         </button>
       </div>
     </form>

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { DesignNumberInput } from './DesignNumberInput.tsx'
 import { DesignColorInput } from './DesignColorInput.tsx'
@@ -9,7 +8,7 @@ export function DesignPaint({ model }: DesignEditorProps) {
   return (
     <>
       <section>
-        <Text as="h3">{t('Appearance')}</Text>
+        <h3>{t('Appearance')}</h3>
         <DesignNumberInput
           label={t('Corner radius')}
           min={0}
@@ -19,13 +18,13 @@ export function DesignPaint({ model }: DesignEditorProps) {
         />
       </section>
       <section>
-        <Text as="h3">{t('Fill')}</Text>
+        <h3>{t('Fill')}</h3>
         <DesignColorInput
           label={t('Fill')}
           value={node.fill === 'transparent' ? '#ffffff' : node.fill}
           onChange={(fill) => model.edit({ fill })}
         />
-        <Text as="label" className="design-checkbox">
+        <label className="design-checkbox">
           <input
             type="checkbox"
             checked={node.fill === 'transparent'}
@@ -36,10 +35,10 @@ export function DesignPaint({ model }: DesignEditorProps) {
             }
           />
           {t('Transparent fill')}
-        </Text>
+        </label>
       </section>
       <section>
-        <Text as="h3">{t('Stroke')}</Text>
+        <h3>{t('Stroke')}</h3>
         <DesignColorInput
           label={t('Border color')}
           value={node.stroke}

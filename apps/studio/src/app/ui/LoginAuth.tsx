@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import {
   getProductBranding,
   isProductSiteEnabled,
@@ -26,24 +25,22 @@ export function LoginAuth(props: LoginAuthProps) {
   return (
     <section className="login-auth" aria-labelledby="login-title">
       <Heading id="login-title">
-        <Text>
-          {t(
-            profile && joining
-              ? 'Join your team’s studio'
-              : switching
-                ? 'Choose another account'
-                : 'Sign in to {{product}}',
-            { product: getProductBranding().productName },
-          )}
-        </Text>
+        {t(
+          profile && joining
+            ? 'Join your team’s studio'
+            : switching
+              ? 'Choose another account'
+              : 'Sign in to {{product}}',
+          { product: getProductBranding().productName },
+        )}
       </Heading>
-      <Text as="p" className="login-description">
+      <p className="login-description">
         {t(
           profile && accountLinked && joining
             ? 'Accept your invitation to add this workspace to your account.'
             : 'Sign in to create your own workspace or join a team with an invitation.',
         )}
-      </Text>
+      </p>
       {joining && (!profile || !accountLinked) && (
         <>
           <GoogleSignIn link={!!profile} onSuccess={handleSuccess} />
@@ -53,31 +50,31 @@ export function LoginAuth(props: LoginAuthProps) {
       )}
       {joining && profile && accountLinked ? (
         <>
-          <Text as="p" className="login-help">
+          <p className="login-help">
             {t('Signed in as {{name}}', { name: profile.name })}
-          </Text>
+          </p>
           <LoginInvitation {...props} />
           <button className="button" onClick={openWorkspaces}>
-            <Text>{t('Go to my workspaces')}</Text>
+            {t('Go to my workspaces')}
           </button>
         </>
       ) : !joining && !error ? (
         <LoadingStatus label={t('Opening your shared workspace…')} />
       ) : null}
       {joining && (
-        <Text as="p" className="login-help">
+        <p className="login-help">
           {t('An invitation is only needed to join someone else’s workspace.')}
-        </Text>
+        </p>
       )}
       {profile && joining && <AccountActions />}
       {error && (
-        <Text as="p" className="form-error" role="alert">
+        <p className="form-error" role="alert">
           {error}
-        </Text>
+        </p>
       )}
       {error && !joining && (
         <button className="button" onClick={retry}>
-          <Text>{t('Try again')}</Text>
+          {t('Try again')}
         </button>
       )}
       {!profile && isProductSiteEnabled() && <DemoEntry />}

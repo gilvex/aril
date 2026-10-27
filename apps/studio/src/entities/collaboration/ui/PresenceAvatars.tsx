@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import type { PresenceAvatarsProps } from '@/entities/collaboration/types/presenceAvatarsProps.ts'
 import { Avatar } from '@/entities/collaboration/ui/Avatar.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -11,8 +10,7 @@ export function PresenceAvatars({ profiles, limit = 3 }: PresenceAvatarsProps) {
   if (!people.length) return null
   const names = people.map((profile) => profile.name).join(', ')
   return (
-    <Text
-      as="span"
+    <span
       className="tab-presence"
       role="img"
       aria-label={t('{{value}} viewing here', { value: names })}
@@ -22,10 +20,8 @@ export function PresenceAvatars({ profiles, limit = 3 }: PresenceAvatarsProps) {
         <Avatar key={profile.id} profile={profile} />
       ))}
       {people.length > limit && (
-        <Text as="span" className="tab-presence-more">
-          +{people.length - limit}
-        </Text>
+        <span className="tab-presence-more">+{people.length - limit}</span>
       )}
-    </Text>
+    </span>
   )
 }

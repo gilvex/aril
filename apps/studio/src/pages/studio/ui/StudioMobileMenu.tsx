@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Button } from 'vagabond-ui/button'
 import { StudioDrawer } from '@/shared/ui/index.tsx'
 import { useCallback } from 'react'
@@ -67,7 +66,7 @@ export function StudioMobileMenu({
         className={`sidebar workspace-more-sheet ${sidebarOpen ? 'open' : ''}`}
       >
         <div className="mobile-sheet-heading">
-          <Text as="strong">{t('Workspace')}</Text>
+          <strong>{t('Workspace')}</strong>
           <Button
             variant="ghost"
             className="icon-button"
@@ -83,22 +82,22 @@ export function StudioMobileMenu({
           aria-label={t('Switch workspace')}
           onClick={handlers.handleSwitchWorkspaceClick}
         >
-          <Text as="span" className="workspace-letter">
+          <span className="workspace-letter">
             {studio.name.slice(0, 1).toUpperCase()}
-          </Text>
-          <Text as="span">
+          </span>
+          <span>
             {studio.name}
-            <Text as="small">{t('Switch workspace')}</Text>
-          </Text>
+            <small>{t('Switch workspace')}</small>
+          </span>
           <ChevronDown size={14} />
         </Button>
         <Button variant="ghost" className="button" onClick={openLibrary}>
           <Library size={18} />
-          <Text>{t('Library')}</Text>
+          {t('Library')}
         </Button>
         <Button variant="ghost" className="button" onClick={openSettings}>
           <Settings size={18} />
-          <Text>{t('Settings')}</Text>
+          {t('Settings')}
         </Button>
         <ThemePicker />
         <LanguagePicker />

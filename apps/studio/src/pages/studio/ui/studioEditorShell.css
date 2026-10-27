@@ -203,7 +203,7 @@
   background: transparent;
   border: 0;
   border-top: 1px solid var(--line);
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
@@ -265,7 +265,7 @@
   }
   .workspace-tab > [role='tab'] {
     padding-inline: 8px;
-    font-size: var(--text-size-caption);
+    font-size: 11px;
   }
   .studio-workspace-tabs > .icon-button {
     min-width: 32px;

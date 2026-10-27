@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { guestLinkNoExpiry } from '@aril/domain/collaboration'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { GuestLinkListProps } from '../types/guestLinkListProps.ts'
@@ -10,11 +9,11 @@ export function GuestLinkList({ links, busy, revoke }: GuestLinkListProps) {
       {links.map((link) => (
         <li key={link.id}>
           <div>
-            <Text as="strong">{link.name}</Text>
-            <Text as="small">
+            <strong>{link.name}</strong>
+            <small>
               {t(link.role === 'viewer' ? 'View only' : 'Can edit')}
-            </Text>
-            <Text as="small">
+            </small>
+            <small>
               {link.expiresAt === guestLinkNoExpiry
                 ? t('No expiration')
                 : link.expiresAt <= Date.now()
@@ -24,10 +23,10 @@ export function GuestLinkList({ links, busy, revoke }: GuestLinkListProps) {
                         i18n.language,
                       ),
                     })}
-            </Text>
-            <Text as="small">
+            </small>
+            <small>
               {t('Guest visits: {{count}}', { count: link.guests })}
-            </Text>
+            </small>
           </div>
           {!link.revoked && link.expiresAt > Date.now() && (
             <button
@@ -36,7 +35,7 @@ export function GuestLinkList({ links, busy, revoke }: GuestLinkListProps) {
               disabled={busy}
               onClick={revoke}
             >
-              <Text>{t('Revoke')}</Text>
+              {t('Revoke')}
             </button>
           )}
         </li>

@@ -1,4 +1,3 @@
-import { Text } from './Text.tsx'
 import { isProductSiteEnabled } from '@/shared/deploymentSettings/index.ts'
 import { CodeXml, Globe, ArrowUpRight, History } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -17,7 +16,7 @@ export function ProjectLinks() {
           rel="noopener noreferrer"
         >
           <CodeXml size={16} aria-hidden="true" />
-          <Text>{t('GitHub')}</Text>
+          {t('GitHub')}
           <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </Button>
@@ -28,7 +27,7 @@ export function ProjectLinks() {
           rel="noopener noreferrer"
         >
           <Globe size={16} aria-hidden="true" />
-          <Text>{t('Creator’s website')}</Text>
+          {t('Creator’s website')}
           <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </Button>
@@ -36,7 +35,7 @@ export function ProjectLinks() {
         <Button asChild variant="ghost" size="sm">
           <a href="/changelog" target="_blank" rel="noopener noreferrer">
             <History size={16} aria-hidden="true" />
-            <Text>{t('Changelog')}</Text>
+            {t('Changelog')}
             <ArrowUpRight size={14} aria-hidden="true" />
           </a>
         </Button>

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useDesignVariables } from '../model/useDesignVariables.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import type { DesignEditorProps } from '../types/designEditorProps.ts'
@@ -22,7 +21,7 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
   return (
     <div className="design-library-workspace">
       <header>
-        <Text as="h2">{t('Variables')}</Text>
+        <h2>{t('Variables')}</h2>
         <StudioSelect
           value={collection?.id || ''}
           onChange={pick}
@@ -39,14 +38,14 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
           disabled={readOnly || Object.keys(library.collections).length >= 200}
           onClick={addCollection}
         >
-          <Text>{t('Add collection')}</Text>
+          {t('Add collection')}
         </button>
       </header>
       <DesignVariableFilters model={model} />
       {collection ? (
         <>
           <div className="design-library-buttons">
-            <Text as="label">
+            <label>
               {t('Preview mode')}
               <StudioSelect
                 value={variableModes[collection.id] || collection.modes[0]}
@@ -56,7 +55,7 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
                   <option key={m}>{m}</option>
                 ))}
               </StudioSelect>
-            </Text>
+            </label>
           </div>
           <fieldset
             disabled={readOnly}
@@ -84,28 +83,26 @@ export function DesignVariablesWorkspace({ model }: DesignEditorProps) {
                 }
                 onClick={addMode}
               >
-                <Text>{t('Add mode')}</Text>
+                {t('Add mode')}
               </button>
               <button
                 className="button primary"
                 disabled={Object.keys(library.variables).length >= 5000}
                 onClick={addVariable}
               >
-                <Text>{t('Add variable')}</Text>
+                {t('Add variable')}
               </button>
             </div>
           </fieldset>
           <DesignVariableTable model={model} collection={collection} />
         </>
       ) : (
-        <Text as="p">
-          {t('Create a collection to add typed variables and modes.')}
-        </Text>
+        <p>{t('Create a collection to add typed variables and modes.')}</p>
       )}
       {model.libraryError && (
-        <Text as="p" role="alert" className="design-library-error">
+        <p role="alert" className="design-library-error">
           {model.libraryError}
-        </Text>
+        </p>
       )}
     </div>
   )

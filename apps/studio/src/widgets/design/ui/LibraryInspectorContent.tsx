@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -25,19 +24,19 @@ export function LibraryInspectorContent({
   if (model.librarySelection.length > 1)
     return (
       <div className="library-details-body">
-        <Text as="h3">
+        <h3>
           {t('Organize {{count}} assets', {
             count: model.librarySelection.length,
           })}
-        </Text>
+        </h3>
         <LibraryOrganization model={model} explorer={explorer} />
       </div>
     )
   if (!asset)
     return (
-      <Text as="p" className="asset-empty">
+      <p className="asset-empty">
         {t('Select an asset to see where it is used.')}
-      </Text>
+      </p>
     )
   return (
     <>
@@ -50,14 +49,10 @@ export function LibraryInspectorContent({
         className="asset-view-switch"
         aria-label={t('Asset detail view')}
       >
-        <ToggleGroupItem value="details">
-          <Text>{t('Details')}</Text>
-        </ToggleGroupItem>
+        <ToggleGroupItem value="details">{t('Details')}</ToggleGroupItem>
         <ToggleGroupItem value="usage">
-          <Text>{t('Usage')}</Text>
-          <Text as="span" className="asset-count">
-            {uses.length}
-          </Text>
+          {t('Usage')}
+          <span className="asset-count">{uses.length}</span>
         </ToggleGroupItem>
       </ToggleGroup>
       <div className="library-details-body" key={model.libraryAsset}>

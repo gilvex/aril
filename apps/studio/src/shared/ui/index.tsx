@@ -17,5 +17,3 @@ export { StableCanvasViewport } from './StableCanvasViewport.tsx'
 export { ProjectLinks } from './ProjectLinks.tsx'
 export { SourceCodeLink } from './SourceCodeLink.tsx'
 export { ProductLogo } from './ProductLogo.tsx'
-
-export { Text } from './Text.tsx'

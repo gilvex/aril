@@ -12,7 +12,7 @@
   border-radius: 6px;
   background: var(--surface);
   color: var(--text-secondary);
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   text-decoration: none;
 }
 .source-code-link:hover {

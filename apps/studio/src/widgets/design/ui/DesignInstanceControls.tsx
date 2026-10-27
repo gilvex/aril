@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -63,9 +62,9 @@ export function DesignInstanceControls({ model }: DesignEditorProps) {
   if (!asset || !link) return null
   return (
     <section className="design-instance-controls">
-      <Text as="h3">{t('Component instance')}</Text>
+      <h3>{t('Component instance')}</h3>
       <button className="design-asset-link" onClick={master}>
-        <Text>{asset.name}</Text>
+        {asset.name}
       </button>
       <StudioSelect
         aria-label={t('Variant')}
@@ -79,12 +78,8 @@ export function DesignInstanceControls({ model }: DesignEditorProps) {
         ))}
       </StudioSelect>
       <div className="design-library-buttons">
-        <button onClick={reset}>
-          <Text>{t('Reset overrides')}</Text>
-        </button>
-        <button onClick={detach}>
-          <Text>{t('Detach instance')}</Text>
-        </button>
+        <button onClick={reset}>{t('Reset overrides')}</button>
+        <button onClick={detach}>{t('Detach instance')}</button>
       </div>
     </section>
   )

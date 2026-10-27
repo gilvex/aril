@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ChevronDown, ChevronRight, Scan } from 'lucide-react'
 import { isDesignContainer } from '@aril/domain/design'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -91,13 +90,11 @@ export function DesignLayerRow({ node, model, depth }: DesignLayerRowProps) {
             title={node.name}
           >
             {customIcon ? (
-              <Text as="span" className="library-custom-icon">
-                {customIcon}
-              </Text>
+              <span className="library-custom-icon">{customIcon}</span>
             ) : (
               <Icon size={15} />
             )}
-            <Text as="span">{node.name}</Text>
+            <span>{node.name}</span>
           </button>
         </div>
         <DesignLayerControls node={node} model={model} actions={actions} />

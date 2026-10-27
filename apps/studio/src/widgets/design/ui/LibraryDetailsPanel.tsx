@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { X } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -22,7 +21,7 @@ export function LibraryDetailsPanel({ model, explorer }: LibraryExplorerProps) {
     <>
       <header className="library-details-heading">
         {!model.compact && <SurfaceGrip />}
-        <Text as="strong">{t('Asset details')}</Text>
+        <strong>{t('Asset details')}</strong>
         <Button
           className="button"
           variant="ghost"

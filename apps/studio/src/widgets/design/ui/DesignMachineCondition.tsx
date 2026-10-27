@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -59,7 +58,7 @@ export function DesignMachineCondition({
   )
   return (
     <div className="design-machine-condition">
-      <Text as="h4">{t('Condition')}</Text>
+      <h4>{t('Condition')}</h4>
       {guard && variable && (
         <>
           <StudioSelect
@@ -96,7 +95,7 @@ export function DesignMachineCondition({
         </>
       )}
       <button className="button" disabled={!variable} onClick={toggle}>
-        <Text>{t(guard ? 'Remove condition' : 'Add condition')}</Text>
+        {t(guard ? 'Remove condition' : 'Add condition')}
       </button>
     </div>
   )

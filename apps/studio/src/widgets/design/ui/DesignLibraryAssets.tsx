@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { ComponentGlyph } from './ComponentGlyph.tsx'
 import { componentGlyph } from '../utils/componentGlyph.ts'
@@ -28,7 +27,7 @@ export function DesignLibraryAssets({ model }: DesignEditorProps) {
   return (
     <>
       <section>
-        <Text as="h3">
+        <h3>
           <Component size={15} />
           {t('Components')}
           <button
@@ -40,7 +39,7 @@ export function DesignLibraryAssets({ model }: DesignEditorProps) {
           >
             <Plus size={15} />
           </button>
-        </Text>
+        </h3>
         {Object.values(model.library.components)
           .filter((a) => a.name.toLowerCase().includes(query))
           .map((asset) => (
@@ -54,7 +53,7 @@ export function DesignLibraryAssets({ model }: DesignEditorProps) {
                   icon={asset.icon}
                   glyph={componentGlyph(asset)}
                 />
-                <Text as="span">{asset.name}</Text>
+                <span>{asset.name}</span>
               </button>
               <button
                 className="icon-button"
@@ -69,19 +68,17 @@ export function DesignLibraryAssets({ model }: DesignEditorProps) {
             </div>
           ))}
         {!Object.keys(model.library.components).length && (
-          <Text as="p">
-            {t('Select layers, then create a reusable component.')}
-          </Text>
+          <p>{t('Select layers, then create a reusable component.')}</p>
         )}
       </section>
       <section>
-        <Text as="h3">
+        <h3>
           <Variable size={15} />
           {t('Variables')}
-        </Text>
+        </h3>
         <button className="design-asset-link" onClick={variables}>
-          <Text>{t('Collections and modes')}</Text>
-          <Text as="small">{Object.keys(model.library.variables).length}</Text>
+          {t('Collections and modes')}
+          <small>{Object.keys(model.library.variables).length}</small>
         </button>
       </section>
     </>

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useRequirementClassificationHandlers } from '../model/useRequirementClassificationHandlers.tsx'
@@ -16,7 +15,7 @@ export function RequirementClassification({
     useRequirementClassificationHandlers({ update })
   return (
     <div className="field-row">
-      <Text as="label">
+      <label>
         {t('Priority')}
         <StudioSelect
           {...fieldProps('priority')}
@@ -31,8 +30,8 @@ export function RequirementClassification({
           ))}
         </StudioSelect>
         {fieldHint('priority')}
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Status')}
         <StudioSelect
           aria-label={t('Requirement status')}
@@ -47,7 +46,7 @@ export function RequirementClassification({
           ))}
         </StudioSelect>
         {fieldHint('status')}
-      </Text>
+      </label>
     </div>
   )
 }

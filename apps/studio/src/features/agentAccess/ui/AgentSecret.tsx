@@ -1,15 +1,14 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import type { AgentSecretProps } from '../types/agentSecretProps.ts'
 export function AgentSecret({ t, secret, handleClick }: AgentSecretProps) {
   return (
     <div className="agent-secret">
-      <Text as="strong">{t('Save your credential now')}</Text>
-      <Text as="p">
+      <strong>{t('Save your credential now')}</strong>
+      <p>
         {t(
           'It is shown only here, until this dialog closes. Keep it out of chats and Git.',
         )}
-      </Text>
-      <Text as="label">
+      </p>
+      <label>
         {t('Credential')}
         <input
           type="password"
@@ -18,9 +17,9 @@ export function AgentSecret({ t, secret, handleClick }: AgentSecretProps) {
           onFocus={(e) => e.target.select()}
           autoComplete="off"
         />
-      </Text>
+      </label>
       <button className="button" type="button" onClick={handleClick}>
-        <Text>{t('Copy credential')}</Text>
+        {t('Copy credential')}
       </button>
     </div>
   )

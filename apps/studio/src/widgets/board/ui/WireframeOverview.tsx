@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { icons } from '@/widgets/board/config/wireframeBoardIcons.ts'
 import { wireKinds, wireLabels } from '@aril/domain/wireframe'
@@ -18,15 +17,15 @@ export function WireframeOverview({
   return (
     <div className="inspector-body overview-body">
       <AppWindow size={30} strokeWidth={1.2} />
-      <Text as="h2">{t('From idea to interface.')}</Text>
-      <Text as="p">
+      <h2>{t('From idea to interface.')}</h2>
+      <p>
         {t(
           'Start with a screen, add the pieces, then link the actions. Each board keeps its own wireframes.',
         )}
-      </Text>
+      </p>
       {!!graph.edges.length && (
         <div className="wire-flow-index" aria-label={t('Board flows')}>
-          <Text as="h3">{t('Flows')}</Text>
+          <h3>{t('Flows')}</h3>
           {graph.edges.map((link, index) => (
             <button
               key={link.id}
@@ -35,13 +34,13 @@ export function WireframeOverview({
                 setSelection(new Set())
               }}
             >
-              <Text as="span">{index + 1}</Text>
+              <span>{index + 1}</span>
               <div>
-                <Text as="strong">{link.label || 'On click'}</Text>
-                <Text as="small">
+                <strong>{link.label || 'On click'}</strong>
+                <small>
                   {graph.nodes.find((n) => n.id === link.source)?.data.title} →{' '}
                   {graph.nodes.find((n) => n.id === link.target)?.data.title}
-                </Text>
+                </small>
               </div>
             </button>
           ))}
@@ -57,7 +56,7 @@ export function WireframeOverview({
               onClick={() => add(kind)}
             >
               <Icon size={18} />
-              <Text as="span">{t(wireLabels[kind])}</Text>
+              <span>{t(wireLabels[kind])}</span>
               <Plus size={13} />
             </button>
           )
@@ -67,16 +66,16 @@ export function WireframeOverview({
         {screens.map((screen) => (
           <button key={screen.id} onClick={() => focus(screen.id)}>
             <AppWindow size={14} />
-            <Text>{screen.data.title}</Text>
+            {screen.data.title}
             <ArrowRight size={13} />
           </button>
         ))}
       </div>
-      <Text as="p">
+      <p>
         {t(
           'Connect either side of a block to its destination, or use “What happens next?” in its details. Arrows choose the side facing their destination.',
         )}
-      </Text>
+      </p>
     </div>
   )
 }

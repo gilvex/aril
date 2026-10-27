@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import './workspaceManagement.css'
 import {
   useCallback,
@@ -45,18 +44,18 @@ export function WorkspaceManageDialog({
       aria-labelledby="workspace-manage-title"
       onCancel={cancel}
     >
-      <Text as="h2" id="workspace-manage-title">
+      <h2 id="workspace-manage-title">
         {t(deleting ? 'Delete workspace' : 'Rename workspace')}
-      </Text>
+      </h2>
       <form onSubmit={onSubmit}>
         {deleting && (
-          <Text as="p">
+          <p>
             {t(
               'This permanently deletes all planning data and history for everyone in this workspace. Export anything you need first.',
             )}
-          </Text>
+          </p>
         )}
-        <Text as="label">
+        <label>
           {t(deleting ? 'Type {{name}} to confirm' : 'Workspace name', {
             name: management.studio.name,
           })}
@@ -68,11 +67,11 @@ export function WorkspaceManageDialog({
             disabled={busy}
             autoComplete="off"
           />
-        </Text>
+        </label>
         {error && (
-          <Text as="p" className="form-error" role="alert">
+          <p className="form-error" role="alert">
             {t(error)}
-          </Text>
+          </p>
         )}
         <div className="workspace-manage-buttons">
           <button
@@ -81,7 +80,7 @@ export function WorkspaceManageDialog({
             disabled={busy}
             onClick={onClose}
           >
-            <Text>{t('Cancel')}</Text>
+            {t('Cancel')}
           </button>
           <button
             className={`button ${deleting ? 'workspace-delete' : 'primary'}`}
@@ -90,9 +89,7 @@ export function WorkspaceManageDialog({
               (deleting ? name !== management.studio.name : !name.trim())
             }
           >
-            <Text>
-              {t(busy ? 'Saving…' : deleting ? 'Delete workspace' : 'Save')}
-            </Text>
+            {t(busy ? 'Saving…' : deleting ? 'Delete workspace' : 'Save')}
           </button>
         </div>
       </form>

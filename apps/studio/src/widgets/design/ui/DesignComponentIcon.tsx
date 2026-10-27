@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useMemo, type ChangeEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
@@ -39,7 +38,7 @@ export function DesignComponentIcon({ model }: DesignEditorProps) {
   if (!component) return null
   return (
     <div className="component-icon-editor">
-      <Text as="label">
+      <label>
         {t('Component icon')}
         <Input
           value={component.icon || ''}
@@ -48,11 +47,11 @@ export function DesignComponentIcon({ model }: DesignEditorProps) {
           disabled={readOnly}
           placeholder={t('Emoji or short symbol')}
         />
-      </Text>
+      </label>
       <div className="component-icon-choice">
-        <Text as="span">
+        <span>
           <ComponentGlyph glyph={glyph} icon={component.icon} />
-        </Text>
+        </span>
         <Button
           className="button"
           size="sm"
@@ -61,14 +60,14 @@ export function DesignComponentIcon({ model }: DesignEditorProps) {
           disabled={readOnly || !component.icon}
           aria-pressed={!component.icon}
         >
-          <Text>{t('Automatic shape icon')}</Text>
+          {t('Automatic shape icon')}
         </Button>
       </div>
-      <Text as="small">
+      <small>
         {t(
           'Leave empty to use the component silhouette. Updates with its design.',
         )}
-      </Text>
+      </small>
     </div>
   )
 }

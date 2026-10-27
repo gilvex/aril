@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { PeerCursorProps } from '../types/peerCursorProps.ts'
 import { CursorMessage } from './CursorMessage.tsx'
@@ -28,15 +27,11 @@ export function PeerCursor({
           strokeWidth="1.5"
         />
       </svg>
-      <Text
-        as="span"
-        className="peer-cursor-label"
-        style={{ background: profile.color }}
-      >
+      <span className="peer-cursor-label" style={{ background: profile.color }}>
         {profile.avatar && <img src={profile.avatar} alt="" />}
-        <Text as="strong">{profile.name}</Text>
+        <strong>{profile.name}</strong>
         <CursorMessage chat={chat} />
-      </Text>
+      </span>
     </div>
   )
 }

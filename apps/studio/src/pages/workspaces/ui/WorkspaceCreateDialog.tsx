@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useEffect, useRef, type SyntheticEvent } from 'react'
 import { useCompactLayout, useDraggableSurface } from '@/shared/model/index.ts'
 import { StudioDrawer, SurfaceGrip } from '@/shared/ui/index.tsx'
@@ -39,9 +38,7 @@ export function WorkspaceCreateDialog(
     <>
       <header>
         <SurfaceGrip />
-        <Text as="h2" id="workspace-create-title">
-          {t('New workspace')}
-        </Text>
+        <h2 id="workspace-create-title">{t('New workspace')}</h2>
         <button
           className="icon-button"
           disabled={busy}
@@ -53,9 +50,9 @@ export function WorkspaceCreateDialog(
       </header>
       <CreateWorkspaceForm {...props} />
       {props.error && (
-        <Text as="p" className="form-error" role="alert">
+        <p className="form-error" role="alert">
           {props.error}
-        </Text>
+        </p>
       )}
     </>
   )

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Handle, Position, type NodeProps } from '@xyflow/react'
 import { Component, Variable, Workflow, File } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -16,14 +15,12 @@ export function DesignLibraryGraphNode({ data }: NodeProps<AssetNode>) {
     <div className="library-graph-node" data-kind={data.kind}>
       <Handle type="target" position={Position.Left} />
       {data.icon ? (
-        <Text as="span" className="library-custom-icon">
-          {data.icon}
-        </Text>
+        <span className="library-custom-icon">{data.icon}</span>
       ) : (
         <Icon size={18} />
       )}
-      <Text as="strong">{data.label}</Text>
-      <Text as="small">{t('{{count}} uses', { count: data.count })}</Text>
+      <strong>{data.label}</strong>
+      <small>{t('{{count}} uses', { count: data.count })}</small>
       <Handle type="source" position={Position.Right} />
     </div>
   )

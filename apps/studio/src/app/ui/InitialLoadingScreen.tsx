@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -21,7 +20,7 @@ export function InitialLoadingScreen({
   return (
     <div className="initial-loading" aria-hidden={!loading}>
       <ProductLogo width="48" height="48" />
-      <Text as="strong">{getProductBranding().productName}</Text>
+      <strong>{getProductBranding().productName}</strong>
       {total > 1 ? (
         <LoadingProgress
           label={label}

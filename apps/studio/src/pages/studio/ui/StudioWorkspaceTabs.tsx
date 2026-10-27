@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useCallback } from 'react'
 import { Plus, X, House } from 'lucide-react'
@@ -79,7 +78,7 @@ export function StudioWorkspaceTabs(props: StudioHeaderProps) {
               title={tab.name}
             >
               <ProductLogo />
-              <Text as="span">{tab.name}</Text>
+              <span>{tab.name}</span>
             </button>
             <button
               className="workspace-tab-close"

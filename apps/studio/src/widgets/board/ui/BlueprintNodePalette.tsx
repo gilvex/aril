@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { insertNodeKinds } from '../config/insertNodeKinds.ts'
 import { Plus, X } from 'lucide-react'
 import { type Idea } from '@aril/domain/workspace'
@@ -16,7 +15,7 @@ export function BlueprintNodePalette({
   return (
     <div className="node-palette">
       <div className="popover-heading">
-        <Text>{t('Add to your canvas')}</Text>
+        {t('Add to your canvas')}
         <button
           className="icon-button"
           onClick={close}
@@ -30,7 +29,7 @@ export function BlueprintNodePalette({
         return (
           <button key={kind} onClick={() => add(kind)}>
             <Icon size={17} />
-            <Text>{t(kindLabels[kind])}</Text>
+            {t(kindLabels[kind])}
             <Plus size={14} />
           </button>
         )

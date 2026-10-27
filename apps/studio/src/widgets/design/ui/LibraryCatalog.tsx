@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Layers, ChevronRight } from 'lucide-react'
@@ -32,8 +31,8 @@ export function LibraryCatalog({ model, explorer }: LibraryExplorerProps) {
         aria-pressed={!libraryPath.length}
       >
         <Layers size={16} />
-        <Text as="span">{t('All libraries')}</Text>
-        <Text as="small">{explorer.assets.length}</Text>
+        <span>{t('All libraries')}</span>
+        <small>{explorer.assets.length}</small>
       </Button>
       {explorer.groups.map((group) => (
         <div key={group.name}>
@@ -48,8 +47,8 @@ export function LibraryCatalog({ model, explorer }: LibraryExplorerProps) {
               className="library-color-dot"
               style={{ background: libraryMapColor(group.name) }}
             />
-            <Text as="span">{group.name}</Text>
-            <Text as="small">{group.count}</Text>
+            <span>{group.name}</span>
+            <small>{group.count}</small>
           </Button>
           {libraryPath[0] === group.name &&
             [...group.families].map(([name, count]) => (
@@ -62,15 +61,15 @@ export function LibraryCatalog({ model, explorer }: LibraryExplorerProps) {
                 aria-pressed={libraryPath[1] === name}
               >
                 <ChevronRight size={12} />
-                <Text as="span">{name}</Text>
-                <Text as="small">{count}</Text>
+                <span>{name}</span>
+                <small>{count}</small>
               </Button>
             ))}
         </div>
       ))}
-      <Text as="p">
+      <p>
         {t('Organize assets into libraries and families from their details.')}
-      </Text>
+      </p>
     </nav>
   )
 }

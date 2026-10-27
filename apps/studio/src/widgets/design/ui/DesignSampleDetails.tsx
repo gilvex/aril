@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Check, Users } from 'lucide-react'
 export function DesignSampleDetails({ tab }: { tab: string }) {
@@ -20,14 +19,14 @@ export function DesignSampleDetails({ tab }: { tab: string }) {
       {items.map((item, index) => (
         <div key={item}>
           {tab === 'Activity' ? <Check size={18} /> : <Users size={18} />}
-          <Text as="span">
-            <Text as="strong">{t(item)}</Text>
-            <Text as="small">
+          <span>
+            <strong>{t(item)}</strong>
+            <small>
               {tab === 'Activity'
                 ? t('Sample event {{number}}', { number: index + 1 })
                 : t('Access inherited from Weekend servers')}
-            </Text>
-          </Text>
+            </small>
+          </span>
         </div>
       ))}
     </div>

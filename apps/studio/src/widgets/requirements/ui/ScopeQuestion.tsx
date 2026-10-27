@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -55,7 +54,7 @@ export function ScopeQuestion({
       />
       <div>
         <button className="button subtle" disabled={readOnly} onClick={resolve}>
-          <Text>{t(question.resolved ? 'Reopen' : 'Resolve')}</Text>
+          {t(question.resolved ? 'Reopen' : 'Resolve')}
         </button>
         <button
           className="icon-button"

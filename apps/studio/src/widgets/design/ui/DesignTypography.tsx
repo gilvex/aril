@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import type { DesignElement } from '@aril/domain/design'
@@ -9,8 +8,8 @@ export function DesignTypography({ model }: DesignEditorProps) {
   const node = model.selected[0]
   return (
     <section>
-      <Text as="h3">{t('Typography')}</Text>
-      <Text as="label">
+      <h3>{t('Typography')}</h3>
+      <label>
         {t('Text content')}
         <textarea
           aria-label={t('Text content')}
@@ -19,8 +18,8 @@ export function DesignTypography({ model }: DesignEditorProps) {
           rows={3}
           onChange={(event) => model.edit({ text: event.target.value })}
         />
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Font')}
         <StudioSelect
           aria-label={t('Font')}
@@ -37,7 +36,7 @@ export function DesignTypography({ model }: DesignEditorProps) {
             </option>
           ))}
         </StudioSelect>
-      </Text>
+      </label>
       <div className="design-property-grid">
         <DesignNumberInput
           label={t('Font size')}
@@ -46,7 +45,7 @@ export function DesignTypography({ model }: DesignEditorProps) {
           max={200}
           onChange={(fontSize) => model.edit({ fontSize })}
         />
-        <Text as="label">
+        <label>
           {t('Text color')}
           <input
             aria-label={t('Text color')}
@@ -54,8 +53,8 @@ export function DesignTypography({ model }: DesignEditorProps) {
             value={node.color}
             onChange={(event) => model.edit({ color: event.target.value })}
           />
-        </Text>
-        <Text as="label">
+        </label>
+        <label>
           {t('Weight')}
           <StudioSelect
             aria-label={t('Weight')}
@@ -72,8 +71,8 @@ export function DesignTypography({ model }: DesignEditorProps) {
               </option>
             ))}
           </StudioSelect>
-        </Text>
-        <Text as="label">
+        </label>
+        <label>
           {t('Alignment')}
           <StudioSelect
             aria-label={t('Alignment')}
@@ -88,7 +87,7 @@ export function DesignTypography({ model }: DesignEditorProps) {
             <option value="center">{t('Center')}</option>
             <option value="right">{t('Right')}</option>
           </StudioSelect>
-        </Text>
+        </label>
       </div>
     </section>
   )

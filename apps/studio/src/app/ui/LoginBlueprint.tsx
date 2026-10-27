@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Box, Boxes, Layers3, Workflow } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
@@ -8,8 +7,8 @@ export function LoginBlueprint() {
     <div className="login-blueprint" aria-hidden="true">
       <div className="login-blueprint-heading">
         <Workflow size={16} />
-        <Text as="strong">{t('Deployment blueprint')}</Text>
-        <Text as="span">{t('Example board')}</Text>
+        <strong>{t('Deployment blueprint')}</strong>
+        <span>{t('Example board')}</span>
       </div>
       <div className="login-blueprint-canvas">
         <svg
@@ -21,39 +20,31 @@ export function LoginBlueprint() {
           <path d="m330 191 7 6-7 6 M266 336l-7 6 7 6" />
         </svg>
         <div className="login-blueprint-card login-runtime">
-          <Text as="span" className="login-node-kind">
+          <span className="login-node-kind">
             <Box size={18} />
             {t('Reusable layer')}
-          </Text>
-          <Text as="h2">{t('Runtime image')}</Text>
-          <Text as="p">{t('A pinned base image and its dependencies.')}</Text>
-          <Text as="span" className="login-node-tag">
-            {t('Base image')}
-          </Text>
+          </span>
+          <h2>{t('Runtime image')}</h2>
+          <p>{t('A pinned base image and its dependencies.')}</p>
+          <span className="login-node-tag">{t('Base image')}</span>
         </div>
         <div className="login-blueprint-card login-game">
-          <Text as="span" className="login-node-kind">
+          <span className="login-node-kind">
             <Layers3 size={18} />
             {t('Reusable layer')}
-          </Text>
-          <Text as="h2">{t('Game layer')}</Text>
-          <Text as="p">{t('Install the game once. Version the result.')}</Text>
-          <Text as="span" className="login-node-tag">
-            {t('Versioned content')}
-          </Text>
+          </span>
+          <h2>{t('Game layer')}</h2>
+          <p>{t('Install the game once. Version the result.')}</p>
+          <span className="login-node-tag">{t('Versioned content')}</span>
         </div>
         <div className="login-blueprint-card login-server">
-          <Text as="span" className="login-node-kind">
+          <span className="login-node-kind">
             <Boxes size={18} />
             {t('Service')}
-          </Text>
-          <Text as="h2">{t('Server blueprint')}</Text>
-          <Text as="p">
-            {t('Startup, mounts, resources, and an environment schema.')}
-          </Text>
-          <Text as="span" className="login-node-tag">
-            {t('Ready to configure')}
-          </Text>
+          </span>
+          <h2>{t('Server blueprint')}</h2>
+          <p>{t('Startup, mounts, resources, and an environment schema.')}</p>
+          <span className="login-node-tag">{t('Ready to configure')}</span>
         </div>
       </div>
     </div>

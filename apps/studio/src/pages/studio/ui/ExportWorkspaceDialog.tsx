@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useExportWorkspaceDialogHandlers } from '../model/useExportWorkspaceDialogHandlers.tsx'
 
@@ -23,14 +22,12 @@ export function ExportWorkspaceDialog({
       <div className="modal-symbol">
         <FileJson size={25} />
       </div>
-      <Text as="h2" id="modal-title">
-        {t('Take your ideas with you.')}
-      </Text>
-      <Text as="p">
+      <h2 id="modal-title">{t('Take your ideas with you.')}</h2>
+      <p>
         {t(
           'Download your workspace as JSON, or copy it if your browser does not support downloads.',
         )}
-      </Text>
+      </p>
       <textarea
         className="export-json"
         aria-label={t('Workspace JSON')}
@@ -40,11 +37,11 @@ export function ExportWorkspaceDialog({
       />
       <div className="modal-actions">
         <button className="button" onClick={handleClick}>
-          <Text>{t('Copy JSON')}</Text>
+          {t('Copy JSON')}
         </button>
         <button className="button primary" onClick={downloadWorkspace}>
           <Download size={15} />
-          <Text>{t('Download JSON')}</Text>
+          {t('Download JSON')}
         </button>
       </div>
     </>

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementPeopleProps } from '../types/requirementPeopleProps.ts'
@@ -9,32 +8,26 @@ export function RequirementAvatars({
   const { t } = useTranslation()
   if (!people.length) return null
   return (
-    <Text
-      as="span"
-      className="req-avatars"
-      aria-label={t('Requirement collaborators')}
-    >
+    <span className="req-avatars" aria-label={t('Requirement collaborators')}>
       {people.slice(0, 3).map(({ profile, requirement }) => (
-        <Text
-          as="span"
+        <span
           key={profile.id}
           style={{ borderColor: profile.color }}
           title={`${profile.name}${profile.id === currentUserId ? t(' (you)') : ''} — ${t(requirement.typing ? 'typing in' : requirement.field ? 'editing' : 'Viewing')}${requirement.field ? ` ${t(requirement.field)}` : ''}`}
         >
           <Avatar profile={profile} />
-        </Text>
+        </span>
       ))}
       {people.length > 3 && (
-        <Text
-          as="span"
+        <span
           title={people
             .slice(3)
             .map((person) => person.profile.name)
             .join(', ')}
         >
           +{people.length - 3}
-        </Text>
+        </span>
       )}
-    </Text>
+    </span>
   )
 }

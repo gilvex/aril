@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { CollaborationBar } from '@/widgets/collaboration/index.ts'
 import {
@@ -50,13 +49,13 @@ export function StudioHeaderActions({
         ) : (
           <LoaderCircle className="spinning" size={14} />
         )}
-        <Text as="span">
+        <span>
           {state.saveState === 'saved'
             ? t('All changes saved')
             : state.saveState === 'error'
               ? t('Not saved · retry')
               : t('Saving changes')}
-        </Text>
+        </span>
       </button>
       <span className="toolbar-divider" />
       <button

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -60,9 +59,9 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
       className="design-library-fields"
       data-collaboration-scope={`component:${component.id}`}
     >
-      <Text as="legend">{t('Component')}</Text>
+      <legend>{t('Component')}</legend>
       <DesignComponentIcon model={model} />
-      <Text as="label">
+      <label>
         {t('Name')}
         <input
           name="component"
@@ -70,8 +69,8 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
           onChange={rename}
           maxLength={120}
         />
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Variant')}
         <StudioSelect value={variant.id} onChange={pick}>
           {Object.values(component.variants).map((v) => (
@@ -80,8 +79,8 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
             </option>
           ))}
         </StudioSelect>
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Variant name')}
         <input
           name="variant"
@@ -89,17 +88,17 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
           onChange={rename}
           maxLength={120}
         />
-      </Text>
+      </label>
       <div className="design-library-buttons">
         <button
           className="button"
           onClick={model.addVariant}
           disabled={Object.keys(component.variants).length >= 30}
         >
-          <Text>{t('Add variant')}</Text>
+          {t('Add variant')}
         </button>
         <button className="button primary" onClick={insert}>
-          <Text>{t('Insert instance')}</Text>
+          {t('Insert instance')}
         </button>
       </div>
       <button
@@ -107,7 +106,7 @@ export function DesignComponentDetails({ model }: DesignEditorProps) {
         disabled={readOnly}
         onClick={remove}
       >
-        <Text>{t('Delete component and detach instances')}</Text>
+        {t('Delete component and detach instances')}
       </button>
     </fieldset>
   )

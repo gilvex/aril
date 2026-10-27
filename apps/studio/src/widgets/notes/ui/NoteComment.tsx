@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Check, RotateCcw, Trash2 } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -20,21 +19,20 @@ export function NoteComment({
   return (
     <article className="note-comment">
       <header>
-        <Text as="strong">{comment.authorName}</Text>
+        <strong>{comment.authorName}</strong>
         <time dateTime={new Date(comment.createdAt).toISOString()}>
-          <Text>{new Date(comment.createdAt).toLocaleDateString()}</Text>
+          {new Date(comment.createdAt).toLocaleDateString()}
         </time>
       </header>
-      {comment.quote && <blockquote><Text>{comment.quote}</Text></blockquote>}
-      <Text as="p">{comment.body}</Text>
+      {comment.quote && <blockquote>{comment.quote}</blockquote>}
+      <p>{comment.body}</p>
       <footer>
-        {comment.resolved && <Text as="span">{t('Resolved')}</Text>}
+        {comment.resolved && <span>{t('Resolved')}</span>}
         {!readOnly && (
           <button className="button subtle" onClick={toggle}>
             {comment.resolved ? <RotateCcw size={14} /> : <Check size={14} />}
-            <Text>
-              {t(comment.resolved ? 'Reopen comment' : 'Resolve comment')}
-            </Text>
+
+            {t(comment.resolved ? 'Reopen comment' : 'Resolve comment')}
           </button>
         )}
         {!readOnly && profileId === comment.authorId && (

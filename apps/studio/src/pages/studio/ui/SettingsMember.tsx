@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Trash2 } from 'lucide-react'
 import { Avatar } from '@/entities/collaboration/index.ts'
@@ -33,13 +32,11 @@ export function SettingsMember({
       <div className="settings-member-identity">
         <Avatar profile={member} />
         <div>
-          <Text as="strong">
+          <strong>
             {member.name}
-            {member.id === currentUserId && (
-              <Text as="small"> · {t('You')}</Text>
-            )}
-          </Text>
-          <Text as="small">
+            {member.id === currentUserId && <small> · {t('You')}</small>}
+          </strong>
+          <small>
             {t(
               member.role === 'owner'
                 ? 'Owner'
@@ -49,24 +46,24 @@ export function SettingsMember({
                     ? 'Temporary guest'
                     : 'Can edit this file',
             )}
-          </Text>
+          </small>
         </div>
       </div>
       {settings.confirming === member.id ? (
         <div className="settings-remove-confirm" role="alert">
-          <Text as="span">
+          <span>
             {t('Remove {{name}} from this file?', { name: member.name })}
-          </Text>
+          </span>
           <button
             className="button danger"
             disabled={settings.busy}
             onClick={remove}
           >
             {settings.busy && <Spinner />}
-            <Text>{t('Remove')}</Text>
+            {t('Remove')}
           </button>
           <button className="button" disabled={settings.busy} onClick={cancel}>
-            <Text>{t('Cancel')}</Text>
+            {t('Cancel')}
           </button>
         </div>
       ) : (
@@ -82,7 +79,7 @@ export function SettingsMember({
               <option value="viewer">{t('Viewer')}</option>
             </StudioSelect>
           ) : (
-            <Text as="span" className="settings-role">
+            <span className="settings-role">
               {t(
                 member.role === 'owner'
                   ? 'Owner'
@@ -92,7 +89,7 @@ export function SettingsMember({
                       ? 'Guest'
                       : 'Editor',
               )}
-            </Text>
+            </span>
           )}
           {manageable && (
             <button

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -28,19 +27,19 @@ export function LibraryMapPagination({
   )
   return (
     <footer className="library-map-pagination">
-      <Text as="span">
+      <span>
         {t('Showing {{start}}–{{end}} of {{total}} items', {
           start: total ? offset + 1 : 0,
           end: Math.min(total, offset + pageSize),
           total,
         })}
-      </Text>
+      </span>
       {externalOverflow > 0 && (
-        <Text as="small">
+        <small>
           {t('{{count}} other connected libraries are available in Browse.', {
             count: externalOverflow,
           })}
-        </Text>
+        </small>
       )}
       {total > pageSize && (
         <>
@@ -51,7 +50,7 @@ export function LibraryMapPagination({
             disabled={!offset}
             onClick={previous}
           >
-            <Text>{t('Previous')}</Text>
+            {t('Previous')}
           </Button>
           <Button
             className="button"
@@ -60,7 +59,7 @@ export function LibraryMapPagination({
             disabled={offset + pageSize >= total}
             onClick={next}
           >
-            <Text>{t('Next')}</Text>
+            {t('Next')}
           </Button>
         </>
       )}

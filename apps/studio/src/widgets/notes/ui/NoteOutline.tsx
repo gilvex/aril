@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { X } from 'lucide-react'
 import type { useNoteEditor } from '../model/useNoteEditor.ts'
@@ -13,7 +12,7 @@ export function NoteOutline({
   return (
     <aside className="notebook-outline">
       <div className="notebook-panel-heading">
-        <Text as="strong">{t('Outline')}</Text>
+        <strong>{t('Outline')}</strong>
         <button
           className="icon-button"
           aria-label={t('Close outline')}
@@ -28,13 +27,13 @@ export function NoteOutline({
           style={{ paddingLeft: 16 + (heading.depth - 1) * 10 }}
           onClick={() => editor.jump(heading.line)}
         >
-          <Text>{heading.title}</Text>
+          {heading.title}
         </button>
       ))}
       {!editor.headings.length && (
-        <Text as="p" className="empty-message">
+        <p className="empty-message">
           {t('Add Markdown headings to navigate this note.')}
-        </Text>
+        </p>
       )}
     </aside>
   )

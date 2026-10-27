@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ArrowRightLeft, LogOut } from 'lucide-react'
 import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -13,7 +12,7 @@ export function AccountActions(props: AccountActionsProps) {
   if (isDemoMode())
     return (
       <a className="button" href="/app">
-        <Text>{t('Exit demo')}</Text>
+        {t('Exit demo')}
       </a>
     )
   return (
@@ -25,7 +24,7 @@ export function AccountActions(props: AccountActionsProps) {
           onClick={state.switchAccount}
         >
           <ArrowRightLeft size={15} />
-          <Text>{t('Switch account')}</Text>
+          {t('Switch account')}
         </button>
         <button
           className="button"
@@ -33,36 +32,36 @@ export function AccountActions(props: AccountActionsProps) {
           onClick={state.logout}
         >
           <LogOut size={15} />
-          <Text>{t('Log out')}</Text>
+          {t('Log out')}
         </button>
       </div>
       {state.busy && (
-        <Text as="p" className="loading-inline" role="status">
+        <p className="loading-inline" role="status">
           <Spinner />
-          <Text as="span">{t('Saving and signing out…')}</Text>
-        </Text>
+          <span>{t('Saving and signing out…')}</span>
+        </p>
       )}
       {state.confirmation && (
         <div className="account-actions-confirmation">
-          <Text as="p">
+          <p>
             {t(
               'This profile is not connected to Google. You will need a new invitation to return. Connect Google above first to keep access to this profile.',
             )}
-          </Text>
+          </p>
           <div className="account-actions-buttons">
             <button className="button" onClick={state.cancel}>
-              <Text>{t('Stay signed in')}</Text>
+              {t('Stay signed in')}
             </button>
             <button className="button" onClick={state.confirm}>
-              <Text>{t('Sign out anyway')}</Text>
+              {t('Sign out anyway')}
             </button>
           </div>
         </div>
       )}
       {state.error && (
-        <Text as="p" className="form-error" role="alert">
+        <p className="form-error" role="alert">
           {t(state.error)}
-        </Text>
+        </p>
       )}
     </section>
   )

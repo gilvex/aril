@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useMemo } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -24,7 +23,7 @@ export function LibraryAssetBindings({ model }: DesignEditorProps) {
   if (!bindings.length) return null
   return (
     <>
-      <Text as="h4">{t('Bound variables')}</Text>
+      <h4>{t('Bound variables')}</h4>
       <ul className="asset-bindings">
         {bindings.slice(0, model.libraryUsageLimit).map((binding) => (
           <li key={binding.key}>
@@ -34,14 +33,14 @@ export function LibraryAssetBindings({ model }: DesignEditorProps) {
               size="sm"
               onClick={() => inspect(`variable:${binding.id}`)}
             >
-              <Text as="span">
-                <Text as="strong">
+              <span>
+                <strong>
                   {model.library.variables[binding.id]?.name || binding.id}
-                </Text>
-                <Text as="small">
+                </strong>
+                <small>
                   {binding.name} · {binding.property}
-                </Text>
-              </Text>
+                </small>
+              </span>
             </Button>
           </li>
         ))}
@@ -55,7 +54,7 @@ export function LibraryAssetBindings({ model }: DesignEditorProps) {
             model.patch({ libraryUsageLimit: model.libraryUsageLimit + 50 })
           }
         >
-          <Text>{t('Show more')}</Text>
+          {t('Show more')}
         </Button>
       )}
     </>

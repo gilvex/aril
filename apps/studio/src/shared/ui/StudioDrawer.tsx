@@ -1,4 +1,3 @@
-import { Text } from './Text.tsx'
 import {
   Drawer,
   DrawerContent,
@@ -45,7 +44,7 @@ export function StudioDrawer({
         onInteractOutside={interactOutside}
         aria-describedby={undefined}
       >
-        <DrawerTitle className="sr-only"><Text>{title}</Text></DrawerTitle>
+        <DrawerTitle className="sr-only">{title}</DrawerTitle>
         <div className="studio-drawer-body">{children}</div>
       </Content>
     </Root>

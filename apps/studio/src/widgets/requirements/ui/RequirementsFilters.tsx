@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCallback } from 'react'
@@ -13,7 +12,7 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
   )
   return (
     <div className="requirements-filters">
-      <Text as="label">
+      <label>
         {t('Area')}
         <StudioSelect
           aria-label={t('Filter requirements by area')}
@@ -27,8 +26,8 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
             </option>
           ))}
         </StudioSelect>
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Priority')}
         <StudioSelect
           aria-label={t('Filter requirements by priority')}
@@ -46,8 +45,8 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
             </option>
           ))}
         </StudioSelect>
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Delivery status')}
         <StudioSelect
           aria-label={t('Filter requirements by status')}
@@ -65,7 +64,7 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
             </option>
           ))}
         </StudioSelect>
-      </Text>
+      </label>
       <button
         className="req-reset-filters"
         disabled={
@@ -73,7 +72,7 @@ export function RequirementsFilters({ model }: RequirementsViewProps) {
         }
         onClick={reset}
       >
-        <Text>{t('Reset filters')}</Text>
+        {t('Reset filters')}
       </button>
     </div>
   )

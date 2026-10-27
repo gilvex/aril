@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { X } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
 import {
@@ -30,7 +29,7 @@ export function InvitationDialog({
       >
         <div className="invitation-drawer-content">
           <header>
-            <Text as="h2">{title}</Text>
+            <h2>{title}</h2>
             <Button
               className="icon-button"
               aria-label={t('Close dialog')}
@@ -39,7 +38,7 @@ export function InvitationDialog({
               <X size={18} />
             </Button>
           </header>
-          <Text as="p">{description}</Text>
+          <p>{description}</p>
           {children}
         </div>
       </StudioDrawer>
@@ -47,8 +46,8 @@ export function InvitationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="invitation-dialog">
-        <DialogTitle><Text>{title}</Text></DialogTitle>
-        <DialogDescription><Text>{description}</Text></DialogDescription>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription>{description}</DialogDescription>
         {children}
       </DialogContent>
     </Dialog>

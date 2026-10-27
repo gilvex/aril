@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Popover } from 'radix-ui'
 import { ChevronDown } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -16,7 +15,7 @@ export function BlueprintIconPicker(props: BlueprintIconPickerProps) {
   const Icon = option?.icon || kindIcons[node.data.kind]
   return (
     <div className="blueprint-icon-picker">
-      <Text as="span">{t('Icon')}</Text>
+      <span>{t('Icon')}</span>
       <Popover.Root open={model.open && !readOnly} onOpenChange={model.setOpen}>
         <Popover.Trigger asChild>
           <button
@@ -26,7 +25,7 @@ export function BlueprintIconPicker(props: BlueprintIconPickerProps) {
             disabled={readOnly}
           >
             <Icon size={20} aria-hidden="true" />
-            <Text as="span">{t(option?.label || 'Default icon')}</Text>
+            <span>{t(option?.label || 'Default icon')}</span>
             <ChevronDown size={14} aria-hidden="true" />
           </button>
         </Popover.Trigger>

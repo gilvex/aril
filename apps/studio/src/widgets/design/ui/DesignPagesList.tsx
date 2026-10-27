@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
@@ -25,7 +24,7 @@ export function DesignPagesList({ model }: DesignEditorProps) {
   return (
     <>
       {' '}
-      <Text as="label" className="design-page-search">
+      <label className="design-page-search">
         <Search size={15} aria-hidden="true" />
         <Input
           aria-label={t('Find a page')}
@@ -33,16 +32,12 @@ export function DesignPagesList({ model }: DesignEditorProps) {
           value={model.pageQuery}
           onChange={changeQuery}
         />
-      </Text>
+      </label>
       <div className="design-page-picker-list">
         {pages.map((page) => (
           <DesignPageRow key={page.id} page={page} model={model} />
         ))}
-        {!pages.length && (
-          <Text as="p" role="status">
-            {t('No matching pages.')}
-          </Text>
-        )}
+        {!pages.length && <p role="status">{t('No matching pages.')}</p>}
       </div>
       {canEdit && (
         <Button
@@ -52,7 +47,7 @@ export function DesignPagesList({ model }: DesignEditorProps) {
           onClick={model.addPage}
         >
           <Plus size={15} />
-          <Text>{t('Add page')}</Text>
+          {t('Add page')}
         </Button>
       )}
     </>

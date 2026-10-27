@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { Scan, CodeXml, Download } from 'lucide-react'
@@ -44,11 +43,9 @@ export function CanvasInspectTools({
       {dataOpen &&
         createPortal(
           <StudioModal title={t('View canvas data')} close={close}>
-            <Text as="h2" id="modal-title">
-              {t('View canvas data')}
-            </Text>
+            <h2 id="modal-title">{t('View canvas data')}</h2>
             <pre className="canvas-inspect-data">
-              <Text>{JSON.stringify(data, null, 2)}</Text>
+              {JSON.stringify(data, null, 2)}
             </pre>
           </StudioModal>,
           document.fullscreenElement || document.body,

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { InvitationInboxContent } from './InvitationInboxContent.tsx'
 import { useCallback, useEffect, useRef } from 'react'
 import { Bell } from 'lucide-react'
@@ -98,9 +97,7 @@ export function InvitationInbox() {
       >
         <Bell size={18} />
         {invitations.length > 0 && (
-          <Text as="span" className="invitation-count">
-            {invitations.length}
-          </Text>
+          <span className="invitation-count">{invitations.length}</span>
         )}
       </Button>
       <InvitationDialog

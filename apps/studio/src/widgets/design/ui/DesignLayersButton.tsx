@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Layers } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -27,7 +26,7 @@ export function DesignLayersButton({ model }: DesignEditorProps) {
       onClick={toggle}
     >
       <Layers size={18} />
-      <Text as="span">{t('Layers')}</Text>
+      <span>{t('Layers')}</span>
     </button>
   )
 }

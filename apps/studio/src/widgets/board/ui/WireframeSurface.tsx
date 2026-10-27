@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { AppWindow, MousePointer2, Plus } from 'lucide-react'
 import { WireframeFlow } from './WireframeFlow.tsx'
@@ -43,19 +42,17 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
         </div>
       )}
       <div className="canvas-caption">
-        <Text>{t('screenCount', { count: screens.length })}</Text>
+        {t('screenCount', { count: screens.length })}
         <span className="caption-separator" />
-        <Text>
-          {t('blockCount', { count: graph.nodes.length - screens.length })}
-        </Text>
+
+        {t('blockCount', { count: graph.nodes.length - screens.length })}
+
         <span className="caption-separator" />
-        <Text>{t('flowCount', { count: graph.edges.length })}</Text>
+        {t('flowCount', { count: graph.edges.length })}
       </div>
       {compact && touchSelection && !preview && (
         <div className="touch-selection-hint">
-          <Text>
-            {t('Tap blocks to select. Tap Done to move them together.')}
-          </Text>
+          {t('Tap blocks to select. Tap Done to move them together.')}
         </div>
       )}
       <WireframeFlow
@@ -85,29 +82,27 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
             <AppWindow size={72} strokeWidth={1} />
             <MousePointer2 size={27} />
           </div>
-          <Text as="h2">{t('Give this idea a shape.')}</Text>
-          <Text as="p">
+          <h2>{t('Give this idea a shape.')}</h2>
+          <p>
             {t(
               'Build a screen from blocks, then draw the journey between them.',
             )}
-          </Text>
+          </p>
           <button className="button primary" onClick={starter}>
             <Plus size={16} />
-            <Text>{t('Start with a screen')}</Text>
+            {t('Start with a screen')}
           </button>
           <button className="button" onClick={() => setPalette(true)}>
-            <Text>{t('Or add a single block')}</Text>
+            {t('Or add a single block')}
           </button>
         </div>
       )}
       <div className="canvas-tip" role="status">
-        <Text>
-          {preview
-            ? previewMessage
-            : t(
-                'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side',
-              )}
-        </Text>
+        {preview
+          ? previewMessage
+          : t(
+              'Drag blocks · Resize corners · Ctrl / ⌘ + click to group · Connect either side',
+            )}
       </div>
     </div>
   )

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import { StudioActionButton } from '@/shared/ui/index.tsx'
@@ -41,7 +40,7 @@ export function DesignCanvasActions({
         onClick={prepare}
       >
         <MoreHorizontal size={18} />
-        {labelled && <Text as="span">{t('Canvas actions')}</Text>}
+        {labelled && <span>{t('Canvas actions')}</span>}
       </StudioActionButton>
     </EditorActionMenu>
   )

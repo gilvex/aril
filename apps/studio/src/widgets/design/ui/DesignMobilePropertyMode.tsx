@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -22,12 +21,8 @@ export function DesignMobilePropertyMode({ model }: DesignEditorProps) {
       className="design-tools-property-mode"
       aria-label={t('Properties')}
     >
-      <ToggleGroupItem value="properties">
-        <Text>{t('Properties')}</Text>
-      </ToggleGroupItem>
-      <ToggleGroupItem value="styles">
-        <Text>{t('Styles')}</Text>
-      </ToggleGroupItem>
+      <ToggleGroupItem value="properties">{t('Properties')}</ToggleGroupItem>
+      <ToggleGroupItem value="styles">{t('Styles')}</ToggleGroupItem>
     </ToggleGroup>
   )
 }

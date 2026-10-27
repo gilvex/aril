@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Compass } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
@@ -7,42 +6,42 @@ export function DemoGuide() {
   const base = '/?demo=1&workspace=demo&board=layers'
   return (
     <details className="demo-guide">
-      <Text as="summary">
+      <summary>
         <Compass size={14} />
         {t('Explore features')}
-      </Text>
+      </summary>
       <nav aria-label={t('Demo guide')}>
         <a href={`${base}&view=canvas`}>
-          <Text as="strong">{t('Blueprint')}</Text>
-          <Text as="span">
+          <strong>{t('Blueprint')}</strong>
+          <span>
             {t(
               'Edit nodes, link requirements, and move a group with Ctrl / Cmd.',
             )}
-          </Text>
+          </span>
         </a>
         <a href={`${base}&view=requirements`}>
-          <Text as="strong">{t('Requirements')}</Text>
-          <Text as="span">
+          <strong>{t('Requirements')}</strong>
+          <span>
             {t('Try status and priority boards, filters, and bulk edits.')}
-          </Text>
+          </span>
         </a>
         <a href={`${base}&view=design`}>
-          <Text as="strong">{t('Design direction')}</Text>
-          <Text as="span">
+          <strong>{t('Design direction')}</strong>
+          <span>
             {t('Compare colors, fonts, density, and mobile previews.')}
-          </Text>
+          </span>
         </a>
         <a href={`${base}&view=notes`}>
-          <Text as="strong">{t('Project notes')}</Text>
-          <Text as="span">
+          <strong>{t('Project notes')}</strong>
+          <span>
             {t('Read the guide, edit Markdown, or add your own document.')}
-          </Text>
+          </span>
         </a>
-        <Text as="p">
+        <p>
           {t(
             'Open People to follow a simulated teammate. Try Undo, history, and export from workspace actions.',
           )}
-        </Text>
+        </p>
       </nav>
     </details>
   )

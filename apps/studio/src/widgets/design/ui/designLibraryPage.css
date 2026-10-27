@@ -99,7 +99,7 @@
   flex-shrink: 0;
 }
 .library-catalog p {
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   line-height: 1.6;
   color: var(--text-muted);
   padding: 8px;
@@ -112,7 +112,7 @@
   gap: 8px;
 }
 .library-page-actions button {
-  font-size: var(--text-size-caption);
+  font-size: 11px;
 }
 .library-map-column {
   display: flex;
@@ -159,7 +159,7 @@
   flex: 1 1 auto;
   min-width: min-content;
   padding-inline: 6px;
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   height: auto;
   min-height: 44px;
   padding-block: 6px;
@@ -174,14 +174,14 @@
   gap: 10px;
 }
 .library-organization legend {
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   color: var(--text-muted);
   padding: 0 4px;
 }
 .library-organization label {
   display: grid;
   gap: 5px;
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   color: var(--text-muted);
 }
 .library-organization input {
@@ -203,7 +203,7 @@
 }
 .library-component-previews small {
   color: var(--text-muted);
-  font-size: var(--text-size-caption);
+  font-size: 11px;
 }
 .library-component-previews .design-mini-preview {
   position: relative;

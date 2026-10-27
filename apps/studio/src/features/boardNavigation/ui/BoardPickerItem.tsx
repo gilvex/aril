@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { PresenceAvatars } from '@/entities/collaboration/index.ts'
 import { Check, Workflow } from 'lucide-react'
 import { useBoardPickerItemHandlers } from '../model/useBoardPickerItemHandlers.tsx'
@@ -24,7 +23,7 @@ export function BoardPickerItem({
       onClick={handleClick}
     >
       <Workflow size={15} />
-      <Text as="span">{item.name}</Text>
+      <span>{item.name}</span>
       <PresenceAvatars profiles={profiles} />
       {item.id === board.id && <Check size={14} />}
     </button>

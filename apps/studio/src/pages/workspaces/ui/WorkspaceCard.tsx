@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { WorkspaceActions } from '@/features/workspaceManagement/index.ts'
 import { memo, useCallback } from 'react'
 import { ArrowUpRight } from 'lucide-react'
@@ -26,8 +25,8 @@ export const WorkspaceCard = memo(function WorkspaceCard({
         <WorkspacePreview studio={studio} />
         <div className="workspace-card-content">
           <div className="workspace-card-title">
-            <Text as="h2">{studio.name}</Text>
-            <Text as="span" className={`workspace-role role-${studio.role}`}>
+            <h2>{studio.name}</h2>
+            <span className={`workspace-role role-${studio.role}`}>
               {t(
                 studio.role === 'owner'
                   ? 'Owner'
@@ -37,12 +36,11 @@ export const WorkspaceCard = memo(function WorkspaceCard({
                       ? 'Guest'
                       : 'Editor',
               )}
-            </Text>
+            </span>
             <ArrowUpRight size={16} className="workspace-open-icon" />
           </div>
           <div className="workspace-card-meta">
-            <Text
-              as="span"
+            <span
               title={
                 visited
                   ? new Date(visited).toLocaleString(i18n.resolvedLanguage)
@@ -57,9 +55,8 @@ export const WorkspaceCard = memo(function WorkspaceCard({
                     ),
                   })
                 : t('Not opened on this device')}
-            </Text>
-            <Text
-              as="span"
+            </span>
+            <span
               className="workspace-members"
               aria-label={t('{{count}} workspace members', {
                 count: studio.memberCount,
@@ -70,11 +67,11 @@ export const WorkspaceCard = memo(function WorkspaceCard({
                 <Avatar key={member.id} profile={member} />
               ))}
               {studio.memberCount > 3 && (
-                <Text as="span" className="workspace-member-more">
+                <span className="workspace-member-more">
                   +{studio.memberCount - 3}
-                </Text>
+                </span>
               )}
-            </Text>
+            </span>
           </div>
         </div>
       </button>

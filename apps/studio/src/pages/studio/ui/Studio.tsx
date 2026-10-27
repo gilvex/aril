@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ControlPresenceOverlay } from '@/features/controlPresence/index.ts'
 import { CursorChat } from '@/features/cursorChat/index.ts'
 import { WorkspaceRoleContext } from '@/entities/workspace/index.ts'
@@ -37,13 +36,13 @@ export function Studio(props: StudioProps) {
           <StudioContent {...props} {...model} />
         ) : (
           <main className="main-area workspace-access-lost">
-            <Text as="h1">{t('Access to this file has ended.')}</Text>
-            <Text as="p">{t('Ask the owner for a new invitation.')}</Text>
+            <h1>{t('Access to this file has ended.')}</h1>
+            <p>{t('Ask the owner for a new invitation.')}</p>
             <button
               className="button"
               onClick={() => props.onWorkspaces(model.multiplayer.profile)}
             >
-              <Text>{t('Back to workspaces')}</Text>
+              {t('Back to workspaces')}
             </button>
           </main>
         )}

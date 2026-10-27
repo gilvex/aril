@@ -1,16 +1,8 @@
-import { NoteText } from './NoteText.tsx'
 import Markdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { NoteHeading } from './NoteHeading.tsx'
 import { NoteLink } from './NoteLink.tsx'
 const components: Components = {
-  p: NoteText,
-  strong: NoteText,
-  em: NoteText,
-  code: NoteText,
-  del: NoteText,
-  th: NoteText,
-  td: NoteText,
   a: NoteLink,
   h1: NoteHeading,
   h2: NoteHeading,

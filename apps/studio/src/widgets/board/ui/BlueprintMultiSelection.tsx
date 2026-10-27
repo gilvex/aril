@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
@@ -31,13 +30,13 @@ export function BlueprintMultiSelection({
   })
   return (
     <div className="inspector-body multi-selection-body">
-      <Text as="h2">{t('Edit together.')}</Text>
-      <Text as="p">
+      <h2>{t('Edit together.')}</h2>
+      <p>
         {t(
           'Drag any selected node to move the group. Ctrl / ⌘ + click toggles a node; Shift + drag selects an area.',
         )}
-      </Text>
-      <Text as="label">
+      </p>
+      <label>
         {t('Type')}
         <StudioSelect
           aria-label={t('Selected nodes type')}
@@ -59,8 +58,8 @@ export function BlueprintMultiSelection({
             </option>
           ))}
         </StudioSelect>
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Decision')}
         <StudioSelect
           aria-label={t('Selected nodes decision')}
@@ -82,15 +81,15 @@ export function BlueprintMultiSelection({
             </option>
           ))}
         </StudioSelect>
-      </Text>
+      </label>
       <ul className="selected-node-list">
         {selectedNodes.map((n) => (
-          <li key={n.id}><Text>{n.data.title}</Text></li>
+          <li key={n.id}>{n.data.title}</li>
         ))}
       </ul>
       <button className="button danger" onClick={handleClick}>
         <Trash2 size={15} />
-        <Text>{t('Delete selected nodes')}</Text>
+        {t('Delete selected nodes')}
       </button>
     </div>
   )

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { navigation } from '../config/navigation.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -26,7 +25,7 @@ export function StudioMenuNavigation({
       {navigation.map(({ id, name, icon: Icon }) => (
         <button key={id} data-view={id} onClick={navigate}>
           <Icon size={18} />
-          <Text>{t(name)}</Text>
+          {t(name)}
         </button>
       ))}
     </div>

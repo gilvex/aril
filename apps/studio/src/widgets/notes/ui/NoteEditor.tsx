@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { Trash2 } from 'lucide-react'
@@ -59,17 +58,15 @@ export function NoteEditor(props: NoteEditorProps) {
         )}
         {state.deleting && (
           <div className="notebook-delete" role="alert">
-            <Text as="span">
-              {t('Delete this note? You can undo this change.')}
-            </Text>
+            <span>{t('Delete this note? You can undo this change.')}</span>
             <button
               className="button"
               onClick={() => patch({ deleting: false })}
             >
-              <Text>{t('Cancel')}</Text>
+              {t('Cancel')}
             </button>
             <button className="button danger" onClick={model.remove}>
-              <Text>{t('Delete')}</Text>
+              {t('Delete')}
             </button>
           </div>
         )}
@@ -99,8 +96,8 @@ export function NoteEditor(props: NoteEditorProps) {
           )}
         </div>
         <footer className="notebook-meta">
-          <Text as="span">{t('Markdown supported')}</Text>
-          <Text as="span">{note.body.length.toLocaleString()} / 50,000</Text>
+          <span>{t('Markdown supported')}</span>
+          <span>{note.body.length.toLocaleString()} / 50,000</span>
         </footer>
       </article>
       {state.comments && <NoteCommentsPanel {...props} />}

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCanvasNavigationHandlers } from '../model/useCanvasNavigationHandlers.tsx'
 import { BoardPickerPopover } from './BoardPickerPopover.tsx'
@@ -85,7 +84,7 @@ export function CanvasNavigation({
         onClick={toggleBoardPicker}
       >
         <Workflow size={16} />
-        <Text as="span">{board.name}</Text>
+        <span>{board.name}</span>
         <ChevronDown size={14} />
       </button>
       <BoardSections

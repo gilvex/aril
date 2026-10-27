@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { SelectionBadgesProps } from '@/widgets/board/types/selectionBadgesProps.ts'
@@ -20,18 +19,17 @@ export function SelectionBadges({
       })}
     >
       {people.map((person) => (
-        <Text
-          as="span"
+        <span
           className="selection-person"
           key={person.id}
           style={{ borderColor: person.color }}
         >
           <Avatar profile={person} />
-          <Text as="span">
+          <span>
             {person.name}
             {person.id === currentUserId ? t(' (you)') : ''}
-          </Text>
-        </Text>
+          </span>
+        </span>
       ))}
     </div>
   )

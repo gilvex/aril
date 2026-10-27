@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { Check, PencilLine, Plus, Trash2, Search } from 'lucide-react'
 import './boardPicker.css'
 import { BoardPickerList } from './BoardPickerList.tsx'
@@ -33,7 +32,7 @@ export function BoardPickerPopover({
       aria-label={t('Boards')}
     >
       {boards.length > 6 && (
-        <Text as="label" className="board-picker-search">
+        <label className="board-picker-search">
           <Search size={15} aria-hidden="true" />
           <input
             autoFocus
@@ -43,12 +42,12 @@ export function BoardPickerPopover({
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-        </Text>
+        </label>
       )}
       {!visibleBoards.length && (
-        <Text as="p" className="board-picker-empty" role="status">
+        <p className="board-picker-empty" role="status">
           {t('No matching boards.')}
-        </Text>
+        </p>
       )}
       <BoardPickerList
         boards={visibleBoards}
@@ -60,7 +59,7 @@ export function BoardPickerPopover({
       <div className="board-picker-options">
         <button onClick={createBoard}>
           <Plus size={15} />
-          <Text>{t('New board')}</Text>
+          {t('New board')}
         </button>
         {renaming ? (
           <form onSubmit={renameBoard}>
@@ -78,12 +77,12 @@ export function BoardPickerPopover({
         ) : (
           <button onClick={beginRenaming}>
             <PencilLine size={15} />
-            <Text>{t('Rename board')}</Text>
+            {t('Rename board')}
           </button>
         )}
         <button disabled={boards.length < 2} onClick={deleteBoard}>
           <Trash2 size={15} />
-          <Text>{t('Delete current board')}</Text>
+          {t('Delete current board')}
         </button>
       </div>
     </div>

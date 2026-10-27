@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { UsernameEditor } from '@/features/invitations/index.ts'
 import { AccountActions } from '@/features/accountActions/index.ts'
 import { ProjectLinks } from '@/shared/ui/index.tsx'
@@ -14,17 +13,15 @@ export function UsernameSetup(props: InvitationProfileProps) {
     <div className="login-screen username-setup">
       <LoginHeader />
       <main className="username-setup-card">
-        <Text as="p" className="username-setup-eyebrow">
-          {t('Your account')}
-        </Text>
-        <Text as="h1">{t('Choose your username')}</Text>
-        <Text as="p">
+        <p className="username-setup-eyebrow">{t('Your account')}</p>
+        <h1>{t('Choose your username')}</h1>
+        <p>
           {t(
             'Make it easy for teammates to find you. Keep our suggestion or write your own.',
           )}
-        </Text>
+        </p>
         <UsernameEditor {...props} setup />
-        <Text as="p">{t('You can change it later in Account settings.')}</Text>
+        <p>{t('You can change it later in Account settings.')}</p>
         <AccountActions />
       </main>
       <footer className="login-footer">

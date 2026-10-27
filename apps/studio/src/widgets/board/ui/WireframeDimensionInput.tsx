@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useWireframeDimensionInputHandlers } from '../model/useWireframeDimensionInputHandlers.tsx'
 import type { WireframeDimensionInputProps } from '../types/wireframeDimensionInputProps.ts'
 export function WireframeDimensionInput({
@@ -12,7 +11,7 @@ export function WireframeDimensionInput({
     editNode,
   })
   return (
-    <Text as="label">
+    <label>
       {dimension === 'width' ? t('Width') : t('Height')}
       <input
         aria-label={t('Block {{value}}', { value: dimension })}
@@ -22,6 +21,6 @@ export function WireframeDimensionInput({
         value={node[dimension]}
         onChange={handleChange}
       />
-    </Text>
+    </label>
   )
 }

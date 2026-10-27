@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -55,13 +54,13 @@ export function DesignMachineStateProperties({ model }: DesignEditorProps) {
   const component = library.components[machine.componentId || '']
   return (
     <section>
-      <Text as="h3">{t('State')}</Text>
-      <Text as="label">
+      <h3>{t('State')}</h3>
+      <label>
         {t('Name')}
         <input value={state.name} onChange={name} maxLength={120} />
-      </Text>
+      </label>
       {component && (
-        <Text as="label">
+        <label>
           {t('Show variant')}
           <StudioSelect value={state.variantId || ''} onChange={variant}>
             <option value="">{t('Default')}</option>
@@ -71,7 +70,7 @@ export function DesignMachineStateProperties({ model }: DesignEditorProps) {
               </option>
             ))}
           </StudioSelect>
-        </Text>
+        </label>
       )}
       <DesignMachineActions
         label={t('On entry')}
@@ -84,7 +83,7 @@ export function DesignMachineStateProperties({ model }: DesignEditorProps) {
         disabled={state.id === machine.initial}
         onClick={remove}
       >
-        <Text>{t('Delete state')}</Text>
+        {t('Delete state')}
       </button>
     </section>
   )

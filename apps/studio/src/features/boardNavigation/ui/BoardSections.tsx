@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useRef, useCallback, type MouseEvent } from 'react'
 import { Workflow, PenTool, Plus } from 'lucide-react'
 import { activeBoardSections } from '@aril/domain/workspace'
@@ -53,7 +52,7 @@ export function BoardSections({
             onClick={choose}
           >
             <Icon size={15} />
-            <Text as="span">{t(section.label)}</Text>
+            <span>{t(section.label)}</span>
             <PresenceAvatars
               limit={1}
               profiles={present
@@ -65,20 +64,16 @@ export function BoardSections({
       })}
       {enabled.length < 2 && role && role !== 'viewer' && (
         <details ref={menu} className="board-section-add">
-          <Text
-            as="summary"
-            title={t('Add section')}
-            aria-label={t('Add section')}
-          >
+          <summary title={t('Add section')} aria-label={t('Add section')}>
             <Plus size={16} />
-          </Text>
+          </summary>
           <div>
             {sections
               .filter((section) => !enabled.includes(section.id))
               .map(({ id, label, icon: Icon }) => (
                 <button key={id} data-section={id} onClick={add}>
                   <Icon size={16} />
-                  <Text>{t(label)}</Text>
+                  {t(label)}
                 </button>
               ))}
           </div>

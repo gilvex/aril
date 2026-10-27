@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Settings, X } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -34,7 +33,7 @@ export function AccountSettingsButton(props: WorkspaceAccountMenuProps) {
       <Trigger asChild>
         <Button variant="ghost" className="button account-settings-trigger">
           <Settings size={16} />
-          <Text>{t('Account settings')}</Text>
+          {t('Account settings')}
         </Button>
       </Trigger>
       <Content
@@ -43,9 +42,7 @@ export function AccountSettingsButton(props: WorkspaceAccountMenuProps) {
         aria-describedby={undefined}
       >
         <header className="account-settings-heading">
-          <Title>
-            <Text>{t('Account settings')}</Text>
-          </Title>
+          <Title>{t('Account settings')}</Title>
           {compact && (
             <DrawerClose asChild>
               <Button

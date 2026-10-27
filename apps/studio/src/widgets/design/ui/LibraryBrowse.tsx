@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Component, Variable, Workflow, File } from 'lucide-react'
@@ -44,19 +43,19 @@ export function LibraryBrowse({ model, explorer }: LibraryExplorerProps) {
     <div className="library-browse">
       {!!librarySelection.length && (
         <div className="library-browse-selection">
-          <Text as="strong">
+          <strong>
             {t('{{count}} selected', { count: librarySelection.length })}
-          </Text>
+          </strong>
           <Button
             className="button"
             size="sm"
             variant="outline"
             onClick={organize}
           >
-            <Text>{t('Organization')}</Text>
+            {t('Organization')}
           </Button>
           <Button className="button" size="sm" variant="ghost" onClick={clear}>
-            <Text>{t('Clear selection')}</Text>
+            {t('Clear selection')}
           </Button>
         </div>
       )}
@@ -84,7 +83,7 @@ export function LibraryBrowse({ model, explorer }: LibraryExplorerProps) {
                     data-id={asset.id}
                     onClick={toggle}
                   >
-                    <Text>{librarySelection.includes(asset.id) ? '✓' : '+'}</Text>
+                    {librarySelection.includes(asset.id) ? '✓' : '+'}
                   </Button>
                 )}
                 <button
@@ -92,8 +91,7 @@ export function LibraryBrowse({ model, explorer }: LibraryExplorerProps) {
                   data-id={asset.id}
                   onClick={select}
                 >
-                  <Text
-                    as="span"
+                  <span
                     className="library-asset-art"
                     style={
                       variable?.type === 'color' && typeof value === 'string'
@@ -106,20 +104,18 @@ export function LibraryBrowse({ model, explorer }: LibraryExplorerProps) {
                     ) : (
                       <Icon size={28} />
                     )}
-                  </Text>
-                  <Text as="strong">{asset.name}</Text>
-                  <Text as="small">
+                  </span>
+                  <strong>{asset.name}</strong>
+                  <small>
                     {asset.library} / {asset.family}
-                  </Text>
-                  <Text as="span">
-                    {t('{{count}} uses', { count: asset.count })}
-                  </Text>
+                  </small>
+                  <span>{t('{{count}} uses', { count: asset.count })}</span>
                 </button>
               </article>
             )
           })}
       </div>
-      {!graph.assets.length && <Text as="p">{t('No matching assets')}</Text>}
+      {!graph.assets.length && <p>{t('No matching assets')}</p>}
     </div>
   )
 }

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useMemo } from 'react'
 import { designPosition } from '@aril/domain/design'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -32,37 +31,35 @@ export function LibraryAssetProperties({ model }: DesignEditorProps) {
     : 0
   return (
     <section className="asset-properties">
-      <Text as="h4">{t('Properties')}</Text>
+      <h4>{t('Properties')}</h4>
       <dl>
         {variable ? (
           <>
             <div>
-              <Text as="dt">{t('Type')}</Text>
-              <Text as="dd">{t(variable.type)}</Text>
+              <dt>{t('Type')}</dt>
+              <dd>{t(variable.type)}</dd>
             </div>
             <div>
-              <Text as="dt">{t('Collection')}</Text>
-              <Text as="dd">
-                {model.library.collections[variable.collectionId]?.name}
-              </Text>
+              <dt>{t('Collection')}</dt>
+              <dd>{model.library.collections[variable.collectionId]?.name}</dd>
             </div>
           </>
         ) : (
           <>
             <div>
-              <Text as="dt">{t('Size')}</Text>
-              <Text as="dd">
+              <dt>{t('Size')}</dt>
+              <dd>
                 {Math.round(width)} × {Math.round(height)}
-              </Text>
+              </dd>
             </div>
             <div>
-              <Text as="dt">{t('Layers')}</Text>
-              <Text as="dd">{nodes.length}</Text>
+              <dt>{t('Layers')}</dt>
+              <dd>{nodes.length}</dd>
             </div>
             {component && (
               <div>
-                <Text as="dt">{t('Variant')}</Text>
-                <Text as="dd">{variant?.name}</Text>
+                <dt>{t('Variant')}</dt>
+                <dd>{variant?.name}</dd>
               </div>
             )}
           </>
@@ -70,12 +67,12 @@ export function LibraryAssetProperties({ model }: DesignEditorProps) {
       </dl>
       {variable && (
         <>
-          <Text as="h4">{t('Values by mode')}</Text>
+          <h4>{t('Values by mode')}</h4>
           <dl>
             {Object.entries(variable.values).map(([mode, value]) => (
               <div key={mode}>
-                <Text as="dt">{mode}</Text>
-                <Text as="dd">
+                <dt>{mode}</dt>
+                <dd>
                   {variable.type === 'color' &&
                     /^#[0-9a-f]{6}$/i.test(String(value)) && (
                       <span
@@ -83,8 +80,8 @@ export function LibraryAssetProperties({ model }: DesignEditorProps) {
                         style={{ background: String(value) }}
                       />
                     )}
-                  <Text as="span">{String(value)}</Text>
-                </Text>
+                  <span>{String(value)}</span>
+                </dd>
               </div>
             ))}
           </dl>

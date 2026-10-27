@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ArrowLeft, File, Variable, ChevronRight } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -23,11 +22,11 @@ export function LibraryAssetIdentity({
           onClick={back}
         >
           <ArrowLeft size={14} />
-          <Text>{t('Back')}</Text>
+          {t('Back')}
         </Button>
       )}
       <div className="asset-identity-main">
-        <Text as="span" className="asset-identity-icon" aria-hidden="true">
+        <span className="asset-identity-icon" aria-hidden="true">
           {asset.kind === 'component' ? (
             <ComponentGlyph glyph={asset.glyph || []} icon={asset.icon} />
           ) : asset.kind === 'page' ? (
@@ -35,10 +34,10 @@ export function LibraryAssetIdentity({
           ) : (
             <Variable size={24} />
           )}
-        </Text>
+        </span>
         <div>
-          <Text as="h3">{asset.name}</Text>
-          <Text as="small">
+          <h3>{asset.name}</h3>
+          <small>
             {t(
               asset.kind === 'component'
                 ? 'Component'
@@ -46,13 +45,13 @@ export function LibraryAssetIdentity({
                   ? 'Variable'
                   : 'Page',
             )}
-          </Text>
+          </small>
         </div>
       </div>
       <div className="asset-breadcrumb">
-        <Text as="span">{asset.library}</Text>
+        <span>{asset.library}</span>
         <ChevronRight size={12} />
-        <Text as="span">{asset.family}</Text>
+        <span>{asset.family}</span>
       </div>
     </div>
   )

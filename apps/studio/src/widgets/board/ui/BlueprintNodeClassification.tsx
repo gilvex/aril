@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { nodeKinds, statuses } from '@aril/domain/workspace'
@@ -13,7 +12,7 @@ export function BlueprintNodeClassification({
   const { t } = useTranslation()
   return (
     <div className="field-row">
-      <Text as="label">
+      <label>
         {t('Type')}
         <StudioSelect
           disabled={readOnly}
@@ -26,8 +25,8 @@ export function BlueprintNodeClassification({
             </option>
           ))}
         </StudioSelect>
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Decision')}
         <StudioSelect
           disabled={readOnly}
@@ -40,7 +39,7 @@ export function BlueprintNodeClassification({
             </option>
           ))}
         </StudioSelect>
-      </Text>
+      </label>
     </div>
   )
 }

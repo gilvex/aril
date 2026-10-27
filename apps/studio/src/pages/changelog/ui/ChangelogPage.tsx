@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useEffect } from 'react'
@@ -21,7 +20,7 @@ export function ChangelogPage() {
   return (
     <main className="changelog-page">
       <a className="changelog-skip" href="#updates">
-        <Text>{t('Skip to updates')}</Text>
+        {t('Skip to updates')}
       </a>
       <header className="changelog-header">
         <a
@@ -32,32 +31,28 @@ export function ChangelogPage() {
           })}
         >
           <ProductLogo width="24" height="24" />
-          <Text>{getProductBranding().productName}</Text>
-          <Text as="span">{t('Changelog')}</Text>
+          {getProductBranding().productName}
+          <span>{t('Changelog')}</span>
         </a>
         <Button asChild variant="outline" size="sm">
           <a href="/app">
             <ArrowLeft size={16} />
-            <Text>{t('Open studio')}</Text>
+            {t('Open studio')}
           </a>
         </Button>
       </header>
       <div className="changelog-shell">
         <section className="changelog-intro" aria-labelledby="changelog-title">
-          <Text as="span" className="changelog-eyebrow">
-            {t('Built in the open')}
-          </Text>
-          <Text as="h1" id="changelog-title">
-            {t('A little better, every update.')}
-          </Text>
-          <Text as="p">
+          <span className="changelog-eyebrow">{t('Built in the open')}</span>
+          <h1 id="changelog-title">{t('A little better, every update.')}</h1>
+          <p>
             {t(
               'New features, improvements and fixes across Aril. Here’s what changed and how it looks.',
             )}
-          </Text>
+          </p>
           <Button asChild variant="outline">
             <a href="/?demo=1">
-              <Text>{t('Explore the demo')}</Text>
+              {t('Explore the demo')}
               <ArrowUpRight size={16} />
             </a>
           </Button>
@@ -65,16 +60,16 @@ export function ChangelogPage() {
         <div className="changelog-layout">
           <aside className="changelog-index">
             <nav aria-label={t('Updates')}>
-              <Text as="strong">{t('Updates')}</Text>
+              <strong>{t('Updates')}</strong>
               {releases.map((entry) => (
                 <a key={entry.id} href={`#${entry.id}`}>
-                  <Text>{t(entry.title)}</Text>
+                  {t(entry.title)}
                 </a>
               ))}
             </nav>
-            <Text as="p">
+            <p>
               {t('Screenshots use sample data. Demo teammates are simulated.')}
-            </Text>
+            </p>
           </aside>
           <section id="updates" aria-label={t('Release notes')}>
             {releases.map((entry) => (

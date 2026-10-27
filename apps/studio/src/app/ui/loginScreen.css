@@ -192,7 +192,7 @@
 }
 .login-blueprint-heading > span {
   margin-left: auto;
-  font-size: var(--text-size-caption);
+  font-size: 10px;
   color: var(--muted);
 }
 .login-blueprint-canvas {
@@ -238,14 +238,14 @@
   align-items: center;
   gap: 7px;
   color: var(--accent-ink, #a24e70);
-  font-size: var(--text-size-caption);
+  font-size: 9px;
 }
 .login-node-tag {
   display: inline-block;
   border-radius: 4px;
   margin-top: 12px;
   padding: 4px 6px;
-  font-size: var(--text-size-caption);
+  font-size: 9px;
   color: var(--text-muted, #898491);
   background: var(--surface-muted, #f5f1f7);
 }

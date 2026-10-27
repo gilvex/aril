@@ -1,4 +1,3 @@
-import { Text } from './Text.tsx'
 import { DropdownMenu } from 'radix-ui'
 import {
   DropdownMenu as Menu,
@@ -43,8 +42,8 @@ export function EditorActionMenu({
               disabled={action.disabled}
               onSelect={action.run}
             >
-              <Text as="span">{action.label}</Text>
-              {action.shortcut && <Text as="kbd">{action.shortcut}</Text>}
+              <span>{action.label}</span>
+              {action.shortcut && <kbd>{action.shortcut}</kbd>}
             </DropdownMenuItem>
           ))}
         </DropdownMenu.Content>

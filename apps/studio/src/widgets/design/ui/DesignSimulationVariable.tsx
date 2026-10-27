@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { DesignVariableValue } from './DesignVariableValue.tsx'
 import type { DesignSimulationVariableProps } from '../types/designSimulationVariableProps.ts'
@@ -21,14 +20,14 @@ export function DesignSimulationVariable({
   )
   if (!simulation) return null
   return (
-    <Text as="label" className="design-simulation-variable">
-      <Text as="span">{variable.name}</Text>
+    <label className="design-simulation-variable">
+      <span>{variable.name}</span>
       <DesignVariableValue
         type={variable.type}
         value={simulation.values[variable.id]}
         label={variable.name}
         onChange={change}
       />
-    </Text>
+    </label>
   )
 }

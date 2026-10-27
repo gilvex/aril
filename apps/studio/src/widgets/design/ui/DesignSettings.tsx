@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -28,7 +27,7 @@ export function DesignSettings({
     >
       <header>
         <SurfaceGrip />
-        <Text as="h2">{t('Design defaults')}</Text>
+        <h2>{t('Design defaults')}</h2>
         <button
           className="icon-button"
           aria-label={t('Close styles')}
@@ -37,11 +36,11 @@ export function DesignSettings({
           <X size={17} />
         </button>
       </header>
-      <Text as="p" className="design-defaults-hint">
+      <p className="design-defaults-hint">
         {t('Used for new elements and templates.')}
-      </Text>
+      </p>
       <section>
-        <Text as="h3">{t('Accent')}</Text>
+        <h3>{t('Accent')}</h3>
         <div className="design-color-options">
           {colors.map((color) => (
             <button
@@ -55,19 +54,19 @@ export function DesignSettings({
             </button>
           ))}
         </div>
-        <Text as="label" className="design-custom-color">
+        <label className="design-custom-color">
           {t('Custom accent')}
           <input
             type="color"
             value={design.accent}
             onChange={(e) => update({ ...design, accent: e.target.value })}
           />
-          <Text as="code">{design.accent}</Text>
-        </Text>
+          <code>{design.accent}</code>
+        </label>
       </section>
       <section>
-        <Text as="h3">{t('Typography')}</Text>
-        <Text as="label">
+        <h3>{t('Typography')}</h3>
+        <label>
           {t('Headings')}
           <StudioSelect
             value={design.headingFont || 'Manrope'}
@@ -84,8 +83,8 @@ export function DesignSettings({
               </option>
             ))}
           </StudioSelect>
-        </Text>
-        <Text as="label">
+        </label>
+        <label>
           {t('Body text')}
           <StudioSelect
             value={design.bodyFont || 'DM Sans'}
@@ -102,10 +101,10 @@ export function DesignSettings({
               </option>
             ))}
           </StudioSelect>
-        </Text>
+        </label>
       </section>
       <section>
-        <Text as="h3">{t('Density')}</Text>
+        <h3>{t('Density')}</h3>
         <ToggleGroup
           data-studio-toggle-group
           type="single"
@@ -115,12 +114,12 @@ export function DesignSettings({
         >
           {(['Comfortable', 'Compact'] as const).map((density) => (
             <ToggleGroupItem key={density} value={density}>
-              <Text>{t(density)}</Text>
+              {t(density)}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
       </section>
-      <Text as="label" className="design-direction">
+      <label className="design-direction">
         {t('Direction notes')}
         <textarea
           rows={7}
@@ -128,7 +127,7 @@ export function DesignSettings({
           maxLength={12000}
           onChange={(e) => update({ ...design, direction: e.target.value })}
         />
-      </Text>
+      </label>
     </aside>
   )
 }

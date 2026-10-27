@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useCallback, useMemo, useRef, type KeyboardEvent } from 'react'
 import { File, MoreHorizontal } from 'lucide-react'
@@ -87,7 +86,7 @@ export function DesignPageRow({ page, model }: DesignPageRowProps) {
             title={page.name}
           >
             <File size={14} />
-            <Text as="span">{page.name}</Text>
+            <span>{page.name}</span>
           </button>
         )}
         {canEdit && (

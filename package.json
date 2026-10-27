@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "pnpm --filter @aril/studio dev",
     "build": "pnpm -r --if-present build",
-    "lint": "eslint . && node scripts/checkArchitecture.mjs && node scripts/checkTypography.mjs",
+    "lint": "eslint . && node scripts/checkArchitecture.mjs",
     "test": "pnpm --filter @aril/studio test",
     "benchmark:collaboration": "node scripts/benchmarkCollaboration.ts",
     "verify:recovery": "node scripts/verifyRecovery.ts",

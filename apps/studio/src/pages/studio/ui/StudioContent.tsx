@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSettings } from './StudioSettings.tsx'
 import { LoadingStatus } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -39,9 +38,7 @@ export function StudioContent(props: StudioContentProps) {
     <main className="main-area">
       {props.settings.role === 'viewer' && (
         <div className="workspace-readonly-notice">
-          <Text>
-            {t('View only · You can browse and follow collaborators.')}
-          </Text>
+          {t('View only · You can browse and follow collaborators.')}
         </div>
       )}
       {view !== 'canvas' && followStatus}
@@ -57,18 +54,16 @@ export function StudioContent(props: StudioContentProps) {
       {state.error && (
         <div className="error-banner">
           <AlertCircle size={16} />
-          <Text as="span">{state.error}</Text>
-          <button onClick={exportWorkspace}>
-            <Text>{t('Export my edits')}</Text>
-          </button>
+          <span>{state.error}</span>
+          <button onClick={exportWorkspace}>{t('Export my edits')}</button>
           <button onClick={() => setModal('reload')}>
-            <Text>{t('Reload saved version')}</Text>
+            {t('Reload saved version')}
           </button>
         </div>
       )}
       {notice && (
         <div className="notice" role="status">
-          <Text as="span">{notice}</Text>
+          <span>{notice}</span>
           <button
             className="icon-button"
             aria-label={t('Dismiss notification')}

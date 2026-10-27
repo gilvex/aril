@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -26,17 +25,17 @@ export function DesignMachineWorkspace({ model }: DesignEditorProps) {
   return (
     <div className="design-machine-workspace">
       <header>
-        <Text as="strong">{machine.name}</Text>
-        <Text as="span">{t('Connect states to add transitions.')}</Text>
+        <strong>{machine.name}</strong>
+        <span>{t('Connect states to add transitions.')}</span>
         <button
           className="button"
           disabled={readOnly || Object.keys(machine.states).length >= 100}
           onClick={add}
         >
-          <Text>{t('Add state')}</Text>
+          {t('Add state')}
         </button>
         <button className="button primary" onClick={test}>
-          <Text>{t('Test machine')}</Text>
+          {t('Test machine')}
         </button>
       </header>
       <div className="design-machine-flow">

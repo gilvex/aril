@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import {
   Accordion,
   AccordionItem,
@@ -31,7 +30,7 @@ export function LibraryAssetOverview({
         >
           <AccordionItem value="organization">
             <AccordionTrigger className="asset-section-trigger">
-              <Text>{t('Organization and icon')}</Text>
+              {t('Organization and icon')}
             </AccordionTrigger>
             <AccordionContent>
               <LibraryOrganization model={model} explorer={explorer} />

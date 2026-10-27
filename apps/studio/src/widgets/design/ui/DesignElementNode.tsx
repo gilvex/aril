@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import {
   useCallback,
@@ -69,10 +68,10 @@ export function DesignElementNode({
         <div
           className={`design-frame-title${element.kind === 'group' ? ' design-group-title' : ''}`}
         >
-          <Text>{element.name}</Text>
-          <Text as="span">
+          {element.name}
+          <span>
             {Math.round(element.width)} × {Math.round(element.height)}
-          </Text>
+          </span>
         </div>
       )}
       <div className={`design-element kind-${element.kind}`} style={style}>
@@ -101,7 +100,7 @@ export function DesignElementNode({
           />
         ) : (
           !isDesignContainer(element) &&
-          element.kind !== 'image' && <Text as="span">{element.text}</Text>
+          element.kind !== 'image' && <span>{element.text}</span>
         )}
       </div>
       {editors.length > 0 && (
@@ -112,14 +111,10 @@ export function DesignElementNode({
           })}
         >
           {editors.map((person) => (
-            <Text
-              as="span"
-              key={person.id}
-              style={{ background: person.color }}
-            >
+            <span key={person.id} style={{ background: person.color }}>
               {person.avatar && <img src={person.avatar} alt="" />}
               {person.name}
-            </Text>
+            </span>
           ))}
         </div>
       )}

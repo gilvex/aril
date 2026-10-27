@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useEffect, useRef } from 'react'
 import { ChevronDown, KeyRound } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -13,11 +12,11 @@ export function LoginInvitation(props: JoinStudioFormProps) {
   }, [props.profile])
   return (
     <details ref={disclosure} className="login-invitation">
-      <Text as="summary">
+      <summary>
         <KeyRound size={17} />
-        <Text as="span">{t('Join with an invitation')}</Text>
+        <span>{t('Join with an invitation')}</span>
         <ChevronDown size={16} />
-      </Text>
+      </summary>
       <JoinStudioForm {...props} />
     </details>
   )

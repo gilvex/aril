@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -64,10 +63,8 @@ export function ScopeProperties(props: RequirementDetailsProps) {
         </StudioSelect>
       </div>
       <details open={propertiesOpen}>
-        <Text as="summary" onClick={toggle}>
-          {t('More properties')}
-        </Text>
-        <Text as="label" className="scope-workspace-check">
+        <summary onClick={toggle}>{t('More properties')}</summary>
+        <label className="scope-workspace-check">
           <input
             type="checkbox"
             disabled={readOnly}
@@ -75,7 +72,7 @@ export function ScopeProperties(props: RequirementDetailsProps) {
             onChange={workspaceWide}
           />
           {t('Applies across this workspace')}
-        </Text>
+        </label>
         <RequirementProperties {...props} />
       </details>
     </div>

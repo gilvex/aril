@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RoutedEdge } from '@/widgets/board/types/routedEdge.ts'
 import { SelectionBadges } from '@/widgets/board/ui/SelectionBadges.tsx'
@@ -50,10 +49,8 @@ export function WireframeEdge(props: EdgeProps<RoutedEdge>) {
             transform: `translate(${labelX}px, ${labelY}px) scale(${1 / zoom}) translate(-50%, -50%)`,
           }}
         >
-          <Text as="span">{props.data?.number}</Text>
-          <Text as="span" className="wire-edge-text">
-            {props.label || 'On click'}
-          </Text>
+          <span>{props.data?.number}</span>
+          <span className="wire-edge-text">{props.label || 'On click'}</span>
         </button>
         {!!props.data?.selectors.length && (
           <div

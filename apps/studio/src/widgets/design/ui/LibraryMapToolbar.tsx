@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -59,13 +58,13 @@ export function LibraryMapToolbar({ model, explorer }: LibraryExplorerProps) {
       <div className="library-breadcrumb">
         {!!libraryPath.length && (
           <Button className="button" variant="ghost" size="sm" onClick={back}>
-            <Text>{t('Previous')}</Text>
+            {t('Previous')}
           </Button>
         )}
-        <Text as="strong">{libraryPath.join(' / ') || t('All libraries')}</Text>
-        <Text as="small">
+        <strong>{libraryPath.join(' / ') || t('All libraries')}</strong>
+        <small>
           {t('{{count}} assets', { count: explorer.graph.matched })}
-        </Text>
+        </small>
       </div>
       <div className="library-map-options">
         {libraryAsset && (
@@ -77,7 +76,7 @@ export function LibraryMapToolbar({ model, explorer }: LibraryExplorerProps) {
               aria-pressed={libraryFocus}
               onClick={focus}
             >
-              <Text>{t('Focus connections')}</Text>
+              {t('Focus connections')}
             </Button>
             <Button
               className="button"
@@ -85,7 +84,7 @@ export function LibraryMapToolbar({ model, explorer }: LibraryExplorerProps) {
               size="sm"
               onClick={clear}
             >
-              <Text>{t('Clear focus')}</Text>
+              {t('Clear focus')}
             </Button>
             <Button
               className="button"
@@ -93,7 +92,7 @@ export function LibraryMapToolbar({ model, explorer }: LibraryExplorerProps) {
               size="sm"
               onClick={details}
             >
-              <Text>{t('Asset details')}</Text>
+              {t('Asset details')}
             </Button>
           </>
         )}
@@ -119,7 +118,7 @@ export function LibraryMapToolbar({ model, explorer }: LibraryExplorerProps) {
           </>
         )}
         <Button className="button" variant="ghost" size="sm" onClick={reset}>
-          <Text>{t('Reset layout')}</Text>
+          {t('Reset layout')}
         </Button>
       </div>
     </div>

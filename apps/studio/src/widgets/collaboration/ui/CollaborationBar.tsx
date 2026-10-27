@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { InvitationInbox } from '@/features/invitations/index.ts'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { Avatar } from '@/entities/collaboration/index.ts'
@@ -63,7 +62,7 @@ export function CollaborationBar({
         onClick={() => open('people')}
       >
         <Users size={16} />
-        <Text as="span">{people.length}</Text>
+        <span>{people.length}</span>
       </button>
       <button
         className="profile-button"
@@ -71,7 +70,7 @@ export function CollaborationBar({
         onClick={() => open('profile')}
       >
         <Avatar profile={profile} />
-        <Text as="span">{profile.name}</Text>
+        <span>{profile.name}</span>
       </button>
       {panel && (
         <CollaborationPopover

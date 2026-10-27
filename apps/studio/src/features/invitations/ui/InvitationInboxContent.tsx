@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { InvitationCard } from './InvitationCard.tsx'
 import type { InvitationInboxContentProps } from '../types/invitationInboxContentProps.ts'
@@ -14,9 +13,9 @@ export function InvitationInboxContent({
   return (
     <>
       <div className="invitation-inbox">
-        {!loaded && <Text as="p">{t('Loading invitations…')}</Text>}
+        {!loaded && <p>{t('Loading invitations…')}</p>}
         {loaded && !invitations.length && !error && (
-          <Text as="p">{t('You are all caught up.')}</Text>
+          <p>{t('You are all caught up.')}</p>
         )}
         {invitations.map((item) => (
           <InvitationCard
@@ -27,16 +26,8 @@ export function InvitationInboxContent({
           />
         ))}
       </div>
-      {error && (
-        <Text as="p" role="alert">
-          {t(error)}
-        </Text>
-      )}
-      {message && (
-        <Text as="p" role="status">
-          {t(message)}
-        </Text>
-      )}
+      {error && <p role="alert">{t(error)}</p>}
+      {message && <p role="status">{t(message)}</p>}
     </>
   )
 }

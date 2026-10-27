@@ -1562,7 +1562,6 @@
   "Add universal blocks, select freehand strokes and undo edits in either keyboard layout.": "Добавляйте универсальные блоки, выбирайте штрихи и отменяйте действия в любой раскладке.",
   "Connect nodes through their handles. The toolbar now includes a universal block; only universal blocks display customizable icons.": "Соединяйте узлы через точки. Универсальный блок добавлен на панель инструментов; настраиваемые иконки отображаются только у таких блоков.",
   "Select drawings with a click, add strokes with Shift or Ctrl, and delete the selection. Undo with Ctrl+Z; redo with Ctrl+Shift+Z or Ctrl+Y.": "Выбирайте рисунки щелчком, добавляйте штрихи через Shift или Ctrl и удаляйте выделенное. Отмена — Ctrl+Z, повтор — Ctrl+Shift+Z или Ctrl+Y.",
-  "Agent access has a clearer form and step-by-step MCP setup. Shared Text styles preserve semantic headings and improve small labels.": "В доступе для агентов переработаны форма и пошаговая настройка MCP. Общий компонент Text сохраняет семантику заголовков и улучшает читаемость мелких подписей.",
   "Selected freehand drawing and universal block tools in an isolated demo.": "Выделенный рисунок и инструменты универсального блока в изолированном демо.",
   "Agent access with structured MCP setup using an isolated demo.": "Доступ для агентов с пошаговой настройкой MCP в изолированном демо.",
   "selectedStrokeCount_one": "{{count}} штрих выбран",
@@ -1572,5 +1571,6 @@
   "Continuous demo of drawing selection, undo and redo, universal blocks and agent setup.": "Непрерывная демонстрация выбора рисунков, отмены и повтора, универсальных блоков и настройки агентов.",
   "Connect agents step by step": "Пошаговое подключение агентов",
   "Agent setup now separates connection permissions, terminal commands and existing connections.": "В настройке агентов отдельно показаны права доступа, команды терминала и существующие подключения.",
-  "Shared Text styles preserve semantic headings and readable labels on desktop and mobile.": "Общие стили Text сохраняют семантику заголовков и читаемость подписей на компьютере и телефоне."
+  "Agent access has a clearer form and step-by-step MCP setup.": "В доступе для агентов переработаны форма и пошаговая настройка MCP.",
+  "Connection permissions, terminal commands and existing connections are presented separately.": "Разрешения подключения, команды терминала и существующие подключения представлены отдельно."
 }

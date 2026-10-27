@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Plus } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -21,7 +20,7 @@ export function ScopeQuestions({ current, update }: RequirementDetailsProps) {
   return (
     <section className="scope-questions">
       <header>
-        <Text as="h3">{t('Open questions')}</Text>
+        <h3>{t('Open questions')}</h3>
         <button
           className="icon-button"
           disabled={readOnly || (current.questions?.length || 0) >= 50}
@@ -32,7 +31,7 @@ export function ScopeQuestions({ current, update }: RequirementDetailsProps) {
         </button>
       </header>
       {!current.questions?.length && (
-        <Text as="p">{t('Capture anything that still needs a decision.')}</Text>
+        <p>{t('Capture anything that still needs a decision.')}</p>
       )}
       {current.questions?.map((question) => (
         <ScopeQuestion

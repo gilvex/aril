@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import {
   useCallback,
   useId,
@@ -73,9 +72,7 @@ export function IconLibrary({
       style={style}
     >
       <header className="icon-library-header">
-        <Text as="h2" id={titleId}>
-          {t('Icon library')}
-        </Text>
+        <h2 id={titleId}>{t('Icon library')}</h2>
         <Popover.Close
           className="icon-button"
           aria-label={t('Close icon library')}
@@ -83,7 +80,7 @@ export function IconLibrary({
           <X size={16} />
         </Popover.Close>
       </header>
-      <Text as="label" className="icon-library-search">
+      <label className="icon-library-search">
         <Search size={16} aria-hidden="true" />
         <input
           ref={searchInput}
@@ -93,9 +90,9 @@ export function IconLibrary({
           placeholder={t('Search icons by name')}
           aria-label={t('Search icons by name')}
         />
-      </Text>
-      <Text as="label" className="icon-library-size">
-        <Text as="span">{t('Preview size')}</Text>
+      </label>
+      <label className="icon-library-size">
+        <span>{t('Preview size')}</span>
         <input
           type="range"
           min={20}
@@ -105,10 +102,8 @@ export function IconLibrary({
           onChange={resize}
           aria-label={t('Preview size')}
         />
-        <output>
-          <Text>{size}</Text> <Text>px</Text>
-        </output>
-      </Text>
+        <output>{size} px</output>
+      </label>
       <div className="icon-library-grid" aria-label={t('Available icons')}>
         {options.map(([id, option]) => (
           <IconLibraryOption
@@ -123,9 +118,9 @@ export function IconLibrary({
         ))}
       </div>
       {!options.length && (
-        <Text as="p" className="icon-library-empty" role="status">
+        <p className="icon-library-empty" role="status">
           {t('No icons found. Try another name.')}
-        </Text>
+        </p>
       )}
       <IconLibraryFooter node={node} count={options.length} choose={choose} />
     </Popover.Content>

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useMemo } from 'react'
 import { Component, File, Variable } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -45,11 +44,11 @@ export function LibraryUsageList({ model }: DesignEditorProps) {
       ) : (
         <>
           {tab === 'impact' && (
-            <Text as="p">
+            <p>
               {t(
                 'Reached through other assets. Direct usages are listed separately.',
               )}
-            </Text>
+            </p>
           )}
           <ul className="asset-connection-list">
             {entries.slice(0, limit).map((entry) => (
@@ -66,7 +65,7 @@ export function LibraryUsageList({ model }: DesignEditorProps) {
                   ) : (
                     <File size={16} />
                   )}
-                  <Text as="span">{entry.name}</Text>
+                  <span>{entry.name}</span>
                 </Button>
               </li>
             ))}
@@ -74,7 +73,7 @@ export function LibraryUsageList({ model }: DesignEditorProps) {
         </>
       )}
       {!count && (
-        <Text as="p" className="asset-empty">
+        <p className="asset-empty">
           {t(
             libraryUsageQuery
               ? 'No connections match your search.'
@@ -84,7 +83,7 @@ export function LibraryUsageList({ model }: DesignEditorProps) {
                   ? 'This asset does not use other library assets.'
                   : 'No indirect usages found.',
           )}
-        </Text>
+        </p>
       )}
       {count > limit && (
         <Button
@@ -93,7 +92,7 @@ export function LibraryUsageList({ model }: DesignEditorProps) {
           variant="ghost"
           onClick={() => patch({ libraryUsageLimit: limit + 50 })}
         >
-          <Text>{t('Show more')}</Text>
+          {t('Show more')}
         </Button>
       )}
     </div>

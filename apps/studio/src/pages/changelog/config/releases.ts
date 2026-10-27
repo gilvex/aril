@@ -11,7 +11,7 @@ export const releases: ReleaseEntry[] = [
     changes: [
       'Connect nodes through their handles. The toolbar now includes a universal block; only universal blocks display customizable icons.',
       'Select drawings with a click, add strokes with Shift or Ctrl, and delete the selection. Undo with Ctrl+Z; redo with Ctrl+Shift+Z or Ctrl+Y.',
-      'Agent access has a clearer form and step-by-step MCP setup. Shared Text styles preserve semantic headings and improve small labels.',
+      'Agent access has a clearer form and step-by-step MCP setup.',
     ],
     video: '/changelog/canvas-editing.mp4',
     videoAlt:
@@ -27,7 +27,7 @@ export const releases: ReleaseEntry[] = [
     summary:
       'Agent setup now separates connection permissions, terminal commands and existing connections.',
     changes: [
-      'Shared Text styles preserve semantic headings and readable labels on desktop and mobile.',
+      'Connection permissions, terminal commands and existing connections are presented separately.',
     ],
     image: '/changelog/agent-access-readable.png',
     imageAlt: 'Agent access with structured MCP setup using an isolated demo.',

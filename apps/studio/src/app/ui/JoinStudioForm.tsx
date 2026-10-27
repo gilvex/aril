@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -30,12 +29,12 @@ export function JoinStudioForm({
   })
   return (
     <form className="join-form" onSubmit={handleSubmit}>
-      <Text as="p">
+      <p>
         {t('Join {{product}} with an invitation from someone in the studio.', {
           product: getProductBranding().productName,
         })}
-      </Text>
-      <Text as="label">
+      </p>
+      <label>
         {t('Invite code')}
         <input
           value={token}
@@ -43,17 +42,17 @@ export function JoinStudioForm({
           required
           autoComplete="off"
         />
-      </Text>
+      </label>
       <button
         className="button primary"
         disabled={busy || !profile || !token.trim()}
       >
         {busy && <Spinner />}
-        <Text>{busy
+        {busy
           ? t('Joining…')
           : profile
             ? t('Accept invitation as {{name}}', { name: profile.name })
-            : t('Join studio')}</Text>
+            : t('Join studio')}
       </button>
     </form>
   )

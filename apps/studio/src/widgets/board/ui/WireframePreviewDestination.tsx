@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ArrowRight } from 'lucide-react'
 import { useWireframePreviewDestinationHandlers } from '../model/useWireframePreviewDestinationHandlers.tsx'
 
@@ -17,9 +16,9 @@ export function WireframePreviewDestination({
   })
   return (
     <button className="button wire-flow-link" key={e.id} onClick={handleClick}>
-      <Text>{e.label}</Text>
+      {e.label}
       <ArrowRight size={14} />
-      <Text>{graph.nodes.find((n) => n.id === e.target)?.data.title}</Text>
+      {graph.nodes.find((n) => n.id === e.target)?.data.title}
     </button>
   )
 }

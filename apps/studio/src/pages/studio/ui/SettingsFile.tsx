@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { SettingsFileActions } from './SettingsFileActions.tsx'
 import { isDemoMode } from '@/shared/utils/isDemoMode.ts'
 import { useEffect } from 'react'
@@ -16,32 +15,32 @@ export function SettingsFile(props: StudioContentProps) {
     <>
       <header className="settings-section-heading">
         <div className="settings-file-title">
-          <Text as="h2">{studio.name}</Text>
+          <h2>{studio.name}</h2>
           {settings.role === 'owner' && !isDemoMode() && (
             <SettingsFileActions {...props} />
           )}
         </div>
-        <Text as="p">{t('Control who can open and edit this file.')}</Text>
+        <p>{t('Control who can open and edit this file.')}</p>
       </header>
       <section className="settings-card">
         <header>
-          <Text as="h3">{t('People with access')}</Text>
-          <Text as="span">{settings.members.length}</Text>
+          <h3>{t('People with access')}</h3>
+          <span>{settings.members.length}</span>
         </header>
-        <Text as="p" className="settings-description">
+        <p className="settings-description">
           {t(
             'Editors can change all pages. Viewers can browse and follow collaborators. Only owners manage access.',
           )}
-        </Text>
+        </p>
         {settings.error && (
           <div className="settings-error" role="alert">
-            <Text>{t(settings.error)}</Text>
+            {t(settings.error)}
             <button
               className="button"
               disabled={settings.busy}
               onClick={settings.load}
             >
-              <Text>{t('Retry')}</Text>
+              {t('Retry')}
             </button>
           </div>
         )}
@@ -63,13 +62,13 @@ export function SettingsFile(props: StudioContentProps) {
       {settings.role === 'owner' && (
         <section className="settings-card">
           <header>
-            <Text as="h3">{t('Invitations')}</Text>
+            <h3>{t('Invitations')}</h3>
           </header>
-          <Text as="p" className="settings-description">
+          <p className="settings-description">
             {t(
               'New members join as Editors. You can change their role after they join.',
             )}
-          </Text>
+          </p>
           <SettingsInvitations
             workspaceId={studio.id}
             profile={multiplayer.profile}

@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ProductLogo } from '@/shared/ui/index.tsx'
 import { useCallback, type MouseEvent } from 'react'
 import { Plus, ArrowUpRight } from 'lucide-react'
@@ -52,9 +51,7 @@ export function WorkspacePickerDialog({
   )
   return (
     <div className="workspace-picker-dialog">
-      <Text as="h2" id="modal-title">
-        {t('Open workspace')}
-      </Text>
+      <h2 id="modal-title">{t('Open workspace')}</h2>
       <input
         autoFocus
         aria-label={t('Find or create a workspace')}
@@ -75,11 +72,11 @@ export function WorkspacePickerDialog({
               onClick={open}
             >
               <ProductLogo width={22} />
-              <Text as="span">{item.name}</Text>
+              <span>{item.name}</span>
               <ArrowUpRight size={16} />
             </button>
           ))}
-          {!items.length && <Text as="p">{t('No workspaces found.')}</Text>}
+          {!items.length && <p>{t('No workspaces found.')}</p>}
         </div>
       )}
       {current.id !== 'demo' && model.query.trim() && (
@@ -89,15 +86,13 @@ export function WorkspacePickerDialog({
           onClick={create}
         >
           <Plus size={16} />
-          <Text>{t('Create workspace')}</Text>
-          <Text>: </Text>
-          <Text>{model.query.trim()}</Text>
+          {t('Create workspace')}:{model.query.trim()}
         </button>
       )}
       {model.error && (
-        <Text as="p" role="alert" className="form-error">
+        <p role="alert" className="form-error">
           {t(model.error)}
-        </Text>
+        </p>
       )}
     </div>
   )

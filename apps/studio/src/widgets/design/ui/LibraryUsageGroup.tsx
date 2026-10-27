@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ExternalLink, File, Component } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -27,15 +26,15 @@ export function LibraryUsageGroup({
   return (
     <AccordionItem value={owner} className="asset-usage-group">
       <AccordionTrigger className="asset-section-trigger">
-        <Text as="span" className="asset-usage-group-title">
+        <span className="asset-usage-group-title">
           {first.ownerKind === 'page' ? (
             <File size={14} />
           ) : (
             <Component size={14} />
           )}
-          <Text as="span">{first.ownerName}</Text>
-          <Text as="small">{entries.length}</Text>
-        </Text>
+          <span>{first.ownerName}</span>
+          <small>{entries.length}</small>
+        </span>
       </AccordionTrigger>
       <AccordionContent>
         <ul className="asset-usage-rows">
@@ -46,9 +45,9 @@ export function LibraryUsageGroup({
                 variant="ghost"
                 onClick={() => inspect(owner)}
               >
-                <Text as="span">
-                  <Text as="strong">{use.nodeName || use.ownerName}</Text>
-                  <Text as="small">
+                <span>
+                  <strong>{use.nodeName || use.ownerName}</strong>
+                  <small>
                     {[
                       use.variantId &&
                         library.components[use.ownerId]?.variants[use.variantId]
@@ -57,8 +56,8 @@ export function LibraryUsageGroup({
                     ]
                       .filter(Boolean)
                       .join(' · ')}
-                  </Text>
-                </Text>
+                  </small>
+                </span>
               </Button>
               <Button
                 className="button"
@@ -77,7 +76,7 @@ export function LibraryUsageGroup({
         </ul>
         {entries.length > limit && (
           <Button className="button" size="sm" variant="ghost" onClick={more}>
-            <Text>{t('Show more')}</Text>
+            {t('Show more')}
           </Button>
         )}
       </AccordionContent>

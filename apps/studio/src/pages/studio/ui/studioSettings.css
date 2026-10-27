@@ -135,7 +135,7 @@
   overflow-wrap: anywhere;
 }
 .settings-member-identity small {
-  font-size: var(--text-size-caption);
+  font-size: 11px;
   color: var(--muted);
   font-weight: 400;
   display: block;

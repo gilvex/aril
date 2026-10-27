@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useImportWorkspaceDialogHandlers } from '../model/useImportWorkspaceDialogHandlers.tsx'
 
@@ -31,23 +30,21 @@ export function ImportWorkspaceDialog({
       <div className="modal-symbol">
         <FileJson size={25} />
       </div>
-      <Text as="h2" id="modal-title">
-        {t('Import this workspace?')}
-      </Text>
-      <Text as="p">
+      <h2 id="modal-title">{t('Import this workspace?')}</h2>
+      <p>
         {t(
           'This replaces your current boards, requirements, notes, and design direction with',
         )}
         {pendingImport.boards.length} {t('boards and')}{' '}
         {pendingImport.requirements.length}{' '}
         {t('requirements. Export first if you want a separate backup.')}
-      </Text>
+      </p>
       <div className="modal-actions">
         <button className="button" onClick={exportWorkspace}>
-          <Text>{t('Export current')}</Text>
+          {t('Export current')}
         </button>
         <button className="button primary" onClick={handleClick}>
-          <Text>{t('Import workspace')}</Text>
+          {t('Import workspace')}
         </button>
       </div>
     </>

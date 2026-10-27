@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ReactFlowProvider } from '@xyflow/react'
 import { X } from 'lucide-react'
@@ -61,7 +60,7 @@ export function DesignLibrary({ model }: DesignEditorProps) {
                 }
                 onClick={model.createComponent}
               >
-                <Text>{t('Create component from selection')}</Text>
+                {t('Create component from selection')}
               </Button>
               <Button
                 className="button"
@@ -73,15 +72,15 @@ export function DesignLibrary({ model }: DesignEditorProps) {
                 }
                 onClick={model.example}
               >
-                <Text>{t('Add example kit')}</Text>
+                {t('Add example kit')}
               </Button>
             </div>
           </>
         )}
         {model.libraryError && (
-          <Text as="p" role="alert" className="design-library-error">
+          <p role="alert" className="design-library-error">
             {model.libraryError}
-          </Text>
+          </p>
         )}
       </div>
     </aside>

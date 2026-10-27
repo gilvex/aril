@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type FormEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
@@ -61,12 +60,12 @@ export function LibraryOrganization({ model, explorer }: LibraryExplorerProps) {
       onSubmit={save}
     >
       <fieldset disabled={readOnly}>
-        <Text as="legend">
+        <legend>
           {librarySelection.length
             ? t('Organize {{count}} assets', { count: librarySelection.length })
             : t('Organization')}
-        </Text>
-        <Text as="label">
+        </legend>
+        <label>
           {t('Library name')}
           <Input
             name="library"
@@ -75,13 +74,13 @@ export function LibraryOrganization({ model, explorer }: LibraryExplorerProps) {
             maxLength={120}
             defaultValue={current?.library || ''}
           />
-        </Text>
+        </label>
         <datalist id="library-names">
           {explorer.groups.map((g) => (
             <option key={g.name} value={g.name} />
           ))}
         </datalist>
-        <Text as="label">
+        <label>
           {t('Family')}
           <Input
             name="family"
@@ -89,9 +88,9 @@ export function LibraryOrganization({ model, explorer }: LibraryExplorerProps) {
             maxLength={120}
             defaultValue={current?.family || ''}
           />
-        </Text>
+        </label>
         <Button className="button" type="submit" size="sm" variant="outline">
-          <Text>{t('Save organization')}</Text>
+          {t('Save organization')}
         </Button>
       </fieldset>
     </form>

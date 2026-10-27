@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from 'vagabond-ui/input'
@@ -55,7 +54,7 @@ export function LibraryAssetUsage({ model }: DesignEditorProps) {
           </StudioSelect>
         )}
       </div>
-      <Text as="label" className="asset-usage-search">
+      <label className="asset-usage-search">
         <Search size={15} />
         <Input
           value={model.libraryUsageQuery}
@@ -63,7 +62,7 @@ export function LibraryAssetUsage({ model }: DesignEditorProps) {
           aria-label={t('Search usages')}
           placeholder={t('Search usages')}
         />
-      </Text>
+      </label>
       <LibraryUsageList model={model} />
     </section>
   )

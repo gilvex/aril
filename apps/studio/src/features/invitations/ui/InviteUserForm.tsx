@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type SubmitEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
@@ -48,8 +47,8 @@ export function InviteUserForm({ workspaceId }: InviteUserFormProps) {
   )
   return (
     <form className="invitation-form invite-user" onSubmit={submit}>
-      <Text as="h3">{t('Invite people')}</Text>
-      <Text as="label">
+      <h3>{t('Invite people')}</h3>
+      <label>
         {t('Email or username')}
         <Input
           aria-label={t('Email or username')}
@@ -62,7 +61,7 @@ export function InviteUserForm({ workspaceId }: InviteUserFormProps) {
           required
           disabled={busy}
         />
-      </Text>
+      </label>
       {!!users.length && (
         <div className="invitation-results" aria-label={t('Matching people')}>
           {users.map((user) => (
@@ -76,10 +75,10 @@ export function InviteUserForm({ workspaceId }: InviteUserFormProps) {
               }
             >
               <UserRound size={16} />
-              <Text as="span">
-                <Text as="strong">{user.name}</Text>
-                <Text as="small">@{user.username}</Text>
-              </Text>
+              <span>
+                <strong>{user.name}</strong>
+                <small>@{user.username}</small>
+              </span>
             </Button>
           ))}
         </div>
@@ -102,24 +101,16 @@ export function InviteUserForm({ workspaceId }: InviteUserFormProps) {
           disabled={busy || (!selected && !value.includes('@'))}
         >
           <Mail size={16} />
-          <Text>{t(busy ? 'Sending…' : 'Send invitation')}</Text>
+          {t(busy ? 'Sending…' : 'Send invitation')}
         </Button>
       </div>
-      {error && (
-        <Text as="p" role="alert">
-          {t(error)}
-        </Text>
-      )}
-      {message && (
-        <Text as="p" role="status">
-          {t(message)}
-        </Text>
-      )}
-      <Text as="p">
+      {error && <p role="alert">{t(error)}</p>}
+      {message && <p role="status">{t(message)}</p>}
+      <p>
         {t(
           'Invitations expire after 7 days. Access starts only after acceptance.',
         )}
-      </Text>
+      </p>
     </form>
   )
 }

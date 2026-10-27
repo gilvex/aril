@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type SubmitEvent } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { Input } from 'vagabond-ui/input'
@@ -43,7 +42,7 @@ export function JoinWorkspaceButton() {
         className="button workspace-join"
         onClick={() => changeOpen(true)}
       >
-        <Text>{t('Join workspace')}</Text>
+        {t('Join workspace')}
       </Button>
       <InvitationDialog
         open={open}
@@ -52,7 +51,7 @@ export function JoinWorkspaceButton() {
         description={t('Paste the invitation link shared with you.')}
       >
         <form onSubmit={submit} className="invitation-form">
-          <Text as="label">
+          <label>
             {t('Invite link')}
             <Input
               value={value}
@@ -60,18 +59,14 @@ export function JoinWorkspaceButton() {
               autoComplete="off"
               required
             />
-          </Text>
-          {error && (
-            <Text as="p" role="alert">
-              {t(error)}
-            </Text>
-          )}
+          </label>
+          {error && <p role="alert">{t(error)}</p>}
           <Button
             type="submit"
             className="button primary"
             disabled={busy || !value.trim()}
           >
-            <Text>{t(busy ? 'Joining…' : 'Join workspace')}</Text>
+            {t(busy ? 'Joining…' : 'Join workspace')}
           </Button>
         </form>
       </InvitationDialog>

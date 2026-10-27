@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -27,16 +26,14 @@ export function WireframeEdgeDetails({
     <div className="inspector-body">
       <div className="detail-kind">
         <ArrowRight size={16} />
-        <Text>{t('Interaction')}</Text>
+        {t('Interaction')}
       </div>
-      <Text as="h2">
-        {graph.nodes.find((n) => n.id === edge.source)?.data.title}
-      </Text>
-      <Text as="p">
+      <h2>{graph.nodes.find((n) => n.id === edge.source)?.data.title}</h2>
+      <p>
         {t('leads to')}
         {graph.nodes.find((n) => n.id === edge.target)?.data.title}
-      </Text>
-      <Text as="label">
+      </p>
+      <label>
         {t('Interaction label')}
         <input
           disabled={readOnly}
@@ -46,8 +43,8 @@ export function WireframeEdgeDetails({
           maxLength={120}
           onChange={handleInteractionLabelChange}
         />
-      </Text>
-      <Text as="label">
+      </label>
+      <label>
         {t('Destination')}
         <StudioSelect
           disabled={readOnly}
@@ -63,14 +60,14 @@ export function WireframeEdgeDetails({
               </option>
             ))}
         </StudioSelect>
-      </Text>
+      </label>
       <button
         disabled={readOnly}
         className="button"
         onClick={() => focus(edge.target)}
       >
         <ArrowRight size={14} />
-        <Text>{t('Show destination')}</Text>
+        {t('Show destination')}
       </button>
       <button
         disabled={readOnly}
@@ -78,7 +75,7 @@ export function WireframeEdgeDetails({
         onClick={handleClick}
       >
         <Trash2 size={14} />
-        <Text>{t('Remove flow')}</Text>
+        {t('Remove flow')}
       </button>
     </div>
   )

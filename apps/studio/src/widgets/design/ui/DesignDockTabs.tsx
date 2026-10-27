@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -24,13 +23,9 @@ export function DesignDockTabs({ model }: DesignEditorProps) {
       style={{ ...group.rect, height: 36 }}
       aria-label={t('Panel tabs')}
     >
-      <ToggleGroupItem value="left">
-        <Text>{t('Layers')}</Text>
-      </ToggleGroupItem>
+      <ToggleGroupItem value="left">{t('Layers')}</ToggleGroupItem>
       <ToggleGroupItem value="right">
-        <Text>
-          {t(model.libraryView === 'machine' ? 'Behavior' : 'Design')}
-        </Text>
+        {t(model.libraryView === 'machine' ? 'Behavior' : 'Design')}
       </ToggleGroupItem>
     </ToggleGroup>
   )

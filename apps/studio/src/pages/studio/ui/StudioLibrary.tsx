@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useMemo } from 'react'
 import { DesignLibraryPage } from './DesignLibraryPage.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -63,7 +62,7 @@ export function StudioLibrary({
   )
   const initialEditorState = useMemo(() => ({ libraryTab: tab }), [tab])
   const navigation = (
-    <Text as="label">
+    <label>
       {t('Library source')}
       <StudioSelect
         aria-label={t('Library source')}
@@ -77,7 +76,7 @@ export function StudioLibrary({
           </option>
         ))}
       </StudioSelect>
-    </Text>
+    </label>
   )
   return (
     <DesignLibraryPage

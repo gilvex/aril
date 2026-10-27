@@ -1,4 +1,3 @@
-import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useFollowPersonHandlers } from '../model/useFollowPersonHandlers.tsx'
 
@@ -35,16 +34,16 @@ export function FollowPerson({
       onClick={handleClick}
     >
       <Avatar profile={person.profile} />
-      <Text as="span">
-        <Text as="strong">
+      <span>
+        <strong>
           {person.profile.name}
           {person.clientId === 'self'
             ? t(' (you)')
             : person.profile.id === profile.id
               ? t(' (another tab)')
               : ''}
-        </Text>
-        <Text as="small">
+        </strong>
+        <small>
           {person.clientId === 'self'
             ? t('This browser')
             : person.following
@@ -52,12 +51,12 @@ export function FollowPerson({
               : person.view === 'canvas'
                 ? t('On the canvas')
                 : t('Viewing {{value}}', { value: person.view })}
-        </Text>
-      </Text>
+        </small>
+      </span>
       {person.clientId !== 'self' && !person.following && (
-        <Text as="small">
+        <small>
           {followId === person.clientId ? t('Following') : t('Follow')}
-        </Text>
+        </small>
       )}
     </button>
   )
