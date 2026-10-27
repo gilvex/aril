@@ -18,9 +18,7 @@ export type CollaborationPopoverProps = {
           current: import('../types/collaborationBarState.ts').CollaborationBarState['error'],
         ) => import('../types/collaborationBarState.ts').CollaborationBarState['error']),
   ) => void
-  onProfile: (
-    profile: import('@aril/domain/collaboration').Profile,
-  ) => void
+  onProfile: (profile: import('@aril/domain/collaboration').Profile) => void
   profile: import('@aril/domain/collaboration').Profile
   name: string
   setAvatar: (

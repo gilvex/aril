@@ -1,3 +1,4 @@
+import './agentAccess.css'
 import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import { createAgentAccessState } from '@/features/agentAccess/model/createAgentAccessState.ts'
 import { useAgentAccessModel } from '@/features/agentAccess/model/useAgentAccessModel.ts'
@@ -64,11 +65,12 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
   return (
     <section className="agent-access">
       <h2 id="modal-title">{t('Agent access')}</h2>
-      <p>
+      <p className="agent-introduction">
         {t(
           'Connect Codex or another MCP client to your account or one file. Edits appear in revision history and team activity.',
         )}
       </p>
+      <h3 className="agent-section-title">{t('Create a connection')}</h3>
       <CreateAgentCredentialForm
         setBusy={setBusy}
         setError={setError}
@@ -90,7 +92,7 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
         <AgentSecret t={t} secret={secret} handleClick={handleClick} />
       )}
       <AgentSetupInstructions t={t} />
-      <h3>{t('Your connections')}</h3>
+      <h3 className="agent-section-title">{t('Your connections')}</h3>
       {loading ? (
         <LoadingSkeleton label={t('Loading…')} />
       ) : !credentials.length ? (
@@ -112,7 +114,7 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
           ))}
         </ul>
       )}
-      {error && <p role="status">{error}</p>}
+      {error && <p role="alert">{error}</p>}
     </section>
   )
 }

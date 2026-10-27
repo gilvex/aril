@@ -24,7 +24,7 @@ export function LibraryMapNode({ data }: NodeProps<MapNode>) {
         variant="outline"
         onClick={toggle}
       >
-        {t('Show more')} · {data.count}
+        {t('Show more')} ·{data.count}
       </Button>
     )
   const Icon = cluster ? Layers : data.kind === 'variable' ? Variable : File

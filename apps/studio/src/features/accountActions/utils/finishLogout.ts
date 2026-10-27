@@ -21,5 +21,7 @@ export function finishLogout(mode: AccountAction) {
   }
   const invite = new URLSearchParams(location.hash.slice(1)).get('invite')
   const hash = invite ? `#${new URLSearchParams({ invite })}` : ''
-  location.replace(`${mode === 'switch' ? '/app?account=switch' : '/app'}${hash}`)
+  location.replace(
+    `${mode === 'switch' ? '/app?account=switch' : '/app'}${hash}`,
+  )
 }

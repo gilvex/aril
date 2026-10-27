@@ -70,7 +70,7 @@ export function RequirementCard({ item, model }: RequirementItemProps) {
       </div>
       {!!editors.length && (
         <div className="req-card-editing">
-          {editors.map((person) => person.profile.name).join(', ')} ·{' '}
+          {editors.map((person) => person.profile.name).join(', ')} ·
           {t('editing')}
         </div>
       )}

@@ -1,11 +1,5 @@
-import type {
-  CameraPresence,
-  Presence,
-} from '@aril/domain/collaboration'
-import {
-  cameraFromViewport,
-  viewportFromCamera,
-} from '@aril/domain/follow'
+import type { CameraPresence, Presence } from '@aril/domain/collaboration'
+import { cameraFromViewport, viewportFromCamera } from '@aril/domain/follow'
 import type { ReactFlowInstance, Viewport } from '@xyflow/react'
 import { useCallback, useEffect, useRef, type RefObject } from 'react'
 

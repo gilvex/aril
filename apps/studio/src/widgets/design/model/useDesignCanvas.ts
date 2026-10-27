@@ -9,10 +9,7 @@ import {
   type PointerEvent,
 } from 'react'
 import { useReactFlow, type NodeChange } from '@xyflow/react'
-import {
-  cameraFromViewport,
-  viewportFromCamera,
-} from '@aril/domain/follow'
+import { cameraFromViewport, viewportFromCamera } from '@aril/domain/follow'
 import {
   applyDesignChanges,
   designAncestors,

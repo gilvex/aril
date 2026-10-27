@@ -1,4 +1,4 @@
-import {nodeIconOptions} from '../config/nodeIconOptions.ts'
+import { nodeIconOptions } from '../config/nodeIconOptions.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '@/widgets/board/config/kindIcons.ts'
 import { kindLabels } from '@/widgets/board/config/kindLabels.ts'
@@ -11,16 +11,20 @@ export const IdeaNode = memo(function IdeaNode({
   selected,
 }: NodeProps<Node<Idea['data']>>) {
   const { t } = useTranslation()
-  const Icon = data.icon ? nodeIconOptions[data.icon].icon : kindIcons[data.kind]
+  const Icon = data.icon
+    ? nodeIconOptions[data.icon].icon
+    : kindIcons[data.kind]
   return (
     <div
       className={`idea-node kind-${data.kind} ${selected ? 'is-selected' : ''}`}
     >
       <Handle type="target" position={Position.Left} />
       <div className="node-heading">
-        <span className="node-icon">
-          <Icon size={19} strokeWidth={1.8} />
-        </span>
+        {data.kind === 'block' && (
+          <span className="node-icon">
+            <Icon size={19} strokeWidth={1.8} />
+          </span>
+        )}
         <span className="node-kind">{t(kindLabels[data.kind])}</span>
         <span
           className={`status-dot ${data.status.toLowerCase()}`}

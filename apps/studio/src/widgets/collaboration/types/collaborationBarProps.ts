@@ -1,9 +1,5 @@
 import type { Panel } from '@/widgets/collaboration/types/collaborationBarPanel.ts'
-import type {
-  Activity,
-  Presence,
-  Profile,
-} from '@aril/domain/collaboration'
+import type { Activity, Presence, Profile } from '@aril/domain/collaboration'
 export type CollaborationBarProps = {
   onSettings?: (section: 'file' | 'user') => void
   beforeLeave: () => Promise<boolean>

@@ -50,7 +50,13 @@ export function BlueprintSurface(props: BlueprintSurfaceProps) {
       )}
       <BlueprintFlow
         {...props}
-        drawing={<BoardDrawing board={board} update={props.update} />}
+        drawing={
+          <BoardDrawing
+            board={board}
+            update={props.update}
+            checkpoint={props.checkpoint}
+          />
+        }
 
         profile={profile}
       />

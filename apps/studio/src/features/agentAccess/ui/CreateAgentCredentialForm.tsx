@@ -39,6 +39,8 @@ export function CreateAgentCredentialForm({
       <label>
         {t('Connection name')}
         <input
+          name="agent-connection-name"
+          autoComplete="off"
           required
           maxLength={60}
           value={name}
@@ -48,6 +50,7 @@ export function CreateAgentCredentialForm({
       <label>
         {t('Connect to')}
         <StudioSelect
+          aria-label={t('Connect to')}
           value={target}
           onChange={(e) => setTarget(e.target.value as 'account' | 'workspace')}
         >
@@ -68,6 +71,7 @@ export function CreateAgentCredentialForm({
         <label>
           {t('Access')}
           <StudioSelect
+            aria-label={t('Access')}
             value={scope}
             onChange={(e) => setScope(e.target.value as 'read' | 'write')}
           >
@@ -78,6 +82,7 @@ export function CreateAgentCredentialForm({
         <label>
           {t('Expires in')}
           <StudioSelect
+            aria-label={t('Expires in')}
             value={String(days)}
             onChange={(e) => setDays(Number(e.target.value))}
           >

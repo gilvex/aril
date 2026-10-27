@@ -44,7 +44,7 @@ export function PeopleInvites(props: CollaborationPopoverProps) {
       </button>
       {props.invite && (
         <label className="invite-output">
-          {t('Single-use link Â· expires in 24 hours')}
+          {t('Single-use link · expires in 24 hours')}
           <input
             aria-label={t('Invite link')}
             readOnly

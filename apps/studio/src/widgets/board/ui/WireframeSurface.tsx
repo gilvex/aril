@@ -44,7 +44,9 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
       <div className="canvas-caption">
         {t('screenCount', { count: screens.length })}
         <span className="caption-separator" />
+
         {t('blockCount', { count: graph.nodes.length - screens.length })}
+
         <span className="caption-separator" />
         {t('flowCount', { count: graph.edges.length })}
       </div>
@@ -60,6 +62,7 @@ export function WireframeSurface(props: WireframeSurfaceProps) {
           <BoardDrawing
             board={props.board}
             update={props.update}
+            checkpoint={props.checkpoint}
             wireframe
             disabled={preview}
           />

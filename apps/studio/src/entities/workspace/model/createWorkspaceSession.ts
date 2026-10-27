@@ -9,14 +9,8 @@ import type { WorkspaceRuntime } from '@/entities/workspace/types/workspaceRunti
 import { keepViews } from '@/entities/workspace/utils/keepViews.ts'
 import { loadViews } from '@/entities/workspace/utils/loadViews.ts'
 import { scopedDraftKey } from '@/entities/workspace/utils/scopedDraftKey.ts'
-import {
-  applyOperations,
-  diffWorkspace,
-} from '@aril/domain/collaboration'
-import {
-  canRebaseOperations,
-  writeVersion,
-} from '@aril/domain/freshness'
+import { applyOperations, diffWorkspace } from '@aril/domain/collaboration'
+import { canRebaseOperations, writeVersion } from '@aril/domain/freshness'
 import type { Envelope, Workspace } from '@aril/domain/workspace'
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'

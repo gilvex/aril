@@ -1,4 +1,6 @@
-.design-library-tabs { min-width: 0; }
+.design-library-tabs {
+  min-width: 0;
+}
 .design-library-body {
   flex: 1;
   min-height: 0;

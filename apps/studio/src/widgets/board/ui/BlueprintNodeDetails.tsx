@@ -62,11 +62,14 @@ export function BlueprintNodeDetails({
           onChange={(e) => updateNode({ description: e.target.value })}
         />
       </label>
-      <BlueprintIconPicker
-        node={node}
-        readOnly={readOnly}
-        updateNode={updateNode}
-      />
+      {node.data.kind === 'block' && (
+        <BlueprintIconPicker
+          key={node.id}
+          node={node}
+          readOnly={readOnly}
+          updateNode={updateNode}
+        />
+      )}
       <BlueprintNodeClassification
         node={node}
         readOnly={readOnly}

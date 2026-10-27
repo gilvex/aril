@@ -43,5 +43,10 @@ export { BlueprintNodeClassification } from './BlueprintNodeClassification.tsx'
 export { BoardOverviewActions } from './BoardOverviewActions.tsx'
 export { BoardScope } from './BoardScope.tsx'
 
+export { BlueprintIconPicker } from './BlueprintIconPicker.tsx'
 
-export {BlueprintIconPicker} from './BlueprintIconPicker.tsx'
+export { IconLibrary } from './IconLibrary.tsx'
+
+export { IconLibraryOption } from './IconLibraryOption.tsx'
+
+export { IconLibraryFooter } from './IconLibraryFooter.tsx'

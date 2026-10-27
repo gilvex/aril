@@ -61,6 +61,7 @@ export function StudioHeaderActions({
       <button
         className="icon-button"
         aria-label={t('Undo')}
+        aria-keyshortcuts="Control+z Meta+z"
         title={t('Undo (Ctrl+Z)')}
         disabled={!state.canUndo}
         onClick={state.undo}
@@ -70,7 +71,8 @@ export function StudioHeaderActions({
       <button
         className="icon-button"
         aria-label={t('Redo')}
-        title={t('Redo (Ctrl+Shift+Z)')}
+        aria-keyshortcuts="Control+Shift+z Meta+Shift+z Control+y"
+        title={t('Redo (Ctrl+Shift+Z / Ctrl+Y)')}
         disabled={!state.canRedo}
         onClick={state.redo}
       >

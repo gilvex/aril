@@ -31,6 +31,7 @@ export function NoteComment({
         {!readOnly && (
           <button className="button subtle" onClick={toggle}>
             {comment.resolved ? <RotateCcw size={14} /> : <Check size={14} />}
+
             {t(comment.resolved ? 'Reopen comment' : 'Resolve comment')}
           </button>
         )}

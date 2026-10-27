@@ -44,6 +44,23 @@ Open **Notifications** to accept or decline invitations. Workspace owners can in
 
 Email delivery is optional and requires a verified Resend sender. [Set up invitation emails](docs/collaboration.md#optional-resend-setup).
 
+### Canvas editing in 0.1.2
+
+Add a **Universal block** from the toolbar and choose its icon visually. Connect nodes through their handles. Click a freehand stroke to select it, use Shift/Ctrl to add strokes, and press Delete. Undo with Ctrl+Z and redo with Ctrl+Shift+Z or Ctrl+Y, including when using a Russian keyboard layout.
+
+![Selected drawing with its delete action in an isolated demo](apps/studio/public/changelog/canvas-editing.png)
+
+<details>
+<summary>Watch drawing selection, history and agent setup</summary>
+
+![Continuous isolated demo of drawing selection, undo, redo and agent setup](apps/studio/public/changelog/canvas-editing.gif)
+
+</details>
+
+[Watch with playback controls](https://www.aril.studio/changelog#2026-10-21-canvas-editing). The recording uses generated demo content and contains no real credentials.
+
+![Readable agent connection form and step-by-step MCP setup](apps/studio/public/changelog/agent-access-readable.png)
+
 ## What it does
 
 - **Canvas and Design:** connected architecture and network diagrams, universal blocks with selectable device/network icons, editable interface layers, nested frames, and dockable inspectors.

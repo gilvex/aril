@@ -1,25 +1,48 @@
+import { ChevronDown, Terminal } from 'lucide-react'
 import type { AgentSetupInstructionsProps } from '../types/agentSetupInstructionsProps.ts'
 export function AgentSetupInstructions({ t }: AgentSetupInstructionsProps) {
   return (
-    <details className="agent-setup">
-      <summary>{t('Connect your MCP client')}</summary>
-      <p>
-        {t('From your local Aril checkout, run')}
-        <code>{t('pnpm mcp:setup')}</code>
-        {t(
-          '. Paste this studio address and the credential into the terminal prompts. The setup stores it in your user configuration folder and prints the MCP registration command.',
-        )}
-      </p>
-      <p>
-        {t('Studio address:')}
-        <code>{location.origin}</code>
-      </p>
-      <p>
-        {t('Install the companion skill with')}
-        <code>{t('pnpm skill:install')}</code>
-        {t(', then open a new chat. See')}
-        <code>{t('docs/agent-integration.md')}</code> {t('for other clients.')}
-      </p>
+    <details className="agent-setup" open>
+      <summary>
+        <Terminal size={18} aria-hidden="true" />
+        {t('Connect your MCP client')}
+        <ChevronDown size={16} aria-hidden="true" />
+      </summary>
+      <ol className="agent-setup-steps">
+        <li>
+          <strong>{t('Run setup in your local Aril checkout')}</strong>
+          <pre>
+            <code translate="no">pnpm mcp:setup</code>
+          </pre>
+        </li>
+        <li>
+          <strong>{t('Enter the studio address and your credential')}</strong>
+          <p>
+            {t(
+              'Paste the credential into the terminal prompt. Setup stores it in your user configuration folder and prints the command for your MCP client.',
+            )}
+          </p>
+          <code className="agent-origin" translate="no">
+            {location.origin}
+          </code>
+        </li>
+        <li>
+          <strong>
+            {t('Install the companion skill and open a new chat')}
+          </strong>
+          <pre>
+            <code translate="no">pnpm skill:install</code>
+          </pre>
+        </li>
+      </ol>
+      <a
+        className="agent-guide-link"
+        href="https://github.com/gilvex/aril/blob/main/docs/agent-integration.md"
+        target="_blank"
+        rel="noreferrer"
+      >
+        {t('Agent setup guide')}
+      </a>
     </details>
   )
 }

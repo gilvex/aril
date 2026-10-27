@@ -5,10 +5,7 @@ import {
 import { ApiError } from '@/shared/api/apiError.ts'
 import { request } from '@/shared/api/request.ts'
 import { workspaceHeaders } from '@/shared/api/workspaceHeaders.ts'
-import {
-  presenceSchema,
-  type Presence,
-} from '@aril/domain/collaboration'
+import { presenceSchema, type Presence } from '@aril/domain/collaboration'
 import {
   encode64,
   publicKey,

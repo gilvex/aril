@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "engines": {
     "node": ">=24.0.0"
@@ -20,7 +20,7 @@
     "mcp:setup": "pnpm --filter @aril/mcp setup",
     "skill:install": "pnpm --filter @aril/studio-skill install:skill",
     "check:architecture": "node scripts/checkArchitecture.mjs",
-    "test:signin": "pnpm build && node --test scripts/entryRoutes.browser.test.mjs scripts/signIn.browser.test.mjs scripts/firstWorkspace.browser.test.mjs scripts/networkCanvas.browser.test.mjs scripts/sharing.browser.test.mjs scripts/invitations.browser.test.mjs"
+    "test:signin": "pnpm build && node --test scripts/entryRoutes.browser.test.mjs scripts/signIn.browser.test.mjs scripts/firstWorkspace.browser.test.mjs scripts/networkCanvas.browser.test.mjs scripts/sharing.browser.test.mjs scripts/invitations.browser.test.mjs scripts/localization.browser.test.mjs scripts/canvasEditing.browser.test.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

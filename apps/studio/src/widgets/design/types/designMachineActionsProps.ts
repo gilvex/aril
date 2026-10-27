@@ -1,7 +1,4 @@
-import type {
-  DesignLibrary,
-  DesignMachine,
-} from '@aril/domain/designLibrary'
+import type { DesignLibrary, DesignMachine } from '@aril/domain/designLibrary'
 export type DesignMachineActionsProps = {
   label: string
   actions: DesignMachine['transitions'][string]['actions']

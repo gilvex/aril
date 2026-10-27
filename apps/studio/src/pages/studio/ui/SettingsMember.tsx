@@ -42,7 +42,7 @@ export function SettingsMember({
                 ? 'Owner'
                 : member.role === 'viewer'
                   ? 'Can view and follow'
-                  : (member.role === 'guest' || !!member.guestExpiresAt)
+                  : member.role === 'guest' || !!member.guestExpiresAt
                     ? 'Temporary guest'
                     : 'Can edit this file',
             )}
@@ -85,7 +85,7 @@ export function SettingsMember({
                   ? 'Owner'
                   : member.role === 'viewer'
                     ? 'Viewer'
-                    : (member.role === 'guest' || !!member.guestExpiresAt)
+                    : member.role === 'guest' || !!member.guestExpiresAt
                       ? 'Guest'
                       : 'Editor',
               )}

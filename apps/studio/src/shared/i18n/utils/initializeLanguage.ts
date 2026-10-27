@@ -1,6 +1,6 @@
 import { i18n } from '../config/i18n.ts'
 
-export function initializeLanguage() {
+export async function initializeLanguage() {
   const storageKey = 'pomegranate-language'
   let language = navigator.language.startsWith('ru') ? 'ru' : 'en'
   try {
@@ -10,7 +10,7 @@ export function initializeLanguage() {
     /* Preferences are optional when storage is unavailable. */
   }
   document.documentElement.lang = language
-  void i18n.changeLanguage(language)
+  await i18n.changeLanguage(language)
   i18n.on('languageChanged', (next) => {
     document.documentElement.lang = next
     try {

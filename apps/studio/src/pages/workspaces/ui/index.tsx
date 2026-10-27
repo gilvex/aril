@@ -8,4 +8,4 @@ export { WorkspaceEmptyState } from './WorkspaceEmptyState.tsx'
 
 export { WorkspaceGrid } from './WorkspaceGrid.tsx'
 
-export {WorkspaceDialogs} from './WorkspaceDialogs.tsx'
+export { WorkspaceDialogs } from './WorkspaceDialogs.tsx'

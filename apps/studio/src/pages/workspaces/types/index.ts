@@ -9,4 +9,4 @@ export type { WorkspaceToolbarProps } from './workspaceToolbarProps.ts'
 export type { WorkspaceManagement } from '@/entities/studio/index.ts'
 export type { WorkspaceGridProps } from './workspaceGridProps.ts'
 
-export type {WorkspaceDialogsProps} from './workspaceDialogsProps.ts'
+export type { WorkspaceDialogsProps } from './workspaceDialogsProps.ts'

@@ -112,7 +112,8 @@ export function DesignMachineInspector({ model }: DesignEditorProps) {
           </section>
           {model.machineSelection?.kind === 'state' && (
             <DesignMachineStateProperties model={model} />
-          )}{' '}
+          )}
+
           {model.machineSelection?.kind === 'transition' && (
             <DesignMachineTransitionProperties model={model} />
           )}

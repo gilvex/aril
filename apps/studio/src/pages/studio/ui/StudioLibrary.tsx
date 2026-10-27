@@ -3,10 +3,7 @@ import { DesignLibraryPage } from './DesignLibraryPage.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import {
-  activeBoardSections,
-  type Workspace,
-} from '@aril/domain/workspace'
+import { activeBoardSections, type Workspace } from '@aril/domain/workspace'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 export function StudioLibrary({
   workspace,

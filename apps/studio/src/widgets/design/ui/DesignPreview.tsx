@@ -52,7 +52,7 @@ export function DesignPreview(props: DesignPreviewProps) {
         )}
       </div>
       <footer className="design-sample-footer">
-        {t('Preview only')} · {t('Changes here do not affect infrastructure.')}
+        {t('Preview only')} ·{t('Changes here do not affect infrastructure.')}
       </footer>
     </div>
   )

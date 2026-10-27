@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Plus, Link2 } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { StudioActionButton } from '@/shared/ui/index.tsx'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
@@ -10,8 +10,6 @@ import type { WireframeToolbarProps } from '../types/wireframeToolbarProps.ts'
 export function WireframeShapeTools({
   graph,
   add,
-  tool,
-  setTool,
 }: Pick<WireframeToolbarProps, 'graph' | 'add' | 'tool' | 'setTool'>) {
   const { t } = useTranslation()
   const readOnly = useWorkspaceRole() === 'viewer'
@@ -28,15 +26,6 @@ export function WireframeShapeTools({
   )
   return (
     <>
-      <StudioActionButton
-        disabled={readOnly}
-        title={t('Connect tool')}
-        aria-label={t('Connect tool')}
-        aria-pressed={tool === 'connect'}
-        onClick={() => setTool('connect')}
-      >
-        <Link2 size={18} />
-      </StudioActionButton>
       {(['screen', 'text', 'button'] as const).map((kind) => {
         const Icon = icons[kind]
         return (

@@ -86,7 +86,7 @@ export function WorkspacePickerDialog({
           onClick={create}
         >
           <Plus size={16} />
-          {t('Create workspace')}: {model.query.trim()}
+          {t('Create workspace')}:{model.query.trim()}
         </button>
       )}
       {model.error && (

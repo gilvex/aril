@@ -36,7 +36,8 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
                 : filter === 'decision'
                   ? 'Needs a decision'
                   : 'Unlinked',
-            )}{' '}
+            )}
+
             <small>{counts[filter]}</small>
           </ToggleGroupItem>
         ))}

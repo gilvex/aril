@@ -1,4 +1,4 @@
-import {insertNodeKinds} from '../config/insertNodeKinds.ts'
+import { insertNodeKinds } from '../config/insertNodeKinds.ts'
 import { useMemo, useRef } from 'react'
 import { MoreHorizontal, Plus } from 'lucide-react'
 import { EditorActionMenu } from '@/shared/ui/index.tsx'

@@ -99,7 +99,7 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
           <FederatedSignIn provider="oidc" link />
         </>
       ) : !error ? (
-        <LoadingStatus label={t('Loading accountâ€¦')} />
+        <LoadingStatus label={t('Loading account…')} />
       ) : null}
     </section>
   )

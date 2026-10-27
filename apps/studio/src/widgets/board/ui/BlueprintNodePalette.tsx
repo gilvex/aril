@@ -1,4 +1,4 @@
-import {insertNodeKinds} from '../config/insertNodeKinds.ts'
+import { insertNodeKinds } from '../config/insertNodeKinds.ts'
 import { Plus, X } from 'lucide-react'
 import { type Idea } from '@aril/domain/workspace'
 import { useTranslation } from '@/shared/i18n/index.ts'
