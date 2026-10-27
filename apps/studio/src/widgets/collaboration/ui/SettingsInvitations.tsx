@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useRef } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useCollaborationBarModel } from '../model/useCollaborationBarModel.ts'
@@ -26,7 +27,11 @@ export function SettingsInvitations(props: SettingsInvitationsProps) {
         onFollow={noop}
         activity={[]}
       />
-      {model.error && <p role="alert">{t(model.error)}</p>}
+      {model.error && (
+        <Text as="p" role="alert">
+          {t(model.error)}
+        </Text>
+      )}
     </div>
   )
 }

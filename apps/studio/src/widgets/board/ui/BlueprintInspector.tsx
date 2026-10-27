@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useBlueprintInspectorHandlers } from '../model/useBlueprintInspectorHandlers.tsx'
 
@@ -44,7 +45,7 @@ export function BlueprintInspector({
       scope={`blueprint:${board.id}:${[...selectedIds].sort().join(',')}:${edge?.id || ''}`}
     >
       <div className="inspector-heading">
-        <span>
+        <Text as="span">
           {selectedNodes.length > 1
             ? t('{{count}} nodes selected', { count: selectedNodes.length })
             : node
@@ -52,7 +53,7 @@ export function BlueprintInspector({
               : edge
                 ? t('Connection')
                 : t('Board overview')}
-        </span>
+        </Text>
         <button
           className="icon-button"
           aria-label={t('Close board details')}

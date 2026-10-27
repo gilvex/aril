@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Check } from 'lucide-react'
 import type { IconLibraryOptionProps } from '../types/iconLibraryOptionProps.ts'
@@ -19,7 +20,7 @@ export function IconLibraryOption({
       onClick={select}
     >
       <Icon size={size} aria-hidden="true" />
-      <span>{label}</span>
+      <Text as="span">{label}</Text>
       {selected && (
         <Check className="icon-library-check" size={12} aria-hidden="true" />
       )}

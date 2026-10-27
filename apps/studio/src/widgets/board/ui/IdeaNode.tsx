@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { nodeIconOptions } from '../config/nodeIconOptions.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '@/widgets/board/config/kindIcons.ts'
@@ -21,24 +22,26 @@ export const IdeaNode = memo(function IdeaNode({
       <Handle type="target" position={Position.Left} />
       <div className="node-heading">
         {data.kind === 'block' && (
-          <span className="node-icon">
+          <Text as="span" className="node-icon">
             <Icon size={19} strokeWidth={1.8} />
-          </span>
+          </Text>
         )}
-        <span className="node-kind">{t(kindLabels[data.kind])}</span>
+        <Text as="span" className="node-kind">
+          {t(kindLabels[data.kind])}
+        </Text>
         <span
           className={`status-dot ${data.status.toLowerCase()}`}
           title={t(data.status)}
         />
       </div>
-      <div className="node-title">{data.title}</div>
-      <p>{data.description}</p>
+      <div className="node-title"><Text>{data.title}</Text></div>
+      <Text as="p">{data.description}</Text>
       <div className="node-footer">
-        <span>{t(data.status)}</span>
-        <span>
+        <Text as="span">{t(data.status)}</Text>
+        <Text as="span">
           <Link2 size={12} />
           {t('linkedCount', { count: data.requirements.length })}
-        </span>
+        </Text>
       </div>
       <Handle type="source" position={Position.Right} />
     </div>

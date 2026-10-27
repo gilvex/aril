@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ChangelogMedia } from './ChangelogMedia.tsx'
 import { ArrowUpRight, Link } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -23,11 +24,13 @@ export function ChangelogEntry({ entry }: { entry: ReleaseEntry }) {
       aria-labelledby={`${entry.id}-title`}
     >
       <div className="changelog-date">
-        <time dateTime={entry.date}>{date}</time>
+        <time dateTime={entry.date}><Text>{date}</Text></time>
       </div>
       <div className="changelog-entry-content">
         <header>
-          <h2 id={`${entry.id}-title`}>{t(entry.title)}</h2>
+          <Text as="h2" id={`${entry.id}-title`}>
+            {t(entry.title)}
+          </Text>
           <Button asChild variant="ghost" size="icon">
             <a
               href={`#${entry.id}`}
@@ -38,11 +41,15 @@ export function ChangelogEntry({ entry }: { entry: ReleaseEntry }) {
             </a>
           </Button>
         </header>
-        <p className="changelog-summary">{t(entry.summary)}</p>
+        <Text as="p" className="changelog-summary">
+          {t(entry.summary)}
+        </Text>
         <ChangelogMedia entry={entry} />
         <ul>
           {entry.changes.map((change) => (
-            <li key={change}>{t(change)}</li>
+            <li key={change}>
+              <Text>{t(change)}</Text>
+            </li>
           ))}
         </ul>
         {entry.commit && (
@@ -52,7 +59,7 @@ export function ChangelogEntry({ entry }: { entry: ReleaseEntry }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t('View code')}
+              <Text>{t('View code')}</Text>
               <ArrowUpRight size={14} />
             </a>
           </Button>

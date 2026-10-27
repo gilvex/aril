@@ -1,3 +1,4 @@
+import { Text } from './Text.tsx'
 import type { LoadingSkeletonProps } from '../types/loadingSkeletonProps.ts'
 import './loadingProgress.css'
 
@@ -14,10 +15,10 @@ export function LoadingSkeleton({
       {[0, 1, 2].map((item) => (
         <div className="loading-skeleton-item" key={item} aria-hidden="true">
           <span className="loading-skeleton-thumbnail" />
-          <span className="loading-skeleton-lines">
+          <Text as="span" className="loading-skeleton-lines">
             <i />
             <i />
-          </span>
+          </Text>
         </div>
       ))}
     </div>

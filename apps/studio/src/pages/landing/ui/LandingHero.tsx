@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { getProductBranding } from '@/shared/deploymentSettings/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { LandingBackdrop } from './LandingBackdrop.tsx'
@@ -9,35 +10,35 @@ export function LandingHero() {
     <section className="landing-hero" aria-labelledby="landing-title">
       <LandingBackdrop />
       <div className="landing-hero-copy">
-        <h1 id="landing-title">
+        <Text as="h1" id="landing-title">
           {t('Plan the architecture.')}
           <br />
           {t('Design the interface.')}
-        </h1>
-        <p>
+        </Text>
+        <Text as="p">
           {t(
             '{{product}} brings diagrams, interface design, requirements, and notes into a shared workspace for your team.',
             { product: getProductBranding().productName },
           )}
-        </p>
+        </Text>
         <div className="landing-hero-actions">
           <a
             className="landing-button landing-button-primary"
             href="/app?demo=1&workspace=demo&board=layers&view=canvas"
           >
-            {t('Explore the demo')}
+            <Text>{t('Explore the demo')}</Text>
           </a>
           <a className="landing-text-link" href="/app">
-            {t('Open your workspace')}
+            <Text>{t('Open your workspace')}</Text>
           </a>
         </div>
-        <p className="landing-demo-note">
+        <Text as="p" className="landing-demo-note">
           {t('The demo is editable. No account needed.')}
-        </p>
+        </Text>
       </div>
       <figure className="landing-preview">
         <div className="landing-preview-bar">
-          <span>{t('Studio walkthrough')}</span>
+          <Text as="span">{t('Studio walkthrough')}</Text>
         </div>
         <video
           key={locale}
@@ -58,9 +59,9 @@ export function LandingHero() {
             default
           />
         </video>
-        <figcaption>
+        <Text as="figcaption">
           {t('Recorded in the editable demo, with simulated teammates.')}
-        </figcaption>
+        </Text>
       </figure>
     </section>
   )

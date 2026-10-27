@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import {
   useCallback,
   useMemo,
@@ -60,9 +61,9 @@ export function DesignLayers({ model }: DesignEditorProps) {
       >
         <SurfaceGrip />
         <DesignLibraryTabs model={model} />
-        <small title={`${model.page.nodes.length}/500`}>
+        <Text as="small" title={`${model.page.nodes.length}/500`}>
           {model.page.nodes.length}
-        </small>
+        </Text>
         <button
           className="icon-button"
           aria-label={t('Close layers')}
@@ -90,7 +91,9 @@ export function DesignLayers({ model }: DesignEditorProps) {
             />
           ))}
         </div>
-        {!nodes.length && <p>{t('Insert a frame to start designing.')}</p>}
+        {!nodes.length && (
+          <Text as="p">{t('Insert a frame to start designing.')}</Text>
+        )}
       </div>
       {actionsOpen && <DesignLayerActionSheet model={model} />}
     </aside>

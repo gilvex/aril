@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ChevronDown } from 'lucide-react'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { AccountActions } from '@/features/accountActions/index.ts'
@@ -13,11 +14,11 @@ export function WorkspaceAccountMenu({
   const { t } = useTranslation()
   return (
     <details className="workspace-account">
-      <summary aria-label={t('Your account')}>
+      <Text as="summary" aria-label={t('Your account')}>
         <Avatar profile={profile} />
-        <span>{profile.name}</span>
+        <Text as="span">{profile.name}</Text>
         <ChevronDown size={15} />
-      </summary>
+      </Text>
       <div className="workspace-account-panel">
         <ThemePicker />
         <LanguagePicker />

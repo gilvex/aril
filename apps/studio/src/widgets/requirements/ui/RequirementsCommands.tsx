@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementsCommandsProps } from '../types/requirementsCommandsProps.ts'
@@ -27,8 +28,10 @@ export function RequirementsCommands({
         onClick={(event) => controls.toggle('filters', event.currentTarget)}
       >
         <SlidersHorizontal size={16} />
-        <span>{t('Filters')}</span>
-        {!!controls.activeCount && <small>{controls.activeCount}</small>}
+        <Text as="span">{t('Filters')}</Text>
+        {!!controls.activeCount && (
+          <Text as="small">{controls.activeCount}</Text>
+        )}
       </button>
       {model.panel && (
         <div
@@ -41,9 +44,9 @@ export function RequirementsCommands({
           )}
         >
           <header>
-            <strong>
+            <Text as="strong">
               {t(model.panel === 'filters' ? 'Filters' : 'Search requirements')}
-            </strong>
+            </Text>
             <button
               className="icon-button"
               aria-label={t('Close')}
@@ -55,7 +58,7 @@ export function RequirementsCommands({
           {model.panel === 'filters' ? (
             <RequirementsFilters model={model} />
           ) : (
-            <label className="requirements-search">
+            <Text as="label" className="requirements-search">
               <Search size={16} />
               <input
                 aria-label={t('Search requirements')}
@@ -72,14 +75,14 @@ export function RequirementsCommands({
                   <X size={14} />
                 </button>
               )}
-            </label>
+            </Text>
           )}
           <footer>
-            <span role="status">
+            <Text as="span" role="status">
               {t('requirementCount', { count: model.results.length })}
-            </span>
+            </Text>
             <button className="button subtle" onClick={controls.close}>
-              {t('Done')}
+              <Text>{t('Done')}</Text>
             </button>
           </footer>
         </div>

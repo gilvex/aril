@@ -16,3 +16,5 @@ export { NoteViewer } from './NoteViewer.tsx'
 export { NoteComment } from './NoteComment.tsx'
 
 export { NoteCursors } from './NoteCursors.tsx'
+
+export { NoteText } from './NoteText.tsx'

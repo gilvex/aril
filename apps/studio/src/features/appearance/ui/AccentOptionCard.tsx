@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useId } from 'react'
 import { Card } from 'vagabond-ui/card'
 import { RadioGroupItem } from 'vagabond-ui/radio-group'
@@ -9,20 +10,22 @@ export function AccentOptionCard({ option, selected }: AccentOptionCardProps) {
   const id = useId()
   return (
     <Card className="accent-option-card" data-selected={selected || undefined}>
-      <label className="accent-option-label" htmlFor={id}>
+      <Text as="label" className="accent-option-label" htmlFor={id}>
         <span
           className="accent-swatch"
           style={{ backgroundColor: option.color }}
           aria-hidden="true"
         />
-        <span className="accent-option-name">{t(option.label)}</span>
+        <Text as="span" className="accent-option-name">
+          {t(option.label)}
+        </Text>
         <RadioGroupItem
           className="accent-option-radio"
           id={id}
           value={option.id}
           aria-label={t(option.label)}
         />
-      </label>
+      </Text>
     </Card>
   )
 }

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { requirementFieldLabels } from '@/widgets/requirements/config/requirementFieldLabels.ts'
@@ -10,7 +11,8 @@ export function RequirementPeople({
 
   if (!people.length) return null
   return (
-    <span
+    <Text
+      as="span"
       className="requirement-people"
       aria-label={t('Requirement collaborators')}
     >
@@ -22,22 +24,23 @@ export function RequirementPeople({
             )
           : t('Viewing')
         return (
-          <span
+          <Text
+            as="span"
             className="requirement-person"
             key={profile.id}
             style={{ borderColor: profile.color }}
           >
             <Avatar profile={profile} />
-            <span>
-              <strong>
+            <Text as="span">
+              <Text as="strong">
                 {profile.name}
                 {profile.id === currentUserId ? t(' (you)') : ''}
-              </strong>
-              <small>{action}</small>
-            </span>
-          </span>
+              </Text>
+              <Text as="small">{action}</Text>
+            </Text>
+          </Text>
         )
       })}
-    </span>
+    </Text>
   )
 }

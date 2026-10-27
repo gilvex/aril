@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Button } from 'vagabond-ui/button'
 import {
   Activity as ActivityIcon,
@@ -24,32 +25,32 @@ export function StudioMobileTools({ state, handlers }: StudioMobileToolsProps) {
     <div className="mobile-workspace-tools">
       <Button variant="ghost" onClick={handleClick}>
         <ActivityIcon size={18} />
-        {t('Team activity')}
+        <Text>{t('Team activity')}</Text>
       </Button>
       <Button variant="ghost" onClick={handleClick2}>
         <Workflow size={18} />
-        {t('Agent access')}
+        <Text>{t('Agent access')}</Text>
       </Button>
-      <span>{t('Tools')}</span>
+      <Text as="span">{t('Tools')}</Text>
       <Button variant="ghost" disabled={!state.canUndo} onClick={state.undo}>
         <Undo2 size={18} />
-        {t('Undo')}
+        <Text>{t('Undo')}</Text>
       </Button>
       <Button variant="ghost" disabled={!state.canRedo} onClick={state.redo}>
         <Redo2 size={18} />
-        {t('Redo')}
+        <Text>{t('Redo')}</Text>
       </Button>
       <Button variant="ghost" onClick={handleClick3}>
         <History size={18} />
-        {t('Revision history')}
+        <Text>{t('Revision history')}</Text>
       </Button>
       <Button variant="ghost" onClick={handleClick4}>
         <Upload size={18} />
-        {t('Import workspace')}
+        <Text>{t('Import workspace')}</Text>
       </Button>
       <Button variant="ghost" onClick={handleClick5}>
         <Download size={18} />
-        {t('Export workspace')}
+        <Text>{t('Export workspace')}</Text>
       </Button>
     </div>
   )

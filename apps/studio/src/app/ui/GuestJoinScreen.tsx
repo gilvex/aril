@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { request } from '@/shared/api/index.ts'
 import { sessionTokenKey } from '@/shared/config/sessionTokenKey.ts'
@@ -54,14 +55,14 @@ export function GuestJoinScreen({
       <LoginHeader />
       <main className="login-layout">
         <section className="login-auth">
-          <h1>{t('Join as a guest')}</h1>
-          <p className="login-description">
+          <Text as="h1">{t('Join as a guest')}</Text>
+          <Text as="p" className="login-description">
             {t(
               'No account needed. Your access ends when this link expires or is revoked.',
             )}
-          </p>
+          </Text>
           <form className="join-form" onSubmit={join}>
-            <label>
+            <Text as="label">
               {t('Your name')}
               <input
                 value={name}
@@ -71,24 +72,24 @@ export function GuestJoinScreen({
                 autoComplete="nickname"
                 autoFocus
               />
-            </label>
-            <p className="login-help">
+            </Text>
+            <Text as="p" className="login-help">
               {t(
                 'This opens a temporary guest profile in this browser. Your existing account is kept.',
               )}
-            </p>
+            </Text>
             <button className="button primary" disabled={busy || !name.trim()}>
               {busy && <Spinner />}
-              {t('Enter workspace')}
+              <Text>{t('Enter workspace')}</Text>
             </button>
           </form>
           {error && (
-            <p className="form-error" role="alert">
+            <Text as="p" className="form-error" role="alert">
               {error}
-            </p>
+            </Text>
           )}
           <a className="login-help" href="/app">
-            {t('Choose a sign-in method instead')}
+            <Text>{t('Choose a sign-in method instead')}</Text>
           </a>
         </section>
         <LoginBlueprint />

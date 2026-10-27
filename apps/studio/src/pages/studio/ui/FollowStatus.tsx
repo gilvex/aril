@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Avatar } from '@/entities/collaboration/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
@@ -13,10 +14,12 @@ export function FollowStatus({ followed, setFollowId }: FollowStatusProps) {
       style={{ borderColor: followed.profile.color }}
     >
       <Avatar profile={followed.profile} />
-      <span>
-        {t('Following')} <strong>{followed.profile.name}</strong>
-      </span>
-      <button onClick={() => setFollowId(null)}>{t('Stop following')}</button>
+      <Text as="span">
+        {t('Following')} <Text as="strong">{followed.profile.name}</Text>
+      </Text>
+      <button onClick={() => setFollowId(null)}>
+        <Text>{t('Stop following')}</Text>
+      </button>
     </div>
   )
 }

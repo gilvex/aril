@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import {
   Maximize2,
@@ -38,7 +39,9 @@ export function BlueprintViewActions({
           ) : (
             <PanelRightOpen size={16} />
           )}
-          <span className="touch-tool-label">{t('Details')}</span>
+          <Text as="span" className="touch-tool-label">
+            {t('Details')}
+          </Text>
         </button>
       )}
       <button
@@ -56,7 +59,9 @@ export function BlueprintViewActions({
         onClick={() => void toggleFullscreen()}
       >
         {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-        <span>{fullscreen ? t('Exit fullscreen') : t('Fullscreen')}</span>
+        <Text as="span">
+          {fullscreen ? t('Exit fullscreen') : t('Fullscreen')}
+        </Text>
       </button>
     </>
   )

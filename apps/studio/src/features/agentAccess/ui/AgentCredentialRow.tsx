@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useAgentCredentialRowHandlers } from '../model/useAgentCredentialRowHandlers.tsx'
 
 import type { AgentCredentialRowProps } from '../types/agentCredentialRowProps.ts'
@@ -22,17 +23,17 @@ export function AgentCredentialRow({
   })
   return (
     <li key={credential.id}>
-      <span>
-        <strong>{credential.name}</strong>
-        <small>
+      <Text as="span">
+        <Text as="strong">{credential.name}</Text>
+        <Text as="small">
           {credential.target === 'account'
             ? t('Account access')
             : t('This file only')}{' '}
           · {credential.scope === 'write' ? t('Read and edit') : t('Read only')}{' '}
           · {credential.expiresAt <= Date.now() ? t('Expired') : t('Expires')}{' '}
           {new Date(credential.expiresAt).toLocaleDateString()}
-        </small>
-      </span>
+        </Text>
+      </Text>
       <button
         type="button"
         className="button"
@@ -40,7 +41,7 @@ export function AgentCredentialRow({
         aria-label={t('Revoke {{name}}', { name: credential.name })}
         onClick={handleClick}
       >
-        {t('Revoke')}
+        <Text>{t('Revoke')}</Text>
       </button>
     </li>
   )

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Spinner } from '@/shared/ui/index.tsx'
 import type { CreateWorkspaceFormProps } from '../types/createWorkspaceFormProps.ts'
 export function CreateWorkspaceForm({
@@ -10,7 +11,7 @@ export function CreateWorkspaceForm({
 }: CreateWorkspaceFormProps) {
   return (
     <form className="workspace-create" onSubmit={handleSubmit}>
-      <label>
+      <Text as="label">
         {t('Workspace name')}
         <input
           value={name}
@@ -19,12 +20,12 @@ export function CreateWorkspaceForm({
           maxLength={100}
           required
         />
-      </label>
-      <p>
+      </Text>
+      <Text as="p">
         {t(
           'Starts with a blank canvas. Invite collaborators from People when you’re ready.',
         )}
-      </p>
+      </Text>
       <div className="modal-actions">
         <button
           type="button"
@@ -32,11 +33,11 @@ export function CreateWorkspaceForm({
           onClick={() => setCreating(false)}
           disabled={busy}
         >
-          {t('Cancel')}
+          <Text>{t('Cancel')}</Text>
         </button>
         <button className="button primary" disabled={busy || !name.trim()}>
           {busy && <Spinner />}
-          {busy ? t('Creating…') : t('Create workspace')}
+          <Text>{busy ? t('Creating…') : t('Create workspace')}</Text>
         </button>
       </div>
     </form>

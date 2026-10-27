@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Handle, Position, type NodeProps } from '@xyflow/react'
 import { Variable, File, Layers, Plus, Minus } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -24,7 +25,8 @@ export function LibraryMapNode({ data }: NodeProps<MapNode>) {
         variant="outline"
         onClick={toggle}
       >
-        {t('Show more')} ·{data.count}
+        <Text>{t('Show more')}</Text> <Text>· </Text>
+        <Text>{data.count}</Text>
       </Button>
     )
   const Icon = cluster ? Layers : data.kind === 'variable' ? Variable : File
@@ -36,7 +38,7 @@ export function LibraryMapNode({ data }: NodeProps<MapNode>) {
       title={data.label}
     >
       <Handle type="target" position={Position.Left} />
-      <span className={`library-map-symbol kind-${data.kind}`}>
+      <Text as="span" className={`library-map-symbol kind-${data.kind}`}>
         {data.kind === 'component' ? (
           <ComponentGlyph glyph={data.glyph} icon={data.icon} />
         ) : (
@@ -57,9 +59,9 @@ export function LibraryMapNode({ data }: NodeProps<MapNode>) {
             {data.expanded ? <Minus size={12} /> : <Plus size={12} />}
           </Button>
         )}
-      </span>
-      <strong>{data.label}</strong>
-      <small>
+      </Text>
+      <Text as="strong">{data.label}</Text>
+      <Text as="small">
         {t(
           cluster
             ? data.external
@@ -68,7 +70,7 @@ export function LibraryMapNode({ data }: NodeProps<MapNode>) {
             : '{{count}} uses',
           { count: data.count },
         )}
-      </small>
+      </Text>
       <Handle type="source" position={Position.Right} />
     </div>
   )

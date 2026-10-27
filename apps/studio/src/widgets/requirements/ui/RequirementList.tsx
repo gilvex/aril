@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { RequirementPeople } from '@/widgets/requirements/ui/RequirementPeople.tsx'
 import { Check, Search } from 'lucide-react'
@@ -15,9 +16,9 @@ export function RequirementList({
   return (
     <div className="requirements-list">
       <div className="requirement-table-head">
-        <span>{t('Requirement')}</span>
-        <span>{t('Priority')}</span>
-        <span>{t('Status')}</span>
+        <Text as="span">{t('Requirement')}</Text>
+        <Text as="span">{t('Priority')}</Text>
+        <Text as="span">{t('Status')}</Text>
       </div>
       {results.map((r) => (
         <button
@@ -27,27 +28,33 @@ export function RequirementList({
           aria-pressed={r.id === selected}
           onClick={() => selectRequirement(r.id)}
         >
-          <span className="requirement-main">
-            <span className="requirement-id">{r.id}</span>
-            <span>
-              <strong>{r.title}</strong>
-              <small>{t(r.category)}</small>
-            </span>
-          </span>
-          <span
+          <Text as="span" className="requirement-main">
+            <Text as="span" className="requirement-id">
+              {r.id}
+            </Text>
+            <Text as="span">
+              <Text as="strong">{r.title}</Text>
+              <Text as="small">{t(r.category)}</Text>
+            </Text>
+          </Text>
+          <Text
+            as="span"
             className={`priority ${r.priority === 'Must have' ? 'must' : ''}`}
           >
             <span />
             {t(r.priority)}
-          </span>
-          <span className={`requirement-status ${r.status.toLowerCase()}`}>
+          </Text>
+          <Text
+            as="span"
+            className={`requirement-status ${r.status.toLowerCase()}`}
+          >
             {r.status === 'Ready' ? (
               <Check size={13} />
             ) : (
               <span className="small-dot" />
             )}
             {t(r.status)}
-          </span>
+          </Text>
           <RequirementPeople
             people={peopleFor(r.id)}
             currentUserId={profile.id}
@@ -57,8 +64,10 @@ export function RequirementList({
       {!results.length && (
         <div className="empty-message">
           <Search size={28} />
-          <h3>{t('No matching requirements')}</h3>
-          <p>{t('Try another search or add a new requirement.')}</p>
+          <Text as="h3">{t('No matching requirements')}</Text>
+          <Text as="p">
+            {t('Try another search or add a new requirement.')}
+          </Text>
         </div>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { ArrowUpRight, X } from 'lucide-react'
 import { useLinkedRequirementHandlers } from '../model/useLinkedRequirementHandlers.tsx'
@@ -16,8 +17,8 @@ export function LinkedRequirement({
   return (
     <div className="linked-requirement" key={id}>
       <button onClick={() => openRequirement(id)}>
-        <span>{id}</span>
-        {requirements.find((r) => r.id === id)?.title}
+        <Text as="span">{id}</Text>
+        <Text>{requirements.find((r) => r.id === id)?.title}</Text>
         <ArrowUpRight size={14} />
       </button>
       <button

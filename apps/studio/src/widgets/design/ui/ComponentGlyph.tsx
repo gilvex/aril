@@ -1,10 +1,11 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import type { ComponentGlyphProps } from '../types/componentGlyphProps.ts'
 export function ComponentGlyph({ glyph, icon }: ComponentGlyphProps) {
   if (icon?.trim())
     return (
-      <span className="component-custom-icon" aria-hidden="true">
+      <Text as="span" className="component-custom-icon" aria-hidden="true">
         {icon}
-      </span>
+      </Text>
     )
   return (
     <svg

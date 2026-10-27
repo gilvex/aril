@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useEffect } from 'react'
 import { ReactFlow, Controls, Background, useReactFlow } from '@xyflow/react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -55,11 +56,13 @@ export function LibraryMap({ model, explorer }: LibraryExplorerProps) {
         <Controls showInteractive={false} />
       </ReactFlow>
       {!nodes.length && (
-        <p className="library-graph-empty">{t('No matching assets')}</p>
+        <Text as="p" className="library-graph-empty">
+          {t('No matching assets')}
+        </Text>
       )}
-      <span className="library-map-help">
+      <Text as="span" className="library-map-help">
         {t('Expand groups here. Drag to arrange.')}
-      </span>
+      </Text>
     </div>
   )
 }

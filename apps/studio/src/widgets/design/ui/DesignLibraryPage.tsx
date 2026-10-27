@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useDesignDocument } from '../model/useDesignDocument.ts'
 import { useLibraryExplorer } from '../model/useLibraryExplorer.ts'
@@ -21,10 +22,10 @@ export function DesignLibraryPage(props: DesignBoardProps) {
     <section className="library-page" aria-label={t('Library')}>
       <header className="library-page-heading">
         <div>
-          <h1>{t('Library')}</h1>
-          <p>
+          <Text as="h1">{t('Library')}</Text>
+          <Text as="p">
             {t('Explore assets, their connections, and where they are used.')}
-          </p>
+          </Text>
         </div>
         {props.navigation}
       </header>
@@ -37,9 +38,9 @@ export function DesignLibraryPage(props: DesignBoardProps) {
         <LibraryExplorer model={model} explorer={explorer} />
       )}
       {model.libraryError && (
-        <p role="alert" className="design-library-error">
+        <Text as="p" role="alert" className="design-library-error">
           {model.libraryError}
-        </p>
+        </Text>
       )}
     </section>
   )

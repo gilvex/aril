@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { kindIcons } from '../config/kindIcons.ts'
 import { IconLibraryOption } from './IconLibraryOption.tsx'
@@ -18,7 +19,7 @@ export function IconLibraryFooter({
         size={20}
         choose={choose}
       />
-      <span aria-live="polite">{t('iconResultCount', { count })}</span>
+      <Text aria-live="polite">{t('iconResultCount', { count })}</Text>
     </footer>
   )
 }

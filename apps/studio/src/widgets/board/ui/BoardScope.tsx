@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useMemo } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -19,20 +20,22 @@ export function BoardScope({
   }, [board.id, board.nodes, requirements])
   return (
     <section className="board-overview-section">
-      <h3>
+      <Text as="h3">
         {t('Scope')}
-        <span>{linked.length}</span>
-      </h3>
+        <Text as="span">{linked.length}</Text>
+      </Text>
       <div className="board-overview-list">
         {linked.map((item) => (
           <button key={item.id} onClick={() => openRequirement(item.id)}>
-            <small>{item.id}</small>
-            <span>{item.title}</span>
+            <Text as="small">{item.id}</Text>
+            <Text as="span">{item.title}</Text>
             <ChevronRight size={14} />
           </button>
         ))}
         {!linked.length && (
-          <p>{t('Connect requirements from Scope or a node’s details.')}</p>
+          <Text as="p">
+            {t('Connect requirements from Scope or a node’s details.')}
+          </Text>
         )}
       </div>
     </section>

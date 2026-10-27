@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -30,27 +31,29 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
       >
         {(['all', 'decision', 'unlinked'] as const).map((filter) => (
           <ToggleGroupItem key={filter} value={filter}>
-            {t(
-              filter === 'all'
-                ? 'All'
-                : filter === 'decision'
-                  ? 'Needs a decision'
-                  : 'Unlinked',
-            )}
-
-            <small>{counts[filter]}</small>
+            <Text>
+              {t(
+                filter === 'all'
+                  ? 'All'
+                  : filter === 'decision'
+                    ? 'Needs a decision'
+                    : 'Unlinked',
+              )}
+            </Text>
+            <Text> </Text>
+            <Text as="small">{counts[filter]}</Text>
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
       <div className="scope-groups">
         {groups.map((group) => (
           <details className="scope-group" key={group.id} open>
-            <summary>
+            <Text as="summary">
               {group.id === 'workspace' || group.id === 'unlinked'
                 ? t(group.name)
                 : group.name}
-              <small>{group.rows.length}</small>
-            </summary>
+              <Text as="small">{group.rows.length}</Text>
+            </Text>
             {group.rows.map(({ item, boards }) => (
               <button
                 className={
@@ -61,22 +64,25 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
                 aria-pressed={model.selected === item.id}
                 onClick={() => model.selectRequirement(item.id)}
               >
-                <span className="scope-id">{item.id}</span>
-                <span className="scope-row-title">
-                  <strong>{item.title}</strong>
-                  <small>
+                <Text as="span" className="scope-id">
+                  {item.id}
+                </Text>
+                <Text as="span" className="scope-row-title">
+                  <Text as="strong">{item.title}</Text>
+                  <Text as="small">
                     {boards.length
                       ? boards.map((board) => board.name).join(', ')
                       : t(
                           item.workspaceWide ? 'Workspace-wide' : item.category,
                         )}
-                  </small>
-                </span>
+                  </Text>
+                </Text>
                 <RequirementAvatars
                   people={model.peopleFor(item.id)}
                   currentUserId={model.profile.id}
                 />
-                <span
+                <Text
+                  as="span"
                   className={
                     'scope-decision decision-' +
                     (item.questions?.some((q) => !q.resolved)
@@ -89,23 +95,25 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
                       ? 'Needs a decision'
                       : item.decision || 'Proposed',
                   )}
-                </span>
+                </Text>
               </button>
             ))}
           </details>
         ))}
         {!visibleCount && (
           <div className="empty-message">
-            <h3>
+            <Text as="h3">
               {t(
                 model.workspace.requirements.length
                   ? 'No matching requirements'
                   : 'Define what this project should achieve',
               )}
-            </h3>
-            <p>{t('Add an outcome, then connect it to your visual work.')}</p>
+            </Text>
+            <Text as="p">
+              {t('Add an outcome, then connect it to your visual work.')}
+            </Text>
             <button className="button" onClick={model.clearFilters}>
-              {t('Clear filters')}
+              <Text>{t('Clear filters')}</Text>
             </button>
           </div>
         )}
@@ -115,7 +123,7 @@ export function ScopeCollection({ model }: RequirementsViewProps) {
           onClick={() => model.add()}
         >
           <Plus size={16} />
-          {t('Add requirement')}
+          <Text>{t('Add requirement')}</Text>
         </button>
       </div>
     </div>

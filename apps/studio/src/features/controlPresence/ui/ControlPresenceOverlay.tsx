@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { createPortal } from 'react-dom'
 import { PeerCursor } from '@/entities/collaboration/index.ts'
 import type { ControlPresenceProps } from '../types/controlPresenceProps.ts'
@@ -22,7 +23,7 @@ export function ControlPresenceOverlay(props: ControlPresenceProps) {
                 height: focus.height,
               }}
             >
-              <span>{peer.profile.name}</span>
+              <Text as="span">{peer.profile.name}</Text>
             </div>
           )}
           {selection.map((rect, index) => (

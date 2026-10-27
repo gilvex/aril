@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useMemo, useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
@@ -35,7 +36,7 @@ export function DesignGeometry({ model }: DesignEditorProps) {
   )
   return (
     <section>
-      <h3>{t('Layout')}</h3>
+      <Text as="h3">{t('Layout')}</Text>
       <DesignAlignment model={model} />
       <div className="design-property-grid">
         <DesignNumberInput
@@ -64,7 +65,7 @@ export function DesignGeometry({ model }: DesignEditorProps) {
         />
       </div>
       {model.selected.length === 1 && (
-        <label>
+        <Text as="label">
           {t('Parent layer')}
           <StudioSelect
             aria-label={t('Parent layer')}
@@ -78,7 +79,7 @@ export function DesignGeometry({ model }: DesignEditorProps) {
               </option>
             ))}
           </StudioSelect>
-        </label>
+        </Text>
       )}
     </section>
   )

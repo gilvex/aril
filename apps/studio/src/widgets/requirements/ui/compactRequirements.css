@@ -43,7 +43,7 @@
   background: var(--surface-muted, #f2eef5);
   color: var(--text-secondary, #746c7e);
   padding: 3px 6px;
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   white-space: nowrap;
 }
 .requirements-command-group {
@@ -78,7 +78,7 @@
   background: var(--accent-light);
   border-radius: 20px;
   padding: 2px 5px;
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .req-command > i {
   width: 4px;
@@ -112,7 +112,7 @@
   color: var(--accent-ink, #9c3f5d);
   padding: 6px 9px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   flex-shrink: 0;
 }
 .requirements-filter-chips > button > span {
@@ -155,7 +155,7 @@
   padding-top: 10px;
   margin-top: 12px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .requirements-popover .requirements-filters {
   display: flex;
@@ -171,7 +171,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 6px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .requirements-popover .requirements-filters select {
   width: 100%;
@@ -183,7 +183,7 @@
   background: transparent;
   padding: 3px 0;
   text-align: left;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--accent-ink, #9c3f5d);
 }
 .req-reset-filters:disabled {
@@ -275,7 +275,7 @@
   padding: 0;
 }
 .req-card-open small {
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   font-weight: 400;
   color: var(--muted);
   flex-shrink: 0;
@@ -295,10 +295,10 @@
   gap: 6px 10px;
   flex-wrap: wrap;
   margin-top: 7px;
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .req-card-meta .req-badge {
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   gap: 4px;
 }
 .req-card-category {
@@ -320,7 +320,7 @@
   height: 24px;
 }
 .req-card-editing {
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   margin-top: 5px;
 }
@@ -347,14 +347,14 @@
 }
 .requirements-bulk strong {
   padding: 0 10px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   font-weight: 600;
   white-space: nowrap;
 }
 .requirements-bulk strong small {
   display: block;
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--text-size-caption);
   font-weight: 400;
 }
 .requirements-bulk select {
@@ -365,7 +365,7 @@
   width: 94px;
   min-width: 0;
   padding: 7px 6px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   box-shadow: none;
 }
 .requirements-bulk .icon-button {
@@ -395,7 +395,7 @@
     min-height: 34px;
   }
   .requirements-view-count {
-    font-size: 9px;
+    font-size: var(--text-size-caption);
     padding: 3px 4px;
   }
   .requirements-command-group {
@@ -445,7 +445,7 @@
   }
   .req-card-meta,
   .req-card-meta .req-badge {
-    font-size: 11px;
+    font-size: var(--text-size-caption);
   }
   .req-card-menu-toggle {
     height: 30px;
@@ -465,7 +465,7 @@
   }
   .requirements-bulk select {
     width: 75px;
-    font-size: 11px;
+    font-size: var(--text-size-caption);
     min-height: 34px;
   }
   .has-detail .requirements-content {

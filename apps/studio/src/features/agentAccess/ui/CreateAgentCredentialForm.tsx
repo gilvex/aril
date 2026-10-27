@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { Spinner } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -36,7 +37,7 @@ export function CreateAgentCredentialForm({
   })
   return (
     <form onSubmit={handleSubmit}>
-      <label>
+      <Text as="label">
         {t('Connection name')}
         <input
           name="agent-connection-name"
@@ -46,8 +47,8 @@ export function CreateAgentCredentialForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-      </label>
-      <label>
+      </Text>
+      <Text as="label">
         {t('Connect to')}
         <StudioSelect
           aria-label={t('Connect to')}
@@ -59,16 +60,16 @@ export function CreateAgentCredentialForm({
           </option>
           <option value="workspace">{t('This file only')}</option>
         </StudioSelect>
-      </label>
-      <p className="muted">
+      </Text>
+      <Text as="p" className="muted">
         {target === 'account'
           ? t(
               'Includes current and future files you can access. File permissions still apply; viewers cannot edit.',
             )
           : t('This connection can only access the current file.')}
-      </p>
+      </Text>
       <div className="agent-access-options">
-        <label>
+        <Text as="label">
           {t('Access')}
           <StudioSelect
             aria-label={t('Access')}
@@ -78,8 +79,8 @@ export function CreateAgentCredentialForm({
             <option value="read">{t('Read only')}</option>
             <option value="write">{t('Read and edit')}</option>
           </StudioSelect>
-        </label>
-        <label>
+        </Text>
+        <Text as="label">
           {t('Expires in')}
           <StudioSelect
             aria-label={t('Expires in')}
@@ -90,14 +91,14 @@ export function CreateAgentCredentialForm({
             <option value={30}>{t('30 days')}</option>
             <option value={90}>{t('90 days')}</option>
           </StudioSelect>
-        </label>
+        </Text>
       </div>
       <button
         className="button primary"
         disabled={busy || loading || !name.trim()}
       >
         {busy && <Spinner />}
-        {t('Create credential')}
+        <Text>{t('Create credential')}</Text>
       </button>
     </form>
   )

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { Trash2 } from 'lucide-react'
 import { useDrawingSelection } from '../model/useDrawingSelection.ts'
 import { CanvasStroke } from './CanvasStroke.tsx'
@@ -48,9 +49,9 @@ export function CanvasDrawing(props: CanvasDrawingProps) {
       </svg>
       {!!selection.selected.length && selection.selectable && (
         <div className="drawing-selection-tools">
-          <span>
+          <Text as="span">
             {t('selectedStrokeCount', { count: selection.selected.length })}
-          </span>
+          </Text>
           <button
             type="button"
             className="button"
@@ -58,7 +59,7 @@ export function CanvasDrawing(props: CanvasDrawingProps) {
             aria-label={t('Delete selected drawing')}
           >
             <Trash2 size={16} />
-            {t('Delete')}
+            <Text>{t('Delete')}</Text>
           </button>
         </div>
       )}

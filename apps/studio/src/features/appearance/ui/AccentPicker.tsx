@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { RadioGroup } from 'vagabond-ui/radio-group'
 import { AccentOptionCard } from './AccentOptionCard.tsx'
@@ -16,12 +17,12 @@ export function AccentPicker() {
   }, [])
   return (
     <section className="accent-picker" aria-label={t('Accent color')}>
-      <h3>{t('Accent color')}</h3>
-      <p>
+      <Text as="h3">{t('Accent color')}</Text>
+      <Text as="p">
         {t(
           'Choose a color for app controls. Your designs keep their own colors.',
         )}
-      </p>
+      </Text>
       <RadioGroup
         value={preference}
         onValueChange={choose}

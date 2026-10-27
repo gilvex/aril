@@ -92,7 +92,7 @@
   align-items: center;
   gap: 7px;
   color: var(--text-secondary, #746c7e);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .requirements-filters :is(select, .studio-select) {
   width: auto;
@@ -101,7 +101,7 @@
   font-size: 12px;
 }
 .requirements-result-count {
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   margin-left: auto;
 }
@@ -129,7 +129,7 @@
   align-items: center;
   padding: 13px 22px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
@@ -184,7 +184,7 @@
 .req-title > small {
   width: 29px;
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
 }
 .req-title > span:not(.req-avatars) {
@@ -200,7 +200,7 @@
 }
 .req-title small {
   display: block;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   margin-top: 2px;
 }
@@ -208,7 +208,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   white-space: nowrap;
 }
 .req-badge svg {
@@ -229,7 +229,7 @@
 .req-list-footer {
   padding: 18px 22px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .req-avatars {
   display: inline-flex;
@@ -245,12 +245,12 @@
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: var(--text-size-caption);
 }
 .req-avatars .avatar {
   width: 21px;
   height: 21px;
-  font-size: 9px;
+  font-size: var(--text-size-caption);
 }
 .requirements-bulk {
   display: flex;
@@ -305,7 +305,7 @@
   font: 700 14px var(--heading);
 }
 .req-lane h2 > span:last-child {
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   font-weight: 500;
   color: var(--muted);
 }
@@ -340,7 +340,7 @@
 .req-card-top {
   justify-content: space-between;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .req-card-open {
   border: 0;
@@ -356,7 +356,7 @@
 }
 .req-card-meta {
   flex-wrap: wrap;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   gap: 6px 12px;
 }
@@ -370,21 +370,21 @@
   align-items: center;
   gap: 5px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .req-card-move {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   margin-top: 5px;
 }
 .req-card-move :is(select, .studio-select) {
   flex: 1;
   min-width: 0;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   padding: 4px 6px;
   background: var(--surface-muted, #faf9fc);
 }
@@ -488,7 +488,7 @@
 }
 .req-properties label > span:first-child {
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .req-properties :is(select, .studio-select) {
   font-size: 12px;
@@ -550,7 +550,7 @@
 .req-board-link small {
   display: block;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   margin-top: 3px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -558,7 +558,7 @@
 }
 .req-link-picker {
   margin-top: 16px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   gap: 6px;
   color: var(--muted);
 }
@@ -572,7 +572,7 @@
   align-items: center;
   padding-top: 25px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .req-document-footer > span {
   display: flex;
@@ -617,7 +617,7 @@
   }
   .requirements-topbar > .primary {
     padding: 9px;
-    font-size: 11px;
+    font-size: var(--text-size-caption);
   }
   .requirements-view-toggle {
     order: 2;

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -29,9 +30,9 @@ export function Notes(props: NotesProps) {
         >
           <PanelLeft size={18} />
         </button>
-        <h1>
-          {t('Notes')} <span>{model.documents.length}</span>
-        </h1>
+        <Text as="h1">
+          {t('Notes')} <Text as="span">{model.documents.length}</Text>
+        </Text>
         <ToggleGroup
           data-studio-toggle-group
           type="single"
@@ -42,7 +43,7 @@ export function Notes(props: NotesProps) {
         >
           {(['Edit', 'Split', 'Read'] as const).map((mode) => (
             <ToggleGroupItem key={mode} value={mode}>
-              {t(mode)}
+              <Text>{t(mode)}</Text>
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
@@ -52,7 +53,7 @@ export function Notes(props: NotesProps) {
           onClick={() => patch({ outline: !state.outline, comments: false })}
         >
           <ListTree size={16} />
-          {t('Outline')}
+          <Text>{t('Outline')}</Text>
         </button>
         <button
           className="button subtle"
@@ -60,7 +61,7 @@ export function Notes(props: NotesProps) {
           onClick={() => patch({ comments: !state.comments, outline: false })}
         >
           <MessageSquare size={16} />
-          {t('Comments')}
+          <Text>{t('Comments')}</Text>
         </button>
         <button
           className="button primary"
@@ -68,7 +69,7 @@ export function Notes(props: NotesProps) {
           disabled={model.documents.length >= 51}
         >
           <Plus size={16} />
-          {t('New note')}
+          <Text>{t('New note')}</Text>
         </button>
       </header>
       <div className="notebook-layout">
@@ -81,7 +82,7 @@ export function Notes(props: NotesProps) {
             />
             <aside className="notebook-documents">
               <div className="notebook-panel-heading">
-                <strong>{t('Documents')}</strong>
+                <Text as="strong">{t('Documents')}</Text>
                 <button
                   className="icon-button"
                   aria-label={t('Close documents')}

@@ -30,3 +30,9 @@ These project conventions were requested on 2026-10-06. They take precedence ove
 - The shared domain package and MCP package use the same one-function/type-per-file convention with camelCase modules and public index barrels. Server utility helpers live in separate files; route factories own their request handlers. The frontend layer taxonomy does not apply to Node entrypoints.
 
 `pnpm check:architecture` checks naming, one-function/component files, the 125-line component limit, substantial inline JSX callbacks, type files, FSD boundaries (including aliases), slice public imports, export-only barrels, and the limited `useState` exceptions. `pnpm lint` includes this check and React hook dependency checks. Run `pnpm test` and `pnpm build` before shipping changes. Tests must use fixtures or isolated database schemas; the normal local environment shares production Postgres.
+
+## Interface typography
+
+Use the shared `Text` component for interface copy. Its `as` prop preserves semantic HTML (headings, paragraphs, labels, table cells and inline emphasis); refs and accessibility attributes pass through. Use the body, label, caption, title and heading variants for new layouts. Keep existing contextual styles when migrating, and use the shared caption token instead of 9–11px interface text.
+
+Native input/textarea values, option strings, SVG geometry labels, Markdown source passed to the parser and the static pre-React loading screen are integration exceptions. Rendered Markdown headings and prose use Text. Do not alter user-authored content or a design layer's saved font settings to enforce interface typography. `pnpm lint` includes `checkTypography.mjs` to prevent direct semantic text elements and tiny CSS labels from returning.

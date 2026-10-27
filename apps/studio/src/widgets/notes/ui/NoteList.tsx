@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { FileText, Search } from 'lucide-react'
 import type { NoteListProps } from '../types/noteListProps.ts'
@@ -12,7 +13,7 @@ export function NoteList({
   const { t } = useTranslation()
   return (
     <>
-      <label className="notebook-search">
+      <Text as="label" className="notebook-search">
         <Search size={15} />
         <input
           aria-label={t('Search notes')}
@@ -20,7 +21,7 @@ export function NoteList({
           value={query}
           onChange={(e) => patch({ query: e.target.value })}
         />
-      </label>
+      </Text>
       <div className="notebook-document-list">
         {documents.map((note) => (
           <button
@@ -32,13 +33,13 @@ export function NoteList({
             aria-current={note.id === selected ? 'page' : undefined}
           >
             <FileText size={17} />
-            <span>
-              <strong>{note.title}</strong>
-              <small>
+            <Text as="span">
+              <Text as="strong">{note.title}</Text>
+              <Text as="small">
                 {note.body.replace(/[#*_]/g, '').trim().slice(0, 90) ||
                   t('Empty note')}
-              </small>
-            </span>
+              </Text>
+            </Text>
             {peers.some(
               (peer) =>
                 peer.view === 'notes' &&
@@ -52,7 +53,9 @@ export function NoteList({
           </button>
         ))}
         {!documents.length && (
-          <p className="empty-message">{t('No matching notes')}</p>
+          <Text as="p" className="empty-message">
+            {t('No matching notes')}
+          </Text>
         )}
       </div>
     </>

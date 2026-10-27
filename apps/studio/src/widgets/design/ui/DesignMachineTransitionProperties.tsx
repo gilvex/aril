@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -55,13 +56,13 @@ export function DesignMachineTransitionProperties({
   if (!transition) return null
   return (
     <section>
-      <h3>{t('Transition')}</h3>
-      <label>
+      <Text as="h3">{t('Transition')}</Text>
+      <Text as="label">
         {t('Event')}
         <input value={transition.event} onChange={event} maxLength={80} />
-      </label>
+      </Text>
       {(['from', 'to'] as const).map((name) => (
-        <label key={name}>
+        <Text as="label" key={name}>
           {t(name === 'from' ? 'From state' : 'To state')}
           <StudioSelect
             name={name}
@@ -74,7 +75,7 @@ export function DesignMachineTransitionProperties({
               </option>
             ))}
           </StudioSelect>
-        </label>
+        </Text>
       ))}
       <DesignMachineCondition
         guard={transition.guard}
@@ -88,7 +89,7 @@ export function DesignMachineTransitionProperties({
         onChange={actions}
       />
       <button className="button subtle danger" onClick={remove}>
-        {t('Delete transition')}
+        <Text>{t('Delete transition')}</Text>
       </button>
     </section>
   )

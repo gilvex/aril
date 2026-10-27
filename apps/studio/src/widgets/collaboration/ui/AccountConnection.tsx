@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { guestLinkNoExpiry } from '@aril/domain/collaboration'
 import type { LinkedAccount } from '@aril/domain/accounts'
 import { FederatedSignIn } from '@/features/federatedSignIn/index.ts'
@@ -49,15 +50,15 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
       : []
   if (isDemoMode())
     return (
-      <p className="collaboration-hint">
+      <Text as="p" className="collaboration-hint">
         {t(
           'This is a local demo. Sign in outside the demo to connect an account or invite real teammates.',
         )}
-      </p>
+      </Text>
     )
   if (account?.guestExpiresAt)
     return (
-      <p className="collaboration-hint">
+      <Text as="p" className="collaboration-hint">
         {account.guestExpiresAt === guestLinkNoExpiry
           ? t('Guest access lasts until the link is revoked.')
           : t('Guest access expires {{time}}', {
@@ -65,16 +66,20 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
                 i18n.language,
               ),
             })}
-      </p>
+      </Text>
     )
   return (
     <section className="account-connection">
-      <strong>
+      <Text as="strong">
         {t(linkedAccounts.length ? 'Account access' : 'Keep your access')}
-      </strong>
-      {error && <p className="form-error">{error}</p>}
+      </Text>
+      {error && (
+        <Text as="p" className="form-error">
+          {error}
+        </Text>
+      )}
       {linkedAccounts.map((item) => (
-        <p key={item.provider + item.issuer}>
+        <Text as="p" key={item.provider + item.issuer}>
           {t('Connected to {{provider}}', {
             provider:
               item.provider === 'google'
@@ -83,15 +88,15 @@ export function AccountConnection({ onProfile }: AccountConnectionProps) {
                   ? t('Yandex ID')
                   : 'SSO',
           })}{' '}
-          <b>{item.email || item.issuer}</b>
-        </p>
+          <Text as="b">{item.email || item.issuer}</Text>
+        </Text>
       ))}
       {linkedAccounts.length ? (
-        <p>
+        <Text as="p">
           {t(
             'Sign in with a connected account to open your workspaces on another device.',
           )}
-        </p>
+        </Text>
       ) : account ? (
         <>
           <GoogleSignIn link onSuccess={handleSuccess} />

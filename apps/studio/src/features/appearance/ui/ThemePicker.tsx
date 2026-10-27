@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useThemePreference } from '@/shared/model/useThemePreference.ts'
@@ -12,10 +13,10 @@ export function ThemePicker() {
   const Icon =
     preference === 'dark' ? Moon : preference === 'light' ? Sun : Monitor
   return (
-    <label className="theme-picker">
-      <span>
+    <Text as="label" className="theme-picker">
+      <Text as="span">
         <Icon size={16} /> {t('Appearance')}
-      </span>
+      </Text>
       <StudioSelect
         aria-label={t('Appearance')}
         value={preference}
@@ -27,6 +28,6 @@ export function ThemePicker() {
         <option value="light">{t('Light')}</option>
         <option value="dark">{t('Dark')}</option>
       </StudioSelect>
-    </label>
+    </Text>
   )
 }

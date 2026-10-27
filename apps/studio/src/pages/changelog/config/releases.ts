@@ -3,6 +3,20 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-27-typography',
+    date: '2026-10-27',
+    title: 'Consistent interface typography',
+    summary:
+      'Shared text styles across the studio, with readable small labels.',
+    changes: [
+      'Headings, paragraphs and labels use the shared Text component while preserving their semantic tags.',
+      'Small interface labels use the 12px caption token. Rendered Markdown headings and prose also use Text.',
+    ],
+    image: '/changelog/typography.png',
+    imageAlt:
+      'Shared typography in an isolated demo workspace with generated planning content.',
+  },
+  {
     id: '2026-10-21-canvas-editing',
     date: '2026-10-22',
     title: 'Canvas editing and readable controls',
@@ -11,7 +25,7 @@ export const releases: ReleaseEntry[] = [
     changes: [
       'Connect nodes through their handles. The toolbar now includes a universal block; only universal blocks display customizable icons.',
       'Select drawings with a click, add strokes with Shift or Ctrl, and delete the selection. Undo with Ctrl+Z; redo with Ctrl+Shift+Z or Ctrl+Y.',
-      'Agent access has a clearer form and step-by-step MCP setup.',
+      'Agent access has a clearer form and step-by-step MCP setup. Shared Text styles preserve semantic headings and improve small labels.',
     ],
     video: '/changelog/canvas-editing.mp4',
     videoAlt:
@@ -27,7 +41,7 @@ export const releases: ReleaseEntry[] = [
     summary:
       'Agent setup now separates connection permissions, terminal commands and existing connections.',
     changes: [
-      'Connection permissions, terminal commands and existing connections are presented separately.',
+      'Shared Text styles preserve semantic headings and readable labels on desktop and mobile.',
     ],
     image: '/changelog/agent-access-readable.png',
     imageAlt: 'Agent access with structured MCP setup using an isolated demo.',

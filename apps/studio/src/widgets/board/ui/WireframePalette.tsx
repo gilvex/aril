@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { icons } from '@/widgets/board/config/wireframeBoardIcons.ts'
 import { wireKinds, wireLabels } from '@aril/domain/wireframe'
 import { Plus, X } from 'lucide-react'
@@ -11,7 +12,7 @@ export function WireframePalette({
   return (
     <div className="node-palette wire-palette">
       <div className="popover-heading">
-        {t('Build your interface')}
+        <Text>{t('Build your interface')}</Text>
         <button
           className="icon-button"
           aria-label={t('Close block menu')}
@@ -25,12 +26,12 @@ export function WireframePalette({
         return (
           <button key={kind} onClick={() => add(kind)}>
             <Icon size={17} />
-            {t(wireLabels[kind])}
+            <Text>{t(wireLabels[kind])}</Text>
             <Plus size={14} />
           </button>
         )
       })}
-      <p>{t('Select a screen first to add blocks inside it.')}</p>
+      <Text as="p">{t('Select a screen first to add blocks inside it.')}</Text>
     </div>
   )
 }
