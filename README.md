@@ -81,4 +81,6 @@ Aril is the planning deliverable for a future deployment platform. Container exe
 
 Packages now use `@aril/*`, the MCP connection is `aril`, and the companion skill is `aril-studio`. One account credential can access your files without reconnecting; file-only credentials remain available. New configuration uses `ARIL_*`; legacy environment aliases and saved MCP configuration remain readable. Existing database schemas, browser storage keys, and user documents are preserved. See the [agent setup and upgrade guide](docs/agent-integration.md).
 
-An open-source license has not yet been selected. Installed design skills and their attribution are documented in [skills and provenance](docs/skills.md).
+Aril’s original code is licensed under [Apache-2.0](LICENSE). Third-party materials retain their own licenses; see [licensing and notices](docs/licensing.md) and [skill provenance](docs/skills.md).
+
+The app includes a public `/legal` center with EN/RU drafts of Terms, Privacy, Cookies & Storage, and provider disclosures. Hosted policies are not yet effective. See the [legal readiness checklist](docs/legal-readiness.md) for the remaining operator, consent, transfer and retention work before adoption. Self-hosters must supply their own operator details and policies.

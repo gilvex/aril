@@ -1,4 +1,4 @@
-import { CodeXml, Globe, ArrowUpRight, History } from 'lucide-react'
+import { CodeXml, Globe, ArrowUpRight, History, Scale } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
 import { projectLinks } from '../config/projectLinks.ts'
 import { useTranslation } from '../i18n/index.ts'
@@ -34,6 +34,13 @@ export function ProjectLinks() {
         <a href="/changelog" target="_blank" rel="noopener noreferrer">
           <History size={16} aria-hidden="true" />
           {t('Changelog')}
+          <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
+      </Button>
+      <Button asChild variant="ghost" size="sm">
+        <a href="/legal" target="_blank" rel="noopener noreferrer">
+          <Scale size={16} aria-hidden="true" />
+          {t('Legal & privacy')}
           <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </Button>

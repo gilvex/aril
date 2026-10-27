@@ -31,3 +31,7 @@ For persistence changes, also run `pnpm verify:recovery`. For save-path performa
 - Use demo fixtures for screenshots and reproduction; omit credentials and private workspaces.
 
 CI verifies lint, tests, builds, SQLite recovery, and the isolated two-instance Postgres contract. Hosted Google sign-in and Supabase WebSocket delivery remain separate environment-dependent checks.
+
+## License and contributions
+
+Original contributions intentionally submitted for inclusion are provided under [Apache-2.0](LICENSE), subject to section 5. Submit only material you have authority to contribute; identify third-party material and preserve its notices. No copyright assignment is required. See [licensing](docs/licensing.md).

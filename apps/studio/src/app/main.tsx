@@ -1,4 +1,5 @@
 import { ChangelogPage } from '@/pages/changelog/index.ts'
+import { LegalPage } from '@/pages/legal/index.ts'
 import { App } from '@/app/ui/App.tsx'
 import { initializeLanguage } from '@/shared/i18n/index.ts'
 import { initializeTheme } from '@/shared/utils/initializeTheme.ts'
@@ -30,6 +31,10 @@ createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {window.location.pathname.replace(/\/$/, '') === '/changelog' ? (
       <ChangelogPage />
+    ) : /^\/(legal(?:\/.*)?|terms\/?|privacy\/?|storage\/?|providers\/?)$/.test(
+        window.location.pathname,
+      ) ? (
+      <LegalPage />
     ) : (
       <App />
     )}

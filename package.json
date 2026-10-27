@@ -17,7 +17,7 @@
     "start": "pnpm --filter @aril/studio start",
     "invite": "node --env-file-if-exists=.env scripts/invite.ts",
     "mcp": "pnpm --filter @aril/mcp start",
-    "mcp:setup": "pnpm --filter @aril/mcp setup",
+    "mcp:setup": "pnpm --filter @aril/mcp run setup",
     "skill:install": "pnpm --filter @aril/studio-skill install:skill",
     "check:architecture": "node scripts/checkArchitecture.mjs"
   },
@@ -33,5 +33,6 @@
     "prettier": "^3.9.9",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.0"
-  }
+  },
+  "license": "Apache-2.0"
 }

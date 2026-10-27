@@ -3,6 +3,33 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-27-mcp-setup',
+    date: '2026-10-27',
+    title: 'MCP setup starts correctly',
+    summary: 'The checkout setup command now opens the MCP connection prompts.',
+    changes: [
+      'Fixed pnpm mcp:setup invoking pnpm’s built-in setup command instead of the Aril connection script.',
+    ],
+    image: '/changelog/account-agent-access.png',
+    imageAlt:
+      'Agent access settings in the isolated demo, showing account or single-file access, permissions and expiry.',
+  },
+  {
+    id: '2026-10-14-legal',
+    date: '2026-10-14',
+    title: 'A place for legal and privacy information',
+    summary:
+      'Review proposed hosted-service policies and find the software license.',
+    changes: [
+      'A public legal center links Terms, Privacy, Cookies & Storage, and service-provider information from sign-in and App settings.',
+      'Hosted-service policies are clearly marked as drafts pending legal and operational review; no acceptance is recorded.',
+      'Aril’s original code now uses Apache-2.0; third-party licenses and notices remain separate.',
+    ],
+    image: '/changelog/legal-center.png',
+    imageAlt:
+      'Legal overview with draft-policy status, document links and public operator contact; no workspace data.',
+  },
+  {
     id: '2026-10-14-account-mcp',
     date: '2026-10-14',
     title: 'One agent connection, all your files',

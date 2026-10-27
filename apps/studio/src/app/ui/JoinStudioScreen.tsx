@@ -3,7 +3,7 @@ import { AccountActions } from '@/features/accountActions/index.ts'
 import { useCallback } from 'react'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { GoogleSignIn } from '@/features/googleSignIn/index.ts'
-import { LoadingStatus, ProjectLinks } from '@/shared/ui/index.tsx'
+import { LegalNotice, LoadingStatus, ProjectLinks } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useJoinStudioScreenHandlers } from '../model/useJoinStudioScreenHandlers.tsx'
 import type { JoinStudioScreenProps } from '../types/joinStudioScreenProps.ts'
@@ -43,6 +43,7 @@ export function JoinStudioScreen(props: JoinStudioScreenProps) {
                 : 'Sign in with Google, then use your invitation code to join a workspace.',
             )}
           </p>
+          {joining && <LegalNotice />}
           {joining && (!profile || !googleLinked) && (
             <GoogleSignIn link={!!profile} onSuccess={handleSuccess} />
           )}

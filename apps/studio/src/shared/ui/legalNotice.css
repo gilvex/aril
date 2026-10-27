@@ -1,0 +1,25 @@
+.legal-notice {
+  margin: 20px 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.legal-notice p {
+  margin: 0 0 8px;
+}
+.legal-notice nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.legal-notice a {
+  color: var(--accent-ink);
+  text-underline-offset: 3px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.legal-notice a:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
