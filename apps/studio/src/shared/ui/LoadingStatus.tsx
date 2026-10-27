@@ -1,3 +1,4 @@
+import { Text } from './Text.tsx'
 import type { LoadingStatusProps } from '../types/loadingStatusProps.ts'
 import { Spinner } from './Spinner.tsx'
 import './loadingProgress.css'
@@ -9,7 +10,7 @@ export function LoadingStatus({ label, centered = false }: LoadingStatusProps) {
       role="status"
     >
       <Spinner />
-      <span>{label}</span>
+      <Text as="span">{label}</Text>
     </div>
   )
 }

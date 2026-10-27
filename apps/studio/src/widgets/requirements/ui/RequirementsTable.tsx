@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
@@ -24,15 +25,15 @@ export function RequirementsTable({ model }: RequirementsViewProps) {
           checked={all}
           onChange={toggleAll}
         />
-        <span>{t('Requirement')}</span>
-        <span>{t('Priority')}</span>
-        <span>{t('Status')}</span>
+        <Text as="span">{t('Requirement')}</Text>
+        <Text as="span">{t('Priority')}</Text>
+        <Text as="span">{t('Status')}</Text>
       </div>
       {model.results.map((item) => (
         <RequirementRow key={item.id} item={item} model={model} />
       ))}
       <footer className="req-list-footer">
-        {t('Shift + click to select a range')}
+        <Text>{t('Shift + click to select a range')}</Text>
       </footer>
     </div>
   )

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useSyncExternalStore } from 'react'
 import type { Presence } from '@aril/domain/collaboration'
 import './cursorMessage.css'
@@ -22,8 +23,8 @@ export function CursorMessage({ chat }: Pick<Presence, 'chat'>) {
   )
   const text = useSyncExternalStore(subscribe, read)
   return text ? (
-    <em className="cursor-message" role="status">
+    <Text as="em" className="cursor-message" role="status">
       {': ' + text}
-    </em>
+    </Text>
   ) : null
 }

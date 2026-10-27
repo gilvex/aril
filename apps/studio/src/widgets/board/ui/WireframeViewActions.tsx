@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import {
   Maximize2,
@@ -40,7 +41,9 @@ export function WireframeViewActions({
           ) : (
             <PanelRightOpen size={16} />
           )}
-          <span className="touch-tool-label">{t('Details')}</span>
+          <Text as="span" className="touch-tool-label">
+            {t('Details')}
+          </Text>
         </button>
       )}
       <button
@@ -60,7 +63,9 @@ export function WireframeViewActions({
         onClick={() => void full.toggle()}
       >
         {full.fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-        <span className="touch-tool-label">{t('Expand')}</span>
+        <Text as="span" className="touch-tool-label">
+          {t('Expand')}
+        </Text>
       </button>
     </>
   )

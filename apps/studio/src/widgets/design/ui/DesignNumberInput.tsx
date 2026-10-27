@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type ChangeEvent } from 'react'
 import type { DesignNumberInputProps } from '../types/designNumberInputProps.ts'
 export function DesignNumberInput({
@@ -15,8 +16,8 @@ export function DesignNumberInput({
     [max, min, onChange],
   )
   return (
-    <label className="design-number-field" title={label}>
-      <span>{label}</span>
+    <Text as="label" className="design-number-field" title={label}>
+      <Text as="span">{label}</Text>
       <input
         type="number"
         aria-label={label}
@@ -25,6 +26,6 @@ export function DesignNumberInput({
         max={max}
         onChange={change}
       />
-    </label>
+    </Text>
   )
 }

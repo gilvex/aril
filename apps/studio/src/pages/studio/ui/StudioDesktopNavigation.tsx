@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { InstallApp } from '@/features/installApp/index.ts'
 import { LanguagePicker } from '@/features/appearance/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -50,13 +51,13 @@ export function StudioDesktopNavigation({
             }}
           >
             <Icon size={18} />
-            <span>
+            <Text as="span">
               {item.id === 'design'
                 ? t('Design')
                 : item.id === 'notes'
                   ? t('Notes')
                   : t(item.name)}
-            </span>
+            </Text>
             <PresenceAvatars
               limit={1}
               profiles={present
@@ -74,37 +75,42 @@ export function StudioDesktopNavigation({
         ))}
       </nav>
       <details ref={actionsMenu} className="workspace-actions-menu">
-        <summary
+        <Text
+          as="summary"
           aria-label={t('Workspace actions')}
           title={t('Workspace actions')}
         >
           <MoreHorizontal size={19} />
-        </summary>
+        </Text>
         <div className="workspace-actions-popover" onClick={dismissActionsMenu}>
-          <span className="overflow-group-label">{t('Workspace')}</span>
+          <Text as="span" className="overflow-group-label">
+            {t('Workspace')}
+          </Text>
           <button onClick={openTeamActivity}>
             <ActivityIcon size={16} />
-            {t('Team activity')}
+            <Text>{t('Team activity')}</Text>
           </button>
           <button onClick={() => setModal('agents')}>
             <Workflow size={16} />
-            {t('Agent access')}
+            <Text>{t('Agent access')}</Text>
           </button>
           <ThemePicker />
           <LanguagePicker />
           <InstallApp />
-          <span className="overflow-group-label">{t('Tools')}</span>
+          <Text as="span" className="overflow-group-label">
+            {t('Tools')}
+          </Text>
           <button onClick={() => void loadHistory()}>
             <History size={16} />
-            {t('Revision history')}
+            <Text>{t('Revision history')}</Text>
           </button>
           <button onClick={() => importRef.current?.click()}>
             <Upload size={16} />
-            {t('Import workspace')}
+            <Text>{t('Import workspace')}</Text>
           </button>
           <button onClick={exportWorkspace}>
             <Download size={16} />
-            {t('Export workspace')}
+            <Text>{t('Export workspace')}</Text>
           </button>
         </div>
       </details>

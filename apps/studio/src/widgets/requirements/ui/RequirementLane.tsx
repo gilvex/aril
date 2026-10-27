@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, type DragEvent } from 'react'
 import { Plus } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -36,10 +37,10 @@ export function RequirementLane({ model, value, items }: RequirementLaneProps) {
       onDrop={drop}
     >
       <header>
-        <h2>
+        <Text as="h2">
           <RequirementBadge field={model.groupBy} value={value} />
-          <span>{items.length}</span>
-        </h2>
+          <Text as="span">{items.length}</Text>
+        </Text>
         <button
           className="icon-button"
           aria-label={t('Add to {{group}}', { group: t(value) })}
@@ -54,10 +55,12 @@ export function RequirementLane({ model, value, items }: RequirementLaneProps) {
         ))}
         {!items.length && (
           <div className="req-lane-empty">
-            {model.draggingId
+            <Text>{model.draggingId
               ? t('Drop requirement here')
-              : t('No requirements here')}
-            <button onClick={add}>{t('Add requirement')}</button>
+              : t('No requirements here')}</Text>
+            <button onClick={add}>
+              <Text>{t('Add requirement')}</Text>
+            </button>
           </div>
         )}
       </div>

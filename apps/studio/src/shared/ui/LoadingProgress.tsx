@@ -1,3 +1,4 @@
+import { Text } from './Text.tsx'
 import type { LoadingProgressProps } from '../types/loadingProgressProps.ts'
 import './loadingProgress.css'
 
@@ -15,7 +16,9 @@ export function LoadingProgress({
         value={value}
         max={total}
       />
-      <span role="status">{label}</span>
+      <Text as="span" role="status">
+        {label}
+      </Text>
     </div>
   )
 }

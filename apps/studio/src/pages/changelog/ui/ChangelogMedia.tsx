@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { ReleaseEntry } from '../types/releaseEntry.ts'
 
@@ -25,19 +26,21 @@ export function ChangelogMedia({ entry }: { entry: ReleaseEntry }) {
               label={language === 'ru' ? 'Русский' : 'English'}
               default
             />
-            <a href={entry.video}>{t('Download the demo video')}</a>
+            <a href={entry.video}>
+              <Text>{t('Download the demo video')}</Text>
+            </a>
           </video>
-          <figcaption>
+          <Text as="figcaption">
             {t(entry.videoAlt ?? entry.imageAlt)}{' '}
             {t('Real demo recording · no audio. Press play to watch.')}
-          </figcaption>
+          </Text>
           <a
             className="changelog-video-link"
             href={entry.video}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t('Open video')}
+            <Text>{t('Open video')}</Text>
           </a>
         </>
       ) : (
@@ -59,7 +62,7 @@ export function ChangelogMedia({ entry }: { entry: ReleaseEntry }) {
               decoding="async"
             />
           </a>
-          <figcaption>{t(entry.imageAlt)}</figcaption>
+          <Text as="figcaption">{t(entry.imageAlt)}</Text>
         </>
       )}
     </figure>

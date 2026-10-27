@@ -1,9 +1,7 @@
 import type { Requirement } from '@aril/domain/workspace'
 
 export type RequirementClassificationProps = {
-  fieldProps: (
-    name: import('@aril/domain/collaboration').RequirementField,
-  ) => {
+  fieldProps: (name: import('@aril/domain/collaboration').RequirementField) => {
     onFocus: () => void
     onBlur: () => void
     onInput: () => void

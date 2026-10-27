@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { X } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import type { RequirementsViewProps } from '../types/requirementsViewProps.ts'
@@ -11,7 +12,7 @@ export function RequirementFilterChips({ model }: RequirementsViewProps) {
           aria-label={t('Clear search')}
           onClick={() => model.setQuery('')}
         >
-          <span>“{model.query}”</span>
+          <Text as="span">“{model.query}”</Text>
           <X size={12} />
         </button>
       )}
@@ -20,7 +21,7 @@ export function RequirementFilterChips({ model }: RequirementsViewProps) {
           aria-label={t('Remove area filter')}
           onClick={() => model.setCategory('All areas')}
         >
-          <span>{t(model.category)}</span>
+          <Text as="span">{t(model.category)}</Text>
           <X size={12} />
         </button>
       )}
@@ -29,7 +30,7 @@ export function RequirementFilterChips({ model }: RequirementsViewProps) {
           aria-label={t('Remove priority filter')}
           onClick={() => model.setViewState({ priority: '' })}
         >
-          <span>{t(model.priority)}</span>
+          <Text as="span">{t(model.priority)}</Text>
           <X size={12} />
         </button>
       )}
@@ -38,7 +39,7 @@ export function RequirementFilterChips({ model }: RequirementsViewProps) {
           aria-label={t('Remove status filter')}
           onClick={() => model.setViewState({ status: '' })}
         >
-          <span>{t(model.status)}</span>
+          <Text as="span">{t(model.status)}</Text>
           <X size={12} />
         </button>
       )}

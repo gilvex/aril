@@ -27,7 +27,10 @@ export type DesignEditorState = {
   librarySelection: string[]
   libraryDetailsOpen: boolean
   libraryDockScope: 'graph' | 'workspace'
-  libraryPanelBounds: { workspace: DesignDockRect; graph: DesignDockRect } | null
+  libraryPanelBounds: {
+    workspace: DesignDockRect
+    graph: DesignDockRect
+  } | null
   panelDockBounds?: DesignDockRect
   panelWorkspaceDock?: boolean
   variableQuery: string
@@ -43,8 +46,7 @@ export type DesignEditorState = {
   libraryCollectionId: string
   libraryModeDraft: string
   libraryError: string
-  simulation:
-    import('@aril/domain/designLibrary').DesignSimulation | null
+  simulation: import('@aril/domain/designLibrary').DesignSimulation | null
   panelPositions: {
     left: { x: number; y: number } | null
     right: { x: number; y: number } | null

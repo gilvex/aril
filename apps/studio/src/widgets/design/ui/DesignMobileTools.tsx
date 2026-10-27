@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { X } from 'lucide-react'
 import { Button } from 'vagabond-ui/button'
@@ -49,7 +50,9 @@ export function DesignMobileTools({
       className="design-tools-drawer"
     >
       <header className="design-tools-header">
-        <strong>{model.pagesOpen ? t('Pages') : model.page.name}</strong>
+        <Text as="strong">
+          {model.pagesOpen ? t('Pages') : model.page.name}
+        </Text>
         <Button
           variant="ghost"
           size="icon"
@@ -82,11 +85,17 @@ export function DesignMobileTools({
           className="design-tools-button-group"
           aria-label={t('Design tools')}
         >
-          <ToggleGroupItem value="pages">{t('Pages')}</ToggleGroupItem>
-          <ToggleGroupItem value="layers">{t('Layers')}</ToggleGroupItem>
-          <ToggleGroupItem value="library">{t('Library')}</ToggleGroupItem>
+          <ToggleGroupItem value="pages">
+            <Text>{t('Pages')}</Text>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="layers">
+            <Text>{t('Layers')}</Text>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="library">
+            <Text>{t('Library')}</Text>
+          </ToggleGroupItem>
           <ToggleGroupItem value="properties">
-            {t('Properties')}
+            <Text>{t('Properties')}</Text>
           </ToggleGroupItem>
         </ToggleGroup>
       </footer>

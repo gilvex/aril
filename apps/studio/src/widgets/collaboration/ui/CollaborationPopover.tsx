@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCompactLayout, useDraggableSurface } from '@/shared/model/index.ts'
 import { StudioDrawer, SurfaceGrip } from '@/shared/ui/index.tsx'
 import { useCallback, useRef } from 'react'
@@ -54,7 +55,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
     >
       <header className="collaboration-popover-heading">
         <SurfaceGrip />
-        <strong>{t(title)}</strong>
+        <Text as="strong">{t(title)}</Text>
         <button
           className="icon-button"
           aria-label={t('Close collaboration panel')}
@@ -67,11 +68,11 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
         <>
           <div className="compact-profile">
             <Avatar profile={props.profile} />
-            <strong>{props.profile.name}</strong>
+            <Text as="strong">{props.profile.name}</Text>
           </div>
           <button className="button compact-settings-link" onClick={settings}>
             <Settings size={16} />
-            {t('Edit profile')}
+            <Text>{t('Edit profile')}</Text>
           </button>
           <AccountActions beforeLeave={props.beforeLeave} />
         </>
@@ -80,7 +81,7 @@ export function CollaborationPopover(props: CollaborationPopoverProps) {
           <CollaboratorList {...props} />
           <button className="button compact-settings-link" onClick={settings}>
             <Settings size={16} />
-            {t('Manage access')}
+            <Text>{t('Manage access')}</Text>
           </button>
         </>
       ) : (

@@ -165,7 +165,10 @@
 
 /* Workspace navigation stays exposed above the moving bottom sheet. */
 .studio-drawer.workspace-menu-drawer[data-direction='bottom'] {
-  bottom: var(--mobile-navigation-height, calc(60px + env(safe-area-inset-bottom, 0px)));
+  bottom: var(
+    --mobile-navigation-height,
+    calc(60px + env(safe-area-inset-bottom, 0px))
+  );
   max-height: calc(100dvh - var(--mobile-navigation-height, 60px) - 64px);
   padding-bottom: 0;
 }

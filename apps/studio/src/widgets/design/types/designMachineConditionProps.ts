@@ -1,7 +1,4 @@
-import type {
-  DesignLibrary,
-  DesignMachine,
-} from '@aril/domain/designLibrary'
+import type { DesignLibrary, DesignMachine } from '@aril/domain/designLibrary'
 export type DesignMachineConditionProps = {
   guard: DesignMachine['transitions'][string]['guard']
   library: DesignLibrary

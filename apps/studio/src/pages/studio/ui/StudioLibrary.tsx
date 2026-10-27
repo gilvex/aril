@@ -1,12 +1,10 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useMemo } from 'react'
 import { DesignLibraryPage } from './DesignLibraryPage.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import type { SelectChange } from '@/shared/types/selectChange.ts'
-import {
-  activeBoardSections,
-  type Workspace,
-} from '@aril/domain/workspace'
+import { activeBoardSections, type Workspace } from '@aril/domain/workspace'
 import type { StudioContentProps } from '../types/studioContentProps.ts'
 export function StudioLibrary({
   workspace,
@@ -65,7 +63,7 @@ export function StudioLibrary({
   )
   const initialEditorState = useMemo(() => ({ libraryTab: tab }), [tab])
   const navigation = (
-    <label>
+    <Text as="label">
       {t('Library source')}
       <StudioSelect
         aria-label={t('Library source')}
@@ -79,7 +77,7 @@ export function StudioLibrary({
           </option>
         ))}
       </StudioSelect>
-    </label>
+    </Text>
   )
   return (
     <DesignLibraryPage

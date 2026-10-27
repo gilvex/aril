@@ -3,9 +3,7 @@ export type BlueprintOverviewProps = {
   openRequirement: (id: string) => void
   focusNode: (id: string) => void
   fitBoard: () => void
-  addNode: (
-    kind: import('@aril/domain/workspace').Idea['data']['kind'],
-  ) => void
+  addNode: (kind: import('@aril/domain/workspace').Idea['data']['kind']) => void
   board: import('@aril/domain/workspace').Board
   update: (
     board: import('@aril/domain/workspace').Board,

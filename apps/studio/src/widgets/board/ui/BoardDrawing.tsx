@@ -5,16 +5,19 @@ import type { CanvasStrokes } from '@aril/domain/drawing'
 export function BoardDrawing({
   board,
   update,
+  checkpoint,
   wireframe = false,
   disabled = false,
 }: {
   board: Board
   update: (board: Board) => void
+  checkpoint: () => void
   wireframe?: boolean
   disabled?: boolean
 }) {
   const save = useCallback(
     (strokes: CanvasStrokes) => {
+      checkpoint()
       update(
         wireframe
           ? {
@@ -24,7 +27,7 @@ export function BoardDrawing({
           : { ...board, strokes },
       )
     },
-    [board, update, wireframe],
+    [board, update, wireframe, checkpoint],
   )
   return (
     <CanvasDrawing

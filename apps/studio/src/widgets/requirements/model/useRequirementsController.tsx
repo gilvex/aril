@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { scopeTargets } from '../utils/scopeTargets.ts'
 import { useRequirementDisclosure } from './useRequirementDisclosure.ts'
 import { filterRequirements } from '../utils/filterRequirements.ts'
@@ -186,13 +187,13 @@ export function useRequirementsController({
     (name: RequirementField) => {
       const editors = fieldPeople(name)
       return editors.length ? (
-        <span className="requirement-field-presence">
+        <Text as="span" className="requirement-field-presence">
           {editors.map((person) => person.profile.name).join(', ')} ·{' '}
           {editors.some((person) => person.requirement.typing)
             ? t('typing in')
             : t('editing')}{' '}
           {t(requirementFieldLabels[name])}
-        </span>
+        </Text>
       ) : null
     },
     [fieldPeople, t],

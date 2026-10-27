@@ -1,3 +1,5 @@
+import './agentAccess.css'
+import { Text } from '@/shared/ui/Text.tsx'
 import { LoadingSkeleton } from '@/shared/ui/index.tsx'
 import { createAgentAccessState } from '@/features/agentAccess/model/createAgentAccessState.ts'
 import { useAgentAccessModel } from '@/features/agentAccess/model/useAgentAccessModel.ts'
@@ -63,12 +65,17 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
   const { handleClick } = useAgentAccessHandlers({ secret, setError })
   return (
     <section className="agent-access">
-      <h2 id="modal-title">{t('Agent access')}</h2>
-      <p>
+      <Text as="h2" variant="title" id="modal-title">
+        {t('Agent access')}
+      </Text>
+      <Text as="p" variant="body" tone="muted" className="agent-introduction">
         {t(
           'Connect Codex or another MCP client to your account or one file. Edits appear in revision history and team activity.',
         )}
-      </p>
+      </Text>
+      <Text as="h3" className="agent-section-title">
+        {t('Create a connection')}
+      </Text>
       <CreateAgentCredentialForm
         setBusy={setBusy}
         setError={setError}
@@ -90,11 +97,13 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
         <AgentSecret t={t} secret={secret} handleClick={handleClick} />
       )}
       <AgentSetupInstructions t={t} />
-      <h3>{t('Your connections')}</h3>
+      <Text as="h3" className="agent-section-title">
+        {t('Your connections')}
+      </Text>
       {loading ? (
         <LoadingSkeleton label={t('Loading…')} />
       ) : !credentials.length ? (
-        <p>{t('No agent connections yet.')}</p>
+        <Text as="p">{t('No agent connections yet.')}</Text>
       ) : (
         <ul className="agent-credentials">
           {credentials.map((credential) => (
@@ -112,7 +121,11 @@ export function AgentAccess({ workspaceId }: AgentAccessProps) {
           ))}
         </ul>
       )}
-      {error && <p role="status">{error}</p>}
+      {error && (
+        <Text as="p" role="alert" tone="danger">
+          {error}
+        </Text>
+      )}
     </section>
   )
 }

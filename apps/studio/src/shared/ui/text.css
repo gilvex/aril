@@ -1,0 +1,53 @@
+:root {
+  --text-size-caption: 12px;
+  --text-size-label: 13px;
+  --text-size-body: 14px;
+  --text-size-title: 20px;
+  --text-size-heading: 24px;
+}
+:where(.text) {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+:where(h1.text, h2.text, h3.text, h4.text, h5.text, h6.text) {
+  text-wrap: balance;
+  scroll-margin-top: 24px;
+}
+:where(p.text) {
+  text-wrap: pretty;
+}
+:where(code.text, kbd.text) {
+  overflow-wrap: anywhere;
+}
+.text-body {
+  font-size: var(--text-size-body);
+  line-height: 1.6;
+}
+.text-label {
+  font-size: var(--text-size-label);
+  line-height: 1.4;
+}
+.text-caption {
+  font-size: var(--text-size-caption);
+  line-height: 1.5;
+}
+.text-title {
+  font-family: 'Manrope Variable', sans-serif;
+  font-size: var(--text-size-title);
+  font-weight: 650;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.text-heading {
+  font-family: 'Manrope Variable', sans-serif;
+  font-size: var(--text-size-heading);
+  font-weight: 650;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.text-tone-muted {
+  color: var(--text-secondary);
+}
+.text-tone-danger {
+  color: var(--danger-ink, #b42347);
+}

@@ -1,8 +1,4 @@
-import type {
-  Activity,
-  Presence,
-  Profile,
-} from '@aril/domain/collaboration'
+import type { Activity, Presence, Profile } from '@aril/domain/collaboration'
 import type { StudioSummary } from '@aril/domain/studios'
 import type { Envelope } from '@aril/domain/workspace'
 import type { DemoAction } from './demoAction.ts'

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { UsernameEditor } from '@/features/invitations/index.ts'
 import { useCallback, useRef } from 'react'
 import { AccountActions } from '@/features/accountActions/index.ts'
@@ -17,9 +18,13 @@ export function SettingsProfile(props: SettingsProfileProps) {
   return (
     <div className="settings-profile">
       <ProfileForm {...model} {...props} opener={opener} setPanel={setPanel} />
-      {model.error && <p role="alert">{t(model.error)}</p>}
+      {model.error && (
+        <Text as="p" role="alert">
+          {t(model.error)}
+        </Text>
+      )}
       <div className="settings-account">
-        <h3>{t('Account')}</h3>
+        <Text as="h3">{t('Account')}</Text>
         <UsernameEditor profile={props.profile} onProfile={props.onProfile} />
         <AccountConnection onProfile={props.onProfile} />
         <AccountActions beforeLeave={props.beforeLeave} />

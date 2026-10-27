@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ArrowUpRight, X, Workflow, PanelsTopLeft, PenTool } from 'lucide-react'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -12,7 +13,7 @@ export function RequirementLinks(props: RequirementDetailsProps) {
   const { targets, linked, add, remove } = useScopeLinks(props)
   return (
     <section className="req-links">
-      <h3>{t('Connected work')}</h3>
+      <Text as="h3">{t('Connected work')}</Text>
       {linked.map(({ link, target }) => (
         <div className="scope-link-row" key={scopeTargetKey(link)}>
           <button
@@ -27,9 +28,11 @@ export function RequirementLinks(props: RequirementDetailsProps) {
             ) : (
               <PanelsTopLeft size={18} />
             )}
-            <span>
-              <strong>{target?.label || t('Unavailable target')}</strong>
-              <small>
+            <Text as="span">
+              <Text as="strong">
+                {target?.label || t('Unavailable target')}
+              </Text>
+              <Text as="small">
                 {target
                   ? t(
                       link.kind === 'canvas'
@@ -45,8 +48,8 @@ export function RequirementLinks(props: RequirementDetailsProps) {
                         )?.name
                       : t('Workspace-wide'))
                   : t('The linked work was removed.')}
-              </small>
-            </span>
+              </Text>
+            </Text>
             <ArrowUpRight size={16} />
           </button>
           <button
@@ -60,10 +63,12 @@ export function RequirementLinks(props: RequirementDetailsProps) {
         </div>
       ))}
       {!linked.length && (
-        <p>{t('Connect this outcome to a blueprint, wireframe, or design.')}</p>
+        <Text as="p">
+          {t('Connect this outcome to a blueprint, wireframe, or design.')}
+        </Text>
       )}
-      <label className="req-link-picker">
-        <span>{t('Connect work')}</span>
+      <Text as="label" className="req-link-picker">
+        <Text as="span">{t('Connect work')}</Text>
         <StudioSelect
           disabled={readOnly || (current.links?.length || 0) >= 100}
           aria-label={t('Connect work')}
@@ -97,7 +102,7 @@ export function RequirementLinks(props: RequirementDetailsProps) {
               </option>
             ))}
         </StudioSelect>
-      </label>
+      </Text>
     </section>
   )
 }

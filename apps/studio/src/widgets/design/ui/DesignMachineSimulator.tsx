@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback, useMemo, type MouseEvent } from 'react'
 import { X } from 'lucide-react'
 import { resolveDesignBindings } from '@aril/domain/designLibrary'
@@ -47,12 +48,12 @@ export function DesignMachineSimulator({ model }: DesignEditorProps) {
   return (
     <section className="design-machine-simulator">
       <header>
-        <strong>
+        <Text as="strong">
           {t('Simulation')} · {state.name}
-        </strong>
-        <span>{t('Local preview only')}</span>
+        </Text>
+        <Text as="span">{t('Local preview only')}</Text>
         <button className="button" onClick={reset}>
-          {t('Reset')}
+          <Text>{t('Reset')}</Text>
         </button>
         <button
           className="icon-button"
@@ -65,7 +66,7 @@ export function DesignMachineSimulator({ model }: DesignEditorProps) {
       <div className="design-simulation-content">
         {variant && <DesignMiniPreview nodes={nodes} />}
         <div>
-          <h3>{t('Send event')}</h3>
+          <Text as="h3">{t('Send event')}</Text>
           <div className="design-library-buttons">
             {events.map((event) => (
               <button
@@ -74,16 +75,16 @@ export function DesignMachineSimulator({ model }: DesignEditorProps) {
                 data-event={event}
                 onClick={send}
               >
-                {event}
+                <Text>{event}</Text>
               </button>
             ))}
           </div>
           <ol aria-label={t('Event trace')}>
             {simulation.trace.slice(-5).map((line, index) => (
               <li key={index}>
-                {line.endsWith(': ∅')
+                <Text>{line.endsWith(': ∅')
                   ? `${line.slice(0, -1)}${t('No enabled transition')}`
-                  : line}
+                  : line}</Text>
               </li>
             ))}
           </ol>

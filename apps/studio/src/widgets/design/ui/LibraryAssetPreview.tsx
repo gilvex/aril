@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import {
   Accordion,
@@ -30,7 +31,7 @@ export function LibraryAssetPreview({ model }: DesignEditorProps) {
     >
       <AccordionItem value="preview">
         <AccordionTrigger className="asset-section-trigger">
-          {t('Preview')}
+          <Text>{t('Preview')}</Text>
         </AccordionTrigger>
         <AccordionContent>
           {component && (
@@ -50,7 +51,7 @@ export function LibraryAssetPreview({ model }: DesignEditorProps) {
             {nodes.length ? (
               <LibraryPreviewCanvas nodes={nodes} />
             ) : (
-              <p>{t('This design is empty.')}</p>
+              <Text as="p">{t('This design is empty.')}</Text>
             )}
           </div>
         </AccordionContent>

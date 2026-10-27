@@ -106,7 +106,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.6;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
   margin-top: 5px;
   overflow-wrap: anywhere;
@@ -166,7 +166,7 @@
 .notebook-format :is(select, .studio-select) {
   width: 125px;
   margin-left: 10px;
-  font-size: 11px;
+  font-size: var(--text-size-caption);
 }
 .notebook-content {
   display: flex;
@@ -250,7 +250,7 @@
   justify-content: space-between;
   padding: 10px 32px;
   border-top: 1px solid var(--line);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   color: var(--muted);
 }
 .notebook-outline {
@@ -280,7 +280,7 @@
   gap: 6px;
   flex-wrap: wrap;
   padding: 0 32px 10px;
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .note-viewer > span {
   border: 1px solid;
@@ -433,7 +433,7 @@
   border-radius: 3px;
   color: #fff;
   background: var(--peer-color);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
   line-height: 15px;
   white-space: nowrap;
 }
@@ -485,7 +485,7 @@
 }
 .note-comment time {
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--text-size-caption);
 }
 .note-comment p,
 .note-comment blockquote {
@@ -505,7 +505,7 @@
   justify-content: flex-end;
 }
 .note-comment footer .button {
-  font-size: 11px;
+  font-size: var(--text-size-caption);
   padding: 5px;
 }
 .note-comment-compose {

@@ -6,9 +6,7 @@ export type RequirementDetailsProps = {
   propertiesOpen: boolean
   toggleProperties: () => void
   current: Requirement
-  openWork: (
-    link: import('@aril/domain/workspace').RequirementLink,
-  ) => void
+  openWork: (link: import('@aril/domain/workspace').RequirementLink) => void
   selectRequirement: (id: string | null) => void
   peopleFor: (id: string) => RequirementViewer[]
   profile: import('@aril/domain/collaboration').Profile

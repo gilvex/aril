@@ -1,3 +1,4 @@
+import { Text } from './Text.tsx'
 import { useCallback, useMemo } from 'react'
 import {
   Select,
@@ -54,7 +55,7 @@ export function StudioSelect({
               typeof option.label === 'string' ? option.label : undefined
             }
           >
-            {option.group && <small>{option.group} · </small>}
+            {option.group && <Text as="small">{option.group} · </Text>}
             {option.label}
           </SelectItem>
         ))}

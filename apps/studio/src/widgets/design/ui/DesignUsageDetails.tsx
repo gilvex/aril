@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useCallback } from 'react'
 import { Button } from 'vagabond-ui/button'
 import { ToggleGroup, ToggleGroupItem } from 'vagabond-ui/toggle-group'
@@ -22,18 +23,18 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
   )
   if (!asset)
     return (
-      <p className="library-usage-hint">
+      <Text as="p" className="library-usage-hint">
         {t('Select an asset to see where it is used.')}
-      </p>
+      </Text>
     )
   return (
     <section className="library-usage-details">
-      <h3>{asset.name}</h3>
+      <Text as="h3">{asset.name}</Text>
       {kind === 'component' && <DesignComponentIcon model={model} />}
       <LibraryAssetPreview model={model} />
       <div className="design-library-buttons">
         <Button className="button" size="sm" variant="outline" onClick={edit}>
-          {t('Open asset')}
+          <Text>{t('Open asset')}</Text>
         </Button>
         {kind === 'component' && (
           <Button
@@ -42,11 +43,11 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
             disabled={readOnly}
             onClick={insert}
           >
-            {t('Insert instance')}
+            <Text>{t('Insert instance')}</Text>
           </Button>
         )}
         <Button className="button" size="sm" variant="ghost" onClick={map}>
-          {t('Show in map')}
+          <Text>{t('Show in map')}</Text>
         </Button>
       </div>
       <ToggleGroup
@@ -57,9 +58,15 @@ export function DesignUsageDetails({ model }: DesignEditorProps) {
         className="library-detail-tabs"
         aria-label={t('Asset connections')}
       >
-        <ToggleGroupItem value="usedBy">{t('Used by')}</ToggleGroupItem>
-        <ToggleGroupItem value="uses">{t('Uses assets')}</ToggleGroupItem>
-        <ToggleGroupItem value="impact">{t('Impact')}</ToggleGroupItem>
+        <ToggleGroupItem value="usedBy">
+          <Text>{t('Used by')}</Text>
+        </ToggleGroupItem>
+        <ToggleGroupItem value="uses">
+          <Text>{t('Uses assets')}</Text>
+        </ToggleGroupItem>
+        <ToggleGroupItem value="impact">
+          <Text>{t('Impact')}</Text>
+        </ToggleGroupItem>
       </ToggleGroup>
       <LibraryUsageList model={model} />
     </section>

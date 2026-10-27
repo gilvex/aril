@@ -1,8 +1,4 @@
-import type {
-  Activity,
-  Presence,
-  Profile,
-} from '@aril/domain/collaboration'
+import type { Activity, Presence, Profile } from '@aril/domain/collaboration'
 
 export type MultiplayerState = {
   profile: Profile

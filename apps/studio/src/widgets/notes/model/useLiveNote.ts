@@ -94,10 +94,7 @@ export function useLiveNote({
     }
   }, [id, noteText, canEdit, getState, patch])
   const editBody = useCallback(
-    (
-      body: string,
-      base?: import('@aril/domain/noteText').NoteTextState,
-    ) => {
+    (body: string, base?: import('@aril/domain/noteText').NoteTextState) => {
       if (!canEdit) return
       const before = getState().liveText[id] || saved
       const next = mergeNoteText(before, writeNoteText(base || before, body))

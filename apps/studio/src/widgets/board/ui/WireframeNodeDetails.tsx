@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { StudioSelect } from '@/shared/ui/index.tsx'
 import { useWorkspaceRole } from '@/entities/workspace/index.ts'
 import { useTranslation } from '@/shared/i18n/index.ts'
@@ -18,7 +19,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
     useWireframeNodeDetailsHandlers(props)
   return (
     <div className="inspector-body" key={node.id}>
-      <label>
+      <Text as="label">
         {t('Label')}
         <input
           disabled={readOnly}
@@ -28,9 +29,9 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
           maxLength={120}
           onChange={(e) => editData({ title: e.target.value })}
         />
-      </label>
+      </Text>
       {node.data.kind !== 'button' && node.data.kind !== 'screen' && (
-        <label>
+        <Text as="label">
           {node.data.kind === 'input' ? t('Placeholder') : t('Content')}
           <textarea
             readOnly={readOnly}
@@ -40,7 +41,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
             value={node.data.content}
             onChange={(e) => editData({ content: e.target.value })}
           />
-        </label>
+        </Text>
       )}
       <WireframeDimensions t={t} node={node} editNode={editNode} />
       {node.data.kind === 'screen' ? (
@@ -50,18 +51,18 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
             className="button"
             onClick={() => editNode({ width: 640, height: 460 })}
           >
-            {t('Desktop')}
+            <Text>{t('Desktop')}</Text>
           </button>
           <button
             disabled={readOnly}
             className="button"
             onClick={() => editNode({ width: 320, height: 640 })}
           >
-            {t('Mobile')}
+            <Text>{t('Mobile')}</Text>
           </button>
         </div>
       ) : (
-        <label>
+        <Text as="label">
           {t('On screen')}
           <StudioSelect
             disabled={readOnly}
@@ -76,9 +77,9 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
               </option>
             ))}
           </StudioSelect>
-        </label>
+        </Text>
       )}
-      <label>
+      <Text as="label">
         {t('Appearance')}
         <StudioSelect
           disabled={readOnly}
@@ -90,7 +91,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
           <option value="soft">{t('Soft')}</option>
           <option value="accent">{t('Accent')}</option>
         </StudioSelect>
-      </label>
+      </Text>
       <WireframeInteraction
         {...props}
 
@@ -99,7 +100,7 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
       <div className="inspector-actions">
         <button disabled={readOnly} className="button" onClick={duplicate}>
           <Copy size={14} />
-          {t('Duplicate')}
+          <Text>{t('Duplicate')}</Text>
         </button>
         <button
           disabled={readOnly}
@@ -115,11 +116,11 @@ export function WireframeNodeDetails(props: WireframeNodeDetailsProps) {
         </button>
       </div>
       {node.data.kind === 'screen' && (
-        <p>
+        <Text as="p">
           {t(
             'Drag the screen’s title bar to move it with its blocks. Deleting a screen also deletes its contents; Undo restores them.',
           )}
-        </p>
+        </Text>
       )}
     </div>
   )

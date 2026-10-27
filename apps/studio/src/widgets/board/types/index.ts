@@ -82,7 +82,14 @@ export type { BlueprintNodeClassificationProps } from './blueprintNodeClassifica
 export type { BoardOverviewActionsProps } from './boardOverviewActionsProps.ts'
 export type { BoardScopeProps } from './boardScopeProps.ts'
 
+export type { BlueprintIconPickerProps } from './blueprintIconPickerProps.ts'
 
-export type {BlueprintIconPickerProps} from './blueprintIconPickerProps.ts'
+export type { CanvasClipboardProps } from './canvasClipboardProps.ts'
 
-export type {CanvasClipboardProps} from './canvasClipboardProps.ts'
+export type { IconPickerState } from './iconPickerState.ts'
+
+export type { IconLibraryProps } from './iconLibraryProps.ts'
+
+export type { IconLibraryOptionProps } from './iconLibraryOptionProps.ts'
+
+export type { IconLibraryFooterProps } from './iconLibraryFooterProps.ts'

@@ -23,14 +23,30 @@ export function useStudioWorkspaceActions({
         setModal(null)
         setSidebarOpen(false)
       }
-      const target = e.target as HTMLElement
-      if (target.closest('input,textarea,select,[contenteditable]')) return
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
+      if (e.defaultPrevented) return
+      const target = e.target
+      if (
+        target instanceof Element &&
+        target.closest('input,textarea,select,[contenteditable]')
+      )
+        return
+      if (
+        (e.metaKey || e.ctrlKey) &&
+        !e.altKey &&
+        (e.code === 'KeyZ' ||
+          e.key.toLowerCase() === 'z' ||
+          e.code === 'KeyY' ||
+          e.key.toLowerCase() === 'y')
+      ) {
         e.preventDefault()
-        if (e.shiftKey) redo()
+        if (e.shiftKey || e.code === 'KeyY' || e.key.toLowerCase() === 'y')
+          redo()
         else undo()
       }
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+      if (
+        (e.metaKey || e.ctrlKey) &&
+        (e.code === 'KeyS' || e.key.toLowerCase() === 's')
+      ) {
         e.preventDefault()
         void flush()
       }

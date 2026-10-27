@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { ArrowUpRight, Play } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n/index.ts'
 
@@ -10,10 +11,12 @@ export function DemoEntry() {
         href="/?demo=1&workspace=demo&board=layers&view=canvas"
       >
         <Play size={16} />
-        <span>{t('Try demo')}</span>
+        <Text as="span">{t('Try demo')}</Text>
         <ArrowUpRight size={16} />
       </a>
-      <p>{t('No sign-in. A complete project you can edit and explore.')}</p>
+      <Text as="p">
+        {t('No sign-in. A complete project you can edit and explore.')}
+      </Text>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { Text } from '@/shared/ui/Text.tsx'
 import { useTranslation } from '@/shared/i18n/index.ts'
 import { useDeleteBoardDialogHandlers } from '../model/useDeleteBoardDialogHandlers.tsx'
 
@@ -18,21 +19,21 @@ export function DeleteBoardDialog({
   })
   return (
     <>
-      <h2 id="modal-title">
+      <Text as="h2" id="modal-title">
         {t('Delete “')}
         {board.name}”?
-      </h2>
-      <p>
+      </Text>
+      <Text as="p">
         {t(
           'Its nodes and connections will be removed. You can undo this or restore a saved revision.',
         )}
-      </p>
+      </Text>
       <div className="modal-actions">
         <button className="button" onClick={() => setModal(null)}>
-          {t('Keep board')}
+          <Text>{t('Keep board')}</Text>
         </button>
         <button className="button destructive" onClick={handleClick}>
-          {t('Delete board')}
+          <Text>{t('Delete board')}</Text>
         </button>
       </div>
     </>
