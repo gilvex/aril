@@ -74,7 +74,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open http://127.0.0.1:5173; the API runs on port 4317. A fresh checkout without cloud configuration uses SQLite. See [hosting and accounts](docs/accounts-and-deployment.md) for Google, Yandex ID, corporate OIDC sign-in and Postgres configuration.
+Open http://127.0.0.1:5173; the API runs on port 4317. A fresh checkout without cloud configuration uses SQLite. See [hosting and accounts](docs/accounts-and-deployment.md) for Google, Yandex ID, corporate OIDC sign-in and Postgres configuration, and [self-hosting](docs/self-hosting.md) to run the studio, Postgres and backups on one server with Docker Compose.
 
 ```sh
 pnpm build

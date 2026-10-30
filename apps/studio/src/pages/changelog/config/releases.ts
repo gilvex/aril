@@ -3,6 +3,21 @@ import type { ReleaseEntry } from '../types/releaseEntry.ts'
 // Newest first. See docs/changelog.md before adding a release.
 export const releases: ReleaseEntry[] = [
   {
+    id: '2026-10-30-self-hosting',
+    date: '2026-10-30',
+    title: 'Lighter syncing and a self-hosted server',
+    summary:
+      'Open files reconnect without downloading unchanged work, and Aril can run on a single server with its own database.',
+    changes: [
+      'Reconnecting live sessions now resume from the last received revision, so an unchanged file is no longer transferred again.',
+      'A container image and Compose setup run the studio, Postgres and daily backups together on one server.',
+      'On a single server, saves, cursors and note edits are delivered directly by the studio process, without database polling or a separate realtime service.',
+    ],
+    image: '/changelog/canvas.webp',
+    imageAlt:
+      'Demo architecture board with connected services and live collaborator cursors.',
+  },
+  {
     id: '2026-10-21-username-setup',
     date: '2026-10-21',
     title: 'A username that feels like you',

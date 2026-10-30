@@ -1,4 +1,9 @@
 {
+  "Lighter syncing and a self-hosted server": "Lighter syncing and a self-hosted server",
+  "Open files reconnect without downloading unchanged work, and Aril can run on a single server with its own database.": "Open files reconnect without downloading unchanged work, and Aril can run on a single server with its own database.",
+  "Reconnecting live sessions now resume from the last received revision, so an unchanged file is no longer transferred again.": "Reconnecting live sessions now resume from the last received revision, so an unchanged file is no longer transferred again.",
+  "A container image and Compose setup run the studio, Postgres and daily backups together on one server.": "A container image and Compose setup run the studio, Postgres and daily backups together on one server.",
+  "On a single server, saves, cursors and note edits are delivered directly by the studio process, without database polling or a separate realtime service.": "On a single server, saves, cursors and note edits are delivered directly by the studio process, without database polling or a separate realtime service.",
   "Account settings": "Account settings",
   "Choose your username": "Choose your username",
   "Make it easy for teammates to find you. Keep our suggestion or write your own.": "Make it easy for teammates to find you. Keep our suggestion or write your own.",

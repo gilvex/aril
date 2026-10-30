@@ -10,6 +10,7 @@ export async function cloudEvents(
   workspaceId: string,
   profile: Profile,
   authenticate: () => Promise<Profile | undefined>,
+  knownRevision = -1,
 ) {
   const cloud = store.cloud!
   res.setHeader('Content-Type', 'text/event-stream')
@@ -18,7 +19,9 @@ export async function cloudEvents(
   res.flushHeaders()
   let closed = false,
     timer: ReturnType<typeof setTimeout> | undefined
-  let revision = -1,
+  // A reconnecting client already holds this revision, so an unchanged
+  // document is not downloaded from Postgres again.
+  let revision = knownRevision,
     lastAuth = 0
   const write = (event: string, value: unknown) => {
     if (res.writableLength > 2 * 1024 * 1024) {

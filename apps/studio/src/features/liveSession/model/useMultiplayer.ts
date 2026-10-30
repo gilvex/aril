@@ -46,9 +46,7 @@ export function useMultiplayer(
   })
 
   const noteText = useMemo(createNoteTextChannel, [])
-  const notesChannel = useMemo<
-    import('@aril/domain/noteText').NoteTextChannel
-  >(
+  const notesChannel = useMemo<import('@aril/domain/noteText').NoteTextChannel>(
     () => ({
       send: noteText.send,
       subscribe: (listener) =>
@@ -177,6 +175,9 @@ export function useMultiplayer(
     if (!active) return
     const controller = new AbortController()
     let retryTimer: ReturnType<typeof setTimeout> | undefined
+    // Reconnects resume from the last streamed revision instead of
+    // downloading an unchanged workspace again.
+    let streamedRevision: number | undefined
     const handle = (event: string, raw: string) => {
       if (event === 'note-text' && transport.current === 'local') {
         const packet = JSON.parse(raw)
@@ -184,7 +185,11 @@ export function useMultiplayer(
         if (packet.clientId !== clientId && parsed.success)
           noteText.receive(parsed.data)
       }
-      if (event === 'workspace') receive(JSON.parse(raw))
+      if (event === 'workspace') {
+        const envelope = JSON.parse(raw) as Envelope
+        streamedRevision = envelope.revision
+        receive(envelope)
+      }
       if (event === 'activity') setActivity(JSON.parse(raw))
       if (event === 'presence' && transport.current === 'local') {
         const present = JSON.parse(raw) as Presence[]
@@ -195,10 +200,15 @@ export function useMultiplayer(
     }
     const connect = async () => {
       try {
-        const response = await apiFetch(`/api/events?clientId=${clientId}`, {
-          headers: { ...authHeaders(), ...workspaceHeaders(workspaceId) },
-          signal: controller.signal,
-        })
+        const resume =
+          streamedRevision === undefined ? '' : `&revision=${streamedRevision}`
+        const response = await apiFetch(
+          `/api/events?clientId=${clientId}${resume}`,
+          {
+            headers: { ...authHeaders(), ...workspaceHeaders(workspaceId) },
+            signal: controller.signal,
+          },
+        )
         if (!response.ok || !response.body)
           throw new Error('Live connection unavailable')
         streamConnected.current = true

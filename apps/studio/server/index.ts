@@ -2,10 +2,15 @@ import { resolve } from 'node:path'
 import { createApp, createApplication } from './app.ts'
 import { dataDirectory } from './paths.ts'
 import { openPostgres } from './postgres.ts'
+// A single long-running process owns every write, so it can push saves and
+// presence in memory instead of polling Postgres and using Supabase Realtime.
+const singleProcess = process.env.ARIL_LIVE_TRANSPORT === 'local'
 const { app, store, collaboration } =
   (process.env.ARIL_STORAGE || process.env.POMEGRANATE_STORAGE) === 'postgres'
     ? createApplication(
-        await openPostgres(),
+        singleProcess
+          ? { ...(await openPostgres()), cloud: undefined }
+          : await openPostgres(),
         process.env.ARIL_ORIGIN || process.env.POMEGRANATE_ORIGIN,
         (
           process.env.ARIL_ADDITIONAL_ORIGINS ||
@@ -26,6 +31,10 @@ const { app, store, collaboration } =
           .split(',')
           .filter(Boolean),
       )
+// Express trust-proxy value for a reverse proxy in front of the studio, so
+// rate limits see client addresses rather than the proxy's.
+if (process.env.ARIL_TRUST_PROXY)
+  app.set('trust proxy', process.env.ARIL_TRUST_PROXY)
 const port = Number(process.env.PORT || 4317)
 const host = process.env.HOST || '127.0.0.1'
 if (

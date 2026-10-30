@@ -568,8 +568,20 @@ export function installCollaboration(
     const profile = res.locals.profile as Profile
     const workspaceId = res.locals.workspaceId as string
     if (store.cloud) {
-      await cloudEvents(req, res, store, workspaceId, profile, () =>
-        cookieProfile(req),
+      const known = z.coerce
+        .number()
+        .int()
+        .positive()
+        .safe()
+        .safeParse(req.query.revision)
+      await cloudEvents(
+        req,
+        res,
+        store,
+        workspaceId,
+        profile,
+        () => cookieProfile(req),
+        known.success ? known.data : -1,
       )
       return
     }
