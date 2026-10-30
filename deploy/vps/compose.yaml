@@ -1,0 +1,90 @@
+# Self-hosted Aril: one studio process, a private Postgres and nightly dumps.
+# Copy .env.example to .env beside this file. See docs/self-hosting.md.
+name: aril
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aril
+      POSTGRES_USER: aril
+      POSTGRES_PASSWORD: ${ARIL_DB_PASSWORD:?Set ARIL_DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U aril -d aril']
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks: [internal]
+
+  app:
+    image: aril-studio:${ARIL_RELEASE:-latest}
+    build:
+      context: ../..
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    # Optional server settings: sign-in providers, invitation email, branding.
+    env_file:
+      - path: ${ARIL_APP_ENV_FILE:-./app.env}
+        required: false
+    environment:
+      ARIL_STORAGE: postgres
+      # Every write goes through this one process, so saves and presence are
+      # pushed in memory without polling the database.
+      ARIL_LIVE_TRANSPORT: local
+      # Caddy reaches the container through the Docker bridge gateway.
+      ARIL_TRUST_PROXY: loopback,uniquelocal
+      POSTGRES_URL: postgres://aril:${ARIL_DB_PASSWORD}@db:5432/aril
+      ARIL_ORIGIN: ${ARIL_ORIGIN:?Set ARIL_ORIGIN}
+      ARIL_ADDITIONAL_ORIGINS: ${ARIL_ADDITIONAL_ORIGINS:-}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+    init: true
+    stop_grace_period: 30s
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:4317/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    ports:
+      - 127.0.0.1:${ARIL_PORT:-4317}:4317
+    networks: [internal]
+
+  backup:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: ${ARIL_DB_PASSWORD}
+    volumes:
+      - ${ARIL_BACKUP_DIR:-./backups}:/backups
+    # Daily custom-format dump, keeping the newest 14.
+    entrypoint:
+      - sh
+      - -c
+      - |
+        while true; do
+          pg_dump -h db -U aril -d aril -Fc -f /backups/aril-$$(date -u +%Y%m%dT%H%M%SZ).dump.tmp &&
+            for f in /backups/*.dump.tmp; do mv "$$f" "$${f%.tmp}"; done
+          ls -1t /backups/aril-*.dump 2>/dev/null | tail -n +15 | xargs -r rm --
+          sleep 86400
+        done
+    networks: [internal]
+
+volumes:
+  db-data:
+
+networks:
+  internal:

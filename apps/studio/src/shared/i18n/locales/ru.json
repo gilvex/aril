@@ -1,4 +1,9 @@
 {
+  "Lighter syncing and a self-hosted server": "Более лёгкая синхронизация и собственный сервер",
+  "Open files reconnect without downloading unchanged work, and Aril can run on a single server with its own database.": "Открытые файлы переподключаются, не загружая неизменённую работу заново, а Aril может работать на одном сервере с собственной базой данных.",
+  "Reconnecting live sessions now resume from the last received revision, so an unchanged file is no longer transferred again.": "Переподключение живых сессий продолжается с последней полученной ревизии, поэтому неизменённый файл больше не передаётся повторно.",
+  "A container image and Compose setup run the studio, Postgres and daily backups together on one server.": "Образ контейнера и конфигурация Compose запускают студию, Postgres и ежедневные резервные копии вместе на одном сервере.",
+  "On a single server, saves, cursors and note edits are delivered directly by the studio process, without database polling or a separate realtime service.": "На одном сервере сохранения, курсоры и правки заметок доставляет сам процесс студии — без опроса базы данных и отдельного сервиса реального времени.",
   "Account settings": "Настройки аккаунта",
   "Choose your username": "Выберите имя пользователя",
   "Make it easy for teammates to find you. Keep our suggestion or write your own.": "Помогите коллегам найти вас. Оставьте предложенное имя или придумайте своё.",
